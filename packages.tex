@@ -1,0 +1,289 @@
+% !TEX root = scientific-computing.tex
+%
+\hypertarget{ch:packages}{%
+\chapter{Loading Packages}\label{ch:packages}}
+
+
+As with many software packages, additional functionality is available in
+other libraries or packages. If you take a look at
+\href{Julia's\%20Package\%20Listing}{https://juliaobserver.com} there
+are about 2000 packages (as of Fall 2018). Clicking on any of the
+package names will give additional information about the package
+including documentation (hopefully).
+
+If you don't have a package installed and try to use it, like:
+
+\begin{jlverbatim}
+using Primes
+\end{jlverbatim}
+%
+you will get an error that it isn't installed--unless you actually installed it previously. You can add the package by
+
+\begin{jlverbatim}
+using Pkg
+Pkg.add("Primes")
+\end{jlverbatim}
+
+and after fetching the package, rerunning
+%
+\begin{jlblock}
+using Primes
+\end{jlblock}
+%
+should no longer give an error. Then, for example, try
+%
+\begin{jlblock}
+isprime(17)
+\end{jlblock}
+%
+which returns \verb!true! because 17 is a prime number. This is a
+nondeterministic function that determines if a number is true. The
+documentation for the Primes package is at
+\url{https://github.com/JuliaMath/Primes.jl} and demonstrates 4 commands
+including \texttt{isprime} and \texttt{factor} which returns all prime
+factors (and the order).
+
+A few other packages that we have seen or will see:
+
+\begin{itemize}
+
+\item
+  IJulia -- provides the browser interface to Julia. You are probably
+  already using this.
+\item
+  ForwardDiff -- does Automatic Differentiation (see Chapter 8)
+\item
+  Plots -- A plotting packages (See Chapter 11)
+\item
+  GR -- A backend to the Plots package.
+\item
+  PlotlyJS -- Another nice backend to the Plots package.
+\item
+  DataFrames -- a way to nicely handle datasets generally loaded from
+  external files.
+\end{itemize}
+
+\href{ch14.html}{Chapter 14} will show how to create our own packages
+also called a module.
+
+\hypertarget{managing-packages-in-julia}{%
+\section{Managing Packages in
+Julia}\label{managing-packages-in-julia}}
+
+Although we can use the \texttt{Pkg} package to handle packages, this
+section will use the terminal REPL to handle any non-standard packages.
+Additional documentation on this is given in
+\href{Julia's\%20package\%20manager\%20help\%20pages}{https://docs.julialang.org/en/latest/stdlib/Pkg/}
+First, open up a terminal version of julia (generally by opening the
+application that you downloaded). You will get:
+
+\begin{verbatim}
+              _
+   _      _ _(_)_      |  Documentation: https://docs.julialang.org
+  (_)    | (_) (_)     |
+  _ _   _| |_  __ _    |  Type "?" for help, "]?" for Pkg help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 1.0.0 (2018-08-08)
+ _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
+|__/                   |
+\end{verbatim}
+
+or similar and then
+
+\begin{verbatim}
+julia>
+\end{verbatim}
+
+which means we're ready to handle julia commands. If we type
+\texttt{{]}}, then the prompt turns into:
+
+\begin{verbatim}
+(v1.4) pkg>
+\end{verbatim}
+% 
+where the 1.4 will be the version of julia that you are running. There are a number of commands that we will cover here:
+
+\begin{itemize}
+\item  add
+\item  remove (rm)
+\item  develop (dev)
+\item  status
+\item  update (up)
+\item  test
+\item  build
+\item  precompile
+\end{itemize}
+and the commands in parentheses are the shortcut. 
+
+\hypertarget{adding-a-package}{%
+\subsection{Adding a package}\label{adding-a-package}}
+
+In the package command line, type \texttt{add} \emph{package\_name} to
+add the package. For example, to add the \texttt{ForwardDff} package:
+
+\begin{verbatim}
+add ForwardDiff
+\end{verbatim}
+
+and it is not installed, you will get something like:
+
+\begin{verbatim}
+Updating registry at `~/.julia/registries/General`
+  Updating git-repo `https://github.com/JuliaRegistries/General.git`
+  Updating `~/.julia/environments/v1.0/Project.toml`
+  [f6369f11] + ForwardDiff v0.9.0
+  Updating `~/.julia/environments/v1.0/Manifest.toml`
+  [9e28174c] + BinDeps v0.8.10
+  [bbf7d656] + CommonSubexpressions v0.2.0
+  [163ba53b] + DiffResults v0.0.3
+  [b552c78f] + DiffRules v0.0.7
+  [f6369f11] + ForwardDiff v0.9.0
+  [77ba4419] + NaNMath v0.3.2
+  [276daf66] + SpecialFunctions v0.7.0
+  [90137ffa] + StaticArrays v0.8.3
+\end{verbatim}
+
+A few things to note:
+
+\begin{itemize}
+\item You results will vary depending on version numbers avaiable and what subpackages (like \verb!DiffRules! or \verb!StaticArrays! are needed for the current version of the package you want to load. 
+\item  The line after the 2nd \texttt{Updating} line is the package (and version) that you are installing.
+\item  All of the lines after the 3rd \texttt{Updating} line is all of the  packages that this depends on.
+\item  The + sign means that the package is being added.
+\end{itemize}
+
+If you want to add multiple packages at the same time, say packages A, B
+and C, type \texttt{add\ A\ B\ C}. You can also add particular versions
+of a package (often for testing or to avoid a bug). For example, if you
+want version 0.3.0 of \texttt{ForwardDiff} type:
+
+\begin{verbatim}
+add ForwardDiff@0.3.0
+\end{verbatim}
+
+You will then get info on the dependencies on that version.
+
+\hypertarget{package-status}{%
+\subsection{Package Status}\label{package-status}}
+
+The \texttt{status} command (or \texttt{st}) will just list all of the
+main packages installed. For example,
+
+\begin{verbatim}
+Status `~/.julia/environments/v1.0/Project.toml`
+[c52e3926] Atom v0.7.6
+[336ed68f] CSV v0.3.1
+[a93c6f00] DataFrames v0.13.1
+[f6369f11] ForwardDiff v0.9.0
+[7073ff75] IJulia v1.12.0
+[e5e0dc1b] Juno v0.5.3
+[1a8c2f83] Query v0.10.0
+\end{verbatim}
+
+and note that these are just the packages added by the \texttt{add}
+command, not all of the dependencies. If you want all of the
+dependencies as well, type \texttt{st\ -\/-manifest} and I get a huge
+list of packages.
+
+\hypertarget{removing-a-package}{%
+\subsection{Removing a Package}\label{removing-a-package}}
+
+You can remove a package by typing \texttt{remove} or \texttt{rm} then
+the package name. If I want to remove the \texttt{ForwardDiff} package,
+then
+
+\begin{verbatim}
+remove ForwardDiff
+\end{verbatim}
+
+we get the following:
+
+\begin{verbatim}
+Updating `~/.julia/environments/v1.0/Project.toml`
+ [f6369f11] - ForwardDiff v0.3.0
+ Updating `~/.julia/environments/v1.0/Manifest.toml`
+ [49dc2e85] - Calculus v0.4.1
+ [c5cfe0b6] - DiffBase v0.2.0
+ [f6369f11] - ForwardDiff v0.3.0
+ [77ba4419] - NaNMath v0.3.2
+\end{verbatim}
+
+Note:
+
+\begin{itemize}
+
+\item
+  The \texttt{rm} command removes the package from the list of available
+  packages, but doesn't remove them from your harddrive.
+\item
+  If you want to see everything installed, navigate to the
+  \texttt{\textasciitilde{}/.julia/packages} directory, which is where
+  they are stored.
+\end{itemize}
+
+\hypertarget{updating-packages}{%
+\subsection{Updating packages}\label{updating-packages}}
+
+If you type \texttt{update} or \texttt{up} you will update all of the
+installed packages (and dependencies). For example:
+
+\begin{verbatim}
+Updating `~/.julia/environments/v1.0/Project.toml`
+ [7073ff75] ↑ IJulia v1.11.1 ⇒ v1.12.0
+ Updating `~/.julia/environments/v1.0/Manifest.toml`
+ [7073ff75] ↑ IJulia v1.11.1 ⇒ v1.12.0
+ [b85f4697] ↑ SoftGlobalScope v1.0.5 ⇒ v1.0.7
+ [5e66a065] ↑ TableShowUtils v0.1.1 ⇒ v0.2.0
+\end{verbatim}
+
+and all updates will be with an ↑. If you only want to update a single
+package, type the name after \texttt{update}.
+
+\hypertarget{building-packages}{%
+\subsection{Building Packages}\label{building-packages}}
+
+Generally a package is built after it is installed. Building a package
+might include running code (or unpacking files) after it is installed.
+Sometimes if things get wonky, rebuilding is a good thing to do.
+
+\begin{verbatim}
+build
+\end{verbatim}
+
+or if you only want say \texttt{IJulia} built,
+
+\begin{verbatim}
+build IJulia
+\end{verbatim}
+
+\subsection{Precompiling packages}
+
+When a package is used, often it requests to be compiled. For example,
+when \texttt{using\ Primes}, then following is shown:
+
+\begin{verbatim}
+[ Info: Precompiling Primes [27ebfcd6-29c5-5fa9-bf4b-fb8fc14df3ae]
+\end{verbatim}
+
+and basically some code is compiled beforehand, generally to speed up
+code. You can precompile all code with
+
+\begin{verbatim}
+precompile
+\end{verbatim}
+
+and it may take a while, but you won't have to wait, when you load the
+package with the \texttt{using} command.
+
+\hypertarget{testing-a-packages}{%
+\subsection{Testing a Packages}\label{testing-a-packages}}
+
+To test a packge, say the \texttt{ForwardDiff} package, then
+
+\begin{verbatim}
+test ForwardDiff
+\end{verbatim}
+
+It list all of the dependencies first, and then runs a number of tests
+(and we will show how to write tests soon) and timing information. After
+a while, it finishes sucessfully.

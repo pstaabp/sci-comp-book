@@ -1,0 +1,401 @@
+% !TEX root = scientific-computing.tex
+
+\begin{jlcode}[root]
+using Plots, PGFPlotsX
+pgfplotsx()
+\end{jlcode}
+
+
+\hypertarget{ch:rootfinding}{%
+\chapter{Solving Quadratics and Rootfinding in General}\label{ch:rootfinding}}
+
+A \textbf{root} of an equation is a number $x^{\star}$, such that $f(x^{\star})=0$.  For example, if $f(x)=x^2-4$, then both $x=2$ and $x=-2$ are roots of the equation.  Finding roots of functions is often impossible analytically, but quite important.  In this chapter, we discuss how to find roots of both quadratic functions and general functions, but also use this to discuss both errors in a algorithm as well as round off error, which occurs often when solving problems.  
+
+\hypertarget{absolute-and-relative-errors}{%
+\section{Absolute and Relative
+Errors}\label{absolute-and-relative-errors}}
+
+Consider an algorithm that tries to find the value of $x^{\star}$. If
+the algorithm actually returns the value $x$, then there will be some
+error. The \textbf{absolute error} is \begin{align*}|x - x^{\star}|\end{align*} and the
+\textbf{relative error} is
+\begin{align*}\left|\frac{x-x^{\star}}{x^{\star}}\right|.\end{align*}
+
+Often, the \textbf{percent error} is helpful as well, which is just the
+relative error times 100.
+
+
+\subsection{Example}
+
+Consider an algorithm that returns $x=0.0153$ and the actual answer is
+$x^{\star}=0.0150$. Find both the absolute and relative errors.
+
+The absolute error is $|0.0153-0.015|= 0.0003$ and the relative error
+is \begin{align*} \left|\frac{0.0153-0.015}{0.015}\right|=0.02 \end{align*} or 2\%.
+
+We can do this is julia with 
+\begin{jlblock}[root]
+xstar = 0.0150;
+x = 0.0153
+abs(x-xstar)
+\end{jlblock}
+which returns \jlc[root]{print(abs(x-xstar))} \printpythontex[verb]~and 
+\begin{jlblock}[root]
+abs((x-xstar)/xstar)
+\end{jlblock}
+returns \jlc[root]{print(abs((x-xstar)/xstar))} \printpythontex[verb].
+
+To make thing easier in this chapter, we'll create functions for these:
+\begin{jlblock}[root]
+absErr(x::Real,xstar::Real) = abs(x-xstar)
+relErr(x::Real,xstar::Real) = abs((x-xstar)/xstar)
+\end{jlblock}
+which now allows us to use \jlb[root]{absErr(0.153,0.150)} and \jlb[root]{relErr(0.153,0.150)} and we get the same results as above.  
+
+
+\hypertarget{rounding-errors-and-the-quadratic-formula}{%
+\section{Rounding Errors and the Quadratic
+Formula}\label{rounding-errors-and-the-quadratic-formula}}
+
+The following example shows how a well-know formula (the quadratic
+formula) can lead to incorrect results due to rounding errors.
+
+Remember if you solve $a{x}^{2}+bx+c=0$, the the quadratic formula
+finds the solution: \begin{align*} x=\frac{-b \pm \sqrt{b^{2}-4ac} } {2a}\end{align*}
+
+Next, let's consider the quadratic equation 
+\begin{align}
+12.242{x}^{2}+42.382x+0.0012=0. \label{eq:quad}
+\end{align}
+ We are going to solve this using the quadratic equation in julia.  To study rounding effects we're going to solve these using both 16-bit and 64-bit floating point numbers.  We'll assume that the 64-numbers are the actual answers in determining errors.  
+ 
+First, consider the quadratic formula as a julia function: 
+%
+\begin{jlblock}[root]
+function qSol(a::Real,b::Real,c::Real)
+  d=sqrt(b^2-4*a*c)
+  (-b+d)/(2*a),(-b-d)/(2*a)
+end
+\end{jlblock}
+
+We can solve the quadratic in (\ref{eq:quad}) with
+\begin{jlblock}[root]
+x64a,x64b = qSol(12.242,42.382,0.0012)
+\end{jlblock}
+%
+leads to \jlc[root]{print(string(x64a,",",x64b))}\printpythontex[verb].  Note that since the default floating-point type is \texttt{Float64}, these are 64-bit results.  
+
+To solve this using 16-bit floating-point numbers, 
+\begin{jlblock}[root]
+x16a,x16b = qSol(Float16(12.242),Float16(42.382),Float16(0.0012))
+\end{jlblock}
+%
+leads to \jlc[root]{print(string(x16a,",",x16b))} \printpythontex[verb].
+
+Let's assume that the 64-bit answers are correct. Find the absolute and relative errors for the two solutions.
+
+The absolute errors are:
+  \begin{itemize}
+  \item \jlb[root]{absErr(x16a,x64a)} = \jlc[root]{print(absErr(x16a,x64a))} \printpythontex[verb].
+  \item \jlb[root]{absErr(x16b,x64b)} = \jlc[root]{print(absErr(x16b,x64b))} \printpythontex[verb].
+\end{itemize}
+  and the relative errors are:
+  \begin{itemize}
+  \item \jlb[root]{relErr(x16a,x64a)} = \jlc[root]{print(relErr(x16a,x64a))} \printpythontex[verb].
+  \item \jlb[root]{relErr(x16b,x64b)} = \jlc[root]{print(relErr(x16b,x64b))} \printpythontex[verb].
+\end{itemize}
+
+The relative error 1 (or 100\%) means that the answer is way off.  The second answer is quite close though. 
+
+
+\subsection{Exercise}
+
+Use the quadratic formula to solve $2.56632x^{2}+ 17.34x+ 0.01734=0$
+using both BigFloats and 64-bit floats. Assume that the BigFloat
+versions are exact and find the absolute and relative errors in the
+64-bit numbers.
+
+
+\subsection{Be skeptical of numerical answers}
+
+Even though the example above was manufactured to produce bad results,
+you never know if a numerical solution is accurate or not. One way to look at the above example is to not use 16-bit floating point numbers.  This is a good idea, but assume (like we did above) that 64-bit is the actual answer.  There are cases where you will get the wrong answer with 64-bit. 
+
+
+\subsection{Can we ever be confident of answers?}
+
+It's crucial to have a good sense of the problem (whether it be
+mathematical or a scientific question). Additionally, testing is an
+important part of the solution process. In Chapter \ref{ch:modules}, we will spend some time discussing testing of code. 
+
+
+\section{Are We Sunk?  Examining the Quadratic Formula}
+
+The above example shows that we had quite a large error.  From what we've seen so far, we could try to use other data types, like \verb!BigFloat! to solve this problem, but as we've seen they are slow and we should only use that type when needed.  So what can we do. 
+
+If we're careful about things, we can often rewrite algorithms to do a better job with roundoff.  The problem that occurred for the general quadratic equation
+\begin{align*}
+ax^2+bx+c=0
+\end{align*}
+is if $d=\sqrt{b^{2}-4ac}$ and when $b>0$, the formula has $-b+d$, which is basically subtraction.  In the
+case above, $b=42.382$ and $d=\sqrt{b^{2}-4ac}=42.38130675663505$. The
+difference in these is quite small and that is where the round-off error
+is introduced.
+
+Let's assume that $b>0$ and let $d=\sqrt{b^{2}-4ac}$. The
+roundoff occurs when the value of $b$ and $d$ are close to each
+other. (Note: if $b$ is negative, you can multiply the entire equation
+through by $-1$ to get $b>0$ without changing the answer.) 
+To change the quadratic formula we are going to exchange the addition
+with a subtraction (however we will not have the catastrophic
+subtraction error we saw above). ``How can you do that you ask?'' Here
+we go\ldots{}
+
+Start with the quadratic formula for the $+$ case: 
+\begin{align*}
+x& =\frac{-b + \sqrt{b^{2}-4ac}} {2a} &&\text{Multiply by a convenient form of 1} \\
+& =\frac{-b + \sqrt{b^{2}-4ac}} {2a} \cdot \frac{-b-\sqrt{b^{2}-4ac}}{-b-\sqrt{b^{2}-4ac}} \\
+& = \frac{b^{2}-(b^{2}-4ac)}{2a(-b-\sqrt{b^{2}-4ac})} \\
+& = \frac{4ac}{2a(-b-\sqrt{b^{2}-4ac})} \\
+& = -\frac{2c}{b+\sqrt{b^{2}-4ac}}
+\end{align*}
+%
+and there is a similar solution if the $-$ root is taken above.Note that we have exchanged a subtraction for an addition if $b>0$.  So an
+alternative quadratic formula is:
+%
+\begin{jlblock}
+function qSol2(a::Real,b::Real,c::Real)
+  d=sqrt(b^2-4*a*c)
+  -2*c/(b+d),(-2*c)/(b-d)
+end
+\end{jlblock}
+
+
+\subsection{Exercise}
+
+\begin{itemize}
+\item Use the new quadratic formula (\texttt{qSol2}) to find the roots of  $x^{2}-x-110=0$. Do you get the same results as above?
+\item  Use the new quadratic formula to solve $12.242{x}^{2}+42.382x+0.0012=0$. Find the absolute and relative errors if we assume that the 64-bit answers are exact and the 16-bit answers are approximate.  Compare your results with that of the standard quadratic formula.
+\end{itemize}
+
+\hypertarget{sect:newton}{%
+\section{Newton's Method}\label{sect:newton}}
+
+Solving an equation is a very important part of mathematics and other
+scientific fields. However, finding general solutions to equations is
+not very easy. Consider a cubic equation like $x^{3}-10x^{2}+24x-17$.
+In the spirit of (but not very simple) the quadratic formula, there is a
+\href{https://en.wikipedia.org/wiki/Cubic_function\#Roots_of_a_cubic_function}{cubic
+formula}. Much of the wikipedia page spends time solving the cubic with
+all possibilities. In short, it's not very easy.
+
+In lieu of using such a formula, a more robust approach is to solve it
+numerically. Let's consider
+%
+\begin{align*}
+15{x}^{3}-143{x}^2+226x+280=0
+\end{align*}
+%
+This cubic actually factors, but finding those factors is quite
+difficult to do in general. We then look at using
+\href{https://en.wikipedia.org/wiki/Newton\%27s_method}{Newton's method}
+to solve this. Note the plot below:
+
+\begin{jlcode}[root]
+f(x)=15x^3-143x^2+226x+280
+plot([f,x->0],-2,10,label=["f(x)" "x-axis"])
+\end{jlcode}
+\begin{center}
+\pgfplotsset{scale=0.7}
+\plot{plots/rootfinding/plot03.tex}{root}
+%\includegraphics[width=5in]{images/ch07/plot01.png}
+\end{center}
+and the three intersection points between the red curve ($x$-axis) and the blue
+line (the function, $y=f(x)$) are the three roots.
+
+Newton's method starts with a ``guess'' at the root and then refines it.
+Let $x_0$ be the guess, then 
+\begin{align*}
+x_1 = x_0 - \frac{f(x_0)}{f'(x_0)}
+\end{align*}
+
+Let's look at this in Julia for the function above.
+
+\begin{jlblock}[root]
+f(x)=15x^3-143x^2+226x+280
+\end{jlblock}
+%
+and we need the derivative so
+%
+\begin{jlblock}[root]
+df(x)=45x^2-286x+226
+\end{jlblock}
+
+Let's say that \verb!x0=0! and find \texttt{x1} using Newton's method:
+
+\begin{jlblock}[root]
+x0 = 0
+x1 = x0-f(x0)/df(x0)
+\end{jlblock}
+%
+returns \jlc[root]{print(x1)}\printpythontex[verb]. We then use the result and perform another step of Newton's method or 
+\begin{jlblock}[root]
+x2 = x1-f(x1)/df(x1)
+\end{jlblock}
+this time we get \jlc[root]{print(x2)}\printpythontex[verb], which is closer.  A few more iterations of this, you should get quite close to\texttt{-0.8}.
+
+
+\subsection{Code for Newton's Method}
+
+We are going to go through building a function to do this.  First, let's consider the template of the function, which will have an arguments \texttt{f, df} and \texttt{x0}.  Thus a good template is 
+%
+\begin{jlblock}[root]
+function newton(f::Function,df::Function,x0::Number)
+
+end
+\end{jlblock}
+
+Here are considerations while building the function: 
+
+\begin{itemize}
+\item   You will need to do the two steps above many times so you will need a loop. Since you don't know how many times you will need to run through the loop use a \texttt{while} loop and your condition should be that the two steps \texttt{x0} and \texttt{x1} are apart from each other. 
+
+\item Checking if two floating-point numbers are equal are generally not a good idea, because they have to be equal to all bits, so instead we will run the while loop while the two number \texttt{x0} and \texttt{x1} are larger than some default (like $10^{-4}$).  
+\end{itemize}
+
+Here's more a frame of the function: 
+%
+\begin{jlblock}[root]
+function newton(f::Function, df::Function, x0::Number)
+  x1 = x0 - f(x0)/df(x0)
+  while abs(x1-x0)>1e-6 # while the two numbers are larger than 10^(-6)
+	x0 = x1
+    x1 = x0 - f(x0)/df(x0)	
+  end
+  x1
+end
+\end{jlblock}
+
+Using this we can now call this function as
+\begin{jlblock}[root]
+newton(f,df,0)
+\end{jlblock}
+which returns \jlc[root]{print(newton(f,df,0))}\printpythontex[verb]. 
+
+
+
+Just to clean things up a bit we can write this as:
+%
+\begin{jlblock}[root]
+function newton(f::Function, df::Function, x0::Real)
+  local dx=f(x0)/df(x0)
+  while abs(dx)>1e-6
+    x0 = x0-dx
+    dx = f(x0)/df(x0)
+  end
+  x0  
+end
+\end{jlblock}
+
+
+
+
+\subsection{Using Automatic Differentiation}
+
+If you have used Computational Algebra Systems like Maple or
+Mathematica, you know that computers have the ability to differentiate.
+Julia is not one of these, although it has some capability of doing some
+of the feature set of these programs. There is a system called
+\textbf{automatic differentiation} that will compute the exact
+derivative to a function at a given point. That is, if you have a
+function $f(x)$ and a number $a$, it will give you $f'(a)$. The
+package is called \texttt{ForwardDiff} and you may need to add it and
+then
+
+\begin{jlblock}[root]
+using ForwardDiff
+\end{jlblock}
+
+For example, if you define:
+
+\begin{jlblock}[root]
+g(x) =x^2
+\end{jlblock}
+
+to find $g'(3)$, type
+%
+\begin{jlblock}[root]
+ForwardDiff.derivative(g,3)
+\end{jlblock}
+%
+which will return \jlc[root]{print(ForwardDiff.derivative(g,3))}\printpythontex[verb]. Try something much more complicated:
+
+\begin{jlblock}[root]
+ForwardDiff.derivative(x->exp(sin(x^2+pi/x)),1.0)
+\end{jlblock}
+% 
+which returns \jlc[root]{print(ForwardDiff.derivative(x->exp(sin(x^2+pi/x)),1.0))}\printpythontex[verb], and if you are careful with the derivative (or have access to a CAS), see if your answer is correct.
+
+\subsection{Newton's Method with Automatic Differentiation}
+
+With this nice package, let's rewrite Newton's method 
+
+\begin{jlblock}[root]
+function newton2(f::Function, x0::Real)
+  local dx=f(x0)/ForwardDiff.derivative(f,x0)
+  while abs(dx)>1e-6
+    x0 = x0-dx
+    dx = f(x0)/ForwardDiff.derivative(f,x0)
+  end
+  x0
+end
+\end{jlblock}
+
+And note that if we run this with \jlb[root]{newton2(f,0)} we get
+\jlc[root]{display(newton2(f,0))}\stdoutpythontex[verbatim]
+
+
+
+
+\subsection{Exercise}
+
+\begin{enumerate}
+\item Find the intersection point of the functions $y=x$ and $y=\sin x$.  Hint set the two equations equal and use algebra to write it as a function $g(x)$ which is equal to 0.   
+\item  Use your function above to find all three of the roots of the cubic
+  function, $f(x)=15{x}^{3}-143{x}^2+226x+280$.
+  
+\end{enumerate}
+
+\subsection{Adding an extra stopping condition}
+
+One problem that can arise is if you call \texttt{newton} on a function that does not have a root. For example, consider $f(x)=x^2+1$, which is always positive.  If you run
+\begin{jlverbatim}[root-err]
+newton2(x->x^2+1,2)
+\end{jlverbatim}
+then you reach an infinite loop.  You'll need to interrupt the process. 
+
+To prevent this, we need to add a stopping condition if this occurs.  One way to do this is to add a  counter and then a \texttt{return} statement if the counter hits some maximum steps. Here's a possible update to Newton's method: 
+
+\begin{jlblock}[root]
+function newton3(f::Function,  x0::Real)
+  local n=0
+  local dx=f(x0)/ForwardDiff.derivative(f,x0)
+  while abs(dx)>1e-6
+    x0 = x0-dx
+    dx = f(x0)/ForwardDiff.derivative(f,x0)
+    n += 1 
+    if n==10  # if too many steps are taken, break out of the while loop
+      return x0
+    end
+  end
+  x0
+end
+\end{jlblock}
+
+Now if we try:
+\begin{jlblock}[root]
+newton3(x->x^2+1,2)
+\end{jlblock}
+we get \jlc[root]{print(newton3(x->x^2+1,2))} \printpythontex[verbatim]
+
+Now, this still isn't perfect because when we run it, we only get a single number out.  In this case, the value is not a root, but how do you know?  We will see in Chapter \ref{ch:comp-types} how to develop a new type which stores information about the root and if a solution was reached.  

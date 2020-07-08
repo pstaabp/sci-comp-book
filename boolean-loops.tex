@@ -1,0 +1,341 @@
+% !TEX root = scientific-computing.tex
+
+\hypertarget{ch:boolean-loops}{%
+\chapter{Boolean Statements, Loops and Branching}
+\label{ch:boolean-loops}}
+
+The basic computer science structures of if statements, while and for
+loops are crucial in scientific computing. In this chapter, we cover the
+basics of these structures in Julia. We will see all of these in more
+context in later chapters, but here's the syntax and basics.
+
+Lastly, because of the syntax of a \texttt{for} loop, we show details about ranges in julia, which is a compact way to write a set of numbers that are either sequential or sequential with skips in it.  
+
+
+\section{Boolean values and if statements}
+
+A boolean value is something that is either \texttt{true} or
+\texttt{false}. These are built-in constants in Julia. Sometimes we will
+want to know if a statement is true or false, but generally, we will use
+them in other structures.
+
+We often use boolean to test various conditions. For each, testing
+equality, or comparison of numbers we use
+\texttt{==,\textless{},\textgreater{},\textless{}=,\textgreater{}=} for equality, less than, greater than, less than or equal or greater than or equal respectively. 
+
+If we set \texttt{x=3} and then can just type \texttt{x==3},
+\texttt{x\textless{}3}, \texttt{x\textgreater{}=3} to test a variety of
+comparisons.
+
+
+\subsection{Compounds boolean statements}
+
+We often want to test multiple boolean statements and can build up
+compound ones with either the ``and'' (\texttt{\&\&}) or ``or''
+(\texttt{\textbar{}\textbar{}}) operators. Recall the following table for \verb!&&! and \verb!||!
+\begin{longtable}{@{}rlllrll@{}} \\
+\toprule
+AND & T & F & & OR & T & F \\
+\midrule
+\endhead
+T & T & F & & T & T & T \\
+F & F & F & & F & T & F \\
+\bottomrule
+\end{longtable}
+
+
+If we have \jlb[bool]{x=3} and
+\jlb[bool]{y=10}, if we want to test that \texttt{x} is greater than 0 and
+\texttt{y} is 5, by
+
+\begin{jlblock}[bool]
+x>=0 && y==5
+\end{jlblock}
+%
+which will return \jlc[bool]{print(x>=0 && y==5)}  \printpythontex[verb], since only the first is true and both must be true for this compound statement to be true. However,
+
+\begin{jlblock}[bool]
+x>=0 || y==5
+\end{jlblock}
+%
+returns \jlc[bool]{print(x>=0 || y == 5)} \printpythontex[verb], because the first is true.
+
+In both of these examples, it is important to note the order of operations or operator precedence.  This was mentioned in section \ref{sect:operator:precedence}, however as the number of operators grows, it's important to know the precedence.  In these cases the tests \texttt{==,<=,<,>=,>} have precedence over \verb!&&! and \verb!||!. 
+
+Also, \verb!&&! has precedence over \verb!||! in that if we evaluate
+\begin{jlblock}[bool]
+x >=0 && y > 7 || y == 5
+\end{jlblock}
+results in \jlc[bool]{print(x >=0 && y > 7 || y == 5)} \printpythontex[verb]. You can think of this resulting in \jlb[bool]{ true && true || false} and because of precedence the first pair is tested (to be \texttt{true}) then the result \jlb[bool]{true || false} results in \texttt{true}. 
+
+Often when precedence is unclear, adding parentheses can be helpful.  Instead, perhaps write the above as:
+\begin{jlblock}[bool]
+(x >=0 && y > 7) || y == 5
+\end{jlblock}
+
+\section{If Statements}
+
+An \texttt{if} statement is used to do different things depending on the value of a variable. A standard example of this is the piecewise version of the absolute value.
+Mathematically, we write: 
+\begin{align*}
+|x|=\begin{cases}
+x & x \geq 0 \\
+-x & x < 0
+\end{cases}
+\end{align*}
+
+We could write this as a function as 
+%
+\begin{jlblock}[bool]
+function absValue(x::Number)
+  if x >= 0
+     return x
+  end
+  return -1*x
+end
+\end{jlblock}
+
+Evaluate \jlb[bool]{absValue(3)} and \jlb[bool]{absValue(-7)} to ensure this is returning expected results.
+
+Notice that we basically had two situations here, either $x$ was greater
+than or equal to 0 or else not. We can rewrite this use an
+\texttt{if-else} statement.
+
+\begin{jlblock}[bool]
+function absValue(x::Number)
+  if x >= 0
+     return x
+  else
+    return -1*x
+  end
+end
+\end{jlblock}
+
+Try entering this and seeing if the results are the same.
+
+The absolute value function is quite important in mathematics and thus is built-in to julia as \texttt{abs}.  
+
+\subsection{Further choices with if statements}
+
+You may need more than 2 choices on an if statement.  Recall the \href{https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)}{quadrants of the $xy$-plane} start at I for the upper right and increase as you traverse counterclockwise.  A function could be written: 
+\begin{jlblock}[bool]
+function quadrant(x::Real,y::Real)
+  if x > 0 && y > 0 
+    return "I"
+  elseif x < 0 && y > 0
+    return "II"
+  elseif x < 0 && y < 0
+    return "III"
+  elseif x > 0 && y < 0
+    return "IV"
+  else 
+    return "NONE"
+  end
+end
+\end{jlblock}
+and technically if you are on an axis, then you are not in a quadrant, so that is the reason for the last option.  
+
+\section{\texorpdfstring{Ternary \texttt{if-else} statement}{Ternary if-else statement}}
+
+Often, an if-else statement is quite short and you want to a value depending on a condition. The absolute value example was such an example. There is what is called a ternary \texttt{if-else} statement that has the form:
+
+\begin{verbatim}
+condition ? value_if_condition_is_true : value_if_condition_is_false
+\end{verbatim}
+%
+which returns \verb!value_if_condition_is_true! if condition is true otherwise\\ \verb!value_if_condition_is_false! is returned. The absolute value example above can be written as a single line:
+
+\begin{jlblock}
+absval(x::Number)=(x>=0) ? x : -1*x
+\end{jlblock}
+%
+and once you practice with this, it will be easy to read and much shorter (1 line versus 7).  Be careful with the syntax of this.  It is required that the expressions around the ? be padded with spaces to parse correctly.  The error is reasonably clear if you don't write it correctly.  
+
+
+Alternatively, you can write this as
+%
+\begin{jlblock}
+absval(x::Number)=ifelse(x>=0,x,-1*x)
+\end{jlblock}
+
+We will see else syntax of this operator often throughout this course.
+
+\subsection{Exercise}
+
+Write the recursive factorial function above using the ternary if-then-else.  
+
+
+\section{Loops}
+
+A \emph{loop} is a series of statements that are repeated either a fixed
+number of times or until a condition occurs. They can be very helpful if
+a large number of operations need to be done in a predictable manner.
+
+
+\subsection{While Loops}
+
+Another very common construction for programming is called a while loop.
+Basically, we want to run a few statements while some boolean statement
+is true. Here's a simple, but uninteresting example:
+
+\begin{jlblock}[bool]
+let
+  local n=1
+  while n<10
+    println(n)
+    n+=1
+  end
+end
+\end{jlblock}
+%
+and note that the expression \verb!n+=1! is shorthand for \verb!n=n+1!. 
+
+A more practical example of a for loop will be the \href{https://en.wikipedia.org/wiki/Bisection_method}{Bisection Method} for finding a root.  
+
+\begin{jlblock}[bool]
+function bisection(f::Function,a::Real,b::Real)
+  local c
+  while (b-a)>1e-6
+    c = 0.5*(a+b)  # find the midpoint
+    # test if f(a) and f(c) have opposite signs
+    # that will determine the new interval
+    if f(a)*f(c) < 0 
+      b=c
+    else
+      a=c
+    end
+  end
+  c
+end
+\end{jlblock}
+
+In short, this method takes a function $f$ and an interval $[a,b]$ and continually bisects it ensuring there is a root in the resulting interval.  It continues while the length of the interval is greater than \verb!1e-6! or $10^{-6}$.  To test it, consider
+\begin{jlblock}[bool]
+f(x) = x^2-2
+\end{jlblock}
+which has a root of $\sqrt{2}$.  The function call
+\begin{jlblock}[bool]
+bisection(f,1,2)
+\end{jlblock}
+returns \jlc[bool]{print(bisection(f,1,2))} \printpythontex[verb], which is approximately $\sqrt{2}$. 
+
+\subsection{Infinite Loops}
+
+It is common in a \texttt{while} loop to keep running it forever. This occurs if there is some bug or you haven't considered all cases.  For example, in the bisection method above, if the function doesn't have a root (like $f(x)=x^2+2$), then this will never stop.  
+
+Here's a few things that can help prevent or debug the code: 
+\begin{itemize}
+\item Make sure something is changing in your loop. If you intend to stop the loop on an index, make sure the index is updating.
+\item Look at your code and see if you have something that you think will stop the loop. What ever is in the boolean statement needs to eventually switch.
+\item Consider an additional stopping condition.  You may need to add a variable to count the number of times you've gone through the loop and stop if it hits some maximum, which is greater than what you would expect.  
+\item Stop the code if you need to. You may need to interrupt the kernel.  In the REPL, CTRL-C will stop and in Jupyter, selecting the \emph{Kernel} menu then \emph{Interrupt} should stop it.  The square in the toolbar should work too.  See section \ref{sect:kernel} for more information. 
+\item If you can't figure out why it is in an infinite loop, use \verb!@show! to print out values of variables.
+\end{itemize}
+
+{\color{red} MAYBE CITE A DEBUG SECTION?} 
+
+\subsection{For loops}
+
+A for loop executes some code a fixed number of times and has a variable
+(called an index) that updates.  The next few examples are not practical, but are designed to illustrate the syntax and what is possible. 
+
+The following is a simple for loop that prints out the numbers 1 to 10
+%
+\begin{jlblock}[bool]
+for i=1:10
+  println(i)
+end
+\end{jlblock}
+
+If you want to skip numbers or count backwards, a range in the form \emph{start}:\emph{skip}:\emph{stop} is used.  The following starts at 1 and skips by 2 up to 21: 
+
+\begin{jlblock}[bool]
+for i=1:2:21
+  println(i)
+end
+\end{jlblock}
+%
+and the following starts at 10, counting down to 1: 
+%
+\begin{jlblock}[bool]
+for i=10:-1:0
+  println(i)
+end
+\end{jlblock}
+
+We can use the \texttt{for var in list} form to go through elements in a list or array (or tuple).  The following adds all numbers in the list (array) \texttt{[1,5,7,11,20]}: 
+%
+\begin{jlblock}[bool]
+let
+  local sum=0
+  for i in [1,5,7,11,20]
+    sum += i
+  end
+  sum
+end
+\end{jlblock}
+
+Recall that in Chapter \ref{sect:varargs} we used this in the formation to find the mean:
+\begin{jlblock}[bool]
+function theMean(x::Number...) local sum=0
+  for val in x
+    sum += val 
+  end
+  sum/length(x) 
+end
+\end{jlblock}
+
+
+\subsection{While Loops Versus For Loops}
+
+No this, isn't a smackdown between these while and for loops. A big question often is when I have a problem that I want to solve and I know a loop is needed, when should I use a \texttt{while} loop and when should I use a \texttt{for} loop. The general rule of thumb is:
+
+\begin{itemize}
+\item If you know that you need to run code for a fixed number of times, use a for loop
+\item If you don't use a while loop. Generally, the \emph{doing} something in the loop will affect how many times the loop is run.
+\end{itemize}
+
+Notice in the examples above, the bisection method used a \texttt{while} loop because it is unclear when you start how many times you want to go through the loop.  Instead we stopped in while the interval was small enough.  
+
+In the summing of the terms for the mean, a for loop was used because of the fixed number of values in the tuple \texttt{x}.  
+
+
+\section{Ranges}
+
+In a for loop with the syntax \texttt{var=x:y:z}, such as 
+%
+\begin{jlblock}[bool]
+for i=1:4
+  println(i)
+end
+\end{jlblock}
+%
+The syntax \texttt{1:4} is called a \texttt{Range} and is shorthand for all integer between 1 and 4 inclusively. Technically, this is called a \texttt{UnitRange} because
+the skips between numbers is 1.
+
+If you type \jlb[bool]{typeof(1:4)}, it will return \jlc[fc]{print(typeof(1:4))}\printpythontex[verb], where is a \texttt{UnitRange} type
+with integers. Note the difference using \texttt{1.0:4.0}.  This is of type
+ \jlc[fc]{print(typeof(1.0:4.0))}\printpythontex[verbatim]
+ %
+ which is a little complicated, but basically a range with floating points.  
+
+The other ranges we say included \jlb[bool]{1:2:11} and entering \jlb[bool]{typeof(1:2:11)} results in \jlc[bool]{print(typeof(1:2:11))}\printpythontex[verb]. 
+
+We will see in Chapter \ref{ch:arrays} that there is a handy way of expanding this shorthand way of writing these sets of numbers to that of an entire list (or technically array) of numbers.  
+
+\subsection{Linear Ranges} \label{sect:lin:range}
+
+As we see above, it easy to make ranges if we know the step between each pair.  Another use would be to know the starting and ending value and the number of values.  For example, if we want to start at 3 and end at 11 with 5 values, it's not too hard to compute this, but julia has a built-in way to do it with the \verb!range! command.  For example,
+\begin{jlblock}[bool]
+range(3,11,length=5)
+\end{jlblock}
+returns \jlc[bool]{display(range(3,11,length=5))} \printpythontex[verb].  
+
+Another nice function that does a similar thing is the \verb!LinRange! function. 
+%
+\begin{jlblock}[bool]
+LinRange(3,11,5)
+\end{jlblock}
+which returns \jlc[bool]{display(LinRange(3,11,5))} \printpythontex[verbatim].
+
+

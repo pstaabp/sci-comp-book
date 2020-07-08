@@ -1,0 +1,241 @@
+% !TEX root = scientific-computing.tex
+
+% this needs to be at the top of each file with the \plot command and the word in the [] is the session for pythontex. 
+\begin{jlcode}[prob]
+using Plots, PGFPlotsX
+pgfplotsx()
+\end{jlcode}
+
+\chapter{Using Random Numbers and \texorpdfstring{Probability\\ Models}{Probability Models}} \label{ch:prob-models}
+
+To understand basic probability, often problems are examined that use combinatorics or counting techniques to solve them.  Consider 
+
+\begin{quote}
+A round table has 7 chairs around it.  Mary and her friend Alisha and 5 other people are given seats at the table in a random manner.  What is the probability that Mary and Alisha sit next to each other?
+\end{quote}
+
+After practicing with problems like this, the solutions can be found quite simply, but in this chapter we examine some ways to use simulation to find the solution.
+
+\section{Rolling Dice}
+
+A relatively-simple example is that of rolling dice.  As we saw in Chapter \ref{ch:random}, if we have a fair, six-sided die, the the probability of any of the numbers coming up is 1/6.  We can simulate that using random numbers in the following way:
+\begin{jlblock}[prob]
+S100 = rand(1:6,100)
+\end{jlblock}
+generated 100 numbers taken from the set $\{1,2,3,4,5,6\}$.  Running this command\footnote{don't forget that when running code with random numbers, you won't get the exact same results, but the spirit should be the same.} results in \jlc[prob]{print(S100[1:10])} for the first 10 elements. 
+
+As the number of time we roll a die increases, the probability of any one number appearing gets closer to 1/6.  For example, to test this, try
+\begin{jlblock}[prob]
+p = count(a->a==3,rand(1:6,1_000))
+\end{jlblock}
+and then evaluating \verb!p/1_000! results in \jlc[prob]{print(p/1_000)} \printpythontex[verb], which is reasonably close to 1/6. 
+
+
+\subsection{Exercise}
+
+\begin{itemize}
+\item Trying increasing the number of random numbers used in the above example.  You should notice that as that number gets larger, the resulting probability gets closer to 1/6. 
+\item What does 
+\begin{jlblock}[prob]
+p = count(a -> a % 2 == 0, rand(1:6,1000))
+\end{jlblock}
+measure in the sense of a rolling a fair 6-sided die?  Does the result make sense?
+
+\end{itemize}
+
+
+\section{Flipping Coins}
+
+Another probability model that arises often is that of flipping fair (and unfair) coins.  There are a number of ways to model this, however, we will use random boolean values.  For example, we can flip 100 coins by \jlb[prob]{rand(Bool,100)}.  (Note: the result looks like an array of 0s and 1s, but look at the type, \verb!Array{Bool,1}!, which says it is a 1-dimensional boolean array.)
+
+We can determine the number of heads (when the result is 1), by
+\begin{jlblock}[prob]
+sum(rand(Bool,100))
+\end{jlblock}
+which returns \jlc[prob]{print(sum(rand(Bool,100)))} \printpythontex for me.  
+
+
+\subsection{Flipping multiple coins}
+
+Another simple example is to flip multiple coins and generally count the number of heads or tails seen.  Consider flipping 3-coins--say a penny, nickel and dime--and counting the number of heads.  We then do that 3-coin flip a larger number of times.  
+
+We can do this with
+\begin{jlblock}[prob]
+coins3 = rand(Bool,100,3)
+\end{jlblock}
+and the top  10 lines of this is: \jlc[prob]{display(coins3[1:10,:])} \printpythontex[verbatim]
+
+Each row contains the coin flips.  For example the first row has heads on all three.  The second row has a head and then two tails.  If we are interested in the sum of the number of heads, we can do this with the \verb!mapslices! functions seen in Chapter \ref{ch:arrays}:
+\begin{jlblock}[prob]
+num_heads = mapslices(sum,coins3;dims=[2])
+\end{jlblock}
+The first few elements of the array is \verb![3; 1; 2; 2; 3; 2; 1; 1 ...]! We can plot the results of this with the function
+%
+\begin{jlblock}[prob]
+using Plots
+histogram(num_heads,nbins=4)
+\end{jlblock}
+and the result is
+\begin{center}
+\pgfplotsset{scale=0.8}
+\plot{plots/prob-models/num-heads.tex}{prob}
+\end{center}
+
+
+\section{Rolling 2 dice}
+
+How do we handle the rolling of two dice? Here's an array with each row
+having 2 dice.
+
+\begin{jlblock}[prob]
+dice2=rand(1:6,100,2)
+\end{jlblock}
+%
+and then to find the sum of the dice:
+
+\begin{jlblock}[prob]
+dicesum = mapslices(sum,dice2;dims=[2])
+\end{jlblock}
+%
+which sums along the rows. This is 100 rolls of 2 dice with the sum
+recorded. First, to get an idea of the distribution of the dice sums,
+let's plot the histogram
+%
+\begin{jlblock}[prob]
+histogram(dicesum,nbins=11,xticks=2:2:12,legend=false)
+\end{jlblock}
+%
+where \texttt{nbins} is the number of bins and in this case, since it
+runs from 2 to 12, there's a total of 11 and this generates the plot: 
+\begin{center}
+\pgfplotsset{scale=0.7}
+\plot{plots/prob-models/two-dice.tex}{prob}
+\end{center}
+
+We could find the number of 2's 3's, etc. using the \texttt{mapslices}
+function as above, however there is a nice way to do this use the
+\texttt{StatsBase} package. You may need to add the package and then
+load it with
+
+\begin{jlblock}[prob]
+using StatsBase
+\end{jlblock}
+
+and then the \texttt{counts} function (
+\href{https://juliastats.org/StatsBase.jl/latest/counts/#StatsBase.counts}{Read
+the online documentation}) can be used:
+
+\begin{jlblock}[prob]
+counts(dicesum,2:12)
+\end{jlblock}
+%
+returns a vector of how many of the dice sum fall into each number. When I ran this, I got
+
+\jlc[prob]{print(counts(dicesum,2:12))}\printpythontex[verbatim] 
+
+and a nicer way to plot the histogram is
+\begin{jlblock}[prob]
+bar(2:12,counts(dicesum,2:12),xticks=2:2:12,legend=false)
+\end{jlblock}
+\begin{center}
+\pgfplotsset{scale=0.7}
+\plot{plots/prob-models/bar.tex}{prob}
+\end{center}
+
+\subsection{Exercise}
+
+\begin{enumerate}
+\item Change the code above to use 10,000 dice rolls. Estimate the probability
+that you
+
+\begin{enumerate}
+\item roll a 7.
+\item roll a 10 or greater.
+\item roll an even number.
+\end{enumerate}
+
+\item Also, plot a the histogram using 1000 dice rolls.
+\end{enumerate}
+
+\section{Other Probability Models}
+
+Let's return to the problem that problem at the beginning of this section.  We will solve this problem using the random modeling in this chapter. 
+
+First let's first store the names of the people at the take as an array
+\begin{jlblock}[prob]
+names = ["Alisha", "Mary", "person1", "person2", "person3", "person4", "person5"]
+\end{jlblock}
+where we use generic names for the other 5 people.  We will take random permutations of this array below and the determine if Alisha and Mary are next to each other. 
+
+Before we find a random permutation, let's write a function that takes an array of names and returns \verb!true! if they are next to each other and \verb!false! if not. 
+
+\begin{jlblock}[prob]
+function nextToEachOther(names::Array{String,1})
+
+# return true or false
+end
+\end{jlblock}
+
+Like many aspects of coding there are many ways of doing this.  Here's what we will do:
+
+\begin{enumerate}
+\item Find the position in the array where Alisha is sitting.  This would be the place at the table she is in.
+\item Find the position in the array where Mary is sitting. 
+\item Determine if the two numbers are next to each other.  Don't forget that this could include positions 1 and 7. 
+\end{enumerate}
+
+The following is a relatively simple function is
+\begin{jlblock}[prob]
+function nextToEachOther(names::Array{String,1})
+  a = findfirst(name -> name=="Alisha",names)
+  m = findfirst(name -> name=="Mary",names)
+  abs(a-m) == 1 || abs(a-m) == length(names)-1
+end
+\end{jlblock}
+%
+where the \verb!findfirst! function returns the index of the array where the function is true (that is where the two friends are sitting).  To test this:
+
+\begin{jlblock}[prob]
+nextToEachOther(["Alisha", "Mary", "person1", "person2", "person3", "person4", "person5"])
+\end{jlblock} 
+%
+returns \jlc[prob]{print(nextToEachOther(["Alisha", "Mary", "person1", "person2", "person3", "person4", "person5"]))} \printpythontex
+
+\begin{jlblock}[prob]
+nextToEachOther(["Alisha", "person1", "Mary", "person2", "person3", "person4", "person5"])
+\end{jlblock}
+% 
+ returns \jlc[prob]{print(nextToEachOther(["Alisha","person1","Mary","person2","person3","person4","person5"]))} \printpythontex
+
+\begin{jlblock}[prob]
+nextToEachOther(["Alisha","person1", "person2", "person3", "person4", "person5", "Mary"])
+\end{jlblock}
+%
+ returns \jlc[prob]{print(nextToEachOther(["Alisha","person1","person2","person3","person4","person5", "Mary"]))} \printpythontex
+
+\subsection{Random Permutations}
+
+We now return to the problem to study the probability.  The \verb!shuffle! command in the \verb!Random! package\footnote{The Random package is a built-in package and doesn't need to be added, but just enter \jlb[prob]{using Random}} takes any array and shuffles (permutes) the contents in a random manner.  For example:
+\begin{jlblock}[prob]
+shuffle(names)
+\end{jlblock}
+returns \jlc[prob]{print(shuffle(names))} \printpythontex[verbatim][frame=single]
+
+Then we can test if they are sitting next to each other.  The follow repeats this a large number of times:
+
+\begin{jlblock}[prob]
+function numTimes(trials::Integer)
+  s = 0  # keeps track of how many times they sit next to each other
+  for i=1:trials
+    if nextToEachOther(shuffle(names))
+      s += 1
+    end
+  end
+  s/trials
+end
+\end{jlblock}
+and then the fraction of times is \jlc[prob]{print(numTimes(10_000))} \printpythontex[verb]. 
+
+The true value of the probability can be found in the following way. Mary sits in one of the seven chairs.  Alisha has a equal chance of sitting in one of the remaining 6 chairs.  Two of the chairs are next two Mary, so the probability is 2/6 or 1/3.  The result we see above is close to this value. 
+
+

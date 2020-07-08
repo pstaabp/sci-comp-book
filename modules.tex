@@ -1,0 +1,307 @@
+% !TEX root = scientific-computing.tex
+
+% load the PlayingCard module from a file used throughout the text. 
+%\begin{jlcode}
+%include("../julia-files/PlayingCards.jl")
+%using .PlayingCards
+%\end{jlcode}
+
+
+\chapter{Creating Modules and using Unit Tests} \label{ch:modules}
+
+Throughout this text, we have added and loaded packages or modules. These were generally official ones. In this section, we will now learn how to write our own module. We will learn how to do this by creating a \texttt{PlayingCards} module with all of the types and functions associated with it. It is helpful to read through the \href{http://docs.julialang.org/en/latest/manual/modules/}{julia documentation on modules}.
+
+In addition, much of content of this chapter was first presented in Chapter \ref{ch:poker} and it is recommended that you review that material as needed.  
+
+\section{Creating a Module}
+
+To begin with, let's look at a module template:
+
+\begin{jlverbatim}
+module PlayingCards
+
+##definitions of types and functions
+
+end
+\end{jlverbatim}
+
+As you can see above, a module has a name (in this case
+\texttt{PlayingCards}) and ends with the keyword \texttt{end}. We will
+next put a number of types and functions inside the module, but in order
+for someone loading the module, you need to export anything to be used.
+
+The following is a more detailed version of the module:
+
+
+\begin{jlblock}[modules]
+module PlayingCards
+
+import Base.show
+
+export Card, Hand, isFullHouse
+
+ranks = ['A','2','3','4','5','6','7','8','9','T','J','Q','K']
+suits = ['\u2660','\u2661','\u2662','\u2663']
+
+struct Card
+    rank::Int
+    suit::Int
+
+    # construct a card based on the rank and suit
+    function Card(r::Int,s::Int)
+        1 <= r <=13  || throw(ArgumentError("The rank must be an integer between 1 and 13."))
+        1 <= s <= 4  || throw(ArgumentError("The suit must be an integer between 1 and 4."))
+        new(r,s)
+    end
+
+    # construct a card based on the number in a deck
+    function Card(i::Int)
+        1 <= i <= 52 || throw(ArgumentError("The argument must be an integer between 1 and 52"))
+        i%13==0 ? new(13,div(i,13)) : new(i%13,div(i,13)+1)
+    end
+
+    # construct a card based on a string representation of the card
+    function Card(str::String)
+        length(str)==2 || throw(ArgumentError("The string should only be 2 characters"))
+        local r = findfirst(a->a==str[1],ranks)
+        r != nothing &&  1 <= r <= 13 || throw(ArgumentError(string("The first character should be one of ",join(ranks,","))))
+        local s=findfirst(a->a==str[2],suits)
+        s != nothing && 1<= s <= 4 || throw(ArgumentError(string("The second character should be one of ",join(suits,","))))
+        new(r,s)
+    end
+end
+
+
+struct Hand
+    cards::Array{Card,1}
+    function Hand(cards::Array{Card,1})
+       new(cards)
+    end
+    function Hand(cards::Array{String,1})
+       new(map(Card,cards))
+    end
+    function Hand(s::String)
+       new(map(Card,map(String,split(s,','))))
+    end
+end
+
+function Base.show(io::IO, c::Card)
+  print(io,string(ranks[c.rank],suits[c.suit]))
+end
+
+function Base.show(io::IO, h::Hand)
+  print(io,string("[",join(map(c->string(ranks[c.rank], suits[c.suit]), h.cards), ",")), "]")
+end
+
+function isFullHouse(h::Hand)
+    local cranks=sort(map(c->c.rank,h.cards))
+    cranks[2]==cranks[1] && cranks[5]==cranks[4] && (cranks[3]==cranks[2] || cranks[4]==cranks[3]) && cranks[2] != cranks[4]
+end
+
+end #module PlayingCards
+\end{jlblock}
+%}
+
+
+Open a new file in jupyter and copy-paste the above module
+into the empty file. It will need to be called \texttt{PlayingCards.jl}.
+
+Here are some things to note about the module:
+\begin{itemize}
+\item the \jlv{import Base.show} line will import the \verb!show! command from \verb!Base!, the module that contains manly basic julia commands.  We need to do this for the show command below. 
+\item the \jlv{export Card, Hand, isFullHouse} line says what will be available if the module is loaded. 
+\item the \verb!Card! and \verb!Hand! structs are defined.
+\item the functions \verb!Base.show!~functions for both \verb!Card!~and \verb!Hand! are defined.  The command \verb!Base.show! is automatically loaded, so these didn't need to be exported. 
+\item the \verb!isFullHouse! functions is defined. 
+\end{itemize}
+
+
+
+\section{Debugging a module}\label{debugging-a-module}
+
+All is great now if you have a bug-free module, but even the best
+programmers are not capable of bug-free code the first time. Notice that
+if you make changes to the module, then the changes won't be present.
+And if you reload the file and the module, from the lines:
+
+\begin{jlverbatim}
+include("PlayingCards.jl")
+using .PlayingCards
+\end{jlverbatim}
+
+The first line should report:
+
+\begin{Verbatim}
+WARNING: replacing module PlayingCards.
+\end{Verbatim}
+
+and any syntax errors that you may have, and the second line reports:
+
+\begin{Verbatim}
+WARNING: using PlayingCards.Hand in module Main conflicts with an existing identifier.
+WARNING: using PlayingCards.Card in module Main conflicts with an existing identifier.
+\end{Verbatim}
+%
+and any changes won't be made. (Try altering the Base.show function on a \texttt{Card}). If you want changes to be able to be used, you will need to restart the kernel.
+
+So while debugging a module, we will use the \texttt{Revise} package instead. Make sure you add it first, then restart the kernel, then enter
+
+\begin{jlverbatim}
+using Revise
+includet("PlayingCards.jl")
+using .PlayingCards
+\end{jlverbatim}
+%
+where \texttt{includet} is a command that tracks changes and automatically reloads after any changes.
+
+\jlc[modules]{using .PlayingCards}
+
+
+\section{Unit Tests}\label{unit-tests}
+
+Writing a module is important, but making sure it does what it is
+supposed to is just as important. At first, when you start writing code,
+you typically make sure there are no bugs, but after time, code changes
+and you're not sure that the code still works. The notion of a unit test
+is a set of tests to determine if you get out from the code what you
+expect. This is a language-independent idea and should be created once
+you write any level of substantial code.
+
+To run a test in Julia, first import the \texttt{Test} package:
+
+\begin{jlblock}[modules]
+using Test
+\end{jlblock}
+
+To do a test, we'll use the \jlv{@test} macro and it's a good idea to check out the \href{https://docs.julialang.org/en/latest/stdlib/Test/}{Julia documentation on Test}. For this module, let's first test that the constructor is working using the \jlv{isa} function.
+
+\begin{jlblock}[modules]
+@test isa(Card(1,4),Card)
+\end{jlblock}
+%
+should return \jlc[modules]{print(@test isa(PlayingCards.Card(1,4),PlayingCards.Card))} \printpythontex[verb].  Recall also that we can pass in an integer between 1 and 52, so
+
+\begin{jlblock}[modules]
+@test isa(Card(24),Card)
+\end{jlblock}
+%
+should also return \jlc[modules]{print(@test isa(PlayingCards.Card(24),PlayingCards.Card))} \printpythontex[verb]. If we try to create a card that is not valid, then we won't get a Test Passed. For example:
+
+\begin{jlverbatim}
+@test isa(Card(78),Card)
+\end{jlverbatim}
+%
+will return \verb!Error During Test!. A better way to test for this is using the \verb!@test_throws! method to test if an error is thrown:
+%
+\begin{jlblock}[modules]
+@test_throws ArgumentError Card(78)
+\end{jlblock}
+%
+returns \jlc[modules]{display(@test_throws ArgumentError PlayingCards.Card(78))} 
+\printpythontex[verbatim]
+
+Here's another nice test that will check if the two different ways to
+create Cards are the same. For this we will need a way to test if two
+Cards are equal.
+
+\begin{jlblock}[modules]
+function isequal(x::Card,y::Card)
+  x.rank==y.rank && x.suit==y.suit
+end
+\end{jlblock}
+%
+then create two cards
+%
+\begin{jlblock}[modules]
+c1=Card(2,3)
+c2=Card(28)
+\end{jlblock}
+%
+and test if they are the same with
+%
+\begin{jlblock}[modules]
+@test isequal(Card(2,3),Card(28))
+\end{jlblock}
+%
+and this returns \jlc[modules]{print(@test isequal(Card(2,3),Card(28)))} \printpythontex[verb]. 
+
+\subsection{Exercise}
+
+Write a test that the \texttt{isFullHouse} method is working. To do this:
+%
+\begin{enumerate}
+\item  Create a hand that is a full house, called \texttt{h1}. Run \jlv{@test isFullHouse(h1)}. 
+\item  Create another hand called \verb!h2! that is a full house and test it.
+\item  Create a third hand called \verb!h3! that is not a full house and test it. To get the
+  test to return passed, perform \jlv{@test !isFullHouse(h3)}. 
+\end{enumerate}
+
+
+\section{Creating a test suite}
+
+Often in a set of tests, there are mulitple tests that go together. For
+example, if we just want to test that the construction of Cards are
+working, we can create a test set in the following:
+
+\begin{jlblock}[modules]
+@testset "Legal Card Constructor" begin
+  @test isa(Card(1,3),Card)
+  @test isa(Card(45),Card)
+  @test isa(Card("3\u2660"),Card)
+end;
+\end{jlblock}
+%
+where all three methods to construct a card are used and all should
+work. If you run this, you should get:
+%
+\begin{jlcode}[modules]
+@testset "Legal Card Constructor" begin
+  @test isa(Card(1,3),Card)
+  @test isa(Card(45),Card)
+  @test isa(Card("3\u2660"),Card)
+end;
+\end{jlcode}
+
+\printpythontex[verbatim]
+%
+which just shows that we passed all of the tests. If one of them doesn't
+pass, you will get information about the one that wasn't passed. Try
+changing one of the tests above to get an illegal card.
+
+\hypertarget{putting-all-tests-in-a-file}{%
+\subsection{Putting all tests in a
+file}\label{putting-all-tests-in-a-file}}
+
+The \href{test-playing-cards.jl}{Playing Card test file} is a better way
+to run a set of tests. To use this, download the file, put it in the
+current directory of jupyter and then run it with:
+
+\begin{jlverbatim}
+include("test-playing-cards.jl")
+\end{jlverbatim}
+
+and you should see:
+
+\begin{jlverbatim}
+Test Summary:          | Pass  Total
+Legal Card Constructor |    4      4
+Test Summary:                   | Pass  Total
+Illegal Cards throws exceptions |    5      5
+Test Summary:          | Pass  Total
+Legal Hand Constructor |    3      3
+Test Summary:                  | Pass  Total
+Illegal Hand throws exceptions |    5      5
+Test Summary: | Pass  Total
+Card Tests    |    3      3
+Test Summary: | Pass  Total
+Full House    |    2      2
+\end{jlverbatim}
+%
+printed out.
+
+\hypertarget{modules-and-unit-tests}{%
+\section{Modules and Unit Tests}\label{modules-and-unit-tests}}
+
+Once you have enough code to write a module, the first thing should be to start writing unit tests to make sure it is correct. In fact, good programming practice is to write the API (Application Programming Interface), which is just the function signatures with no funtion bodies, then the test cases before any working code is written.
+
+In any case, once you have unit tests working, you should write and revise any code and after any changes are made, rerun any unit tests.

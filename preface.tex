@@ -1,0 +1,61 @@
+% !TEX root = scientific-computing.tex
+
+
+%\setcounter{FancyVerbLine}{20}
+
+\chapter*{Preface}
+
+Solving problems is the essence of scientific computing.  Many problems arise naturally from the sciences or mathematics and often to solve difficult problem relies on some computing resources.  In a nutshell, this text is the blend of science, mathematics and computer science needed to solve problems.  
+
+The intended audience for this text one who is interested in writing computer code that will solve a problem that you have.  There are a few basics that you should have with this text:
+
+\begin{itemize}
+\item Some background in writing computer programs.  Your base language does not matter, but you should be familiar in writing short programs.  
+\item Some calculus.  Most of the examples here do not need Calculus, but there are topics throughout the book, that at least differential calculus is helpful. 
+\end{itemize}
+
+
+As many textbooks, this started as a set of notes for my Scientific Computing class at Fitchburg State University.  The students in the class are usually either Computer Science or Mathematics major and generally have an interest in computing.  As I steered these pages from a set of notes to a textbook, I still keep those students in mind.  However, I realize that an undergraduate text is often picked up by graduate students, those in industry and other faculty to build some knowledge base that one never had.  I keep these readers in mind as well.  
+
+I also want to distinguish this text from that of a Numerical Analysis or Numerical Methods text.  A Numerical Methods text often covers many basic algorithms in mathematics such as numerical differentiation, numerical integration, rootfinding, linear algebra, etc. and how to implement such algorithms; this can be done with pseudocode or with a particular language.  Numerical Analysis often covers the same algorithms in Numerical Methods with an emphasis on the analysis of the algorithms.  This text does not broadly cover all the topics in Numerical Methods, nor does it do any analysis.  There are many good books listed in the references.  Instead, this text covers how to solve particular problems and often the algorithms have been coded in an existing library and we will leverage those here.  
+
+
+\subsection*{Why use Julia or any particular language?} 
+
+The subtitle of the text says that solving problems in Scientific Computing does not happen in a vacuum or necessarily in the land of pseudocode, so I have specifically chosen a language to explain the concepts in the text much like I do in my class and the computing language that will be used will be Julia.  
+
+Before going through the technical reasons for choosing Julia, the following personal story is interesting.  I proposed teaching Scientific Computing at Fitchburg State and the class would by in the Fall of 2014.  The proceding spring, I knew that I had to choose some language for the class.  There are many languages which would have been fine to use, including Maple, which our majors to learn in a required class, and that would have been an easy choice. However, one of blogs that I read regularly, \emph{ars technica}, had an article by Lee Philips entitled ``Scientific computing's future: Can any coding language top a 1950s behemoth?''\footnote{\href{https://arstechnica.com/science/2014/05/scientific-computings-future-can-any-coding-language-top-a-1950s-behemoth/}{https://arstechnica.com/science/2014/05/scientific-computings-future-can-any-coding-language-top-a-1950s-behemoth/}}  The essence of the article is that in scientific computing, Fortran is king, due to two reasons 1) it is fast mainly because it was designed to be easily translated to machine language, which eventually is what runs on a computer and 2) there are many important mathematical libraries written in Fortran have been time-tested and virtually bug-free. 
+
+However, nobody wants to code in Fortran.  It is missing many features of modern languages and requires compilation.  In selecting Julia, as stated on the main webpage, ``Julia was designed from the beginning for high performance.''  As problems in Scientific Computing increase in size and complexity, it is an imperative that code runs fast and Julia typically does.  It is one of the fastest high-level computing languages in benchmarks (REF) and compared to other scientific computing languages, it is the fastest. At the time the article was written, Julia was in version 0.2 and was quite raw, but was fascinating to consider and in hind sight, I'm glad I have done so.  
+
+Another important aspect of Julia is that it is a scripting language like python.  This means that you have an environment setup, you can just start entering julia commands and go.  There is no compilation involved (like that in C or Fortran).  Although compilation often finds errors, it is slow to do prototyping. 
+
+\subsection*{How to read this text}
+
+How might one read this text?  Of course, the short answer is anyway you want.  I hope you can pick it up and read what is relevant.  There's a few items about the layout as well as some standard conventions. 
+
+Take a look at the table of contents.  The text is broken up into a few parts.  Part I consists of some basics of both the julia language as well as scientific computing.  The remaining parts of the text are separate sections (Simulation, Data Analysis, Linear Algebra) and some advanced features of julia.  Once Part I is read, the remaining parts are independent, however there are some ideas in Part III that are very helpful later in the test.  The following diagram shows the chapter dependencies:
+
+
+In addition, because there are code snippets throughout the text, you should run the code as you read the text.  Chapter 1 is the beginning to getting you started to run julia, but it is recommended to read Appendix A for more details.  All julia code is written in \texttt{monospaced font} and is either embedded in the text, like \verb|x=2| or written in a separate block like
+\begin{jlverbatim}
+A=[1,2,3]
+\end{jlverbatim}
+
+Any blocks of code should be able to be copied and pasted directly into the julia REPL or a jupyter notebook. 
+
+Also, output from julia is also in a fixed-width font but generally in a block like this:
+%
+\begin{verbatim}
+"This is a string of output"
+\end{verbatim}
+
+Here's some of the coding style that is used throughout the text as well.  This helps with readability:
+\begin{itemize}
+\item functions are written in \verb!camelCase!, like \verb!findRealRoot!.
+\item if a function returns a boolean (\verb!true! or \verb!false!) it should start with \verb!is! or \verb!has!, like \verb!isFullHouse! from Chapter \ref{ch:poker}
+\item other variables are written in \verb!snake_case! like \verb!num_trials!
+\end{itemize}
+
+
+

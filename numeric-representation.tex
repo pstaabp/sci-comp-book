@@ -1,0 +1,376 @@
+% !TEX root = scientific-computing.tex
+%!TEX encoding = UTF-8 Unicode
+
+\chapter{Binary Representation of Numbers} \label{ch:num-rep}
+
+In Chapter \ref{ch:data-types}, numeric data types were introduced.  Some details of integers and floating points were given, however, some of the gorier details were left to here. 
+
+\section{Integer Representation}
+
+We discussed the binary representation of non-negative numbers in Chapter \ref{ch:data-types}. Negative numbers is more difficult. This method of data storage in called \emph{2's complement}.  A nice description of this is \href{https://ryanstutorials.net/binary-tutorial/binary-negative-numbers.php}{Ryan's Tutorial on negative binary numbers}. 
+
+Although seems a bit strange, let's first discuss the conversion of binary to integer.  Let the 8-bit binary number be written as $x=sa_6a_5a_4a_3a_2a_1a_0$, where the first bit is the sign and the other 7-bit compose the number then representation of $x$ in decimal is
+\begin{align}
+x & = -s \cdot 2^7 + a_6 2^6 + a_5 2^5 + a_4 2^4 + a_32^3 + a_2 2^2 + a_1 2^1 + a_0 2^0
+\label{eq:8bit}
+\end{align}
+
+As an example, note that if $s=0$, then this is identical to the integer representation of positive integer.  Again, \verb!00010010! would be
+
+\begin{align*}
+x & = -0 \cdot 128 + 0 \cdot 64 + 0 \cdot 32 + 1 \cdot 16 + 0 \cdot 8 + 0 \cdot 4 + 1 \cdot 2 + 0 \cdot 1 = 18 
+\end{align*}
+
+
+Let's look at an example with a negative number.  Let \verb!x=11010111!, then in decimal:
+\begin{align*}
+x & = -1 \cdot 128 + 1 \cdot 64 + 0 \cdot 32 + 1 \cdot 16 + 0 \cdot 8 + 1 \cdot 4 + 1 \cdot 2 + 1 \cdot 1 \\
+& = -128 + 64 + 16 + 4 +2 + 1 = -41
+\end{align*}
+
+\subsection{Converting from decimal to binary}
+
+Again, like above, let's concentrate only on 8-bit numbers.  That is, we will take a decimal number \verb!x! in the range $[-128,127]$ and return an array of length 8 of bits (you can even think of booleans) or we need to find $s, a_0,a_1,\ldots,a_6$ from (\ref{eq:8bit}). 
+
+First, let's examine only non-negative numbers, so $s=0$. And let's use the number $x=47$.  We'll work from the larger digits to the smaller ones, so $a_6$ to $a_0$. 
+
+\begin{itemize}
+\item Let \jlb[num-rep]{x6=47}. 
+\item  Let \jlb[num-rep]{x5=mod(x6,64)}=\jlc[num-rep]{print(x5)}\printpythontex[verb].  
+\jlb[num-rep]{a6=div(x6,64)}=\jlc[num-rep]{print(a6)}\printpythontex[verb].
+
+\item  Let \jlb[num-rep]{x4=mod(x5,32)}=\jlc[num-rep]{print(x4)}\printpythontex[verb]. 
+\jlb[num-rep]{a5=div(x5,32)}=\jlc[num-rep]{print(a5)}\printpythontex[verb].
+
+\item  Let \jlb[num-rep]{x3=mod(x4,16)}=\jlc[num-rep]{print(x3)}\printpythontex[verb]. 
+\jlb[num-rep]{a4=div(x4,16)}=\jlc[num-rep]{print(a4)}\printpythontex[verb].
+
+\item  Let \jlb[num-rep]{x2=mod(x3,8)}=\jlc[num-rep]{print(x2)}\printpythontex[verb]. 
+\jlb[num-rep]{a3=div(x3,8)}=\jlc[num-rep]{print(a3)}\printpythontex[verb].
+
+\item  Let \jlb[num-rep]{x1=mod(x2,4)}=\jlc[num-rep]{print(x1)}\printpythontex[verb]. 
+\jlb[num-rep]{a2=div(x2,4)}=\jlc[num-rep]{print(a2)}\printpythontex[verb].
+
+\item  Let \jlb[num-rep]{x0=mod(x1,2)}=\jlc[num-rep]{print(x0)}\printpythontex[verb]. 
+\jlb[num-rep]{a1=div(x1,2)}=\jlc[num-rep]{print(a1)}\printpythontex[verb].
+\item \jlb[num-rep]{a0=x0}=\jlc[num-rep]{print(a0)}\printpythontex[verb]. 
+\end{itemize}
+
+This shows that the result is 00101111.  Again, \jlb[num-rep]{bitstring(Int8(47))} returns \jlc[num-rep]{print(bitstring(Int8(47)))}\printpythontex[verb], the same result.  
+
+A function that does this is as follows.  
+
+
+\begin{jlblock}[num-rep]
+function dec2bin(n::Int)
+  -128 <= n <=127 || throw(ArgumentError("The value of n must be between -128 and 127"))
+  bdigits=zeros(Bool,8)
+  ## this function calclates the digit of the decimal number k that goes in slot digit
+  function calcDigit(k::Int,digit::Int)
+    if digit==0
+      bdigits[1] = k
+    else 
+      bdigits[digit+1] = div(k,2^digit)
+      calcDigit(mod(k,2^digit),digit-1)
+    end
+  end
+  calcDigit(n,6)
+  bdigits
+end
+\end{jlblock}
+
+Note that first this uses recursion as explained in Chapter \ref{ch:intro-functions}.  In addition, the error checking is explained in chapter \ref{ch:adv-functions}.  This function returns a boolean array (ones and zeros).  For example:
+\begin{jlblock}[num-rep]
+dec2bin(47)
+\end{jlblock}
+%
+returns \jlc[num-rep]{display(dec2bin(47))} \printpythontex[verbatim].  And note that since the array returns the digits in the order from small to large, this result is the same.  
+
+
+\subsection{Representing Negative Integers}
+
+To find the representation of a negative integer, we return to (\ref{eq:8bit}) and note that $s=1$.  A little algebra results in 
+\begin{align*}
+x+s \cdot 2^7 =  a_6 2^6 + a_5 2^5 + a_4 2^4 + a_32^3 + a_2 2^2 + a_1 2^1 + a_0 2^0
+\end{align*}
+and with $s=1$, we define the left side as $y=x+127$ and now the right side is the same representation of a positive number and if $-128 \leq x \leq -1$, then $0 \leq y \leq 127$.  
+
+Let's check out an example.  Consider $x=-67$, then $y=128+x=61$.  Using the algorithm to find the binary representation of 61 or \jlb[num-rep]{dec2bin(61)} which returns \jlc[num-rep]{print(dec2bin(61))} \printpythontex[verbatim] recalling that the order is reversed from the function above. 
+
+Since we are looking for the decimal representation of $-67$, not 61, the sign bit is 1, so we have \verb!10111101! and checking with the built-in function \jlb[num-rep]{bitstring(Int8(-67))} \jlc[num-rep]{print(bitstring(Int8(-67)))} \printpythontex[verb]. 
+
+This method of storage of negative integers is called \emph{2's complement}.  
+
+
+\subsection{Exercise}
+
+Write out by hand the binary representation of a) $-10$, b) $-120$ and c) $-1$. 
+
+\subsection{Including negative Integers} 
+
+
+If we extend the function above to include negative numbers, the following:
+
+\begin{jlblock}[num-rep]
+function dec2bin(n::Int)
+  bdigits=zeros(Bool,8)
+  ## this function calclates the digit of the decimal number k that goes in slot digit
+  function calcDigit(k::Int,digit::Int)
+    if digit==0
+      bdigits[1] = k
+    else 
+      bdigits[digit+1] = div(k,2^digit)
+      calcDigit(mod(k,2^digit),digit-1)
+    end
+  end
+  if n>=0 
+    calcDigit(n,6)
+  else 
+    calcDigit(128+n,6)
+    bdigits[8]=1
+  end
+  bdigits
+end
+\end{jlblock}
+
+Calling \jlb[num-rep]{dec2bin(-57)} results in \jlc[num-rep]{print(dec2bin(-57))} \printpythontex[verbatim]
+and this is the same as above.  The output is a little tricky so we have another function that will take this boolean array to a string. 
+
+\begin{jlblock}[num-rep]
+arr2str(arr::Array{Bool,1}) = reduce((x, y)->string(x,y ? "1" : "0"),reverse(arr),init="")
+\end{jlblock}
+%
+where the \verb!reduce! function in Chapter \ref{ch:intro-functions} is used and the function \verb!reverse! takes an array and reverses the elements.  This is must more convenient with
+\begin{jlblock}[num-rep]
+arr2str(dec2bin(-57))
+\end{jlblock}
+returns \jlc[num-rep]{print(arr2str(dec2bin(-57)))} \printpythontex[verb], the same as above and the same as \texttt{bitstring} for 8-bit integers.  
+
+
+\subsection{Exercise}
+
+Use the functions \texttt{dec2bin} and \texttt{arr2str} to find the binary represenation of a) $-10$, b) $-120$ and c) $-1$ as you did above. 
+
+\subsection{A binary to decimal function}
+
+
+It's also nice to have a function that reverses this.  
+
+\begin{jlblock}[num-rep]
+## this function takes a 0-1 array (boolean array) and changes it to a decimal. 
+# the first element is the 2^0 digits, the 7th digit is the 2^6 digit and the 8th digit is the sign digit
+# this uses the 2's complement representation
+#
+function bin2dec(arr::Array{Bool,1})
+  sum=0
+  for i=1:7
+    sum += arr[i]*2^(i-1)
+  end
+  sum - arr[8]*128
+end
+\end{jlblock}
+%
+
+To use this, we need to start with a binary array, so let's start with 
+\begin{jlblock}[num-rep]
+arr = map(x-> x==1 ? true : false, [1,1,1,0,0,0,1,1])
+\end{jlblock}
+and then we can use the \texttt{bin2dec} function as
+\begin{jlblock}[num-rep]
+bin2dec(arr)
+\end{jlblock}
+returns \jlc[num-rep]{print(bin2dec(arr))} \printpythontex[verb]. 
+
+And the following is a function that will take a binary string and turn it to an array
+%
+\begin{jlblock}[num-rep]
+str2arr(str::String) = reverse(map(x-> x=="1" ? true : false, split(str,"")))
+\end{jlblock}
+
+If we use this in conjunction with \texttt{bin2dec}, we have some convenient functions. That is
+\begin{jlblock}[num-rep]
+bin2dec(str2arr("11000111"))
+\end{jlblock}
+results in \jlc[num-rep]{print(bin2dec(str2arr("11000111")))} \printpythontex[verb]. 
+
+
+
+\section{Operations on Binary Integers}
+
+Adding two positive binary integers is much like adding decimal integers.  An example of $54+19$ could be:
+\begin{align*}
+& \phantom{+~}00110110 \\
+& \underline{+\phantom{~}00010011} \\ 
+& \phantom{+~}01001001
+\end{align*}
+where the standard algorithm is used 
+
+
+The result of this in decimal is \jlb[num-rep]{bin2dec(str2arr("01001001"))} or \jlc[num-rep]{print(bin2dec(str2arr("01001001")))} \printpythontex[verb]. 
+
+
+Note that if we try to add \verb!01001100! and \verb!01100010! we get \verb!10101110! (try it!) and if we use the conversion to get back to decimal results in \jlb[num-rep]{bin2dec(str2arr("10101110"))} or \jlc[num-rep]{print(bin2dec(str2arr("10101110")))} \printpythontex[verb], which clearly is not the sum of two positive numbers.  The reason this occurred is that the sum of the two numbers does not fit in an 8-bit integer, whose max value is 127.  We can tell this directly from the binary result in that the first digit is a 1 (due to the sum of the two one's in the second position).  Recall that this first digit is a sign bit.  This is an overflow error.  
+
+\subsection{Unary minus}
+
+
+The unary minus operator negates a number.  To see how to do this in binary, let's look at what a bit flip looks like with a few examples.  Let's take the decimal number 54 or \verb!00110110! and flip all of the bits (changes 0s to 1s and 1s to 0s) to get \verb!11001001! and using \jlb[num-rep]{bin2dec(str2arr("11001001"))} \jlc[num-rep]{print(bin2dec(str2arr("11001001")))} which returns \printpythontex[verb]. If we use \verb!10101010! which is $-86$, the bit flips are \verb!01010101! which is $85$.  Note that the sum of a binary number and it's bit flips is \verb!11111111! which is $-1$. 
+
+To determine the negation of a binary number, we will 1) flip the bits and 2) add one.  So for example, 
+\verb!00101101! or \jlc[num-rep]{print(bin2dec(str2arr("00101101")))} \printpythontex[verb].  The bit flip of this is \verb!11010010! and then add one to get \verb!11010011!, which is \jlc[num-rep]{print(bin2dec(str2arr("11010011")))} \printpythontex[verb].
+
+
+\subsection{Exercise}
+
+\begin{itemize}
+\item Show that the unary minus of 0 in binary is still 0.  (Note: this is one of the very nice features of using 2's complement for storing integers.)
+\item There is one 8-bit integer than does not have negative (that is an 8-bit integer).  What is it? 
+\end{itemize}
+
+\section{Subtraction of binary integers}
+
+There are a couple of ways to think about subtraction.  One can use the column algorithm like is standard for subtraction of decimal numbers and adapt to binary integers.  However an easier way is to thing of $a-b$ as $a+(-b)$ and use the negative from the previous section.  For example, look at $78-85$.  
+
+\begin{enumerate}
+\item The two integers in binary are \jlc[num-rep]{print(arr2str(dec2bin(78)))} \printpythontex[verb] ~and \jlc[num-rep]{print(arr2str(dec2bin(85)))} \printpythontex[verb].
+\item The negation of 85 is \verb!10101010! + \verb!00000001! or \verb!10101011!
+\item The sum of \verb!01001110! and \verb!10101011! is \jlc[num-rep]{print(arr2str(dec2bin(-7)))} \printpythontex[verb]
+\item converting back to decimal results in $-7$.  
+\end{enumerate}
+
+\section{Multiplication of Binary Integers}
+
+
+\begin{align*}
+&\phantom{\times~}00001010 \\
+&\underline{\times\phantom{~}00000110~} \\
+&\phantom{\times~}00000000 \\
+&\phantom{\times~}00010100 \\
+&\underline{+\phantom{~}00101000~} \\
+&\phantom{\times~}00111100
+\end{align*}
+
+which shows that \jlc[num-rep]{print(bin2dec(str2arr("00001010")))} \printpythontex[verb] $\times$ 
+\jlc[num-rep]{print(bin2dec(str2arr("00000110")))} \printpythontex[verb] equals
+\jlc[num-rep]{print(bin2dec(str2arr("00111100")))} \printpythontex[verb]
+
+
+{\color{red} Discuss multiplication of negative integers...}
+
+\section{Extended Exercise}
+
+Put all of these functions in a module as in Chapter \ref{ch:modules}. This will include
+\begin{itemize}
+\item Creating a type called \texttt{Integer8} which is an alias for a binary array of length 8.
+\item Create a \verb!Base.show! method for \texttt{Integer8} to display as a string.  See Chapter \ref{ch:modules} to do this and use the function in this chapter
+\item Create a function \verb!parseBin!, which takes in a string of length 8, and returns a \texttt{Integer8} type.  Use the \texttt{str2arr} function from this chapter. 
+\item Create a unary minus, plus and minus on the type \texttt{Integer8} types.  Use the example of Polynomials in section \ref{sect:parametric-types} for examples on how to do this. 
+\item Create a test suite to thoroughly test all of the functions that you write. 
+\end{itemize}
+
+
+\hypertarget{scientific-notation}{%
+\section{Scientific Notation}\label{scientific-notation}}
+
+Recall that any number written in decimal form with only a finite number
+of digits can be written in scientific notation that is in the form:
+\[a \times 10^{b}\]
+
+where $1<|a|<10$ and $b$ is an integer. For example $4003.23$ can
+be written as $4.00323 \times 10^{3}$, so $a=4.00323$ and $b=3$.
+
+In this form the number $a$ is often called the \textbf{significand}
+or \textbf{mantissa} and the number $b$ is \textbf{exponent}. This
+example has the base 10, however other bases are common (generally base
+2).
+
+One major advantage to using numbers in this form is the simple
+multiplication and division. Consider multiplying
+$x=3.4 \times 10^{2}$ and $y=-4.7 \times 10^{-3}$. Using properties
+of exponentials we get
+\[xy = (3.4)(-4.7) \times 10^{2-3} = -15.98 \times 10^{-1}\] and
+typically we would like to put this back into scientific notation by
+shifting the exponent so $xy=-1.598 \times 10^{0}$.
+
+Division can be done in a similar manner and perhaps surprisingly,
+addition and subtraction are more difficult due to the fact that the
+exponents of the two numbers need to be equal before adding and
+subtracting.
+
+
+
+\section{Floating Point Numbers of a given size}
+
+The reason for using floating point numbers in calculations is twofold.
+First, there is a finite size of storage for a number and secondly,
+routines for performing operations on floating-point numbers are fast
+and usually encoded on a computer chip.
+
+Consider a floating point of a given size, say 64 bits generally called
+a \emph{double precision floating point number}. The first bit is
+generally used for the sign, the next 11 are the exponent and the final
+52 bits store the mantissa. A floating point number has two limitations
+and that is the precision (how many digits that can be stored) and the
+magnitude (the largest number). Double precision numbers are store in
+binary and converted to decimal with the form:
+%
+\begin{align*}
+(-1)^{s} 2^{c-1023}(1+f)
+\end{align*} 
+%
+where $s$ is the sign $c$ is the exponent and $f$ stores the mantissa. For example, consider the following number:
+\begin{align*}
+0\;10000000101\;0111011010000000000000000000000000000000000000000000
+\end{align*}
+%
+where spaces separate out $s$, $c$ and $f$. Converting $c$ to decimal:
+\begin{align*}
+c = 1 \cdot 2^{10} + 0 \cdot 2^{9} + \cdots + 1 \cdot 2^{2} + 0 \cdot 2^{1} + 1 \cdot 2^{0} = 1029
+\end{align*}
+%
+The mantissa is calculated in the following way
+
+\begin{align*}
+f & =  0 \cdot \biggl(\dfrac{1}{2}\biggr)^{1} + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{2} + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{3} + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{4} + 0 \cdot \biggl(\dfrac{1}{2}\biggr)^{5} + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{6}  \\\
+& \qquad + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{7} + 0 \cdot \biggl(\dfrac{1}{2}\biggr)^{8} + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{9} = \frac{237}{512}
+\end{align*}
+and thus the floating point number is:
+\[(-1)^{0} 2^{1029-1023} \left(1+\dfrac{237}{512}\right) = 93.625\]
+
+The double precision number system falls into a class of number systems
+that we can commonly call floating-point number systems.
+
+
+
+
+%
+%
+%
+%
+%For binary storage, however, a standard 8-bit integer has a sign (+ or -), so generally the first bit is used to store the sign, so only the last 7 bits are used to store the number.  For example in a 8-bit environment, 
+%\begin{center}
+%\begin{tikzpicture}[scale=0.5]
+%\draw(0,0) grid(8,1);
+%\foreach \i in {1,...,8} \draw ({\i-0.5},0.5) node {0};
+%\end{tikzpicture}
+%\end{center}
+%represents the number 0 and 
+%\begin{center}
+%\begin{tikzpicture}[scale=0.5]
+%\draw(0,0) grid(8,1);
+%\draw(0.5,0.5) node {0};
+%\foreach \i in {2,...,8} \draw ({\i-0.5},0.5) node {1};
+%\end{tikzpicture}
+%\end{center}
+%is the largest 8-bit integer or 127. 
+%
+%
+%
+%Negative numbers are a bit different.  If we enter \jlb[numrep]{bitstring(Int8(-1))}, you'll probably be surprised to see \jlc[numrep]{print(bitstring(Int8(-1)))} \printpythontex[verb].  The first bit is a 1, indicating a negative number, however, the rest looks like the number 127 above.  
+%
+%I find a better way of thinking about negative integers in different light.  Let's look at $+127$ first, which again has the representation in the box above.  
+%
+%If we add 1 to this as $00000001_2$, we would get $10000000_2$.  What number is this?  If we look at the
+%
+%
+%

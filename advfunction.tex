@@ -1,0 +1,452 @@
+% !TEX root = scientific-computing.tex
+
+\chapter{Advanced Function Features of Julia} \label{ch:adv-functions}
+
+This chapter covers a bit more on functions in julia.  These feature allow the ability to write code that easier to read and debug.  
+
+\section{Testing Arguments}
+
+Let's return to the factorial function that we saw in Section  \ref{sect:factorial}: 
+%
+\begin{jlblock}[adf]
+function fact(n::Integer)
+  n==0 ? 1 : n*fact(n-1)
+end
+\end{jlblock}
+%
+We saw before that if we call this with a non-integer number that we will get an error, but what if we include a negative number?  That's a challenge to just try it.
+
+\begin{jlcode}[adf-err]
+function fact(n::Integer)
+  n==0 ? 1 : n*fact(n-1)
+end
+\end{jlcode}
+
+If you run \jlv[adf-err]{fact(-5)}
+\begin{jlcode}[adf-err]
+try
+  fact(-5)
+catch e
+  printstyled(stderr,"ERROR: ", bold=true, color=:red)
+  printstyled(stderr,sprint(showerror,e), color=:light_red)
+  println(stderr)
+end
+\end{jlcode}
+you will see \stderrpythontex[verbatim]
+
+This occurs because when a negative number is put into the \verb!fact! function that since $n$ is not 0, it computes \verb!n*fact(n-1)! which will evaluate \verb!fact! again at a more negative number.  This would never end except that recursive functions are evaluated on what is called the stack and there is a maximum number of items that can be put on the stack and thus this occurs.  We can prevent it with the following:
+%
+
+\begin{jlblock}[adf]
+function fact(n::Integer)
+  n>=0 || throw(ArgumentError("The argument must be a nonnegative integer."))
+  n==0 ? 1 : n*fact(n-1)
+end
+\end{jlblock}
+
+
+The first line of this evaluates \verb!n >= 0!.  If that is false, the second after the || is evaluated and an error is thrown.  If you enter a nonnegative number for \texttt{n}, then the first line \verb!n>=0! evaluates as \verb!true! and the rest of the line doesn't get evaluated because the or || shortcircuits. 
+
+\subsection{Exercise}
+
+In Chapter \ref{ch:number-theory}, the \verb!findAllFactors! function doesn't make any sense if the number is less than 1.  Add a line to the function that throws an appropriate error. 
+
+
+\section{Optional arguments}
+
+Let's return to Newton's method, which we wrote before as 
+\jlc[adf]{using ForwardDiff}
+\begin{jlverbatim}[adf]
+function newton(f::Function, x0::Number)
+  local x1 = x0
+  local xstep = f(x1)/ForwardDiff.derivative(f,x1)
+  local steps = 0
+  while abs(xstep)>1e-6 && steps<10
+    x1 = x1 - xstep
+    xstep = f(x1)/ForwardDiff.derivative(f,x1)
+    steps += 1
+  end
+  x1
+end
+\end{jlverbatim}
+
+Notice that we hard-coded the stopping criteria and the max number of
+steps. Let's adapt this function to include the following:
+
+\begin{enumerate}
+\item  Create two optional parameters called \verb!tol!, the error tolerance and \verb!max_steps!, the maximum number of steps to perform. 
+\item  Check to make sure that they are valid.  That is, are there any restrictions on the two parameters, check like the previous section. 
+\item  If the number of steps exceeds the maximum number of steps, then throw an \texttt{ErrorException} and a reasonable message.
+\end{enumerate}
+
+We will build up all three of these: 
+
+\begin{description}[style=standard,font=\sffamily\bfseries]
+\item[Add Optional Parameters:] instead of defining (or hard-coding) a value, it's generally better to assign it to be a optional parameter, which means the value will be defined in the argument list. Let's define the tolerance (\texttt{tol}) and the max number of
+step (\verb!max_steps!) in the following way:
+
+\begin{jlblock}[adf]
+function newton(f::Function, x0::Number,tol=1e-6,max_steps=10)
+  local x1 = x0
+  local xstep = f(x1)/ForwardDiff.derivative(f,x1)
+  local steps = 0
+  while abs(xstep)>tol && steps<max_steps
+    x1 = x1- xstep
+    xstep = f(x1)/ForwardDiff.derivative(f,x1)
+    steps += 1
+  end
+  x1
+end
+\end{jlblock}
+%
+Note that when entering this, it says there are 3 methods with this name.  This is because julia will build three different function signatures.  One with 2 arguments (and both \verb!tol! and \verb!max_steps! use the default values), one with 3 arguments (and \verb!max_steps! using it's default value) and one with all 4 arguments. Also remember that \verb!1e-3! means $10^{-3}$. 
+
+This seems more robust in that we can now call Newton's method with
+different values of tolerance and steps. So:
+
+\begin{jlblock}[adf]
+newton(x->x^2-5,2)
+\end{jlblock}
+
+returns \jlc[adf]{print(newton(x->x^2-5,2))}\printpythontex[verb]. But if we use a lower tolerance:
+
+\begin{jlblock}[adf]
+newton(x->x^2-5,2,1e-3)
+\end{jlblock}
+%
+returns \jlc[adf]{print(newton(x->x^2-5,2,1-3))}\printpythontex[verb]. 
+
+If we want to change the number of steps, however, we need to include the tolerance as well like:
+\begin{jlblock}[adf]
+newton(x->x^2-5,2,1e-6,5)
+\end{jlblock}
+which results in \jlc[adf]{print(newton(x->x^2-5,2,1e-6,5))} \printpythontex[verb].  We will see in the next section an alternative way to do parameters, called \emph{keyword parameters} which requires names of parameters, not the order, which is helpful as the number of arguments/parameters for a function gets large.  
+
+\item[Check that the parameters are valid:] The \verb!tol! and \verb!max_steps! optional parameters\\ should both be positive, so we will add checks on these as 
+\begin{jlblock}[adf]
+function newton(f::Function, x0::Number,tol=1e-6,max_steps=10)
+  tol > 0 || throw(ArgumentError("The parameter tol must be positive"))
+  max_steps > 0 || throw(ArgumentError("The parameter max_steps must be positive"))
+  local x1 = x0
+  local xstep = f(x1)/ForwardDiff.derivative(f,x1)
+  local steps = 0
+  while abs(xstep)>tol && steps<max_steps
+    x1 = x1- xstep
+    xstep = f(x1)/ForwardDiff.derivative(f,x1)
+    steps += 1
+  end
+  x1
+end
+\end{jlblock}
+%
+and including negative numbers for either of these two now throws an error. 
+
+
+\item[Throw an error when exceeding the maximum number of steps] If
+\begin{jlblock}[adf]
+f(x) =-0.00002776x^4- 0.000555x^3+0.0305395x^2 + 0.33281x- 10.0
+\end{jlblock}
+and  we run:
+%
+\begin{jlblock}[adf]
+root=newton(f,25)
+\end{jlblock}
+%
+we get the response \jlc[adf]{print(root)}\printpythontex[verb].  If we evaluate the function at the root, with \jlb[adf]{f(root)} the result is \jlc[adf]{print(f(root))}\printpythontex[verb], which is definitely not 0 (or very close), so this doesn't appear to be a root. What happened? If we temporarily print out the values of \verb!x1! within the loop, we'll see that the x values bounce all around and then just stops.\footnote{In the Newton method, add the line \jlv{@show x1} just after the line with the \jlv{while} statement.  Rerun the function then and try \jlv{root=newton(f,25)} again.}  It's not clear, but what happens here is that the max number of steps is reached, but you are not alerted. 
+
+So to make this more clearn, before the last line of the function, let's include
+%
+\begin{jlverbatim}[adf]
+local error = "The maximum number of steps: $max_steps was reached without convergence"
+steps < max_steps || throw(ErrorException(error))
+\end{jlverbatim}
+%
+and then rerunnning \texttt{newton(f,25)} gives an error which explains to the user that a root was not reached. 
+
+\end{description}
+
+
+\section{Keyword Arguments}
+
+Although optional arguments are quite helpful, there are two situations that they can be annoying. 
+\begin{enumerate}
+\item If you want to change one optional argument without the others, we may not be able to.  In the Newton's method example, if we want to change \verb!max_steps!, which is the 4th argument without changing the 3rd argument, we can't just put in the value of \verb!max_step!. 
+\item For more complex functions, there may be a lot of possible parameters, most of which could be optional.  The order of the arguments are important, and if you mix them up, you may either get an error or get unexpected results.  
+\end{enumerate}
+
+Using keyword arguments can solving both of these problems and 
+We can rewrite newton's method as 
+\begin{jlblock}[adf]
+function newton(f::Function, x0::Number; tol=1e-6, max_steps=10)
+  tol > 0 || throw(ArgumentError("The parameter tol much be positive"))
+  max_steps > 0 || throw(ArgumentError("The parameter max_steps much be positive"))
+  local x1 = x0
+  local xstep = f(x1)/ForwardDiff.derivative(f,x1)
+  local steps = 0
+  while abs(xstep)>tol && steps<max_steps
+    x1 = x1- xstep
+    xstep = f(x1)/ForwardDiff.derivative(f,x1)
+    steps += 1
+    local error = "The maximum number of steps: $max_steps was reached without convergence"
+    steps < max_steps || throw(ErrorException(error))
+  end
+  x1
+end
+\end{jlblock}
+and it is important to note that there is a semicolon separating the arguments from the keyword arguments.  
+
+Now we can use this more easily.  The function call
+\begin{jlblock}[adf]
+newton(x->x^2-2,1,tol=1e-3)
+\end{jlblock}
+results in \jlc[adf]{print(newton(x->x^2-2,1,tol=1e-3))}\printpythontex[verb] ~and if we only want to change the number of \verb!max_steps! is
+\begin{jlblock}[adf]
+newton(x->x^2-2,100,max_steps=20)
+\end{jlblock}
+results in \jlc[adf]{print(newton(x->x^2-2,100,max_steps=20))}\printpythontex[verb].
+
+This was just a quick introduction to this and for further information, look at the \href{https://docs.julialang.org/en/v1/manual/functions/#Keyword-Arguments-1}{julia documentation on keyword arguments}. 
+
+
+\subsection{Exercise}
+
+Later in Chapter \ref{ch:num-int}, we'll see the \href{https://en.wikipedia.org/wiki/Trapezoidal_rule}{trapezoid rule}, which is used for numerical integration or area under a curve.  The technique subdivides the interval $[a,b]$ into 10 equal pieces and approximates the area under the curve with the area of a trapezoid.  We will explain the function
+\begin{jlblock}[adf]
+function trapRule(f::Function,a::Number,b::Number)
+  local h = (b-a)/10
+    0.5*h*sum(map(f,a:h:b-h)+map(f,a+h:h:b))
+end
+\end{jlblock}
+later in that chapter, but note that we can estimate the area under the curve $y=x^3$ on the interval $[0,4]$ by entering
+\begin{jlblock}[adf]
+trapRule(x->x^3,0,4)
+\end{jlblock}
+%
+and the result is \jlc[adf]{print(trapRule(x->x^3,0,4))}\printpythontex[verb]. 
+
+\begin{itemize}
+\item Rewrite the code above to make a keyword argument of the number of subdivisions (10) and set the initial value to 10. 
+\item Find a better estimate for the area under $y=x^3$ on $[0,4]$ using 100 and 1000 subdivisions.
+\end{itemize}
+
+
+
+\section{Variable Number of arguments}
+
+Recall that the geometric mean of a set of $n$ numbers $x_1,x_2, \ldots, x_n$ is given by
+%
+\begin{align*}
+\sqrt[n]{x_1x_2 \cdots x_n}
+\end{align*}
+
+Below is the code for \verb!geom_mean! which computes the geometric mean for any number of elements.  It would be unfortunate if we have to write different functions for different number of arguments. We can write a variable number of arguments with a \ldots{} trailing the last argument. The following is a
+generalized version of the geometric mean:
+
+\begin{jlblock}[adf]
+geom_mean(x::Number...) = prod(x)^(1/length(x))
+\end{jlblock}
+%
+and remember that we can write $\sqrt[n]{a}$ can be written as $a^{1/n}$. This allows the following:
+%
+\begin{jlblock}[adf]
+geom_mean(1,2)
+\end{jlblock}
+%
+as well as
+%
+\begin{jlblock}[adf]
+geom_mean(1,2,3,4)
+\end{jlblock}
+to both work with the same function.  
+
+The parameter \verb!x! is assigned to be a tuple, as discussed in Section \ref{sect:tuples}.  The individual elements of the argument are accessed in the same way.  The following is a completely manufactured example. 
+
+\begin{jlblock}[adf]
+function sumOddElements(x::Number...)
+  sum = 0
+  for i=1:2:length(x)
+    sum += x[i]
+  end
+  sum
+end
+\end{jlblock}
+which adds the odd elements (not the odd numbers) in a list of numbers.\footnote{A better way to write this would be \jlb{sumOddElements(x::Number...) = sum(x[1:2:end])}, but the above function shows better how the vararg x is like an array.}  Running the command such as \jlb[adf]{sumOddElements(2,4,3,5,5,2,9)} returns \jlc[adf]{print(sumOddElements(2,4,3,5,5,2,9))}\printpythontex[verb], which is the sum of every other element. 
+
+
+
+See
+\href{https://docs.julialang.org/en/v1/manual/functions#Varargs-Functions-1}{The
+Julia documentation on Variable Arguments} or VarArgs for more information on
+variable arguments.
+
+\subsection{Exercise}
+
+
+
+
+\section{Multiple Dispatch}
+
+Generally each function that you write (or is built-in to Julia) has a signature which is the number and types of arguments. For example, the function \texttt{newton} above has two arguments and two keyword arguments. The first is a function, the second a number and the keywords are a float and an integer. 
+
+Julia allows functions of the same name with different signatures. The execution of this is called \emph{multiple dispatch}. The classic example is the \texttt{+} function. If we only consider those with 2 arguments, then + can take 2 integers an integer and a float, two complex, a float and a complex, etc. Each one of those functions have the same name with different signatures.  This makes life much easier to code.  We can write \jlb{3+2}, \jlb{3.0+5} and \jlb{1//2+3//5}, which under the hood requires different code to add integers, a float and an integer and a pair of rational numbers and use + for each of these. 
+
+To view all of the methods, use the \texttt{methods} command. For example, \texttt{methods(+)} lists 171 methods and the signature of each.
+
+Let's consider a function called \verb!findMax! which return the
+maximum number of a whole bunch of possible arguments. Let's start going
+through them:
+
+\begin{itemize}
+\item 2 numbers
+%
+\begin{jlblock}[adf]
+function findMax(x::Number,y::Number)
+
+end
+\end{jlblock}
+
+\item 3 numbers 
+%
+\begin{jlblock}[adf]
+function findMax(x::Number,y::Number,z::Number)
+
+end
+\end{jlblock}
+
+\item variable number of numbers 
+\begin{jlblock}[adf]
+function findMax(x::Number...)
+
+end
+\end{jlblock}
+\end{itemize}
+
+It is also nice to return the maximum value of a range (technically an
+\texttt{AbstractRange} type) which includes a \texttt{UnitRange},
+\texttt{StepRange} and \texttt{LinRange}.  These all have the same underlying code, so we don't need a separate function for each type.  Therefore, we can put all of these together with the function
+%
+\begin{jlverbatim}[adf]
+function findMax(r::AbstractRange)
+
+end
+\end{jlverbatim}
+%
+and note that \texttt{r} is an abstract range, then \texttt{first(r)}
+returns the first element of the range, \texttt{last(r)} returns the
+last element and \texttt{step(r)} returns the step size of the range.
+
+
+Write this function and test with
+
+\begin{enumerate}
+\item  \jlv[adf]{findMax(1:10)}
+\item  \jlv[adf]{findMax(10:-1:1)}
+\item  \jlv[adf]{findMax(3:0.5:9)}
+\item  \jlv[adf]{findMax(LinRange(1,5,9))} which makes a range from 1 to 5 using 9 steps.
+\end{enumerate}
+
+Once you have created these, and type \texttt{methods(the\_max)} julia
+should return:
+
+\begin{Verbatim}
+4 methods for generic function findMax:
+\end{Verbatim}
+
+and list the 4 methods with their types.
+
+
+\section{Parametric Methods}
+
+As we are thinking about writing other \verb!findMax! functions with a different argument signature, a natural one would be an array of \texttt{Real}s (mainly because we will need to do something different for \texttt{Complex} arrays).
+
+If we write:
+%
+\begin{jlblock}[adf]
+function findMax(arr::Array{Real,1})
+  local max = -Inf
+  for num in arr
+    if num > max
+      max = num
+    end
+  end
+  max
+end
+\end{jlblock}
+%
+which is similar to that above for any number of numbers and then let's
+test it with the array \jlb{x=collect(1:10)}, we'll get the error:
+
+\begin{jlverbatim}[adf]
+MethodError: no method matching findMax(::Array{Int64,1})
+Closest candidates are:
+  findMax(!Matched::Array{Real,1}) at In[XXX]:2
+\end{jlverbatim}
+
+and this is because even though \texttt{x} is of type
+\texttt{Array\{Int64,1\}} that doesn't fit the signature
+\texttt{Array\{Real,1\}}.
+
+One way to get around this is to write a function for each number type
+we may want to find the max of (\texttt{Int128}, \texttt{Int64}, \ldots,
+\texttt{BigInt},\texttt{Float64},\texttt{Float32},\texttt{Float16}), but
+if you notice every function will be identical and this would be painful
+and a lot of code copying.
+
+Instead, we will use something in julia called
+\href{https://docs.julialang.org/en/latest/manual/methods/\#Parametric-Methods-1}{parametric
+functions} which allows us to write a large number of nearly identical
+functions with the same code. To do this with the \texttt{findMax}
+function, we will write:
+
+\begin{jlblock}[adf]
+function findMax(arr::Array{T,1}) where T <: Real
+  local max = -Inf
+  for num in arr
+    if num > max
+      max = num
+    end
+  end
+  max
+end
+\end{jlblock}
+%
+and the expression \texttt{where\ T\ \textless{}:\ Real} is used as any
+type \texttt{T} that is a subset of the \texttt{Real} numbers (including
+integers, floats and rational)
+
+and then \jlv[adf]{findMax(x)} returns 10. Also if we have
+
+\begin{jlblock}[adf]
+findMax(collect(1.0:10.0))
+\end{jlblock}
+
+returns \texttt{10.0} and
+
+\begin{jlverbatim}[adf]
+findMax(collect(big(1):big(10)))
+\end{jlverbatim}
+
+returns \texttt{10} (as a \texttt{BigInt}).
+
+\subsection{Exercise}
+
+Create a \verb!findSum! method that is parametric.  The template (signature) for this function should be
+\begin{jlverbatim}[adf]
+function findSum(arr::Array{T,1}) where T <: Real
+
+end
+\end{jlverbatim}
+by using a \verb!for! loop.  Start with the line:
+\begin{jlverbatim}
+local sum = zero(T)
+\end{jlverbatim}
+%
+which creates the \texttt{sum} variable as a zero with type \verb!T!, so depending on the data type the array is, it will have the appropriate sum data type.  
+
+Try you function with 
+\begin{itemize}
+\item \jlv{arr=collect(1:10)}
+\item \jlv{arr=collect(big(1):big(10)}
+\item \jlv{arr=collect(3.0:4.0:56.0)}
+\end{itemize}
+and make sure that the result is the expected type. 

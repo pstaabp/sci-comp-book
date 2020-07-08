@@ -1,0 +1,377 @@
+% !TEX root = scientific-computing.tex
+
+% this needs to be at the top of each file with the \plot command and the word in the [] is the session for pythontex. 
+\begin{jlcode}[plots]
+using Plots, PGFPlotsX
+pgfplotsx()
+\end{jlcode}
+
+
+\chapter{Plotting Data and Functions}\label{chapter-11-plotting-data-and-functions}
+
+
+Plotting is crucial to understanding functions and visualizing data.
+There are many ways to do some plots using various packages. Instead of covering details of multiple packages, we will cover the Plots package, which is overlay over many other plotting packages.  
+
+\hypertarget{the-plots-package}{%
+\section{The Plots Package}\label{the-plots-package}}
+
+There is a relatively simple, but powerful plotting package called
+\texttt{Plots} and don't forget to download it as in Appendix \ref{ch:packages}. The full documentation
+is at \href{http://docs.juliaplots.org/latest/}{the Plots.jl website}.
+Recall that once the package is added, enter \jlb[plots]{using Plots}
+
+
+The Plots package tries to unify the syntax for plotting anything. The
+basic command for plotting data or functions in 2D is the \texttt{plot}
+command. The idea call \texttt{plot} on any type of object that can be plotted. The next few examples shows this.
+
+
+\subsection{Plotting Functions}
+
+For plotting a function, simply call plot on the function: 
+\begin{jlblock}[plots]
+plot(x->x^2)
+\end{jlblock}
+%
+produces the following plot: 
+\begin{center}
+\pgfplotsset{scale=0.5}
+\plot{plots/plots/plot01.tex}{plots}
+\end{center}
+Note: your plot may look a bit different than this one with different fonts.  This is mainly due to using a different backend, which is explained below. 
+
+If you want to specify the $x$-range, try: \jlb[plots]{plot(x->x^2,-2,2)} which generates: 
+\begin{center}
+\pgfplotsset{scale=0.5}
+\plot{plots/plots/plot01a.tex}{plots}
+\end{center}
+
+If we want to plot 2 or more functions on the same axes, pass in an array of functions like: 
+\begin{jlblock}[plots]
+plot([x->x^2,x->sin(x)],-2,2)
+\end{jlblock}
+%
+produces the following:
+\begin{center}
+\pgfplotsset{scale=0.5}
+\plot{plots/plots/plot02.tex}{plots}
+\end{center}
+
+We will also see below how to change other aspects of the plot including the legend, title, labels on the axes, etc.  
+
+
+\subsection{Plotting Data}
+
+First, let's start with some random data. Let
+
+\begin{jlblock}[plots]
+x=1:10
+y=rand(1:10,10)
+\end{jlblock}
+%
+then \jlb[plots]{plot(x,y)} will produce a scatter plot of the data, like
+%
+\begin{center}
+\pgfplotsset{scale=0.7}
+\plot{plots/plots/plot03.tex}{plots}
+\end{center}
+%
+and note that since these are just random points, your plot will look
+different, but the style should be the same.
+
+If we want to connect all of the points with points instead, type
+%
+\begin{jlblock}[plots]
+plot(x,y,seriestype=:scatter)
+\end{jlblock}
+%
+and the plot will look like:
+
+\begin{center}
+\pgfplotsset{scale=0.7}
+\plot{plots/plots/plot04.tex}{plots}
+\end{center}
+
+There is a shorthand or different version of this: \jlv[plots]{scatter(x,y)}, which produces the same plot. 
+If you want both, then type
+
+\begin{jlblock}[plots]
+plot(x,y,seriestype=[:scatter,:line])
+\end{jlblock}
+%
+\begin{center}
+\pgfplotsset{scale=0.7}
+\plot{plots/plots/plot05.tex}{plots}
+\end{center}
+
+
+\section{Backends of the Plots package}
+
+The \texttt{Plots.jl} package actually doesn't do the plotting. It
+leaves the details to other packages. By default, \texttt{Plots} uses the \texttt{GR}
+backend although in this text I have used the \texttt{PGFPlotsX} backend. There
+are a number of backends that you may want to try. The standard ones
+are:
+
+\begin{itemize}
+\item  PyPlot (matplotlib): Slow but dependable
+\item  GR: Feature-rich and fast, but new
+\item  Plotly/PlotlyJS: Interactive and good for web
+\item  PGFPlotsX: Native LaTeX rendering
+\item  UnicodePlots: Plots to unicode for situations without graphics
+  capabilities.
+\end{itemize}
+
+To switch the backend, you type the backend name in all lowercase with a set of (). Note:
+you will need to add and load the package. Here is the plot of $x^2$ on various backends.
+
+\begin{jlverbatim}
+gr()
+plot(x->x^2,-2,2)
+\end{jlverbatim}
+gives:
+%
+\begin{center}
+\includegraphics[width=4in]{plots/plots/plot08.png}
+\end{center}
+
+\begin{jlverbatim}
+using PlotlyJS
+plotlyjs()
+plot(x->x^2,-2,2)
+\end{jlverbatim}
+%
+results in:
+%
+\begin{center}
+\includegraphics[width=4in]{plots/plots/plot09.png}
+\end{center}
+and then
+
+\begin{jlblock}[plots]
+using PGFPlotsX
+pgfplotsx()
+plot(x->x^2,-2,2)
+\end{jlblock}
+%
+results in:
+%
+\begin{center}
+\pgfplotsset{scale=0.6}
+\plot{plots/plots/pgfplotsx.tex}{plots}
+\end{center}
+and finally
+%
+\begin{jlverbatim}
+using PyPlot
+pyplot()
+plot(x->x^2,-2,2)
+\end{jlverbatim}
+%
+results in:
+%
+\begin{center}
+\includegraphics[width=4in]{plots/plots/plot11.png}
+\end{center}
+
+For additional information on the supported backends, visit
+\href{http://docs.juliaplots.org/latest/backends/}{the Plots.jl backend
+documentation}
+
+
+\subsection{Changing the attributes of the plot}
+
+Let's return back to the function plots above (although this works for
+point/line plots as well) and change many attributes of the curve. As an
+example:
+
+\begin{jlblock}[plots]
+plot([x->x^2,sin],-2,2,title="Two Curves",label=["x squared" "sin(x)"],xlabel="x",ylabel="y",lw=3)
+\end{jlblock}
+
+results in
+%
+\begin{center}
+\pgfplotsset{scale=0.7}
+\plot{plots/plots/attrs.tex}{plots}
+\end{center}
+The format is fairly clear for the changing of the attributes. Note: in
+this example:
+
+\begin{itemize}
+\item  the \texttt{title} changes the title of the plot
+\item  the \texttt{label} changes the legend.
+\item  the \texttt{xlabel} and \texttt{ylabel} changes the axes labels.
+\item  the \texttt{lw} is the line weight.
+\end{itemize}
+
+To avoid duplicating tons of documentation, visit
+\href{http://docs.juliaplots.org/latest/attributes/}{the Plots.jl page
+on attributes} to find all of the information to get the plot the way
+you want. 
+
+\subsection{Exercise}
+
+\begin{itemize}
+
+\item  Take the scatterplot above (with the random dots) and change the color
+  of the dots to darkgreen, change the markers to diamonds and the size of the points 
+  to about twice the default size.
+\item On the function plot, make the line thicker and style to dashed. 
+\end{itemize}
+
+
+\section{Other plots}
+
+\subsection{Parametric Plots}
+
+To do a parametric plot, like the circle defined by $x(t)=\cos t, y(t)=\sin t$, then
+
+\begin{jlblock}[plots]
+plot(t->cos(t),t->sin(t),0,2*pi,legend=false)
+\end{jlblock}
+%
+where the legend is turned off, since with one curve, it doesn't make much sense. The result is
+\begin{center}
+\pgfplotsset{scale=0.7}
+\plot{plots/plots/parametric01.tex}{plots}
+\end{center}
+
+
+but notice that this should be a circle, but it looks like an ellipse
+due to the aspect ratio. If one instead adds the
+\verb!aspect_ratio=:equal! option, as in 
+\begin{jlblock}[plots]
+plot(t->cos(t),t->sin(t),0,2*pi,aspect_ratio=:equal, legend=false)
+\end{jlblock}
+\begin{center}
+\pgfplotsset{scale=0.7}
+\plot{plots/plots/parametric02.tex}{plots}
+\end{center}
+
+
+\subsection{Bar plots}
+
+A bar plot can be made with the \texttt{bar} command. For example:
+
+\begin{jlblock}[plots]
+bar(1:10,y)
+\end{jlblock}
+where y was defined above for the scatter plot.  The result is
+%
+\begin{center}
+\pgfplotsset{scale=0.7}
+\plot{plots/plots/bar01.tex}{plots}
+\end{center}
+
+
+\subsection{Surface Plots}
+
+If we have a function of 2 variables, a surface plot is nice to use. For
+example, if we have the function \(f(x,y)=0.1e^{x^2+y^2}\) and we want
+to plot it from -3 to 3 in both directions, if we define
+
+\begin{jlblock}[plots]
+f(x,y)=exp(-0.1*(x^2+y^2))
+x = y = range(-5, stop = 5, length = 40)
+\end{jlblock}
+%
+and then plot with
+%
+\begin{jlverbatim}
+plot(x,y, f, st = :surface)
+\end{jlverbatim}
+
+
+\begin{jlcode}[plots]
+pl = plot(x,y, f, st = :surface)
+
+function cleanPreamble(preamble::String)
+  lines_to_remove = r"RequirePackage|documentclass|usepackage|compat=newest|usepgfplotslibrary|^%\sDefault|usetikzlibrary"
+  split(preamble,"\n") |> arr -> filter(str -> !occursin(lines_to_remove,str),arr) |> arr -> join(arr,"\n")
+end
+
+open("plots/plots/surf_preamble.tex", "w") do io
+           write(io, cleanPreamble(Plots.pgfx_preamble(pl)))
+       end;
+
+\end{jlcode}
+
+
+\begin{center}
+\pgfplotsset{scale=0.7}
+\IfFileExists{./plots/plots/surf_preamble.tex}{\input{plots/plots/surf_preamble.tex}}{}
+%\plot{plots/plots/surf.tex}{plots}
+{\color{red} HIDDEN PLOT}
+\end{center}
+
+
+\subsection{Heat maps}
+
+Similar to above, we can make a heat map with
+
+\begin{jlverbatim}
+plot(x,y, f, st=:heatmap)
+\end{jlverbatim}
+
+\begin{jlcode}[plots]
+pl = plot(x,y, f, st=:heatmap)
+
+open("plots/plots/heat_preamble.tex", "w") do io
+           write(io, cleanPreamble(Plots.pgfx_preamble(pl)))
+       end;
+\end{jlcode}
+%
+which produces
+%
+\begin{center}
+\pgfplotsset{scale=0.7}
+\IfFileExists{./plots/plots/heat_preamble.tex}{\input{plots/plots/heat_preamble.tex}}{}
+%\plot{plots/plots/heat.tex}{plots}
+{\color{red} HIDDEN PLOT}
+\end{center}
+
+
+\subsection{Animation}
+
+Another nice type of plot under Plots.jl is that of an animation,
+however you will need to have \texttt{ffmpeg} installed on your machine.
+If you then do
+
+\begin{jlverbatim}
+@gif for a in range(0.5,stop=2,length=16)
+  plot(t->cos(2t),t->sin(a*t),0,2pi,legend=false)
+end
+\end{jlverbatim}
+
+which saves to a gif that the output will describe this results in:
+
+
+
+\section{Other Plots and subplots}
+
+This just is the tip of the iceberg for plotting. Take a look at the
+\href{http://docs.juliaplots.org/latest/}{Plots.jl documentation} or do
+some google-foo with the phrase `Plots.jl' and what you're looking for
+and good spot for Q\&A is
+\href{https://discourse.julialang.org/c/domain/viz}{a julialang.org
+discourse site}
+
+\section{Exercises}
+
+Use the plotting techniques in this section to plot the following.  For each, hide the legend when ther e is only one curve/set of data and label appropriate if more than one curve/set of data.  Include a title as well. 
+
+\begin{enumerate}
+\item The function $y=e^{-x^2}$ from $x=-3$ to $x=3$
+\item The functions $y=\sin x, y=\sin 2x, y=\sin 3$ from $x=-\pi$ to $x=\pi$. 
+\item A scatter plot of the following:
+\begin{center}
+\begin{tabular}{r|rrrrrrrrrrrrrr}
+$x$ & 0 & 2 & 3 & 4 & 6 & 9 & 10 & 11 & 13 & 15 & 16 & 18 & 20 \\
+$y$ & $-1$ & 4 & 3 & 6 & 2 & 0 & 2 & 9 & 5 & $-2$ & 4 & 6 & 3\\
+\end{tabular}
+\end{center}
+\item A surface plot of $z=\sin(x-y)$ with $0 \leq x \leq \pi, 0 \leq y \leq \pi$.
+\item A heat map of $z=\sin(x-y)$ with $0 \leq x \leq \pi, 0 \leq y \leq \pi$.
+\end{enumerate}

@@ -1,0 +1,8 @@
+*.aux
+*.log
+*.out
+*.pytxcode
+*.synctex.gz
+*.thm
+*.toc
+pythontex-files-scientific-computing/

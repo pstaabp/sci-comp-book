@@ -1,0 +1,109 @@
+% !TEX root = scientific-computing.tex
+
+\chapter{Details of Using Julia} \label{append:getting-started}
+
+\section{using the Repl.it wesite}
+
+
+
+\section{Downloading and Installing JuliaPro}
+
+We will talk about getting julia installed on your local machine using JuliaPro.  First, go to the \href{https://juliacomputing.com/products/juliapro.html}{JuliaPro website} and click the \emph{free download} button or scroll down.  Select the platform under \emph{Current Stable Release} and click the black button. 
+
+Note: for Mac users, you'll need to do an extra step to get JuliaPro installed.  Download the \emph{QuickStart} guide on the same page and read through the instructions. 
+
+After downloading, open the JuliaPro and follow the instructions.  There is little intervention, except you will get a dialog asking about the package server.  Leave it blank. Hopefully all will install smoothly. 
+
+Open up the app \emph{JuliaPro} as you would normally do for other apps and you should see the \emph{Atom} browser launch and look like:
+\begin{center}
+\includegraphics[width=\textwidth]{images/getting-started/juno.png}
+\end{center}
+
+\section{Using Juno and the Atom Editor}
+
+Make sure you have installed JuliaPro and opened the app which will launch the Atom editor.  This section will give an overview of using this.  
+
+\begin{center}
+\includegraphics[width=\textwidth]{images/getting-started/juno-details.png}
+\end{center}
+
+There are 4 regions that are important to get familiar with as well as the Juno Menu bar.  Let's get to know these.
+
+\subsection{The Julia REPL}
+
+The \emph{Julia REPL} is where you enter single julia statements.  A \href{https://en.wikipedia.org/wiki/Read–eval–print_loop}{REPL} is short for Read-Eval-Print-Loop and is often a interpretative shell where you can enter commands in some language.  To get started, click on the REPL part of Atom and hit ENTER. This starts up julia and you should see:
+\begin{center}
+\includegraphics[width=3in]{images/getting-started/REPL-startup.png}
+\end{center}
+and notice that it's ready for you to enter something with the {\color{green} \verb|julia>|} prompt. 
+
+We will enter a few commands to get started.  All julia commands throughout the book will be written in a \verb|monospace font| and it is a good idea to type along at the same time. 
+
+Enter \verb!a=2! at one prompt and \verb!b=3! at another prompt. You will see the response of 2 and 3 as well.  (Additionally, you may notice that the \emph{Workspace} tab in the upper right has changed.  We will discuss that later.). Now enter \verb!a+b! in a prompt and you should see the result 5. 
+
+Later in this chapter we do a simple plot, but need to load a package first.  Type \verb!]! at a prompt and the julia prompt will turn into \verb!(@1.4) pkg>! which is the package manager mode.  First, type \verb!up! to update all packages.  You will need to authenticate first.  Your default browser will automatically open and you will need to login. After you authenticate, the browser will say that it was successful and you can close that tab.  Return to Atom and you should see that julia is updating some packages.  This may take a minute or so.  
+
+Next, we will install the \emph{Plots} package.  At the \verb!(@1.4) pkg>! prompt, type \verb!add Plots!.  Julia will need to add a lot of other packages, but you won't need to worry about this.  We will use this in the next section. We will also learn much more about packages in Chapter \ref{ch:packages}. 
+
+To exit the package manager mode, enter CONTROL-C.  You will leave this mode and return to julia prompt. 
+
+\subsection{The Plots Pane}
+
+The Plots pane is one of the tabs in the upper right corner.  In the julia REPL, type \verb!using Plots! which will load in the \emph{Plots} package.  Often, the package will need to precompile before you can use it.  This may take a minute or so at most. Then type \verb!plot(rand(10))! at the julia prompt.  You will see something similar to 
+\begin{center}
+\includegraphics[width=3in]{images/getting-started/random-plot.png}
+\end{center}
+
+\subsection{The Workspace Pane}
+
+Also in the upper right corner, the \emph{Workspace} pane. If you have been typing in all of the commands in this appendix, your workspace pane should look like:
+\begin{center}
+\includegraphics[width=3in]{images/getting-started/workspace.png}
+\end{center}
+
+This shows all of the current objects/values stored in julia.  The first three are some base packages that are always loaded.  The bottom one \verb!register_auth_handler! is how Juno authenticates with the package manager.  The other three are those entered by you.  You stored values into the variables \verb!a! and \verb!b! and the last result (which is a plot) is always stored in the variable \verb!ans!.  
+
+\subsection{The Documentation Pane}
+
+The documentation pane (also in the top right part of Atom) allows you to search the documentation, although personally, I prefer using the website \href{https://docs.julialang.org}{docs.julialang.org}. Trying typing \verb!rand! into the search box at the top to search for information about the rand function.  You should see:
+\begin{center}
+\includegraphics[width=3in]{images/getting-started/doc-example.png}
+\end{center}
+
+\subsection{The Editor Pane}
+
+The upper-left corner of Atom is the Editor Pane.  This is a nice interactive way of running julia commands than the REPL.  In the editor, enter the following three lines:
+
+\begin{Verbatim}
+a=2
+b=3
+a+b
+\end{Verbatim}
+
+You can evaluate each line by typing CTRL-ENTER (or CMD-ENTER on MacOS) to evaluate each line.  Along the right side, you'll see the output.  In the first two lines, just the values of the variables and for the last line, the number 5. 
+
+
+\section{The kernel} \label{sect:kernel}
+
+In many ways, julia is a program like any other that you run on your computer, however because of the nature of it parsing statements and then giving output, you have to think about it a bit differently. When you start julia, we often will say that you are starting the kernel, which is a basic state which you can feed variables and statements to julia and get output.  There are three different ways that this can occur:
+
+\subsection{The REPL}
+
+If you open julia directly from your computer (either clicking on an icon or using some sort of application launcher), you'll set the REPL as explained above.  This is a very simple, but often helpful, way to enter julia code.  When this starts up you enter commands like:
+
+\begin{jlblock}[start]
+a=2
+b=3
+a+b
+\end{jlblock}
+
+This all goes to the julia kernel.  
+
+\subsection{Juno and the Atom Editor}
+
+As we saw above, the Atom Editor and the embedded Juno packages allows you to have much more control over julia code. 
+
+
+
+\section{Restarting the Kernel}
+

@@ -1,0 +1,178 @@
+% !TEX root = scientific-computing.tex
+
+\hypertarget{ch:intro}{%
+\chapter{Introduction to Scientific Computing}
+\label{ch:intro}}
+
+Scientific Computing is
+
+\begin{itemize}
+
+\item  a field of study in which problem solving is done via writing programs
+  (algorithms and code) to solve the problems.
+\item  a field which requires math or science knowledge to be effective.
+\end{itemize}
+
+Scientific Computing is not
+
+\begin{itemize}
+\item  just writing code
+\item  a substitute for math or science
+\item  a magic bullet to solve any problem
+\end{itemize}
+
+Where is Scientific Computing Used
+
+\begin{itemize}
+
+\item
+  making predictions (weather, stock market, traffic, etc.)
+\item
+  handling and processing gobs of data from scientific experiments
+\item
+  by individuals testing ideas
+\item
+  in production software
+\end{itemize}
+
+\hypertarget{ideas-needed-to-do-effective-scientific-computing}{%
+\section{Ideas needed to do Effective Scientific
+Computing}\label{ideas-needed-to-do-effective-scientific-computing}}
+
+Scientific Computing is generally used to solve problems in Mathematics
+and various Science fields. There are a number of important things that
+you need to know to solve problems effectively.
+
+\begin{itemize}
+\item
+  \textbf{Find/develop code that runs quickly.} This all depends on the
+  problems that you are solving. If a simple program runs that solves
+  your problem and only takes 5 seconds, it's probably fine. If instead,
+  it takes a few hours to run, you probably want to investigate your
+  solution algorithm.
+\item
+  \textbf{Find/develop code that uses an appropriate amount of memory.}
+  Another important aspect is that of memory consumption. It's not hard
+  to find datasets these days that are 1TB or more in size, however few
+  desktop/laptop machines have more than 16 or 32Gb of RAM, so you can't
+  load the entire file into memory. Such a dataset would need to be
+  processed in chunks.
+\item
+  \textbf{Make sure you have known solutions/unit tests} How do you know
+  that your solution is correct? It is important to have relatively
+  simple cases that you can test your code on before solving more
+  complex things.
+\end{itemize}
+
+\hypertarget{examples-of-scientific-computing}{%
+\section{Examples of Scientific
+Computing}\label{examples-of-scientific-computing}}
+
+\begin{itemize}
+\item
+  Consider a list of 5 cities that you need to visit and return to where
+  you started. If you know the distances between each pair of cities,
+  what is the most efficient path (in terms of distance or time) that
+  gets you to each city and return.
+\item
+  Poker is a card game in which certain sets of cards (hands) beat other
+  hands. Determine the probability (or chance) of getting any particular
+  hand in Poker.
+\item
+  Given a dataset of Major League Baseball scores from 2000-2017, find
+  the game with the largest score, most innings played, biggest winning
+  margin, etc.
+\end{itemize}
+
+We will look at these an other problems in this course.
+
+\hypertarget{writing-code-for-scientific-computing}{%
+\section{Writing Code for Scientific
+Computing}\label{writing-code-for-scientific-computing}}
+
+Look back at the list of requirements for Scientific Computing projects.
+A general rule of thumb is to use a computing language that you know
+will work well for those tasks. Typically, most students have learned
+one or two languages and aren't quite sure which to use. In most cases
+it doesn't matter what to use, but for complex problems it will matter.
+
+One of the best languages for scientific computing has been Matlab over
+the past 3 or 4 decades. It is used extensively in engineering firms
+throughout the world (and the headquarters is in nearby Natick, MA). We won't be
+using Matlab here though. One of the nice things about taking a class is
+exploring new languages. Here we will use
+\href{http://julialang.org}{Julia}, which is a very new language that a
+lot of people in scientific computing are excited about. We will give
+examples using Julia, but the ideas here should be applicable to other
+languages.
+
+This is a general getting started chapter with some specifics that can
+be run in Julia. To get started with being able to run julia on your own
+computer, see Appendix \ref{append:getting-started}.  If you haven't do so, please read that and then come back.  Everything else will make more sense.  Trust me.
+
+Julia was designed as a scientific computing language, but in short is a modern language.  There are number of aspects that makes julia a good language for this. Julia is 
+
+\begin{itemize}
+\item \emph{a scripting language with dynamic types}.  This means you can get started right away--there's no need to learn about compilation--and you can prototype things quickly. 
+\item \emph{a language with just-in-time compilation}.  Most of the time scripting languages are slow, however with modern under-the-hood tools, languages can be compiled on the fly to create very fast runtimes.  There is a \href{https://www.julialang.org/benchmarks/}{webpage on benchmarks} comparing julia to other standard languages.
+\item \emph{open source.}  Although often open-source implies free but not high-quality, the free part holds, but more important is that anyone can contributed to the code.  The Julia community is committed to creating a high-quality piece of software and many discussion revolve around writing code that will improve the speed or other aspects.  This is very opaque and unclear if it happens with commercial software. 
+\item \emph{easy to use}. The syntax of julia is similar to that of python, a very popular language, and is often intuitive.  
+\item \emph{a joy to use}.  Additionally, the structure of the language makes it easy to start with, but as projects get more complex, it can be written in a simple way.  
+\end{itemize}
+
+%\hypertarget{variables}{%
+%\section{Variables}\label{variables}}
+%
+%To get started, we first need to discuss specifics of writing Julia
+%code. Julia has all standard language constructs except for objects,
+%which will be discussed later. The language features include loops,
+%conditional statements, functions. It also has important aspects that
+%make it helpful for scientific computing include robust array functions,
+%complex numbers and rational and higher precision floating points
+%numbers.
+%
+%The syntax of julia is similar to that of python, although there are
+%fundmental differences in the way julia interprets. In this an later
+%chapters, you may notice that the syntax looks familiar, but it not a
+%assumed any knowledge of python.
+%
+%Anything can be stored as a variable using the single equal sign like
+%\texttt{x=6}. This is an assignment operator, which creates the number 6
+%and stores it under the name \texttt{x}.
+%
+%\hypertarget{mathematical-functions-in-julia}{%
+%\section{Mathematical Functions in
+%Julia}\label{mathematical-functions-in-julia}}
+%
+%Here's a list of the standard mathematical operations that Julia knows:
+%+,-, * , /,\^{} (power) as well a large number of functions including:
+%exp (natural exponential); log (natural log); the trig functions sin,
+%cos, tan, csc, sec, cot; the inverse trig functions asin, acos, atan,
+%acsc, asec, acot, and there is a
+%\href{http://docs.julialang.org/en/latest/manual/mathematical-operations/\#elementary-functions}{listing
+%of all mathematical functions in Julia}
+%
+%\hypertarget{exercise}{%
+%\section{Exercise}\label{exercise}}
+%
+%Entering the following
+%
+%\begin{itemize}
+%
+%\item
+%  \[\frac{4-2}{7-3}\]
+%\item
+%  \[\sin\biggl(\frac{\pi}{4}\biggr)\]
+%\item
+%  \[\cos(180^{\circ})\]
+%\item
+%  \[\ln(7)\]
+%\item
+%  \[{\rm e}^{7}\]
+%\item
+%  \[2^{\sqrt{3}}\]
+%\item
+%  \[|(-2)^{3}|\]
+%\item
+%  \[\lfloor 3.3\rfloor\]
+%\end{itemize}

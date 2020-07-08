@@ -1,0 +1,396 @@
+% !TEX root = scientific-computing.tex
+% !TEX encoding = UTF-8 Unicode
+
+\hypertarget{ch:data-types}{%
+\chapter{Introduction to Data Types}\label{ch:data-types}}
+
+In Chapter \ref{ch:variables}, we saw a little bit about number and string data types.  This chapter goes into greater detail about numbers and other datatypes.  It is important to understand how integer and floating point number are stored as their binary representation. We will cover this as well.  
+
+\section{Integers}
+
+Recall that mathematically, an \emph{integer} is a counting number (1,2,3, \ldots) along with 0 and the negative counting numbers ($-1,-2,-3,\ldots$).  Mathematically thinking, there is no largest (or smallest) integer, however, in reality if we are storing a number on a computer (which is a finite device), there must be a limit on the smallest and largest integers to be stored.  Practically speaking, we will limit an integer to some number of bits and the standard sizes are 8, 16, 32, 64 and 128.  
+
+\subsection{Unsigned Integers}
+
+First, we will examine unsigned integers and typically these are thought of as the nonnegative integers (0,1,2,3, \ldots).  For example, 8-bit unsigned integers have a total of $2^8=256$ nonnegative numbers and since the smallest is 0, the largest is 255.  
+
+In julia, the datatypes for unsigned integers are \texttt{UInt8, UInt16, UIint32, UInt64} and \texttt{UInt128}.  We can get the smallest and largest value for these with the \texttt{typemin} and \texttt{typemax} functions. \jlb[types]{typemin(UInt8)} and\\ \jlb[types]{typemax(UInt8)} return \jlc[types]{print(typemin(UInt8))} \printpythontex[verb]~ and \jlc[types]{print(typemax(UInt8))} \printpythontex[verb]~ respectively.  
+
+Appendix \ref{ch:num-rep} go over many of the details of representation integers in binary and performing basic operations.  We will cover the a superficial level of integer represenation and operations here in this chapter, but for those with desire for more depth see Appendix \ref{ch:num-rep}. 
+
+In julia, we can use the \verb!bitstring! function to give the binary representation of integers and floating points.  For example 
+\begin{jlblock}
+bitstring(UInt8(18))
+\end{jlblock}
+returns \jlc[types]{print(bitstring(UInt8(18)))} \printpythontex[verb].   Notice that \jlb[types]{bitstring(UInt8(255))} returns \jlc[types]{print(bitstring(UInt8(255)))}\printpythontex[verb]. 
+
+Similarly, the unsigned integers with more bits work the same with largest range of integers.  For example \jlb[types]{bitstring(UInt64(100000))} returns \jlc[types]{print(bitstring(UInt64(100000)))} \printpythontex[verbatim]
+%
+which is a string of length 64. 
+
+\subsection{Signed Integers} 
+
+In julia, the signed integers are \texttt{Int8, Int16, Iint32, Int64} and \texttt{Int128}. Also, there is a integer type \verb!Int! which defaults to the sized integer of the typical integer size on your machine.  This is generally \verb!Int64!.  
+
+Let's look in detail about 8-bit signed integers.  The largest and smallest values that can be stored with \texttt{Int8} can be found with \jlb[types]{typemin(Int8)} and \jlb[types]{typemax(Int8)}, which returns \jlc[types]{print(typemin(Int8))} \printpythontex[verb]~and \jlc[types]{print(typemax(Int8))} \printpythontex[verb]~ respectively.  Bascially the number between 0 and 127 are identical between \verb!Int8! and \verb!UInt8!.  
+
+\subsection{Overflow and Underflow of integer operations}
+
+Again, unlike mathematical integers, any computer-based integer has a maximum and minimum values.  In short, if an operation results in a number above the maximum, then there is an overflow error and less than the minimum there is an underflow error. 
+
+Here's a simple example with 8-bit integers.  Let \jlb[types]{x=Int8(95)} and \jlb[types]{y=Int8(70)}. The sum of 95 and 70 is 165 and above the maximum value for \verb!Int8!.  However, entering
+\begin{jlblock}[types]
+x+y
+\end{jlblock}
+%
+results in \jlc[types]{print(x+y)} \printpythontex[verb], not the expected error.  
+
+What just happened?  If you want to know why the value of \printpythontex[verb]~ arose, dig into the details in Chapter \ref{ch:num-rep}, but the reason why there was no overflow error is that julia does not automatically check for such errors, due to the fact that there is overhead in checking, which will slow down operations.  
+
+If you want to check, there are a suite of operations that will check, therefore:
+\jlc[types2]{x=Int8(97);y=Int8(70)}
+
+\begin{jlverbatim}[types2]
+Base.checked_add(x,y)
+\end{jlverbatim}
+\begin{jlcode}[types2]
+try
+  Base.checked_add(x,y)
+catch e
+ printstyled(stderr,"ERROR: ", bold=true, color=:red)
+ printstyled(stderr,sprint(showerror,e), color=:light_red)
+ println(stderr)
+end
+\end{jlcode}
+%
+will result in \stderrpythontex[verbatim]
+
+Go to \href{https://docs.julialang.org/en/v1/base/math/#Base.Checked.checked_add}{julia's documentation on \texttt{checked\_add}} which starts a list of functions that will check for over and underflow. If there is any chance of overflow/underflow errors, then the results may be wrong.  Keep this in mind as in Chapter \ref{ch:modules} we will write tests for code. 
+
+
+%\subsection{Julia's standard numbers and mathematical objects}
+%
+%Julia has some nice extensions of the standard numbers that are helpful in scientific computing, specifically,
+%rational and complex numbers. One of the main mathematical objects is an array, which can be sparse and all of the array can take any other type within it.  That is, you can make an array of rational numbers.  We will see arrays in Chapter \ref{ch:arrays}.  The following are links to the Julia
+%documentation for
+%
+%\begin{itemize}
+%\item \href{http://docs.julialang.org/en/stable/manual/integers-and-floating-point-numbers/}{integers}
+%\item \href{http://docs.julialang.org/en/stable/manual/integers-and-floating-point-numbers/}{floating
+%  point}
+%\item \href{http://docs.julialang.org/en/stable/manual/complex-and-rational-numbers/}{rational
+%  numbers}
+%\item \href{http://docs.julialang.org/en/stable/manual/complex-and-rational-numbers/}{complex
+%  numbers}
+%\end{itemize}
+
+\section{Floating Point Numbers}
+
+Many fields in scientific computing rely on using decimals and the standard way to store these in a computer is with \emph{floating point numbers}.  Details on floating-point numbers are in Appendix \ref{ch:num-rep}. Julia has 16-,32- and 64-bit floating point numbers called \texttt{Float16, Float32} and \texttt{Float64} and by default on most systems is the \texttt{Float64}. 
+
+There are two limitations to any floating-point number.  First, the number of digits stored in the number and secondly, the maximum and minimum values.  Each built-in type splits the number of bits into storing both and there is a balance between these.  A rule of thumb is that 
+\begin{itemize}
+\item \texttt{Float16} stores 4 decimal digits and the max is about 32,000.
+\item \texttt{Float32} stores 8 decimal digits and the max is about $10^{38}$. 
+\item \texttt{Float64} stores 16 decimal digits and the max is about $10^{307}$
+\end{itemize}
+
+We can using the \texttt{bitstring} function in julia to find the binary representation. Notice that
+%
+\begin{jlblock}[types]
+bitstring(Float16(8.625))
+\end{jlblock}
+returns \jlc[types]{print(bitstring(Float16(8.625)))} \printpythontex[verb].
+Again, details are in Appendix \ref{ch:num-rep} but, in short, a floating-point number is stored in scientific notation with the abscissa, exponent and the sign all combined together.  
+
+Unlike integers, most numbers cannot be stored exactly with a floating-point number.  For example, $1/3$ divides 1 by 3 and results in the floating-point number closest to the fraction $\frac{1}{3}$.  In julia this is \jlc[types]{print(1/3)} \printpythontex and also note that \jlb[types]{bitstring(1/3)} results in \jlc[types]{print(bitstring(1/3))}\printpythontex[verbatim]
+
+Notice that there are non-zero bits throughout the number in this case that didn't occur with 8.625.  This is because as a fraction 8.625 has a denominator of 8, which is a power of 2.  If a fraction can be written with such a denominator, the number in binary has 0s that pad the right end of the number.  
+
+What does this matter?  Well, consider the following:
+\begin{jlblock}[types]
+1/9+1/9+1/9+1/9+1/9+1/9+1/9+1/9+1/9
+\end{jlblock}
+which returns \jlc[types]{print(1/9+1/9+1/9+1/9+1/9+1/9+1/9+1/9+1/9)} \printpythontex[verb], which is not 1.\footnote{This occurred because the closest floating point to the fraction 1/9 was just slightly above 1/9 and adding up 9 of those numbers results in the extra amount}  This is an example of the limitations of floating-point numbers and 1) either we deal with it or 2) use a different data type (in this case either a \texttt{BigFloat} or \texttt{Rational} would be better). 
+
+Unless you know you have some reason to choose otherwise, choose \verb!Float64! for most floating-point numbers.  There are still underflow and overflow errors associated with it, but as we will see in Chapter \ref{ch:rootfinding}, generally round-off error associated with floating-point number is more detrimental to calculations. 
+
+
+\section{Extending integers, the \texttt{BigInt} type}
+
+In Chapter \ref{ch:number-theory}, we will explore prime numbers and it is common for them to exceed the maximum allowable \texttt{Int64} or even \texttt{Int128}.  If this is needed, there is a type called \texttt{BigInt} with no maximum or minimum.  Here's the number \href{https://www.imdb.com/name/nm0000478/?ref_=tt_ov_st_sm}{one google} 
+
+\begin{jlblock}[types]
+big(10)^100
+\end{jlblock}
+which returns \jlc[types]{print(big(10)^100)} \printpythontex[verbatim][breakanywhere=true]
+%
+and this is too big to fit on one line of this page.  Note: the command \verb!big! create a \texttt{BigInt} and generally normal operations with integers result in \texttt{BigInt}s as well.  
+
+It's very important to understand how \jlb{big(10)^100} works.  First a number of type \texttt{BigInt} is made with a value of 10.  Then that is raised to the 100th power.  As noted earlier, a \texttt{BigInt} doesn't have a upper or lower limit on the number.  It can grow as needed.   
+
+If we did \jlb{big(10^100)}, the result is \jlc[types]{print(big(10^100))}\printpythontex[verb], a surprising result, however note that because of order of operations, first \verb!10^100! is calculated in standard \texttt{Int64} and then turned into a \texttt{BigInt}.  Again, for details on what happens here, look at Appendix \ref{ch:num-rep}, in short this continually multiplies the number ten, 100 times.  
+
+It is recommended only to use a \texttt{BigInt} if needed.  Operations with them are significantly slower than \texttt{Int64} or even \texttt{Int128}.  Under few cases do you need to do this, however, we will point out in Chapter \ref{ch:number-theory} with prime numbers when we might need to use them.  
+
+
+\section{Extending Floating Point Numbers with \texttt{BigFloat}}
+
+As we discussed above, a floating point number has two limitations 1) the number of digits stored and 2) the maximum exponent used.  If we need numbers when the limit of either of these is in the way, we can turn to \texttt{BigFloat}.  For example,
+what if you want to calculate $\pi$ to 100 digits.\footnote{And in
+  fact, I calculated $\pi$ to about 100,000 digits for a talk in
+  Spring 2016 using Julia}
+  
+
+{\color{red} Maybe do this as an example later in the text}.  
+  
+To get a floating point number of type \texttt{BigFloat}, wrap the \texttt{big} function around a float.  For example \jlb[types]{x=big(0.25)} returns \jlc[types]{print(x)}\printpythontex[verb]~ and we can verify it's type with \jlb[types]{typeof(x)} which returns \jlc[types]{print(typeof(x))} \printpythontex[verb]. 
+
+Let's revisit an example from earlier and sum 1/9 nine times.  If we try to turn this into a \texttt{BigFloat} with \jlb[types]{a=big(1/9)}, then the result is
+\jlc[types]{print(a)} \printpythontex[verbatim]
+%
+which seems to have an accuracy of only 17 digits, which is typical for a 64-big floating point, so it doesn't appear to have improved anything.  This, like above, is a case of being careful in constructing a \texttt{BigFloat}.  What happens with \jlb[types]{big(1/9)}? Using your order-of-operations eye, the \verb!1/9! is done first and since both 1 and 9 are regular integers (\texttt{Int64}), the result is a \texttt{Float64}.  Then the \verb!big! function turns the \texttt{Float64} into a \texttt{BigFloat}, but not we the accuracy expected. 
+
+Instead, if we define \jlb[types]{a=big(1)/big(9)}, then we get
+\jlc[types]{print(a)} \printpythontex[verbatim][breakanywhere=true]
+%
+which looks more like an expected result. To determine the number of digits of accuracy, you can count (painfully) or try \jlb[types]{length(string(a))} which will return \jlc[types]{print(length(string(a)))}\printpythontex[verb], which is about 5 times the accuracy of \texttt{Float64}. Technically if you type \texttt{precision(x)} and this returns 256, which is the number of bits and it has 4 times the binary precision of \texttt{Float64}.
+
+Note: the set of nested commands turns the number into a string and then gives the length of the string.
+
+As noted at the beginning of this section, though, if we want to compute $\pi$ to 100 (or even 100,000) digits, it doesn't appear to work--the above example only gave about 80 digits of accuracy.  The \texttt{BigFloat} type is quite flexible.  The above example used it in its default precision. We can change this with the \texttt{setprecision} function. For
+example:
+
+\begin{jlblock}[types]
+setprecision(2^10)
+\end{jlblock}
+%
+returns 1024 (or each number is stored in 1024 bits or 128 bytes of memory). Then
+typing \jlb[types]{a2=big(1)/big(9)} returns a number that, at a glance, looks to store about 4 times the number of digits. Try it!
+
+Entering
+\begin{jlblock}[types]
+length(string(big(a2)))
+\end{jlblock}
+%
+returns \jlc[types]{print(length(string(a2)))} \printpythontex[verb] ~as the number of decimal digits. This is about 20 times the precision of \texttt{Float64}.  
+
+\subsection{Limitations of \texttt{BigFloats}}
+
+Although a \texttt{BigFloat} stores more digits and allows a wider range of possible numbers, it still has a limitation.  Once you create a \texttt{BigFloat}, it uses the given precision from \texttt{setprecision} and cannot be changed.  So typically, thought needs to be put in before using \texttt{setprecision} on what the desired level of precision that is needed.  
+
+Additionally, operations with \texttt{BigFloat}s are significantly slower that the \texttt{Float64} type and unless you need the extra precision, stay with the built-in method.  
+
+
+\section{Rational numbers}
+
+A rational number is the ratio of integers and more commonly called a
+fraction. Julia (unlike many other general computing languages) has
+rational numbers built-in. To put in a ratio, enter a \texttt{//} to
+separate the numerator and denominator. For example:
+%
+\begin{jlblock}[types]
+2//3
+4//7
+178//11
+-1//2
+\end{jlblock}
+%
+are examples of rational numbers. One advantage that they have is that
+the numerator and denominator are stored as integers (64-bit by default)
+and are not subject to round-off errors that floating points are. The
+standard operations $+,-,\cdot,\div$ between rationals results in a
+rational and as we will see in this course, there are advantages to
+using rationals instead of floating points.
+
+
+\subsection{Exercise}
+
+Perform the following operations involving rationals in Julia:
+
+\begin{multicols}{4}
+\begin{enumerate}
+\item  $\dfrac{1}{2} + \dfrac{2}{3}$
+\item  $\dfrac{1}{2} - \dfrac{2}{3}$
+\item  $\dfrac{2}{3} \cdot \dfrac{3}{5}$
+\item  $\dfrac{2}{3} \div \dfrac{3}{5}$
+\end{enumerate}
+\end{multicols}
+
+\hypertarget{the-rational-type}{%
+\subsection{The Rational Type}\label{the-rational-type}}
+
+If you enter \jlb[types]{typeof(1//2)}, note that julia returns \jlc{print(typeof(1//1))} \printpythontex[verb] and this is called a
+\href{https://docs.julialang.org/en/stable/manual/types/\#Parametric-Composite-Types-1}{Parametric Composite Type}, which will be talked about later. In this particular case, this is a rational type, but inside it (the numerator and denominator), they are type \texttt{Int64}. For example, to make a different type of rational you need to declare a different integer type inside, enter
+\begin{jlblock}[types]
+Int16(1)//Int16(2)
+\end{jlblock}
+%
+and if you check the type of this, you will see it is of type \texttt{Rational\{Int16\}}.
+
+\subsection{Exercise}
+
+Build the rational $\frac{1}{2}$ with BigInts within it. Check that in
+fact it is stored as you expect.
+
+\hypertarget{other-operations-with-rationals}{%
+\subsection{Other Operations with
+Rationals}\label{other-operations-with-rationals}}
+
+As long as you stay in the basic operations, $+,-,\cdot, \div$, the result will be a rational. However, many other operations are not. For example \texttt{sin(1//2)} will return a floating-point number. \texttt{(2//3)\^{}3} will return a rational, since this is ultimately multiplication, but \texttt{(2//3)\^{}(1//2)} will return a floating-point since raising a number to the $1/2$ is the same as square root. 
+
+\hypertarget{complex-numbers}{%
+\section{Complex Numbers}\label{complex-numbers}}
+
+Recall that the imaginary number $i$ is defined as $\sqrt{-1}$. A complex number is a number of the form $a+bi$ for $a$ and $b$ in general real numbers.  In julia, there is a built-in constant \jlb[types]{im}, which can be used to create complex numbers.  for example \jlb[types]{z=1+2im} has type \jlc[types]{print(typeof(z))}\printpythontex[verb], which is a composite type with the values of the numbers $a$ and $b$ are \texttt{Int64}.  
+
+Complex numbers play a huge role in many aspects of scientific computing and in some cases, formulating a problem using complex numbers can make calculations faster and easier to program.  This includes the very important algorithm, fast-fourier transforms or better known as FFTs.  This and other examples are explained in  Chapter \ref{ch:complex}. 
+
+
+\section{Abstract and Concrete Number Types} \label{sect:abstract:type}
+
+
+The numerical data types we have seen in this chapter are examples of \textbf{concrete data types} in that we can create data (usually numbers) with those types.  These include the integer types \verb!Int8, Int16, Int32, Int64, Int128, BigInt! and floating-point versions \verb!Float16, Float32, Float64, BigFloat!.  The rational and complex types are composite, however the internal part is one of these types.  
+
+Julia is a bit different than other languages in that there are also \textbf{abstract data types} that 1) you can't make data in the type and 2) are collections of other types.  
+
+
+\subsection{Abstract Number types}
+
+For example, \texttt{Integer} is the abstract type (also called a supertype) of all integer types.  The other abstract number types are:
+\begin{itemize}
+\item \texttt{Signed}: supertype of all signed integers like \texttt{Int32, BigInt}.
+\item \texttt{Unsigned}: supertype of all unsigned integers like \texttt{UInt32,UInt128}. 
+\item \texttt{Integer}: supertype of all signed and unsigned integers.
+\item \texttt{AbstractFloat}: supertype of all floating-point numbers. 
+\item \texttt{AbstractIrrational}: supertype of irrational numbers. 
+\item \texttt{Real}: supertype of all floating-point, rational, irrational and integer numbers.
+\item \texttt{Number}: supertype of all numbers. 
+\end{itemize}
+
+
+See a bare-bones description of all of
+\href{https://docs.julialang.org/en/v1/base/numbers/}{Julia's standard
+number types}.
+
+
+\subsection{Concrete Number Types}
+
+The numbers shown above are concrete number types like:
+\begin{itemize}
+\item \texttt{Float16}, \texttt{Float32}, \texttt{Float64}, \texttt{BigFloat}
+which are all subtypes of \texttt{AbstractFloat} 
+\item \texttt{UInt8},
+\texttt{UInt16},\texttt{UInt32},\texttt{UInt64},\texttt{UInt128}: which
+are all subtypes of \texttt{Unsigned}
+\item  \texttt{Int8}, \texttt{Int16},
+\texttt{Int32}, \texttt{Int64}, \texttt{Int128}, \texttt{BigInt}: which
+are all subtypes of \texttt{Signed} 
+\item \texttt{Rational} types are subtypes of \texttt{Real}
+\item \texttt{Complex} types of subtypes of \texttt{Number}.  
+\end{itemize}
+
+To test if something is a subtype of another use the \verb!<:! operation. For example
+
+\begin{jlblock}[types]
+UInt8 <: Integer
+\end{jlblock}
+
+returns \jlc[types]{print(UInt8 <: Integer)} \printpythontex[verb], but
+
+\begin{jlblock}[types]
+Float16 <: Signed
+\end{jlblock}
+
+returns \jlc[types]{print(Float16 <: Signed)} \printpythontex[verb].
+
+
+\section{Converting numbers}
+
+\jlv[types]{float(x)} converts any type of number to a floating point, like
+
+\begin{jlblock}
+float(1//3)
+\end{jlblock}
+returns \jlc[types]{print(float(1//3))} \printpythontex[verb]. 
+
+\texttt{parse(Type,str)} parses \texttt{str} of type \texttt{String}
+into a number of type \texttt{Type}. 
+
+\begin{jlblock}[types]
+parse(Int,"1234")
+\end{jlblock}
+
+returns the integer \jlc[types]{print(parse(Int,"1234"))}\printpythontex[verb]~ and
+
+\begin{jlblock}[types]
+parse(Float64,"1234")
+\end{jlblock}
+
+returns the floating point \jlc[types]{print(parse(Float64,"1234"))}\printpythontex[verb]. 
+
+If you have a number in another base, you can still parse it.  For example, consider the binary number 10011, 
+\begin{jlblock}[types]
+parse(Int,"10011",base=2)
+\end{jlblock}
+results in \jlc[types]{print(parse(Int,"10011",base=2))} \printpythontex[verb].
+
+
+\subsection{Converting to Integers}
+
+If you have a floating point number or rational and you want to convert
+to an integer, typically use the \texttt{ceil}, \texttt{floor},
+\texttt{round} functions. For example
+
+\begin{jlblock}[types]
+ceil(Int,3.2)
+\end{jlblock}
+
+returns the integer \jlc[types]{print(ceil(Int,3.2))}\printpythontex[verb], since ceiling rounds up to the next integer.
+
+\section{Tuples} \label{sect:tuples}
+
+Another type that allows one to combine two or more elements of data is called a tuple.  For example, if we want two floating points that are connected, we can make:
+\begin{jlblock}[types]
+(1,2)
+\end{jlblock}
+
+For example, this could be a way to store a geometric point.  Determining the data type with \jlb[types]{typeof((1,2))} returns \jlc[types]{print(typeof((1,2)))} \printpythontex[verb], which is another example of a composite type.  The type is a \verb!Tuple! but there are \verb!Int64! types with the tuple. 
+
+You can access the elements of the tuple using bracket notation.  If
+\begin{jlblock}[types]
+tup = (4,3,2,1)
+\end{jlblock}
+we can get the first element of \verb!tup! with \jlb[types]{tup[1]}.  Note, this is similar to array notation, which we will see in Chapter \ref{ch:arrays}. 
+
+\subsection{Named Tuples}
+
+Sometimes it's easier to associated the individual elements of a tuple with a name instead of an index.  We can generate a \emph{named tuple} as
+\begin{jlblock}[types]
+pt=(x=1,y=3.2,z=9)
+\end{jlblock}
+which would be like a point in three dimensions.  We can access the elements using dot notation, such as
+\begin{jlblock}[types]
+pt.x
+\end{jlblock}
+returns \jlc[types]{print(pt.x)} \printpythontex[verb]. 
+
+\subsection{Tuples are Immutable}
+
+However, if we try to change one of the elements of a tuple, then an error will occur.  
+\begin{jlverbatim}
+pt.z=11
+\end{jlverbatim}
+\begin{jlcode}[types-err]
+pt=(x=1,y=3.2,z=9)
+try
+ pt.z=11
+catch e
+ printstyled(stderr,"ERROR: ", bold=true, color=:red)
+ printstyled(stderr,sprint(showerror,e), color=:light_red)
+ println(stderr)
+end
+\end{jlcode}
+results in \stderrpythontex[verbatim]
+
+This is because tuples are immutable, meaning once created, any part of the tuple cannot be changed.  

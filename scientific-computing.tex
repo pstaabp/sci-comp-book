@@ -1,0 +1,218 @@
+% !TEX TS-program = lualatex
+%!TEX encoding = UTF-8 Unicode
+
+\documentclass[display=portrait]{mathbook}
+
+\usepackage{url,enumitem,multicol}
+
+\renewcommand{\coursename}{Scientific Computing}
+
+\usepackage{longtable,booktabs}
+
+
+
+
+
+\usepackage{fontspec}
+%\defaultfontfeatures{Ligatures=TeX} % converts LaTeX specials (``quotes'' --- dashes etc.) to unicode
+\setromanfont[BoldFont={IBM Plex Serif Bold},%
+ 	ItalicFont={IBM Plex Serif Italic}]{IBM Plex Serif Light}
+\setmonofont[Scale=0.9]{DejaVu Sans Mono} 
+\setsansfont[BoldFont={IBM Plex Sans Bold}, ItalicFont={IBM Plex Sans Italic}]{IBM Plex Sans}
+
+
+
+
+
+
+% this is some definitions needed for the pgfplotsx package from Julia.
+\input{pgfplotsx_preamble.tex}
+
+% a common plot command using pgfplotsx
+\newcommand{\plot}[2]{
+\jlc[#2]{savefig("#1")}
+\IfFileExists{./#1}{\input{#1}}{}
+}
+
+
+\usepackage[usefamily={jl,julia,juliacon},autoprint=false,autostdout=false,makestderr]{pythontex}
+
+% change the verabtim options for pythontex
+\RecustomVerbatimCommand{\VerbatimInput}{VerbatimInput}
+{frame=single,framerule=1pt,fillcolor=LightCyan1,highlightlines={1-40},%
+highlightcolor=LightCyan1, fontsize=\small}
+
+
+
+\usepackage{fvextra} % help for formatting code
+\fvset{breaklines=true}
+\surroundwithmdframed[linewidth=1pt,backgroundcolor=Cornsilk1,roundcorner=3pt,%
+	font=\ttfamily\small]{jlblock}
+\surroundwithmdframed[linewidth=1pt,backgroundcolor=Cornsilk1,roundcorner=3pt,%
+	font=\ttfamily\small]{jlverbatim}
+\surroundwithmdframed[linewidth=1pt,backgroundcolor=LightCyan1,roundcorner=3pt,%
+	font=\ttfamily\small]{verbatim}
+\surroundwithmdframed[linewidth=1pt,backgroundcolor=LightCyan1,roundcorner=3pt,%
+	font=\ttfamily\small]{Verbatim}
+
+% for unicode in julia blocks
+\usepackage{ucs}
+\usepackage[utf8]{inputenc}
+
+\theoremstyle{plain} 
+\theoremheaderfont{\normalfont\bfseries}
+\theorembodyfont{\normalfont} 
+\theoremsymbol{}
+\theoremseparator{:} 
+\newtheorem{exercise}{Exercise}[chapter] 
+
+
+\usepackage[explicit]{titlesec}
+\usepackage[breaklinks]{hyperref}
+
+\titleformat{\part}
+  {\huge\sffamily\slshape}
+  {Part \thepart:}{1em}{#1}
+
+\newcommand{\partbreak}{\vspace{0.5in}}
+
+\titleformat{\chapter}[display]
+  {\LARGE\sffamily\slshape}
+  {\filright\Large\chaptertitlename~\thechapter}
+  {4pt}
+  {#1}
+
+
+\titleformat{\section}
+  {\Large\sffamily\slshape}
+  {\thesection}{1em}{#1}
+
+\titleformat{\subsection}
+  {\large\sffamily\slshape}
+  {\thesubsection}{1em}{#1}
+  
+%  \titleformat{\section}
+%  {\normalfont\Large\bfseries}{\thesection}{1em}{}
+%\titlespacing{\section}
+%{-6pc}{3.5ex plus .1ex minus .2ex}{1.5ex minus .1ex}
+
+%\includeonly{arrays}
+%\includeonly{intro,data-types,intro-functions,getting-started,boolean-loops,functional-programming,packages}
+
+\title{Scientific Computing}
+\author{Peter Staab}
+
+%\includeonly{data-types}
+%\includeonly{numerical-integration}
+
+
+\begin{document}
+\begin{titlepage}
+
+\begin{center}
+{\fontspec[Scale=5.5]{Paint the Sky}  
+Scientific Computing}
+
+\vspace{0.5in}
+
+{\fontspec[Scale=3.0]{Arial}  Peter Staab}
+
+\vspace{0.25in}
+
+
+{\fontspec[Scale=2.0]{Arial} Fitchburg State University} 
+ 
+\vfill
+ 
+% Bottom of the page
+{ \sffamily \today}
+ 
+\end{center}
+ 
+\end{titlepage}
+
+\vfill 
+
+
+%This edition was last edited on \today.
+%
+%Copyright by Peter Staab, Jamaica Plain, Massachusetts. 
+% 
+%Creative Commons Attribution-Noncommercial-Share Alike 3.0  United States \linebreak License.
+
+
+
+ 
+\frontmatter
+\setcounter{tocdepth}{1}
+
+\tableofcontents
+
+\addcontentsline{toc}{chapter}{Preface}
+\include{preface}
+
+\mainmatter
+
+\setcounter{chapter}{0}
+\include{intro} 
+\part{Scientific Computing Basics}
+
+\include{sci-comp-basics}
+\include{variables}
+\include{data-types}
+\include{intro-functions}
+\include{boolean-loops}
+\include{arrays}
+\include{functional-programming}
+\include{number-theory}
+\include{rootfinding}
+\include{plots}
+\include{comp-types}
+
+
+
+\part{Simulation}
+
+So far in this text, we have done very little scientific computation due to getting up to speed with some of the coding ideas and tools that we need.  This part of the text shows examples of using simulation to solve certain problems.  The heart of this is using random numbers to estimate the solutions of problems.  The first chapter covers how computers generate pseudo-random numbers and the other section using them to solve problems.
+
+\include{random}
+\include{prob-models}
+\include{poker}
+% \include{simulated-annealing}
+% \include{tsp}
+
+\part{Other Julia Features}
+
+\include{advfunction}
+\include{modules}
+\include{parallel}
+
+\part{Data Analysis}
+
+\include{data-analysis}
+
+\part{Linear Algebra}
+
+\include{lin-alg-1}
+\include{lin-alg-2}
+
+\part{Calculus and Differential Equations}
+
+\include{numerical-integration}
+\include{diffeq}
+\include{complex}
+
+\part{Advanced Topics}
+
+\appendix
+\include{getting-started}
+\include{packages}
+\include{numeric-representation}
+
+%\input{solutions}
+
+\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{plain}
+  \bibliography{sci-comp}
+
+\end{document}

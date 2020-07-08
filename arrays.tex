@@ -1,0 +1,505 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = scientific-computing.tex
+
+
+\hypertarget{ch:arrays}{%
+\chapter{Arrays}\label{ch:arrays}}
+
+
+Arrays are a fundamental data structure for nearly every computer
+language and it is a crucial for scientific computing as that it is an efficient way of handling large amount of the same datatype.  Additionally, arrays are the computing version of mathematical vectors and matrices. 
+
+%arrays, another extremely important part of scientific computing.  It is recommended to read the
+%\href{http://docs.julialang.org/en/latest/manual/arrays/}{julia documentation on arrays}
+
+In short an array is a collection of data of (typically) the same type
+under the same name. We have seen arrays before. For example, if we say
+%
+\begin{jlblock}[array]
+arr = [1,2,3]
+\end{jlblock}
+then we get a 1-dimensional array of length 3. Note that when returned,
+julia says \texttt{3-element\ Array\{Int64,1\}:} which means
+
+\begin{itemize}
+\item  it is length 3 (since it is a 3-element)
+\item  The internal type is \verb!Int64!.
+\item  it is 1-dimensional, because the 1 as the second element in the \{\}.
+\end{itemize}
+
+There are some basic functions that tell us some information:
+%
+\begin{itemize}
+\item \texttt{length(arr)} returns 3, the length.
+\item \texttt{eltype(arr)} returns \texttt{Int64}, the type of the elements in the array.
+\end{itemize}
+
+\hypertarget{constructing-arrays}{%
+\section{Constructing arrays}\label{constructing-arrays}}
+
+We can create arrays in many ways. As seen above, the line
+
+\begin{jlblock}[array]
+arr=[1,2,3]
+\end{jlblock}
+%
+creates a 1-D array of length 3. A 2D array can
+be made like:
+%
+\begin{jlblock}[array]
+arr2=[1 2 3; 4 5 6]
+\end{jlblock}
+%
+Note that each row of the array is separated by a semicolon and the individual elements in a row are separated by spaces. The result of this is \jlc[array]{display(arr2)} \printpythontex[verbatim]
+%
+and the size is 2 by 3 (2 rows and 3 columns).  This is a 2D array in that there is now a 2 after the comma in the \verb!{}!.
+
+The following are useful for creating arrays of 1 or more dimensions.  
+%
+\begin{itemize}
+\item \texttt{zeros(type,dims...)} makes an array of all zeros with datatype \texttt{type} and given dimensions. For example,
+%
+\begin{jlblock}
+zeros(Integer,4,6)
+\end{jlblock}
+%
+returns an array filled with zeros (of integer type) with 4 rows and 6 columns.
+
+\item \texttt{ones(type,dims...)} is similar to \texttt{zeros} except it is filled with 1s.
+\item \texttt{rand(dims...)} makes a random array of floating points (uniformly distributed between 0 and 1).
+\item \verb!collect(range)! takes a \texttt{Range} object (the pair or triples of numbers separated by columns) and creates an 1D array with the numbers from the range.   For example, \jlb[array]{collect(1:10)} returns
+\jlc[array]{display(collect(1:10))} \printpythontex[verbatim]
+\end{itemize}
+
+
+\hypertarget{comprehensions}{%
+\section{Comprehensions}\label{comprehensions}}
+
+If the elements of an array form a functional pattern, we can use what is called a
+\emph{comprehension} to construct it in a compact manner. For example, a 1D array with the elements 1,-1,1,-1,1,-1 can be made:
+%
+\begin{jlblock}[array]
+[(-1)^n for n=0:7]
+\end{jlblock}
+%
+and the following:
+%
+\begin{jlblock}
+[m+n for n=1:8,m=1:8]
+\end{jlblock}
+%
+makes an 8 by 8 matrix where each element is the sum of the row and
+column number or  \jlc[array]{display([m+n for n=1:8,m=1:8])} \printpythontex[verbatim]
+ 
+ 
+ \subsection{Exercise}
+
+Using the techniques in this section, create the following arrays in julia:
+\begin{multicols}{3}
+\begin{enumerate}
+\item ~
+\begin{align*}
+\begin{bmatrix}
+3 \\ 6 \\ 9 \\ 12 \\ 15 \\ 18 \\ 21 \\ 24
+\end{bmatrix}
+\end{align*}
+\columnbreak
+\item ~
+\begin{align*}
+\begin{bmatrix}
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{bmatrix}
+\end{align*}
+
+\item ~
+\begin{align*}
+\begin{bmatrix}
+1 & 1 \\
+1 & 1 \\
+1 & 1 \\
+1 & 1
+\end{bmatrix}
+\end{align*}
+
+
+\columnbreak
+
+\item ~
+
+\begin{align*}
+\begin{bmatrix}
+1 & -3 & 4 & 5 \\
+3 & 2 & 11 & -13 \\
+17 & 0 & 4 & 2
+\end{bmatrix}
+\end{align*}
+
+\item ~
+\begin{align*}
+\begin{bmatrix}
+4 & 3 & 2 & 1 & 0 \\
+3 & 2 & 1 & 0 & 1 \\
+2 & 1 & 0 & 1 & 2 \\
+1 & 0 & 1 & 2 & 3 \\
+0 & 1 & 2 & 3 & 4 
+\end{bmatrix}
+\end{align*}
+
+\end{enumerate}
+\end{multicols}
+
+ Hint: there is no pattern for the array in \#3, so just enter the numbers.  
+
+\hypertarget{accessing-elements-of-an-array}{%
+\section{Accessing elements of an
+array}\label{accessing-elements-of-an-array}}
+
+Let \jlb[array]{x=collect(1:7)} which generates: \jlc[array]{print(x)} \printpythontex[verb]. To access the 2nd element, we
+type \jlb[array]{x[2]}. To get an array the elements 3, 4 and 5, type
+%
+\begin{jlblock}[array]
+x[3:5]
+\end{jlblock}
+%
+or if we want the last 3 elements, we can use:
+%
+\begin{jlblock}[array]
+x[end-2:end]
+\end{jlblock}
+%
+where \texttt{end} is an alias for the last element, so this returns an array of the last 3 elements of \verb!x!.  
+
+Let
+%
+\begin{jlblock}[array]
+A=[i+j for i=1:4,j=1:5]
+\end{jlblock}
+%
+to access the 1st row, 3rd column, type \jlb[array]{A[1,3]}. If you want
+the subarray of the first and 3rd and 5th columns and all rows type:
+%
+\begin{jlblock}[array]
+A[:,1:2:5]
+\end{jlblock}
+%
+returns the matrix \jlc[array]{display(A[:,1:2:5])} \printpythontex[verbatim]
+%
+where the : in the first slot means all rows and \texttt{1:2:5} are the
+columns 1, 3 and 5.
+
+If we want the first 2 rows and then shuffle the 2,3 and 5th columns in
+the order 5,3,2 type
+
+\begin{jlblock}[array]
+A[1:2,[5,3,2]]
+\end{jlblock}
+to get \jlc[array]{display(A[1:2,[5,3,2]])} \printpythontex[verbatim]
+%
+There are a number of different ways to return subarrays. See
+\href{https://docs.julialang.org/en/latest/manual/arrays/#man-array-indexing-1}{indexing
+in Julia matrices documentation} for more information.
+
+
+\section{Common Operations on Arrays}
+
+There are a number of operations on array. For each \texttt{+} and \texttt{-} adds and subtracts two arrays of the same size in an element by element manner. For example if
+%
+\begin{jlblock}[array]
+A=[1 2 3; 4 5 6]
+\end{jlblock}
+%
+and
+%
+\begin{jlblock}[array]
+B=[1 3 5; 2 4 6]
+\end{jlblock}
+
+then \jlb[array]{A+B} returns the matrix: \jlc[array]{display(A+B)} \printpythontex[verbatim]
+
+and \texttt{B-A} returns \jlc[array]{display(B-A)} \printpythontex[verbatim]
+
+%The matrix product does not exist between A and B, and if you try 
+%\jlc[array-err]{A=[1 2 3; 4 5 6];B=[1 3 5; 2 4 6]}
+%\jlv[array-err]{A*B}, you get: 
+%\begin{jlcode}[array-err]
+%try 
+%  A*B
+%catch e
+% printstyled(stderr,"ERROR: ", bold=true, color=:red)
+% printstyled(stderr,sprint(showerror,e), color=:light_red)
+% println(stderr)
+%end
+%\end{jlcode}
+%\stderrpythontex[verbatim]
+%%
+%because the number of columns of A does not equal the number of rows of
+%B. If you need element-by-element multiplication, then \texttt{A.*B}
+%returns \jlc[array]{display(A.*B)} \printpythontex[verbatim]
+%
+%
+%If we define \jlb[array]{C=[4 3 1; 0 0 4; 4 1 1]}, then \jlb[array]{A*C} returns
+%\jlc[array]{display(A*C)} \printpythontex[verbatim]
+%%
+%where matrix-matrix multiplication from linear algebra was used.
+%
+%There is also matrix \emph{division} in julia which is used to solve
+%linear systems. For example if \jlb[array]{Y=[6;0;10]} then
+%\jlb[array]{X=C\Y} solves the linear system \texttt{CX=Y} for
+%X. It returns the vector \jlc[array]{print(X)} \printpythontex[verbatim]. 
+%
+%There is more about solving linear equations in Chapter \ref{ch:lin-alg-intro}. 
+%
+
+\section{Element by Element Operations}
+
+Many methods exist to simplify a \emph{vectorized} method that returns
+the operation applied element by element to the matrix. To do this, most
+operations have a \texttt{.} variety.  For example, if we want multiply \verb!A! and \verb!B! in an element by element manner then 
+\begin{jlblock}[array]
+A.*B
+\end{jlblock}
+returns \jlc[array]{display(A.*B)} \printpythontex[verbatim]
+
+Note that \jlv[array]{A*B} performs matrix multiplication and we will discuss this in Chapter \ref{ch:lin-alg-basics}.  Many other operations can be done in similar way.  For example, to take the square root of every number inthe matrix \texttt{A}, we can enter \jlb[array]{sqrt.(A)} which returns: \jlc[array]{display(sqrt.(A))} \printpythontex[verbatim]
+
+
+\subsection{Exercises}
+
+Let \jlb[array]{A=[1 2; 3 4]} and \jlb[array]{B=[1 -1;1 -1]}. 
+\begin{enumerate}
+\item  Find and explain the results of
+%
+\begin{itemize}
+\item \jlb[array]{A.^2}
+\item \jlb[array]{A.*B}
+\item \jlb[array]{1 ./ A} 
+\end{itemize}
+
+
+\item Find the sin of every number in \texttt{A}.
+\end{enumerate}
+
+
+\section{Other Operations on Arrays}
+
+There are also other operations on arrays. For example, summing all
+elements in an array is just the \texttt{sum} functions. For example:
+
+\begin{jlblock}[array]
+sum(1:10)
+\end{jlblock}
+%
+returns 55. There are also the \texttt{min}, \texttt{max} and
+\texttt{prod} functions, with the last one, the product of elements.
+
+\begin{jlblock}[array]
+prod([1,3,5,7])
+\end{jlblock}
+%
+%and notice that use the \texttt{prod} function can simply get us the
+%\href{https://en.wikipedia.org/wiki/Double_factorial}{double factorial function}.
+%%
+%\begin{jlblock}[array]
+%function dfact(n)
+%    return mod(n,2)==1 ? prod(1:2:n) : prod(2:2:n)
+%end
+%\end{jlblock}
+
+
+\section{Sorting Vectors and matrices}
+
+Julia can sort an array using the \texttt{sort} function. If \jlb[array]{A=[3,2,1,4,8,6,5]}, then 
+\begin{jlblock}[array]
+sort(A)
+\end{jlblock}
+%
+results in \jlc[array]{print(sort(A))} \printpythontex[verb].  The \texttt{sort} function returns a sorted array.  If you want a sorted version of \verb!A! in place, use the \verb|sort!| function instead. 
+
+Also, you may want to sort in a descending manner.  If this is true use the keyword argument \verb!rev=true! in the \verb!sort! or \verb|sort!| function.  For example:
+\begin{jlblock}[array]
+sort(A,rev=true)
+\end{jlblock}
+%
+results in \jlc[array]{print(sort(A,rev=true))} \printpythontex[verb].
+
+
+
+
+Check out the
+\href{https://docs.julialang.org/en/v1/base/sort}{Julia
+docs on sorting and sorting algorithms} for more details on how Julia does sorting.
+
+
+
+\section{Push and Pop; Array as a Stack}
+
+There is a computer science data structure called a \href{https://en.wikipedia.org/wiki/Stack\_(abstract\_data\_type)}{stack} which acts like a stack of things (paper, dishes, pokemon cards) and there are two operations on it: 1) put something on top of the stack or 2) take something off the top of the stack.  Many languages including julia don't have a separate data structure but use an array like one with two operations, \verb!push! and \verb!pop!.  In julia these have ! at the end to indicate that the operations change the array.  
+
+
+If \jlb[array]{A=collect(1:5)} then
+%
+\begin{jlblock}[array]
+push!(A,7)
+\end{jlblock}
+%
+returns the array \jlc[array]{print(A)}\printpythontex[verb]. 
+And multiple values can be pushed.
+%
+\begin{jlblock}[array]
+push!(A,8,9,10,100)
+\end{jlblock}
+
+results in the array \jlc[array]{print(A)} \printpythontex[verb]. 
+
+To get an element off of the end of the array, we can use \texttt{pop!}.
+If \jlb[array]{A=collect(1:5)}, then
+
+\begin{jlblock}[array]
+pop!(A)
+\end{jlblock}
+%
+returns 5 and now the array \verb!A! is \jlc[array]{print(A)} \printpythontex[verb]. 
+
+\section{Other Nice Array Functions}
+
+Julia has a ton of other nice functions that act on arrays. 
+
+\subsection{Append}
+
+If we want
+to concatenate two arrays, we should use the \texttt{append!} command.
+For example:
+
+\begin{jlblock}
+A=[1,2,3]
+append!(A,[4,5,6])
+\end{jlblock}
+%
+and now the array stored in \texttt{A} is \jlc{print(A)} \printpythontex[verb]. 
+
+\subsection{Adding and Removing Elements in the Middle of an Array}
+
+The functions \verb|push!| and \verb|pop!| add and remove an element from the end of a \verb|Vector| or 1D array.  If we want to add or remove elements in the middle there is are the functions \verb|insert!| and \verb|deleteat!|.  They both act on a position in the array and you can see how they work with the following examples.  If \jlb[array]{A=collect(1:2:11)}, then 
+\begin{jlblock}[array]
+insert!(A,3,15)
+\end{jlblock}
+results in the array \verb!A! being \jlc[array]{print(A)} \printpythontex[verb]~and then resetting the array with \jlb[array]{A=collect(1:2:11)} then
+\begin{jlblock}[array]
+deleteat!(A,2)
+\end{jlblock}
+results in the array \verb!A! being \jlc[array]{print(A)} \printpythontex[verb].
+
+\subsection{It Splices, It Dices!! --- okay, it doesn't dice}
+
+Although you can get a long ways with \texttt{push, pop, insert} and \texttt{deleteat}, the \texttt{splice!} function is a
+\href{https://en.wikipedia.org/wiki/Swiss_Army_knife}{Swiss Army knife}
+for arrays. It can take an array, pull elements out and put elements in. We will walk through the options: 
+
+\begin{description}[font=\sffamily\bfseries]
+\item[Removing elements from an array]  We saw using the \verb|deleteat!| function above how to remove a single element, but if
+\begin{jlblock}[array]
+A=collect(1:2:13)
+\end{jlblock}
+then 
+%
+\begin{jlblock}[array]
+splice!(A, 3:4)
+\end{jlblock}
+%
+removes and returns the 3rd and 4th elements which are \jlc[array]{A=collect(1:2:13);print(splice!(A,3:4))}\printpythontex[verb]. Also, the array
+\texttt{A} is the original array without these elements or \jlc[array]{print(A)} \printpythontex[verb]. 
+
+If we let \jlb[array]{A=collect(1:2:11)}, then
+
+\begin{jlblock}[array]
+x = splice!(A,2)
+\end{jlblock}
+returns the element in the 2nd position vector or \jlc[array]{print(x)} \printpythontex[verbatim]. The array \texttt{A} is now \jlc[array]{print(A)} \printpythontex[verbatim].  This is the same as \verb|deleteat!(A,2)| we saw above.  
+
+\item[Inserting elements from an array]  We saw the function \verb|insert!| above, which will insert a single element in a 1D array. The \verb|splice!| function will insert multiple elements.  For example, if we have 
+\begin{jlblock}[array]
+A = collect(1:2:11)
+\end{jlblock}
+%
+then to insert elements in the 3rd position (and shifting everything else to the right), we can enter
+\begin{jlblock}[array]
+B=splice!(A,3:2,[11,12,13,14])
+\end{jlblock}
+then the function returns \jlc[array]{print(B)} \printpythontex[verb].  This is an empty array of type \verb!Int64!.  The result is empty because nothing was removed in the process.  The array \verb!A! is \jlc[array]{print(A)}\printpythontex[verbatim] 
+
+A few things to note about this.  The second argument is a bit strange in that you insert \verb!3:2! which is a range in which the last element is smaller than the first. This will let julia know that you don't want to remove any elements, unlike either a single number or a range with the first element smaller than the last. 
+
+
+
+
+\item[Replacing elements from an array] We say \texttt{splice!} is the swiss army knife, because it does even more!! (Now, how much would you pay?).  This last section shows that we can both remove and insert elements into an array at the same time. 
+If \jlb[array]{A=collect(1:2:11)}, then
+
+\begin{jlblock}[array]
+x = splice!(A,3,4)
+\end{jlblock}
+%
+returns \jlc[array]{print(x)} \printpythontex[verb]~and replaces the 3rd position with the number 4. The result is \jlc[array]{print(A)}\printpythontex[verbatim]. 
+
+If \jlb[array]{A=collect(1:2:11)}, then replacing the 3rd element with \verb![-1,-2,-3]! by
+%
+\begin{jlblock}[array]
+splice!(A,3,[-1,-2,-3])
+\end{jlblock}
+returns 5 (the element in position 3) and now the array \verb!A! is \jlc[array]{print(A)} \printpythontex[verbatim].
+
+%To insert a number without removing one, we can also use
+%\texttt{splice!}. If 
+%\begin{jlblock}[array]
+%A=collect(1:2:11)
+%\end{jlblock}
+%%
+%and we want to insert \verb![-1,-2,-3]!
+%at element 3 and shift the rest down:
+%%
+%\begin{jlblock}[array]
+%splice!(A,3:2,[-1,-2,-3])
+%\end{jlblock}
+%%
+%returns a 0-length array and then \verb!A! is \jlc[array]{print(A)} \printpythontex[verbatim]. 
+
+
+\end{description}
+
+\subsection{Filtering Arrays}
+
+A very handle array method, is \href{https://docs.julialang.org/en/v1/base/collections/#Base.filter}{\texttt{filter}} which takes an array and
+returns only the elements that satisfy some condition.
+
+If \jlb[array]{A=collect(1:20)}, then
+
+\begin{jlblock}[array]
+filter(n->n%2==0,A)
+\end{jlblock}
+%
+returns all elements that satisfy that the mod 2 is 0 (or even numbers) or 
+\jlc[array]{print(filter(n-> n%2==0, A))} 
+\printpythontex[verbatim]
+
+In general, the \texttt{filter} command has the form:
+\begin{jlverbatim}[array]
+filter(cond,array)
+\end{jlverbatim}
+where the result is the array consisting of elements in \texttt{array} in which the function \texttt{cond} is true.  
+
+In addition, if you want to filter on an array with the results in the place of the original array use \verb|filter!| instead.  
+
+\subsection{Removing Duplicate Elements}
+
+Another handy function is the \texttt{unique} function that takes an
+array and returns only the unique elements.
+
+If \jlb[array]{A=[1,2,3,2,3,4,3,4,5,4,3,2,1]} then
+%
+\begin{jlblock}[array]
+unique(A)
+\end{jlblock}
+%
+returns \jlc[array]{print(unique(A))}\printpythontex[verb]. And if you want to update the original array, use the \texttt{unique!} function instead.

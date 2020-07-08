@@ -1,0 +1,636 @@
+% !TEX root = scientific-computing.tex
+
+% this needs to be at the top of each file with the \plot command and the word in the [] is the session for pythontex. 
+\begin{jlcode}[data]
+using Plots, PGFPlotsX
+pgfplotsx()
+\end{jlcode}
+
+\chapter{Introduction to Data Analysis} \label{ch:data}
+
+Data is ubiquitous these days and being able to analyze it is crucial.  In this section, we will first load a dataset that is available as a Julia package, plot the data and do some basic analysis of \texttt{DataFrame}s.  Then, data will be loaded from a file.  Lastly, a package named \texttt{Query} will be used to take a dataset, filter it and parse using some notation that is different than other Julia notation, but common to datasets.  
+
+
+\section{Data from the \texttt{RDatasets} package}\label{data-from-other-sources}
+
+The statistical software/language called R has many built-in and loadable datasets.  A julia package called \texttt{RDatasets} has many of these datasets and additionally we will use the  \texttt{StatsPlots} package.  You will probably need to add these packages before 
+%
+\begin{jlblock}[data]
+using RDatasets, StatsPlots
+\end{jlblock}
+
+The datasets are subdivided into package and you can see the entire list of the packages with
+%
+\begin{jlblock}[data]
+RDatasets.packages()
+\end{jlblock}
+%
+and then a listing of all of the datasets in each subpackage can be
+found with
+%
+\begin{jlblock}[data]
+RDatasets.datasets("datasets")
+\end{jlblock}
+
+as an example.  For example, we can load the classsic \texttt{iris} dataset from this to view:
+%
+\begin{jlblock}[data]
+iris=RDatasets.dataset("datasets","iris")
+\end{jlblock}
+The dataset returns as: \jlc[data]{show(iris)} \printpythontex[verbatim]
+
+The first line of the output of the dataset shows the size (number of rows and then number of columns).  The third line is the column names, the fourth line is the datatype for each column and then the first 4 rows are shown.  The first column is row number (not part of the dataset).   The last column is a categorical datatype and more will be said about this later.  
+
+\section{Dataframes}
+In some ways, a DataFrame is like a 2D array in terms of accessing parts of the array, but in many ways it is very different.  Notice that the columns of the \texttt{iris} \texttt{DataFrame} are different types, but it is important that each column has a fixed data type. 
+
+This is very different than a 2D array in that the entire array must have the same type.  Julia has the ability to have an array of \texttt{Any} and then anything can go there, but anytime julia doesn't know a data type, it slows down calculations tremendously. A better way to think of a DataFrame is that of a collection of 1D arrays, where each array (column) has a name. 
+
+We can access the DataFrame using some of the syntax from arrays.  For example, \jlb[data]{iris[2,3]} will return the element in the 2nd row and 3rd column. Many of the array accessing methods from Chapter \ref{ch:arrays} also work. 
+
+There are other nice features though as typically we want to do things on columns.   For example: \texttt{iris[!,:PetalLength]} returns a 1D Array (of \verb!Float64!).  The ! in the first slot means to use all rows.  If we want the 11th through the 20th row of the \texttt{SepalWidth} column, enter
+\begin{jlblock}[data]
+iris[11:20,:SepalWidth]
+\end{jlblock}
+
+A perhaps-confusing result of using a \texttt{DataFrame} with \texttt{IJulia}, is that there is a limit on the number of columns and rows shown.  Check out \href{http://juliadata.github.io/DataFrames.jl/latest/man/getting_started.html}{the Julia DataFrame documentation} for information on this.  You may see at the top of the output for a DataFrame that 
+
+
+
+\subsection{Constructing a DataFrame}
+
+Although nearly always, you will use a DataFrame by loading in a dataset, a DataFrame can be created by specifying the columns. Consider:
+\begin{jlblock}[data]
+data = DataFrame(A = 1:4, B = ["M", "F", "F", "M"], C=[3.0,2.5,pi,-2.3])
+\end{jlblock}
+which will create a DataFrame with column names \texttt{A, B} and \texttt{C} and Julia interprets the data types of each column.  The result is
+\jlc[data]{display(data)} \printpythontex[verbatim]
+
+There's a number of helpful functions
+associated with DataFrames:
+%
+\begin{itemize}
+\item \texttt{size(df)}: similar to an array, returns the number of rows and columns.
+\item \texttt{names(df)}: Names of the columns as an array
+\item \texttt{eltypes(df)}: the types of each of the column as an array.
+\item \texttt{first(df,n)} and \texttt{last(df,n)}: prints the top $n$ and bottom $n$ rows of the dataframe.
+\end{itemize}
+
+
+\subsection{Plotting with \texttt{StatsPlots}}
+
+We can do a scatter plot of the first two columns in the following manner:
+\begin{jlblock}[data]
+plot(iris[!,:SepalLength],iris[!,:SepalWidth],seriestype=:scatter, legend=false)
+\end{jlblock}
+and the resulting plot is
+\begin{center}
+\pgfplotsset{scale=0.7}
+\plot{plots/data-analysis/iris-scatter.tex}{data}
+\end{center}
+
+There are some nice features using the package \texttt{StatsPlots}.  For example, the following will produce the same plot:
+\begin{jlblock}[data]
+@df iris scatter(:SepalLength,:SepalWidth)
+\end{jlblock}
+where the \texttt{@df} macro says to use the DataFrame \texttt{iris} and then any column information is interpreted to be of that DataFrame. 
+
+Recall above that there was a Categorical datatype in the column \texttt{Species}.  The following scatter plot delineates the species with different colors:
+%
+\begin{jlblock}[data]
+@df iris scatter(:SepalLength,:SepalWidth,group=:Species)
+\end{jlblock}
+and this results in 
+\begin{center}
+\pgfplotsset{scale=0.8}
+\plot{plots/data-analysis/iris-grouped.tex}{data}
+%\includegraphics[width=4in]{images/ch14/plot02.png}
+\end{center}
+
+\subsection{Basic Statistics} 
+
+First, we'll load in the \texttt{StatsBase} package (which you may have
+to add) with the command \jlb[data]{using StatsBase}. Now, we can find the mean and standard deviation of columns with 
+\begin{jlblock}[data]
+mean_and_std(iris[!,:SepalLength])
+\end{jlblock}
+%
+will compute both and return: \jlc[data]{print(mean_and_std(iris[!,:SepalLength]))} \printpythontex[verb].
+
+
+{\color{red} MORE OF THIS??}
+
+\section{Manipulating DataFrames using the \texttt{Query} package} 
+
+Many of the commands in this section require the \texttt{Query} package. The command within this package allow \verb!DataFrame!s to be manipulated in nice way.  You may need to add this to your Julia installation and then don't forget to enter \jlb[data]{using Query}. 
+
+Recall that if you want to apply some function to each element of an array, the built-in \texttt{map} function is useful.  For example, in Chapter \ref{ch:intro-functions}, we saw the following example:
+%
+\begin{jlblock}[data]
+map(a->a^2,[1,2,3,4,5])
+\end{jlblock}
+%
+which returns the array \texttt{[1,4,9,16,25]}. Using \texttt{Query}, we can get this the same way by
+
+\begin{jlblock}[data]
+[1,2,3,4,5] |> @map(_^2)
+\end{jlblock}
+%
+where we have used the pipe \texttt{|>} command.  This can be thought of as sending the array into the function \texttt{@map} which applies the square function. This gets quite nice when stringing a number of commands together.  Consider
+%
+\begin{jlblock}[data]
+collect(1:10) |> @map(_^2) |> @filter(_%2==0) |> mean
+\end{jlblock}
+This is a shorthand for the following steps: 
+\begin{enumerate}
+\item \jlb[data]{collect(1:10)} creates an array from 1 to 10
+\item \jlv{@map(_^2)} squares each element
+\item \jlv{@filter(_%2==0)} keeps only the element in the array that are even.
+\item \jlv{mean} finds the mean of the result or 
+\jlc[data]{collect(1:10) |> @map(_^2) |> @filter(_%2==0) |> mean |> print} \printpythontex[verb]. 
+\end{enumerate}
+
+We are going to use the pipe operator throughout the rest of this chapter.
+
+\section{Analyzing Census Data} 
+\begin{jlblock}[census]
+using DataFrames, Query, StatsBase, CSVFiles, StatsPlots
+\end{jlblock}
+
+Before we begin, make sure that you have added and loaded the following packages: \texttt{\small DataFrames, Query, StatsBase, CSVFiles} and \texttt{\small StatsPlots}.  Since many of the more-diff\-i\-cult aspects of the code below are in the \texttt{Query} package, I would recommend checking out the \href{http://www.queryverse.org/Query.jl/stable/}{documentation}. 
+
+Download the file \href{other/Gaz_ua_national.csv}{Gaz\_ua\_national.csv} and save it somewhere that you can access it from Julia. This file has a lot of census data that we will try to find answers. Information about the data is \href{http://www.census.gov/geo/maps-data/data/gazetteer2010.html}{on the census website}
+
+We will start by loading the file with
+%
+\begin{jlblock}[census]
+census_data = load("Gaz_ua_national.csv")
+\end{jlblock}
+%
+and although this looks like a DataFrame, it isn't. Note that using \texttt{typeof(census\_data)} returns \texttt{CSVFiles.CSVFile} type, which isn't as useful as a DataFrame. So instead we can pipe the output from the file to the \texttt{DataFrame} constructor.  
+%
+\begin{jlblock}[census]
+census_data = load("Gaz_ua_national.csv") |> DataFrame
+\end{jlblock}
+%
+and checking the type shows that it is now a \texttt{DataFrame}.
+
+\subsection{Answering Census Questions}
+
+There are a number of questions that we can answer.  The questions are listed and then the approach to finding the answer.  
+
+\begin{enumerate}
+
+\item What are the top 10 areas in population?
+\item How many population areas are west of 120 degrees longitude?
+\item Give a histogram plot in terms of population? (What are good bin sizes?)
+\item What is the total population of all areas?
+\item What the top 10 area in housing units?
+\item What is the total number of housing units?
+\item What is the average number of people per housing units for all areas?
+\item For the top 10 area in population, find the average number of people per housing unit?
+\item What are the top 10 areas in land size?
+\item What are the top 10 areas in water size?
+\item What are the Massachusetts areas in the data?
+\item What is the average population, median and standard deviation of the areas?
+\end{enumerate}
+
+\subsection{Sorting Dataframes}
+
+We can answer the first question with a simple sort, which is from the
+\texttt{Query} package.
+
+\begin{jlblock}[census]
+census_data |> 
+  @orderby_descending(_.POP10) |> 
+  DataFrame |> 
+  df->first(df,10)
+\end{jlblock}
+returns:
+\begin{jlcode}[census]
+census_data |> 
+  @orderby_descending(_.POP10) |> 
+  DataFrame |> 
+  df->first(df,10) |> display
+\end{jlcode} 
+\printpythontex[verbatim][breakanywhere=true]
+
+\begin{enumerate}
+\item  \texttt{census\_data} starts with the original DataFrame.
+\item  \texttt{\textbar{}\textgreater{}\ @orderby\_descending(\_.POP10)} sorts by the column \texttt{POP10}. The \texttt{\_} is like we saw above an anonymous function and the dot notation is used like a struct, but in this case returns the column of that name.
+\item \texttt{\textbar{}\textgreater{}\ DataFrame} then switches it back to a dataframe.
+\item \texttt{\textbar{}\textgreater{}\ df-\textgreater{}head(df,10)} returns only the first 10 columns of the dataframe.
+\end{enumerate}
+
+\subsubsection{Filtering the data}
+
+Let's try to find all of the location to the west of 120 degrees west
+longitude. This is store in the column INTPTLONG. We can find all of
+these by using the \texttt{@filter} macro.
+
+\begin{jlblock}[census]
+census_data |> @filter(_.INTPTLONG < -120) |> DataFrame |> nrow
+\end{jlblock}
+%
+which returns 279.
+
+The new parts of this is the \texttt{@filter} command which returns only the rows of the dataframe in which the INTPTLONG column is smaller that -120. Also the \texttt{nrow} command returns the number of rows in the dataframe.
+
+\subsection{Histogram of the Population}
+
+To produce a histogram of the population, we will use the \texttt{histogram} function of the package \texttt{StatsPlots}. \href{https://github.com/JuliaPlots/StatsPlots.jl}{Check out the
+documentation}. If we do:
+%
+\begin{jlblock}[census]
+histogram(census_data[!,:POP10])
+\end{jlblock}
+%
+then we get the following plot: 
+%
+\begin{center}
+%plot{plots/data-analysis/histogram.tex}{data}
+\includegraphics[width=4in]{images/ch16/plot04.png}
+\end{center}
+
+The trouble with this is that there are many many census areas with very
+little population. We can fix this with a log scale. If you enter
+
+\begin{jlblock}[census]
+census_data[!,:POP10] |> 
+  arr->histogram(arr,xscale=:log10,xlims=(10^3,10^7))
+\end{jlblock}
+
+then the result is: 
+\begin{center}
+\includegraphics[width=4in]{images/ch16/plot05.png}
+\end{center}
+
+
+\subsubsection{Adding another column to the Dataframe}
+
+We are interested in finding the highest housing density, that is the
+number of people per housing units. We will create a new column to do
+this:
+
+\begin{jlblock}[census]
+census_data = census_data |> @mutate(HOUSE_DENSITY = _.POP10 / _.HU10);
+\end{jlblock}
+%
+and now sorting:
+%
+\begin{jlblock}[census]
+census_data |> @orderby_descending(_.HOUSE_DENSITY) |> DataFrame |> df->first(df,5)
+\end{jlblock}
+%
+shows the result as
+\begin{jlcode}[census]
+result = census_data |> @orderby_descending(_.HOUSE_DENSITY) |> DataFrame |> df->first(df,5)
+display(result)
+\end{jlcode}
+\printpythontex[verbatim][breakanywhere=true]
+
+\section{Analyzing information about Olympic Athletes}
+
+Let's look at another data file. Download the file \href{other/OlympicAthletes_0.csv}{OlympicAthletes\_0.csv}, which lists all olympic medals between 2000 and 2012 and save it somewhere that you can access it from Julia. It is a comma separated file (CSV). Load it as a dataframe.
+
+Here's some questions to answer:
+%
+\begin{enumerate}
+\item  What is the total number of medals given in all Olympics in the dataset?
+\item  Who had the most olympic gold medals in the Summer 2000 games? How many medals?
+\item  Collectively taking each olympics, give the top 10 athletes by number of medals.
+\item  Who has the most Olympic Silver medals in the data set (Collectively over multiple olympics)
+\item  Produce a new DataFrame that lists total number of medals by country.  Produce a histogram of the total number of medals.
+\item  Plot the number of medals that the U.S. collected over each olympic year.
+\item  What is the age with the most number of total medals.
+\item  Produce a new data set with total number of medals per sport per year.   What are the top five sports over the past 4 olympics.
+\end{enumerate}
+
+
+\subsection{Loading the file}
+\begin{jlcode}[data]
+using CSVFiles
+\end{jlcode}
+%
+Since it it comma delimited, the following will load the file:
+%
+\begin{jlverbatim}
+oly = load("OlympicAthletes_0.csv") |> DataFrame;
+\end{jlverbatim}
+\begin{jlcode}[data]
+oly = load("other/OlympicAthletes_0.csv") |> DataFrame;
+\end{jlcode}
+
+%
+and view the first few rows with
+%
+\begin{jlblock}[data]
+first(oly,5)
+\end{jlblock}
+results in \jlc[data]{display(first(oly,5))} \printpythontex[verbatim][breakanywhere=true]
+
+It's helpful to have column names without spaces in them, so we will
+replace all of the spaces with underscores.
+%
+\begin{jlblock}[data]
+rename!(oly, Dict(
+    Symbol("Gold Medals")=>:Gold_Medals,
+    Symbol("Silver Medals")=>:Silver_Medals,
+    Symbol("Bronze Medals")=>:Bronze_Medals,
+    Symbol("Total Medals")=>:Total_Medals,
+    ))
+\end{jlblock}
+
+The dataset is ready now and we'll go through each of the questions. 
+
+\paragraph{1. What is the total number of medals given in all Olympics in the dataset?}
+
+This will be the sum of the \texttt{Total\_Medals} column:
+
+\begin{jlblock}[data]
+sum(oly[!,:Total_Medals])
+\end{jlblock}
+
+which returns \jlc[data]{print(sum(oly[!,:Total_Medals]))} \printpythontex[verb].
+
+\paragraph{2. Who had the most olympic gold medals in the Summer 2000 games? How many medals?}
+
+In this case, we will get a subset of the DataFrame and sort by Total
+Medals or
+
+\begin{jlblock}[data]
+oly |>
+  @filter(_.Year == 2000) |>
+  @orderby_descending(_.Total_Medals) |>
+  DataFrame |>
+  df -> first(df,5)
+\end{jlblock}
+\begin{jlcode}[data]
+oly |>
+  @filter(_.Year == 2000) |>
+  @orderby_descending(_.Total_Medals) |>
+  DataFrame |>
+  df -> first(df,5) |>
+  display
+\end{jlcode}
+\printpythontex[verbatim][breakanywhere=true].
+%
+which shows that Aleksey Nemov of Russia had the most with 6 medals.
+
+
+\paragraph{3. Collectively taking each olympics, give the top 10 athletes by number of medals.}
+
+We need to do a bit of work for this one. Since over all olympics for
+each athlete we need to add up all of the medals. This is known as
+grouping a dataset and the \texttt{Query} package does this. Before we
+answer the question about the athletes, consider a simpler example:
+
+\begin{jlblock}[data]
+cars = DataFrame(
+  name=["Fred","Fred","Fred","Jose","Jose","Caroline"],
+  car=["Camry","Rav4","Corolla","Odyssey","Rio","Prius"]
+)
+\end{jlblock}
+
+lists 3 people and the cars they own. We want to summarize the data as
+the total number of cars each person has. If we
+
+\begin{jlblock}[data]
+cars |> @groupby(_.name)
+\end{jlblock}
+
+and although a bit hard to read, it is now a list of the 3 people and
+collectively the cars they own:
+
+\begin{jlblock}[data]
+cars |>
+  @groupby(_.name) |>
+  @map({Name=_.name,Num_cars=length(_.car)}) |>
+  DataFrame
+\end{jlblock}
+
+Let's now do the same with the Olympic Athlete dataset:
+
+\begin{jlblock}[data]
+oly |>
+  @groupby(_.Sport) |>
+  @map(key(_))
+\end{jlblock}
+
+shows the top list of the Sports. We can then find the number of
+athletes listed for each sport in the following way:
+
+\begin{jlblock}[data]
+oly |>
+  @groupby(_.Sport) |>
+  @map({Sport=key(_), Number_of_Athlete=length(_.Athlete)})
+\end{jlblock}
+
+Lastly, to actually answer the question at the top of this section, how
+we find the total number of medals for each athlete.
+
+First, we group the data by Athlete's name (in the Athlete column) To
+see what happens with this, do
+
+\begin{jlblock}[data]
+oly |>
+  @groupby(_.Athlete) |>
+  @map({Athlete = key(_), total = sum(_.Total_Medals)}) |>
+  @orderby_descending(_.total) |>
+  DataFrame
+\end{jlblock}
+
+\paragraph{4. Who has the most Olympic Silver medals in the data set
+(Collectively over multiple olympics)}
+
+This is very similar to that above except that the Silver Medals are
+examined instead. I will leave it up to you to figure this out.
+
+\paragraph{5. Produce a new DataFrame that lists total number of medals by country. Produce a histogram of the total number of medals.}
+
+This is similar to the total numbers by athletes:
+
+\begin{jlblock}[data]
+medals = oly |>
+  @groupby(_.Country) |>
+  @map({Country=unique(_.Country)[1],Total_Medals=sum(_.Total_Medals)})  |>
+  @orderby_descending(_.Total_Medals) |>
+  DataFrame;
+\end{jlblock}
+
+which does the following
+
+\begin{enumerate}
+\item  groups the dataset by country.
+\item  summarizes the data into a new dataframe which is country and total medals
+\item  sorts them in decreasing order.
+\end{enumerate}
+%
+and the following (which uses \texttt{StatsPlots}):
+%
+\begin{jlblock}[data]
+@df medals histogram(:Total_Medals,bins=120,leg=false,
+					xlabel="total medals", ylabel="Number of Countries")
+\end{jlblock}
+%
+which results in
+%
+\begin{center}
+\pgfplotsset{scale=0.8}
+\plot{plots/data-analysis/medals-hist.tex}{data}
+\end{center}
+
+\paragraph{6. Plot the number of medals that the U.S. collected over each olympic year.}
+
+In this case, we need to just get a subset of the U.S. medals:
+%
+\begin{jlblock}[data]
+us_medals_by_year = oly |>
+  @filter(_.Country == "United States") |>
+  @groupby(_.Year) |>
+  @map({Year = key(_), Total_Medals = sum(_.Total_Medals)})  |>
+  @orderby(_.Year) |>
+  DataFrame
+\end{jlblock}
+
+and the following gives a decent plot:
+
+\begin{jlblock}[data]
+@df us_medals_by_year bar(:Year,:Total_Medals,leg=false,xlabel="Year",ylabel="U.S. Medals")
+\end{jlblock}
+
+\begin{center}
+\pgfplotsset{scale=0.8}
+\plot{plots/data-analysis/medals-by-year.tex}{data}
+\end{center}
+%\begin{figure}
+%\centering
+%\includegraphics[width=4in]{images/ch16/plot07.png}
+%\caption{Plot of U.S. Medals by Year}
+%\end{figure}
+
+
+\paragraph{7. What is the age with the most number of total medals?}
+
+In this case, we group by age and sum total medals:
+%
+\begin{jlblock}[data]
+medals_by_age = oly |>
+  @groupby(_.Age) |>
+  @map({Age = key(_), Total_Medals = sum(_.Total_Medals)}) |>
+  @orderby_descending(_.Total_Medals)
+\end{jlblock}
+%
+show that age 24 has the most medals.
+
+\paragraph{8. Produce a new data set with total number of medals per sport per year. What are the top five sports in medals for 2002,2012?}
+
+First, we'll consider the 2002 year:
+%
+\begin{jlblock}[data]
+oly |>
+  @filter(_.Year == 2002) |>
+  @groupby(_.Sport) |>
+  @map({Sport=key(_),Total_Medals=sum(_.Total_Medals)}) |>
+  @orderby_descending(_.Total_Medals)
+\end{jlblock}
+%
+results in Ice Hockey, Cross Country Skiing, Short-Track Speed Skating,
+Biathlon and Alpine Skiing.
+
+And in 2012:
+%
+\begin{jlblock}[data]
+oly |>
+  @filter(_.Year == 2012) |>
+  @groupby(_.Sport) |>
+  @map({Sport=key(_),Total_Medals=sum(_.Total_Medals)}) |>
+  @orderby_descending(_.Total_Medals)
+\end{jlblock}
+
+This shows the top 5 are Swimming, Athletics (Track and Field), Rowing,
+Football (Soccer) and Hockey (probably field hockey).
+
+
+\section{Missing Data}
+
+Before finishing the questions, we need to deal with missing data in the dataset.  It's a very common situation in a real dataset and does in this situation.  Julia has a standard data type called \texttt{Missing} and it has a single value of that data called \texttt{missing}. The \href{https://docs.julialang.org/en/latest/manual/missing/}{julia Documentation on Missing Data} is a good place to read up on details of this.
+
+There is some interesting properties of this. For example
+%
+\begin{jlblock}[data]
+missing + 6
+\end{jlblock}
+
+returns \texttt{missing} and pretty much any operation on a missing
+value returns missing because the idea is that if you don't know the
+value, how can calculate it.
+
+\subsection{Missing Data in a Dataset}
+
+Take the following dataset:
+%
+\begin{jlblock}[data]
+simpsons = DataFrame(
+  name=["Homer","Marge","Lisa","Bart","Maggie"],
+  age =[45,42,8,10,1],
+  salary = [50000,25000,10000,missing,missing],
+  favorite_food = ["pork chops","casserole","salad","hamburger",missing]
+)
+\end{jlblock}
+%
+where a number of missing values have been put in. We'll notice
+something different about the data types. If we look at the salary
+column:
+
+\begin{jlblock}[data]
+typeof(simpsons[!,:salary])
+\end{jlblock}
+
+we see that the type is \jlc[data]{print(typeof(simpsons[!,:salary]))} \printpythontex[verb] which means that the type of elements in the array are \texttt{Union\{Missing,Int64\}} which is julia's way of saying that the type can be either \texttt{Missing} or \texttt{Int64}.
+
+Now, let's get down to some analyzing of the data. If we want to find the largest age by
+%
+\begin{jlblock}[data]
+maximum(simpsons[!,:age])
+\end{jlblock}
+%
+which returns 45, but if we want to find the mean salary:
+
+\begin{jlblock}[data]
+mean(simpsons[!,:salary])
+\end{jlblock}
+%
+we get \texttt{missing}, which makes sense from the above discussion
+that nearly every operation with missing returns missing. Instead, we
+may want to ignore the missing values, so we can use the
+\texttt{skipmissing} function.
+
+\begin{jlblock}[data]
+sal = skipmissing(simpsons[!,:salary])
+\end{jlblock}
+
+we get \jlc[data]{print(sal)} \printpythontex[verb], which seems quite complicated in that we get another array, however, if we
+%
+\begin{jlblock}[data]
+mean(sal)
+\end{jlblock}
+%
+then it finds the mean of the non-missing values and returns \jlc[data]{print(mean(sal))} \printpythontex[verb]. 
+
+
+\subsection{Missing values in the Olympic data}
+
+If we just find the average age of all in the Olympic database, then
+
+\begin{jlblock}[data]
+mean(oly[!,:Age])
+\end{jlblock}
+%
+we get \texttt{missing} however, if we
+%
+\begin{jlblock}[data]
+oly[!,:Age] |> skipmissing |> mean 
+\end{jlblock}
+%
+then the result is \jlc[data]{oly[!,:Age] |> skipmissing |> mean |> print} \printpythontex[verb]. 

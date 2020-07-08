@@ -1,0 +1,157 @@
+% !TEX root = scientific-computing.tex
+
+% this needs to be at the top of each file with the \plot command and the word in the [] is the session for pythontex. 
+\begin{jlcode}[diffeq]
+using Plots, PGFPlotsX
+pgfplotsx()
+\end{jlcode}
+
+\chapter{Differential Equations} \label{ch:diffeq}
+
+Another extremely important topic in Scientific Computation is that of differential equations.  These arise obviously in mathematics, but also in most other scientific fields including biology, chemistry, engineering, and economics.  Also, it is rare that a differential equation has a nice closed form solution, so often numerical methods must be used to get a solution. 
+
+We will discuss two often-used methods for solving differential equations, Euler's method and Runge-Kutta methods and then delve into a very nice robust julia package.
+
+A \textbf{differential equation} is simply an equation that has derivatively in it.  For example
+\begin{align*}
+y'' + 4 y = 0
+\end{align*}
+It is important to note that the \textbf{order} of a differential equation is the degree of the highest derivative, so in the example above, it is two.  The following procedure can covert non order-1 differential equation to one that is a first-order system. 
+
+Let $y_1 = y$, then $y_2 = y' = y_1'$.  Lastly $y'' = y_1'' = y_2'$ and using the differential equation $y''=-4y$, this can be written:
+\begin{align*}
+y_1' & = y_2  \\
+y_2' & = -4y_1
+\end{align*}
+or in matrix form:
+\begin{align*}
+\begin{bmatrix}
+y_1 \\ y_2 
+\end{bmatrix}' = \begin{bmatrix}
+y_2 \\ -4y_1
+\end{bmatrix}
+\end{align*}
+and as long as $y^{(n)}$, the highest-order term, can be isolated algebraically, one can write the differential equation as
+\begin{align*}
+\mathbf{y}' = F(\mathbf{y})
+\end{align*}
+
+
+\section{Euler's Method}
+
+We start with one of the simplest methods to solve a differential equation.  If we have are solving
+\begin{align}
+y' = f(y,t), \qquad y(0) = y_0 \label{eq:diff_eqn:simple}
+\end{align}
+%
+with the understanding that we will solve this at a discrete set of points, so we let $y_n = y(t_n)$ and $t_k = t_0 + k\Delta t$, where $\Delta t$ is a small time step.  We can then replace $y'$ with the approximation:
+\begin{align*}
+y' \approx \frac{y_{n+1}-y_n}{t_{n_1}-t_n} 
+\end{align*}
+and the differential equation in (\ref{eq:diff_eqn:simple}) is 
+\begin{align*}
+\frac{y_{n+1}-y_n}{t_{n_1}-t_n} & = \frac{y_{n+1}-y_n}{\Delta t} = f(y_n,t_n)
+\end{align*}
+and solving for $y_{n+1}$, we get:
+\begin{align*}
+y_{n+1} & = y_n + \Delta t f(y_n,t_n)
+\end{align*}
+and this iterative (or difference equation) is known as \textbf{Euler's Method}.  
+
+\subsection{Implementing Euler's method in Julia}
+
+Let's take a look at Euler's method in Julia. Of course, we'll write a function to evaluate this and there are a few things that we need for the function:
+\begin{itemize}
+\item The function $f$, which is the right-hand side.  Note that it takes in two variables. 
+\item An initial point, $(t_0,y_0)$.  There will be two real arguments for this. 
+\item A step size $\Delta t$.  
+\item Either a final $t$ value or a number of steps to run Euler's method.  We'll use the number of steps, a positive integer.  
+\end{itemize}
+
+We'll return two arrays for the \verb!t! and \verb!y! values. 
+
+We'll also implement this as a for loop.  Although there are some 
+
+
+\begin{jlblock}[diffeq]
+function euler(f::Function, t0:: Real, y0::Real, dt::Real, num_steps::Integer)
+  num_steps > 0 || throw(ArgumentError("The number of steps must be positive."))
+  dt > 0 || throw(ArgumentError("The step size dt must be positive."))
+  t=LinRange(t0,t0+num_steps*dt,num_steps+1)
+  y=zeros(Float64,num_steps+1)
+  y[1] = y0
+  for i=1:num_steps
+    y[i+1] = y[i] + dt*f(t[i],y[i])
+  end
+  (t,y)
+end
+\end{jlblock}
+
+\subsection{Example}
+
+We'll solve $y'=y$, $y(0)=1$ for \verb!dt=0.1! and $10$ steps.  
+\begin{jlblock}[diffeq]
+t,y = euler( (t,y) -> y, 0, 1, 0.1, 10)
+\end{jlblock}
+and this returns \jlc[diffeq]{display(euler( (t,y) -> y, 0, 1, 0.1, 10))} \printpythontex[verbatim]
+
+This results the $t$ and $y$ values based on Euler's method.  However, perhaps it's more interesting to see a plot.  Also, note that the analytic solution to this is $y=e^x$, so the plot of the approximate solution using Euler's method as well as the analytic solution is 
+
+\begin{jlblock}[diffeq]
+plot(t,y,label="Euler's solution")
+plot!(t->exp(t),0,1,label="Analytic solution")
+\end{jlblock}
+
+\begin{center}
+plot{plots/diffeq/euler1.tex}{diffeq}
+\end{center}
+
+\section{Runge Kutta methods}
+
+There is a family of other methods called the \href{https://en.wikipedia.org/wiki/Runge–Kutta_methods}{\textbf{Runge Kutta methods}} that are relatively simple with a high order of accuracy.  One version that was often a standard version is what is called the 4th-order Runge-Kutta or RK4 method is
+
+\begin{align*}
+y_{n+1} = y_n + \frac{h}{6} \bigl(k_1+2k_2+2k_3+k_4 \bigr)
+\end{align*}
+where
+\begin{align*}
+k_1 & = f(t_n,y_n) \\
+k_2 & = f\biggl(t_n + \frac{h}{2}, y_n + \frac{h}{2} k_1 \biggr) \\
+k_3 & = f\biggl(t_n + \frac{h}{2}, y_n + \frac{h}{2} k_2 \biggr) \\
+k_4 & = f(t_n + h, y_n + h k_3 \biggr) \\
+\end{align*}
+
+\subsection{RK4 in julia}
+
+The following is the \texttt{rk4} method in julia.  It is very similar to euler's method...
+
+\begin{jlblock}[diffeq]
+function rk4(f::Function, t0:: Real, y0::Real, dt::Real, num_steps::Integer)
+  num_steps > 0 || throw(ArgumentError("The number of steps must be positive."))
+  dt > 0 || throw(ArgumentError("The step size dt must be positive."))
+  t=LinRange(t0,t0+num_steps*dt,num_steps+1)
+  y=zeros(Float64,num_steps+1)
+  y[1] = y0
+  for i=1:num_steps
+    k1 = f(t[i],y[i])
+    k2 = f(t[i]+dt/2,y[i]+dt/2*k1)
+    k3 = f(t[i]+dt/2,y[i]+dt/2*k2)
+    k4 = f(t[i]+dt,y[i]+dt*k3)
+    y[i+1] = y[i] + dt/6*(k1+2k2+2k3+k4)
+  end
+  (t,y)
+end
+\end{jlblock}
+and we can use this to solve $y'=y$, $y(0)=1$ by
+\begin{jlblock}[diffeq]
+t,y = rk4((t,y) -> y, 0, 1, 0.1, 10)
+\end{jlblock}
+and the results are \jlc[diffeq]{print((t,y))} \printpythontex[verbatim]
+
+
+
+\section{Using the \texttt{DifferentialEquations} package} 
+
+There is a very mature and robust package for solving differential equations aptly called \texttt{DifferentialEquations}.  We will show a few examples to get a feeling for how to use the package, but as you can tell from \href{https://docs.sciml.ai/dev/index.html}{the documentation}, that there are a lot of 
+
+

@@ -1,0 +1,551 @@
+% !TEX encoding = UTF-8 Unicode
+% !TEX root = scientific-computing.tex
+%
+
+\chapter{Creating New Data Types in Julia}\label{ch:comp-types}
+
+Although there are many standard Julia data types that are useful for Scientific Computing, we can make new types called a composite data type.  We will start with developing a \texttt{PlayingCard} type that simplifies the poker hand simulations that we will see in Chapter \ref{ch:poker}.  We will also look at a \texttt{Polynomial} data type and finally create a \texttt{Root} type that will help with the rootfinding from Chapter \ref{ch:rootfinding}.
+
+\section{Basics of Julia's Composite Datatype} 
+
+The composite data type in Julia is called a \texttt{struct} and consists of some number of fields of an existing type.  A simple one is 
+\begin{jlblock}[newtype]
+struct Mystruct
+  num::Integer
+  str::String
+end
+\end{jlblock}
+%
+which has the two fields \texttt{num} and \texttt{str}. We are using the standard naming convention of a struct starting with a capital letter.  We can create an object\footnote{Although a Julia struct is not an object in the sense of an object-oriented language, the terminology is pervasive in the Julia community.} of type \texttt{Mystruct} by
+% 
+\begin{jlblock}[newtype]
+m = Mystruct(13,"hello")
+\end{jlblock}
+and we can access the fields of the struct with \texttt{m.num} and \texttt{m.str}.  They will return \jlc[newtype]{print(m.num)} \printpythontex[verb]~ and \jlc[newtype]{print(m.str)} \printpythontex[verb].   Also, you can get an array of the names of the fields with \jlb[newtype]{fieldnames(Mystruct)}.  Note that the \texttt{fieldnames} command needs the datatype, not a variable of the datatype. This example is not very realistic, but the rest of the chapter will include more-practical examples. 
+
+One cannot change the fields of a \texttt{struct}.  If \texttt{m} is defined as above and you try
+\begin{jlcode}[newtype-err]
+struct Mystruct
+  num::Integer
+  str::String
+end
+m=Mystruct(13,"hello")
+\end{jlcode}
+
+\begin{jlverbatim}[newtype-err]
+m.str = "goodbye"
+\end{jlverbatim}
+\begin{jlcode}[newtype-err]
+try
+  m.str = "goodbye"
+catch e
+ printstyled(stderr,"ERROR: ", bold=true, color=:red)
+ printstyled(stderr,sprint(showerror,e), color=:light_red)
+ println(stderr)
+end
+\end{jlcode}
+%
+%\stderrpythontex
+%
+then Julia will report the error:
+\stderrpythontex[verbatim]
+
+This is exactly like trying to redefine a \texttt{const}.  As we will see most of the examples in this text are these constant types of \texttt{struct}s, you can make non-constant \texttt{structs} using the \texttt{mutable} keyword.  For example:
+%
+\begin{jlblock}[newtype]
+mutable struct MutableStruct
+  a::Float64
+  b::Integer
+end
+\end{jlblock}
+%
+and then define an object such as
+\begin{jlblock}[newtype]
+s=MutableStruct(1,2)
+\end{jlblock}
+%
+Then the redefinition \jlb[newtype]{s.a=4.5} is allowed.  Note: that if you try to do \jlv[newtype]{s.b=7.1}, the you will get the error:
+\begin{jlcode}[newtype2]
+mutable struct MutableStruct
+  a::Float64
+  b::Integer
+end
+s=MutableStruct(1,2)
+try
+  s.b = 7.1
+catch e
+ printstyled(stderr,"ERROR: ", bold=true, color=:red)
+ printstyled(stderr,sprint(showerror,e), color=:light_red)
+ println(stderr)
+end
+\end{jlcode}
+\stderrpythontex[verbatim]
+%
+which happens because you are trying to assign the value 7.1 to an integer, since the field \texttt{b} is an integer.    
+
+
+\section{A Card datatype}
+
+In Chapter \ref{ch:poker}, we will use simulations to determine the probabilities of certain poker hands. Although the calculations can be done with built-in types, the result would be difficult to read and hard to understand.  Here, we will create a \texttt{Card} datatype that will help clarify the code by creating a type with a rank (1 to 13 corresponding to Ace, 2, through 10, Jack, Queen, King) and a suit (1 to 4 corresponding to the suits ``spades'', ``hearts'', ``diamonds'', ``clubs''), which we define as the characters arrays:
+%
+\begin{jlblock}[newtype2]
+ranks = ['A','2','3','4','5','6','7','8','9','T','J','Q','K'];
+suits = ['\u2660','\u2661','\u2662','\u2663']
+\end{jlblock}
+\begin{jlcode}[newtype]
+ranks = ['A','2','3','4','5','6','7','8','9','T','J','Q','K'];
+suits = ['\u2660','\u2661','\u2662','\u2663']
+\end{jlcode}
+
+%
+where the suits are the unicode characters for the suits. See
+\href{http://docs.julialang.org/en/latest/manual/unicode-input/}{the
+julia documentation on unicode}. We will create the following datatype:
+\begin{jlblock}[newtype2]
+struct Card
+    rank::Integer
+    suit::Integer
+end
+\end{jlblock}
+%
+and if we enter \jlb[newtype2]{c = Card(3,2)}, then this will create a card of rank 3 and suit 2 (hearts). To access the fields of the type, we use dot notation. For example \jlb[newtype2]{c.rank}
+will return \jlc[newtype2]{print(c.rank)} \printpythontex[verb] ~and \jlb[newtype2]{c.suit} will return \jlc[newtype2]{print(c.suit)} \printpythontex[verb]. 
+
+Julia allows the printing of any type of data in a specified way.  To do this we will define \texttt{Base.show} for our type. To do this, enter
+\begin{jlblock}[newtype2]
+Base.show(io::IO, c::Card) = print(io, string(ranks[c.rank],suits[c.suit]))
+\end{jlblock}
+%
+where the arguments of \texttt{Base.show} should be of type \texttt{IO}
+and then a print should be called as above. The result will be the concatenation of the characters corresponding to the rank and suit of the card.  Try this out by typing \jlb[newtype2]{c} and you should get \jlc[newtype2]{print(c)} \printpythontex[verb]. 
+
+
+Note: this is different than just a \texttt{print} or \texttt{println} within a function, which is highly discouraged. This function is called whenever a card type is displayed. 
+
+When julia calls \texttt{Card(3,2)}, actually, it executes a special function called a constructor, which creates an instance of the type, which we have called an object. Although Julia creates the basic constructor--that is the one that fills the fields of the type in the order defined, we may want another constructor that will take an integer between 1 and 52 and returns the appropriate card. The following example
+will do this.
+
+\begin{jlblock}[newtype][numbers=left]
+struct Card
+  rank::Int
+  suit::Int
+  Card(r::Int,s::Int)=(1<=r<=13) ? ( (1<=s<=4) ? new(r,s) :
+    throw(ArgumentError("The argument for suit must be between 1 and 4")) ) :
+	throw(ArgumentError("The argument for rank must be between 1 and 13")) 
+  Card(i::Int) = !(1<=i<=52) ? 
+    throw(ArgumentError("The argument must be an integer between 1 and 52")) : 
+    i%13==0 ? new(13,div(i,13)) : new(i%13,div(i,13)+1)
+end
+\end{jlblock}
+\begin{jlcode}[newtype]
+Base.show(io::IO, c::Card) = print(io, string(ranks[c.rank],suits[c.suit]))
+\end{jlcode}
+
+There are a number of things about this definition:
+\begin{itemize}
+\item It is still a struct with two members (rank and suit)
+\item There is a function \jlv{new} used.  This will use the default constructors that is \jlv{new(3,4)} would define rank to be 3 and suit to be 4. 
+\item The lines 4--6 define a Card with the two arguments.  However, it tests to make sure that you put in valid ranks and suits.  This is a bit complicated in that there is a nested tenary \verb!if-then-else! command. 
+\item The lines 7--9 define the constructor that takes a single integer and checks if that is valid. It uses integer division and the modulo \verb!%! to calculate the rank and suit.  
+\end{itemize}
+
+
+Notice that there is a function \texttt{new} that is called. The first
+constructor is the default constructor. If a second one is made (as is
+in this example), you need to explicitly define the standard constructor as well. See
+\href{https://docs.julialang.org/en/latest/manual/constructors/\#man-constructors-1}{additional
+information about constructors in the Julia Documentation}.
+
+If you enter the above \texttt{struct} we saw the error:
+\begin{jlverbatim}
+invalid redefinition of constant Card
+\end{jlverbatim}
+Recall, from the beginning of this chapter, this is because a \texttt{struct} is fixed, much like if a constant is declared and then it is redefined.  We want to replace the first \texttt{struct} with this one, so we will restart the kernel by selecting \emph{kernel} in Jupyter and then select \emph{restart kernel}\footnote{In Chapter \ref{ch:modules} we will put structs in a separate file as a module and use a package called \texttt{Revise} to automatically handle changes without these errors.}.  You will need to reenter all of the needed cells, like the one with the ranks and suits as well as the one that starts \texttt{Base.show}.  In Chapter \ref{ch:modules}, we will put structs inside a module and not have to restart the kernel as you develop a new datatype.   
+
+The second constructor will create a card from a number between 1 and 52 (and throw an error if it is not in this range). We can now create a card from an integer. For example \jlv{c1=Card(45)} will return  \jlc[newtype]{print(Card(45))} \printpythontex[verb]. 
+
+As we will see in Chapter \ref{ch:poker}, a hand is also helpful in playing card games, we will define a hand in the following way:
+%
+\begin{jlblock}[newtype]
+struct Hand
+    cards::Array{Card,1}
+end
+\end{jlblock}
+%
+which is just an array of cards. (Note: there is nothing here that
+specifies that the Hand has to be 5 cards, but that could be included by
+doing some error checking in the constructor).  An example hand would be 
+%
+\begin{jlblock}[newtype]
+h1=Hand([Card(2,3),Card(12,1),Card(10,1),Card(10,4),Card(5,2)])
+\end{jlblock}
+%
+and again, since this looks a bit ugly, we can define a \verb!Base.show! method
+for a hand:
+%
+\begin{jlblock}[newtype]
+Base.show(io::IO,h::Hand) = print(io, string("[",join(h.cards,", "),"]"))
+\end{jlblock}
+\begin{jlcode}[newtype]
+h1=Hand([Card(2,3),Card(12,1),Card(10,1),Card(10,4),Card(5,2)])
+\end{jlcode}
+%
+now \texttt{h1} should now return \jlc[newtype]{display(h1)} \printpythontex[verbatim]
+
+We will return to this in Chapter \ref{ch:poker} where we will use this datatype to help with simulations.  
+
+
+\section{Polynomials--A parametric data type}\label{sect:parametric-types}
+
+Recall that a polynomial is the sum of nonnegative powers of $x$ with constant coefficients.  That is anything of the form:
+\begin{align*}
+P(x) & = a_0 + a_1 x + a_2 x^2 + \cdots + a_n x^n 
+\end{align*}
+and we may want to solve problems with them and it may be helpful to have a data type of this form.  We can represent any polynomial by the coefficients.  For example, the following will construct a datatype that is a polynomial with integer coefficients\footnote{As well will see in Chapter \ref{ch:lin-alg-intro}, a \texttt{Vector} is shorthand or an alias for a 1D array}: 
+\begin{jlverbatim}[poly]
+struct Polynomial
+  coeffs::Vector{Int64}
+end
+\end{jlverbatim}
+
+We can then represent the polynomial $P(x) = 2-x+3x^2$ with
+\begin{jlverbatim}[poly]
+p = Polynomial([2,-1,3])
+\end{jlverbatim}
+
+Let's say that we want to construct methods to add, subtract, scalar multiply and plot polynomials.  However, if we want to allow Polynomials with coefficients other than integer coefficients, such as rational or real or complex, then we would need to write a set of functions to do this for each datatype, which is 1) painfully dull, 2) hard to maintain since there are many copies of the same function and 3) unnecessary because Julia has a nice feature called a parametric type. 
+
+We could define the Polynomial as 
+\begin{jlverbatim}[poly]
+struct Polynomial{T}
+  coeffs:Vector{T}
+end
+\end{jlverbatim}
+%
+which has Polynomial that has a type \verb!T!. This now allows with one definition to have a polynomial of integers, floats, complex and rationals.  However, this would also allow us to define a polynomial of strings or \texttt{Card}s, which doesn't make any sense.  We can restrict the coefficients to number types with 
+%
+\begin{jlblock}[poly]
+struct Polynomial{T <: Number}
+  coeffs::Vector{T}
+end
+\end{jlblock}
+%
+which allows the coefficient to be any type that is a subtype of \texttt{Number}, which is what the notation \texttt{ <: Number} means.  This defines \texttt{T} to be any type that is a Number\footnote{Recall that Chapter \ref{ch:data-types} explain the data typing system and how to determine subtypes of a type.}.  
+
+For example, using the above definition of \texttt{Polynomial}, we can define the following
+%
+\begin{jlblock}[poly]
+poly1=Polynomial([1,2,3])
+poly2=Polynomial([1.0,2.0,3.0])
+poly3=Polynomial([2//3,3//4,5//8])
+poly4=Polynomial([im,2+0im,3-2im,-im])
+poly5=Polynomial([n for n=1:6])
+\end{jlblock}
+%
+and the result of the last will be \jlc[poly]{print(poly5)} \printpythontex[verbatim]
+%
+The beginning of the output, \verb|Polynomial{Int64}| explains that it is a type polynomial.  The \texttt{Int64} within the \texttt{Polynomial} type explains what type the coefficients have.  If you enter the variable name, like \texttt{poly3}, then you will see the type of the coefficient for that variable as well. 
+
+It would be nice if the result looked like a polynomial. In this case,
+we can use the \texttt{Base.show} command.
+
+
+\begin{jlblock}[poly]
+function Base.show(io::IO, p::Polynomial)
+  str = ""
+  for i = 1:length(p.coeffs)
+      str = string(str,p.coeffs[i],"x^",i-1,i<length(p.coeffs) ? "+" : "")
+  end
+  print(io, str)
+end
+\end{jlblock}
+%
+
+Now, if we reevaluate \texttt{poly5}, then Julia returns \jlc[poly]{print(poly5)} \printpythontex[verbatim] 
+
+Another nice thing that we'd like to do is have an add command and use the symbol \texttt{+} for this.  However, if we enter: 
+%
+\begin{jlcode}[poly-err]
+struct Polynomial{T <: Number}
+  coeffs::Vector{T}
+end
+poly1=Polynomial([1,2,3])
+poly2=Polynomial([1.0,2.0,3.0])
+\end{jlcode}
+\begin{jlblock}[poly-err]
+function +(p1::Polynomial{T},p2::Polynomial{S}) where {T <: Number, S <: Number}
+  Polynomial(p1.coeffs+p2.coeffs)
+end
+\end{jlblock}
+If we try \jlv[poly-err]{poly1+poly2}
+\begin{jlcode}[poly-err]
+try
+  poly1+poly2
+catch e
+  printstyled(stderr,"ERROR: ", bold=true, color=:red)
+  printstyled(stderr,sprint(showerror,e), color=:light_red)
+  println(stderr)
+end
+\end{jlcode}
+we get the error:
+\stderrpythontex[verbatim]
+%
+so we need to do:
+%
+\begin{jlblock}[poly]
+import Base.+
+\end{jlblock}
+\begin{jlcode}[poly]
+function +(p1::Polynomial{T},p2::Polynomial{S}) where {T <: Number, S <: Number}
+  Polynomial(p1.coeffs+p2.coeffs)
+end
+\end{jlcode}
+%
+and then we can rerun the function \verb!+! above.  This is now a function that adds two polynomials.  Note that the coefficients do not need to be the same type, so there are two types, \texttt{T} and \texttt{S} available. If we now enter \jlb[poly]{poly1+poly2}, the result is 
+%
+\jlc[poly]{print(poly1+poly2)} \printpythontex[verbatim]
+
+Note that this now a polynomial with floating point coefficients.
+
+\subsection{Exercise}
+
+Similar to the function above, write functions that 
+\begin{itemize}
+\item subtract two polynomials,
+\item multiply a polynomial by a constant.   
+\item multiply two polynomials.  Note: remember to multiply polynomials you need to distribute, not just multiply the coefficients.  
+\end{itemize}
+
+Note: to use \texttt{-} and \texttt{*}, you'll need to do \verb|import Base.-,Base.*|
+
+
+\hypertarget{evaluating-the-polynomial}{%
+\subsection{Evaluating the
+polynomial}\label{evaluating-the-polynomial}}
+
+Another helpful function is to actually evaluate the polynomial. The
+basic way to do this is to sum the terms of the polynomial.  A possible way to write this is 
+%
+\begin{jlblock}[poly]
+function eval(poly::Polynomial{T},x::S) where {S <: Number, T <: Number}
+  sum=zero(T)  # this is zero is the type T
+  for i=1:length(poly.coeffs)
+    sum += poly.coeffs[i]*x^(i-1)
+  end
+  sum
+end
+\end{jlblock}
+and now if we evaluate \texttt{poly1} when \verb!x=-2!, we enter \jlb[poly]{eval(poly1,-2)} and get \jlc[poly]{print(eval(poly1,-2))} \printpythontex[verb]. 
+
+An alternative to this is to use \href{https://en.wikipedia.org/wiki/Horner\%27s_method}{Horner's form of the polynomial}.  That is, we can write a polynomial of the form $a_0 + a_1 x+ a_2 x^2 + \cdots a_n x^n$ as 
+\begin{align*}
+((\cdots((a_n x + a_{n-1})x+a_{n-2}) + \cdots)x +a_2)x + a_1)x + a_0
+\end{align*}
+%
+and in julia this can be written as:
+\begin{jlverbatim}[poly]
+function eval(p::Polynomial{T},x::Number) where {T <: Number}
+  result = p.coeffs[end] 
+  for i=length(p.coeffs)-1:-1:1
+    result = x*result+p.coeffs[i]
+  end
+  result
+end
+\end{jlverbatim}
+
+Evaluating a polynomial using Horner's form is more efficient from a computational standpoint. Evaluating a polynomial of degree $n$ in standard form takes $O(n^2)$ operations, where as in Horner's form is $O(n)$.
+
+{\color{red} \textbf{Go over this in detail}}
+
+\section{Plotting the Polynomial}
+
+Recall that using the \texttt{Plots} package, one can consider plotting the polynomial by creating a function that pulls out the coefficients.  However, the \texttt{Plots} package has a related package called \texttt{RecipesBase} that allows one to create a plotting recipe.  That is if \texttt{p} is a \texttt{Polynomial}, then we can write \texttt{plot(p)} and it will plot the polynomial.  Let's see how and don't forget to add the package and then enter \jlb[poly]{using RecipesBase}.
+
+The package \texttt{RecipesBase} includes the macro \texttt{@recipe} and although the documentation is sparse, \href{https://github.com/JuliaPlots/RecipesBase.jl}{this page} is helpful in the background.  The basic idea on a plot recipe is to do the following:
+%
+\begin{jlcode}[poly]
+using Plots, RecipesBase, PGFPlotsX
+pgfplotsx()
+\end{jlcode}
+\begin{jlverbatim}[poly]
+@recipe f(t::TheType,...)
+
+end
+\end{jlverbatim}
+%
+where \texttt{TheType} is any datatype (either built-in or user defined).  The recipe needs to return some number of vectors of points (depending on if it is 1D, 2D or a 3D plot). A simple version of this for type  \texttt{Polynomial} is
+%
+\begin{jlblock}[poly][numbers=left]
+@recipe function f(poly::Polynomial,xmin::Number=-2,xmax::Number=2)
+  xpts = LinRange(xmin,xmax,200)
+  ypts = map(x->eval(poly,x),xpts)
+  xpts,ypts
+end
+\end{jlblock}
+%
+where line 2 creates an array of x values of length 200, then line 3 creates the y values for each x value.  Line 4 returns a tuple of the pairs of points.  We can now use this to plot a polynomial and we will need to \texttt{using\ Plots} to:
+
+\begin{jlblock}[poly]
+plot(poly1)
+\end{jlblock}
+
+and since we defaulted the plot range from -2 to 2, we get the following
+plot: 
+\begin{center}
+\pgfplotsset{scale=0.6}
+\plot{plots/comp-type/plot01.tex}{poly}
+\end{center}
+%
+and if we want to specify the plotting range:
+
+\begin{jlblock}[poly]
+plot(poly1,0,4)
+\end{jlblock}
+
+we get
+\begin{center}
+\pgfplotsset{scale=0.6}
+\plot{plots/comp-type/plot02.tex}{poly}
+\end{center}
+
+
+
+\subsection{Changing other parameters}
+
+But wait\ldots{} There's more\ldots{} One of the fantastic things about using \texttt{RecipesBase} is that we can still use all of the other parameters associated
+with plot as we normally would. For example:
+
+\begin{jlblock}[poly]
+plot(poly1,0,4,linecolor=:orange,title="A quadratic", lw=2, legend=false)
+\end{jlblock}
+%
+produces the plot:
+%
+\begin{center}
+\pgfplotsset{scale=0.6}
+\plot{plots/comp-type/plot03.tex}{poly}
+\end{center}
+
+
+\subsection{Setting Default parameters}
+
+Recipes also allow to set default parameters. Let's say that if we want
+to always plot a polynomial green without a legend that we can put these
+default parameters in the recipe:
+
+\begin{jlblock}[poly]
+@recipe function f(poly::Polynomial,xmin::Number=-2,xmax::Number=2)
+  legend --> false
+  linecolor --> :green
+  xpts = LinRange(xmin,xmax,200)
+  ypts = map(x->eval(poly,x),xpts)
+  xpts,ypts
+end
+\end{jlblock}
+
+If we have this definition then \jlb[poly]{plot(poly1,0,4)} produces the following plot:
+
+\begin{center}
+\pgfplotsset{scale=0.6}
+\plot{plots/comp-type/plot04.tex}{poly}
+\end{center}
+
+\section{A Rootfinding datatype}
+
+The last example of a new data type will be related to finding the root of a function.  We explored this in Chapter \ref{ch:rootfinding}.  One major issue with that function is that if Newton's method did not find the root, it wasn't clear.  The method stopped if it reached 10 steps or actually found the root. There was no way that you (the user) knew which case occurred.  We will use a \texttt{struct} to store the information about the rootfinding in this section. 
+
+
+In section \ref{sect:newton}, we developed the following function for solving Newton's method:
+%
+\begin{jlblock}[roots2]
+using ForwardDiff
+function newton(f::Function,  x0::Real)
+  local n=0
+  local dx=f(x0)/ForwardDiff.derivative(f,x0)
+  while abs(dx)>1e-6
+    x0 = x0-dx
+    dx = f(x0)/ForwardDiff.derivative(f,x0)
+    n += 1 
+    if n==10  # if too many steps are taken, break out of the while loop
+      return x0
+    end
+  end
+  x0
+end
+\end{jlblock}
+%
+Although if the function has a root and the method converges to it, then this method will probably find it, however, just running it, we don't know if it has exceeded the total number of steps (hardcoded as 10 steps in this example) or reached the root.  
+
+We are going to define a \texttt{struct} to deliver more information as follows: 
+\begin{jlblock}[roots2]
+struct Root
+  root::Float64    #  approximate value of the root
+  x_eps::Float64   #  estimate of the error in the x variable
+  f_eps::Float64   #  function value at the root f(root)
+  num_steps::Int   #  number of steps the method used
+  converged::Bool  #  whether or not the stopping criterion was reached
+  max_steps::Int   #  the maximum number of steps allowed
+end
+\end{jlblock}
+%
+and then return an object of type \texttt{Root}.  Thus we will replace the function \texttt{newton} above with 
+\begin{jlblock}[roots2]
+function newton(f::Function,  x0::Real)
+  local n=0
+  local dx=f(x0)/ForwardDiff.derivative(f,x0)
+  while abs(dx)>1e-6
+    x0 = x0-dx
+    dx = f(x0)/ForwardDiff.derivative(f,x0)
+    n += 1 
+    if n==10  # if too many steps are taken, break out of the while loop
+      return Root(x0,dx,f(x0),n,false,10)
+    end
+  end
+  Root(x0,dx,f(x0),n,true,10)
+end
+\end{jlblock}
+%
+and note that we store extra information that is returned.  Let's run Newton's method on $f(x)=x^2-2$ as an example by evaluating
+\begin{jlblock}[roots2]
+newton(x->x^2-2,1)
+\end{jlblock}
+returns \jlc[roots2]{print(newton(x->x^2-2,1))} \printpythontex[verbatim]
+%
+which again gives a lot of information, but perhaps not very easy to read since you would need to know each of the fields and what each means.  We could then create a \texttt{Base.show} function to help with readability:
+%
+\begin{jlblock}[roots2]
+function Base.show(io::IO,r::Root)
+  if(r.converged)
+    str = string("The root is approximately x̂ = ",r.root," \n")
+    str = string(str,"An estimate for the error is ",r.x_eps,"\n")
+    str = string(str,"with f(x̂) = ",r.f_eps,"\n")
+    str = string(str,"which took ",r.num_steps," steps")
+  else
+    str = string("The root was not found within ",r.max_steps," steps.\n");
+    str = string(str,"Currently, the root is approximately x̂ = ",r.root," \n")
+    str = string(str,"An estimate for the error is ",r.x_eps,"\n")
+    str = string(str,"with f(x̂) = ",r.f_eps,"\n")
+  end
+  print(io,str)
+end
+\end{jlblock}
+%
+which will print out different information if it converges or not.  If we now run Newton's method on $f(x)=x^2-2$ with \jlb[roots2]{newton(x->x^2-2,1)} then we get: \jlc[roots2]{print(newton(x->x^2-2,1))} \printpythontex[verbatim]
+%
+and then if we run it on a function that does not have a root. Recall in Chapter \ref{ch:rootfinding}, we ran Newton's method on $f(x)=x^2+1$.  Since $x^2$ is nonnegative then the function $x^2+1$ is positive and so never is zero.  If we enter
+\begin{jlblock}[roots2]
+newton(x->x^2+1,2)
+\end{jlblock}
+returns
+\jlc[roots2]{print(newton(x->x^2+1,2))} \printpythontex[verbatim]
+
+\subsection{Exercise}
+
+Adapt the \texttt{Root} struct and the \texttt{newton} function to include the following: 
+\begin{itemize}
+\item Extend the \texttt{Root} struct to include an array of the x values that save all of the steps of Newton's method.  (Recall that you will need to restart the kernel to change the \texttt{struct}). 
+\item Store the \verb!x! values that Newton's method iterates through and then assign them to the \texttt{Root} datatype. You will need to update the \verb!newton! method.  Before the \texttt{while} loop, set the array equal to the initial point \verb!x0! and each time in the while loop perform a push to the new value. 
+\item Write a \texttt{showSteps} function that takes in an object of type \texttt{Root} and prints out a table of the x values.  
+\item Test the new struct, \verb!newton! and \verb!showSteps! function.  
+\end{itemize}
+

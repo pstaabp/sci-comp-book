@@ -1,0 +1,161 @@
+% !TEX root = scientific-computing.tex
+% !TEX encoding = UTF-8 Unicode
+
+\hypertarget{ch:variables}{%
+\chapter{Storing number and strings and using Julia syntax}\label{ch:variables}}
+
+Solving Scientific Computing problems ultimately boils down to manipulating data and at the most basic is that of strings and numbers.  We begin with understanding these data types and how to store values in them. 
+
+We also show some of julia syntax, which looks like other languages (like python).  Hopefully you have some basic knowledge of computing, but no assumption of any particular language is necessary. 
+
+\section{Numbers}
+
+Not surprisingly, the most important data type in scientific computing--at least at the most atomic level is numbers.  Numbers in computation mimic those in mathematics with some important differences.  Julia like most computing languages have two main number types, integers and floating points.  Julia's integers and much like mathematical integers in that they store numbers like $0, 10, -400$.  Floating-point numbers generally are approximations to real or decimal numbers and more details will be covered in Chapter \ref{ch:data-types}.  
+
+Julia also has a rational data type for numbers commonly though of as fractions like $-\frac{2}{3}$ or $\frac{22}{7}$.  Recall that typically $i$ represents $\sqrt{-1}$, the base imaginary number.  Complex numbers like $2+3i$ are also native to julia.  We will explore both rational and complex numbers in greater depth in Chapter \ref{ch:data-types}.
+
+\section{Assignment Statement and Variables}
+
+Anything can be stored as a variable using the single equal sign like
+\jlb[vars]{x=6}. This is an assignment operator, which creates the number 6
+and stores it under the name \texttt{x}.  
+
+And now that the variable \verb!x! is stored, we can use it in calculations.  For example
+\begin{jlblock}[vars]
+x+3
+\end{jlblock}
+%
+returns \jlc[vars]{print(x+3)}\printpythontex[verb]. 
+
+Variables in julia, much like other languages are primarily sequences of alphanumeric characters as well as an underscore \verb!_!.  Primarily, a variable needs to start with a alphabetic character or \verb!_! and after the first character can contain numbers.  
+
+Julia also allows many unicode symbols in variable names, however not everything.  For example, all of the greek letters are allowed, so \verb!α=45! is valid. 
+
+To get a greek letter in Jupyter or the REPL, type \verb!\alpha!, hit the TAB key and it will be turned into an α.
+
+\subsection{Storing Variable in a Virtual Whiteboard}
+
+The details of storing variables in computer hardware isn't necessary, however, thinking of storing as writing variables and values on a whiteboard is a helpful paradigm.  Imagine a whiteboard with a column of variable names and a column of values.  For example, if we have
+\begin{jlblock}[vars]
+x=6
+y=-1
+z=8.5
+\end{jlblock}
+%
+then you can think of the whiteboard looking like:
+\begin{center}
+\begin{tabular}{r|r} 
+x & $6$ \\
+y & $-1$ \\
+z & $8.5$
+\end{tabular}
+\end{center}
+%
+If we evaluate the expression \jlb[vars]{x+3}, then the value of \verb!x! is looked up and the value 6 is substituted into the expression or \verb!6+3!.  
+
+If we change one of the values, like \jlb[vars]{y=y+5}, this means that the right hand side is evaluated to the value 4, then the 4 is placed into the whiteboard, which will now look like: 
+\begin{center}
+\begin{tabular}{r|r} 
+x & $6$ \\
+y & $4$ \\
+z & $8.5$
+\end{tabular}
+\end{center}
+%
+If you are thinking of how a piece of code works, often you will need to get to the point of writing down a version of the whiteboard.  
+
+
+\section{Strings}
+
+In many Scientific Computing fields, such as Data Science, strings arise often and it is important to understand some of the basics of them. In Julia, a string is a sequence of characters surrounded by \verb!""! (double quotes). For example:
+%
+\begin{jlblock}[vars]
+str ="This is a string"
+\end{jlblock}
+%
+and if you enter \jlb[vars]{typeof(str)} then you should see \jlc[vars]{print(typeof(str))} \printpythontex[verb]. The individual parts of the string are called characters, which have type \texttt{Char} and are by default Unicode Characters (which will we see are super helpful). A few other helpful things about strings are
+
+\begin{itemize}
+\item The length of a string is found using the \texttt{length} command.  \verb!length(str)! returns \jlc[vars]{print(length(str))} \printpythontex[verb].
+\item   To access the first element of the string, type \texttt{first(str)}, the last is found by \texttt{last(str)} and the 3rd character for example is \verb!str[3]!.  In julia, string indexing starts at 1.  
+\item To turn other data types into string, use \texttt{string}. For example \texttt{string(3.0)} returns the string \verb!"3.0"!.
+\item \end{itemize}
+
+\subsection{String Operations}
+
+We saw how to access elements of a string.  Another helpful operation is that of concatentation, or the merging of two strings.  
+
+If
+\begin{jlblock}[vars]
+str1 = "The tide is high "
+str2 = "and I'm having fun."
+\end{jlblock}
+we can concatenate in two ways, with the \verb!*! operator symbol or the \verb!string()! function.  Both
+\begin{jlblock}[vars]
+str1 * str2 
+string(str1,str2)
+\end{jlblock}
+%
+returns \jlc[vars]{print(string(str1,str2))} \printpythontex[verb]~I find the second option clearer in that \verb!*! is an odd choice for string concatenation.  Many languages including java and ecmascript (javascript) use \verb!+! instead for string concatenation.  
+
+Another cute operation for strings is the caret \verb!^! operation. This could be helpful and a (not so helpful) example is 
+\begin{jlblock}[vars]
+"Hip, hip, hooray! "^3
+\end{jlblock}
+%
+returns \jlc[vars]{print("Hip, hip, hooray! "^3)} \printpythontex[verb]~. Other important functions related to strings can be found at \href{https://docs.julialang.org/en/stable/stdlib/strings/}{Julia's documentation on strings}
+
+\subsection{String Interpolation}
+
+Mixing strings and other variables together is often needed. If you have a variable \verb!x! and would like to insert it at the end of 
+\begin{jlverbatim}[vars]
+"The value of x is "
+\end{jlverbatim}
+we can use concatenation as above to do this, but instead we will use string interpolation by putting a \verb!$! in front of a variable.
+\begin{jlblock}[vars]
+result = "The value of x is $x"
+\end{jlblock}
+and the result will be \jlc[vars]{print(result)} \printpythontex[verbatim]
+
+
+
+\section{Expressions}
+
+An expression is a combination of variables, data elements (like numbers and strings), operations (like + or *) and functions (like \verb!length!).  We've seen a number of expressions throughout this chapter so far like 
+\begin{jlblock}[vars]
+x = 6
+x+3
+str1 * str2
+length(str)
+\end{jlblock}
+
+In short, writing things in julia will consist of writing expressions (and slightly more complicated structures).  
+
+\section{Operator Precendence} \label{sect:operator:precedence}
+
+When we type out an expression like \jlb[vars]{11+2*(4+3)^3}, it is important to understand the order in which operators are performed. For mathematics, the PEMDAS pnemonic is helpful to rememember in that the order is:
+\begin{itemize}
+\item \emph{Parentheses}: The expression inside the ( ) are done first. For the example above, the \verb!4+3! is the first operation done.
+\item \emph{Exponentials}: The \verb!^! is done next.  Raise the 7 from above to the power of 3. 
+\item \emph{Multiplication and Division}: In this example, the \verb!2*(343)! is done next
+\item \emph{Addition and Subtraction}: Lastly add 11 to the result.  
+\end{itemize}
+
+In any computing language, there are other operators as well and there is order to that precedence, so we will see that there are other things to think about. For example, the assignment operator, \verb!=! has the lowest precedence.  That is when assigning something to a variable, all calculations are done on the right side of the = before the assignment.  
+
+Details on all this can be found on the \href{https://docs.julialang.org/en/v1/manual/mathematical-operations/index.html#Operator-Precedence-and-Associativity-1}{Julia documentation page on operator precedence}.
+
+\section{Comments}
+
+A comment in computer code is sequences of characters which are ignored.  The purpose of a comment is to alert a human on what is going on.  You may have been told to write comments so that someone else who reads your code understands what you are doing. However, I have found that the person mostly like to read your code is you at a later date.  You should add comments for yourself. 
+
+In julia, a comment is anything to the right of a \verb!#!, pound sign or hash tag.  For example:
+
+\begin{jlblock}[vars][numbers=left]
+## This calculates the area of a circle
+r = 3
+pi*r^2 # this is the actual formula for the area
+\end{jlblock}
+
+Both lines 1 and 3 have comments.  On line 1, the entire line is ignore since the line starts with \verb!#!.  On line 3, everything after the 2 (the power) is ignored.  Also, notice that there are two hash tags on line 1 and 1 on line 3.  This is simply different style.  Since anything after a single \verb!#! is a comment, everything after the first one is ignored. 
+

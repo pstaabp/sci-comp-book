@@ -1,0 +1,82 @@
+% !TEX root = scientific-computing.tex
+% !TEX encoding = UTF-8 Unicode
+
+\chapter{Probability of Poker Hands} \label{ch:poker}
+
+This chapter will examine coming up with poker hands. If you are unfamiliar with poker or the hands of poker, here's a quick synopsis and the \href{https://en.wikipedia.org/wiki/List_of_poker_hands}{Wikipedia page on Poker Hands}.  And recall from Chapter \ref{ch:comp-types} that a card has both a rank (Ace, 2--10, Jack, Queen, King) and a suit (hearts, diamonds, clubs and spades). 
+
+In this chapter, we are only concerned with 5 cards with no jokers and just determining if a hand satisfies one of the following:
+
+\begin{itemize}
+\item \emph{Royal Flush:} the ranks of the cards are 10, J, Q, K, A and all cards have the same suit. 
+\item \emph{Straight Flush:} the ranks are sequential and all cards have the same suit. 
+\item \emph{Flush:} All cards have the same suit.  Generally excludes straight flushes. 
+\item \emph{Straigh:} The ranks of the 5 cards are sequential.  Generally exclude straight flushes. 
+\item \emph{Four of a kind:} four of the cards have the same rank
+\item \emph{Full House:} two cards have the same rank, the other three cards have the same rank.  The suit doesn't matter. 
+\item \emph{Three of a kind:} three of the cards have the same rank.  The other two cards do not have the same rank.  That is, don't count full houses. 
+\item \emph{Two pairs:} Two cards have the same rank.  Two of the remaining cards have the same rank, but different than the first two pair.  The 5th card does not make it a full house. 
+\item \emph{One pair:} two cards have the same rank.  The remaining cards do not make it a different type of hand (full house, three of a kind, etc.) 
+\item \emph{No pair or nothing:} the cards don't form any other hand. 
+\end{itemize}
+
+\section{A user-defined package}
+
+In Chapter \ref{ch:modules}, we will create a module, but it is helpful for the topics in this chapter to use that module.  Download \texttt{PlayingCards.jl} from ???.  This module contains the \verb!Card! and \verb!Hand! types we developed in Chapter \ref{ch:comp-types}.  
+
+This is a module/package, which like other packages, need to be loaded	
+with either the \texttt{using} or \texttt{import} keyword. Since this is
+just a file in the current directory, we first run the file and then
+load it
+
+\begin{jlverbatim}
+include("PlayingCards.jl")
+using .PlayingCards
+\end{jlverbatim}
+\begin{jlcode}[poker]
+include("../julia-files/PlayingCards.jl")
+using .PlayingCards
+\end{jlcode}
+
+%
+where the \texttt{.} represents a local (current directory) module.  Note that when running a module that has been added (downloaded), no . is needed.  
+
+% note: we have loading in this module in the preamble of the text: 
+
+
+Once we have the function written, we should test it on a few known and
+unknown full house hands. Try testing:
+%
+\begin{jlblock}[poker]
+fh1 = Hand([Card(4,1),Card(4,3),Card(4,4),Card(7,1),Card(7,2)])
+fh2 = Hand([Card(4,1),Card(4,3),Card(7,4),Card(7,1),Card(7,2)])
+fh3 = Hand([Card(2,1),Card(4,3),Card(4,4),Card(7,1),Card(7,2)])
+\end{jlblock}
+%
+The first 2 are full house hands and the last is not.
+
+
+Now, let's perform a Monte Carlo simulation on a large number of poker
+hands and test if this gives the result we want.  We'd like to have a function that tests many different hands.  In general, this is called a trial, so we'll have following which passes in a function that takes a hand and a number of trials and returns the fraction of times that hand satisfies that function.  First, here's the \verb!runTrial! function. 
+
+\begin{jlblock}[poker]
+using Random
+function runTrial(f::Function, trials::Integer)
+  deck=collect(1:52) # creates the array [1,2,3,...,52]
+  numhands=0
+  for i=1:trials
+    shuffle!(deck)
+    h = Hand(map(Card,deck[1:5]))  # creates a hand of the first five cards of the shuffled deck
+    if(f(h))
+        numhands+=1
+    end
+  end
+  numhands/trials
+end
+\end{jlblock}
+
+
+%
+This returns \jlc[poker]{print(runTrial(isFullHouse,10_000))} \printpythontex[verb]. 
+It would be helpful to put this in a function. We will do this and put all
+of these in a package together in the chapter \ref{ch:modules}. 

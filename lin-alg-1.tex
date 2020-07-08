@@ -1,0 +1,53 @@
+% !TEX root = scientific-computing.tex
+
+\chapter{Introduction to Linear Algebra} \label{ch:lin-alg-intro}
+
+Linear Algebra is probably the most important mathematical field for Scientific Computation\footnote{And if you ask someone in the field, they will say most important field PERIOD!}.  This chapter covers the basics of Linear Algebra in Julia and how it can be used to solve scientific problems. 
+
+\section{Vectors and Matrices}
+
+Vector and matrices are the building blocks of linear algebra.  In short a Vector is simply a 1D array and in julia the type \verb!Vector<T>! is shorthand for \verb!Array{T,1}!.  We can make a vector just like we did with an array.  For example, \jlb[la]{x = [1,2,3]} makes an array of length three and the output: \jlc[la]{display(x)} \printpythontex[verbatim]
+%
+shows that it is a 1D integer array of length 3. 
+ 
+ Similarly, there is a \verb!Matrix! type which is an alias for a 2D array.  If 
+ \begin{jlblock}[la]
+ A = [i+j for i=1:3,j=1:3]
+ \end{jlblock}
+ then we get the results \jlc[la]{display(A)} \printpythontex[verbatim]
+
+\subsection{Addition and Subtraction of Vectors and Matrices}
+
+All of the construction methods for arrays of both 1D and 2D as seen in Chapter \ref{ch:arrays} can be used.   If we have 
+\begin{jlblock}[la]
+B = [ 3 2 1; 0 2 0; 1 2 3]
+\end{jlblock}
+then \jlb[la]{A+B} returns \jlc[la]{display(A+B)} \printpythontex[verbatim] and \jlb[la]{A-B} returns \jlc[la]{display(A-B)} \printpythontex[verbatim]
+
+Similarly if \jlb[la]{x=collect(1:5)} and \jlb[la]{y=collect(1:2:9)} then \jlb[la]{x+y} returns \jlc[la]{display(x+y)} \printpythontex[verbatim] and \jlb[la]{x-y} returns \jlc[la]{display(x-y)} \printpythontex[verbatim]
+
+\subsection{scalar multiplication} 
+
+Scalar multiplication of vectors and matrix work as expected using the \verb!*! operator, which is implied if multiplying on the left by a number. Using \verb!A! and \verb!x! above, \jlb{3x} returns \jlc[la]{display(3x)} \printpythontex[verbatim]
+%
+and \jlb[la]{-4A} returns \jlc[la]{display(-4A)} \printpythontex[verbatim]
+
+\subsection{Matrix-vector products}
+
+Let \jlb[la]{x=[1, 4, 5]}, and \verb!A! and \verb!B! as defined above.  The vector-matrix product \jlb[la]{A*x} returns \jlc[la]{display(A*x)} \printpythontex[verbatim] and the matrix-matrix products \jlb[la]{A*B} is \jlc[la]{display(A*B)}. 
+
+
+\subsection{Matrix Transpose}
+
+Recall that the tranpose of a matrix $A$ is a matrix where the $i$th row and $j$ column of A becomes the $i$th column and $j$th row of the transpose.  
+
+\subsection{Identity Matrix}
+
+\section{Matrix Inverse}
+
+
+\section{Eigenvalues and Eigenvectors}
+
+
+
+

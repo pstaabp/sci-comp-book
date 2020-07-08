@@ -1,0 +1,594 @@
+% !TEX root = scientific-computing.tex
+
+\hypertarget{ch:number-theory}{%
+\chapter{Number theory and Algorithm Development}\label{ch:number-theory}}
+
+
+This chapter investigates some aspects of Number Theory, which is the study of the integers. Prime numbers are one of the most important aspects of Number Theory. We will use this topic as an example of scientific computing. We will look at examples of computational number theory throughout this chapter and then spend some time investigating the efficiency of the code here.
+
+\hypertarget{prime-numbers}{%
+\section{Prime Numbers}\label{prime-numbers}}
+
+Recall that a prime number is an integer greater than 1 whose only factors are 1 and itself. Most languages have built-in versions of testing for primes, and julia has a package for this, and we will see it toward the end of this chapter.  However, we will start by writing our own versions.
+
+Based on the definition, if we can find the factors of an integer, then we can use it to determine if the number is prime.  The following function returns all of the factors of a given integer:
+%
+\begin{jlblock}[nt][numbers=left]
+function findAllFactors(n::Integer)
+  factors = [1]
+  for i=2:n-1
+    if mod(n,i)==0
+      push!(factors,i)
+    end
+  end
+  push!(factors,n) # n is always a factor of itself
+end
+\end{jlblock}
+
+This function starts with an array (list) consisting of only the number 1 (line 2). It then checks all numbers between 1 and n to see if each is a factor (the \verb!mod(n,i)==0! on line 4). If it finds a factor, add it to the list with the \texttt{push} function.\footnote{If you read carefully in Chapter \ref{ch:functional-programming}, there was an emphasis on not using loops and using other functional-programming ideas instead.  You may ask yourself, why didn't we use a \texttt{map} or \texttt{reduce} function. The answer is that in this case, an integer is passed in and an array is returned.  This doesn't fit either of these.  You could create an array of \texttt{collect(1:n)} to create an array, but the resulting array is smaller in sized.  The \texttt{map} command always returns in an array of the same size.  In short, a loop is needed for this.}
+
+
+\subsection{Exercise}
+
+\begin{itemize}
+\item Type in the function above and test it on various prime and non-prime (composite) numbers. 
+\item Use the function above to write a function \texttt{isPrime} that returns true or false depending on if the input is prime. Hint: recall the definition of prime and use that with the \verb!findAllFactors! function to determine primeness.
+
+  The template for the function should be
+
+\begin{jlblock}[nt]
+function isPrime(n::Integer)
+
+end
+\end{jlblock}
+\end{itemize}
+
+
+\section{Finding Primes}
+
+We'll now try to find a prime number. Many languages have a function
+called \texttt{nextPrime} that takes a number as an input and returns
+a prime number greater than that.  Before presenting the code, here's some things to think about:
+
+\begin{itemize}
+\item What is the template for the function.  We want a function that takes in an integer and returns an integer.  Here's a good template for that: 
+\begin{jlblock}[nt]
+function nextPrime(n::Integer)
+
+end
+\end{jlblock}
+
+\item We will need to test if \texttt{n+1} is prime (that the smallest possible one).
+\item If \texttt{n+1} is prime, return it, if not check the next one. 
+\item One way to approach this is a loop (probably a while loop because we don't know how many step to do before finding a prime), but this is another great example of a recursive function.  
+\end{itemize}
+
+Here's the result: 
+\begin{jlblock}[nt]
+nextPrime(n::Integer) = isPrime(n+1) ? n+1 : nextPrime(n+1)
+\end{jlblock}
+%
+where again, we have used a ternary \texttt{if-then-else}.  This first checks if \texttt{n+1} is prime. If it is return it, if not call \texttt{nextPrime} on the next integer. 
+
+
+\subsection{Exercise}
+
+\begin{itemize}
+\item Test this function on some numbers that are less than 100 to see if it is working. 
+\item Find the smallest prime less than 1 million. 
+\item  Write a function that produces the first \texttt{n} prime numbers.  The template for this will look like:
+\begin{jlblock}[nt]
+function getPrimes(n::Integer)
+  
+end
+\end{jlblock}
+
+\end{itemize}
+
+
+\section{Perfect Numbers}
+
+A \textbf{perfect number} is an integer, \texttt{n} which has the sum of
+the factors (except itself) equal to \texttt{n}. For example, 28 is a
+perfect number because the factors are 1,2,4,7,14,28. The sum of the
+factors (except itself) is 1+2+4+7+14=28 A nice function would be to
+check if a number is perfect. Here's a shell:
+
+\begin{jlblock}[nt]
+function isPerfect(n::Integer)
+   # find the factors of n and check the sum
+end
+\end{jlblock}
+
+The following will go through the steps to look at this.  And we will use the function \verb!findAllFactors! that we wrote above.  
+
+First, entering \jlb[nt]{findAllFactors(28)} returns the array \jlc[nt]{print(findAllFactors(28))} \printpythontex[verb]. To use the definition of a perfect number, we need to exclude the last element of the array above.  One way to do this is to use the \verb|pop!| function.  If we define
+\begin{jlblock}[nt]
+A = findAllFactors(28)
+pop!(A)
+A
+\end{jlblock}
+then the result is \jlc[nt]{print(A)}\printpythontex.  Then we can test if the sum is 28 by \jlb[nt]{sum(A)==28}.  
+
+We can put all of this together as the function.
+\begin{jlblock}[nt]
+function isPerfect(n::Integer)
+  A=findAllFactors(n)
+  pop!(A)
+  sum(A)==n
+end
+\end{jlblock}
+
+We should also test this.  We know that 6 and 28 are perfect, so \jlb[nt]{isPerfect(6)} returns \jlc[nt]{print(isPerfect(6))}\printpythontex[verb]~and \jlb[nt]{isPerfect(28)} returns \jlc[nt]{print(isPerfect(28))}\printpythontex[verb].  Many other integers are not perfect, so \jlb[nt]{isPerfect(10)} returns \jlc[nt]{print(isPerfect(10))}\printpythontex[verb]~and \jlb[nt]{isPerfect(100)} returns \jlc[nt]{print(isPerfect(100))}\printpythontex[verb].
+
+Although there is nothing wrong with the above function, we can shorten it a bit by not removing the last element of the array.  Note that if we sum all of the factors of a perfect number $n$, the sum will be $2n$.  The following is alternative way to do this. 
+
+\begin{jlblock}[nt]
+isPerfect2(n::Integer) = sum(findAllFactors(n)) == 2n
+\end{jlblock}
+
+Note that in the function at the end is \texttt{2n}, which has a implicit multiply in there.  If you multiply any variable on the left with a numerical literal (that is a number, not a variable that is a number), then multiply is implied.  
+
+\subsection{Timing the two functions and the \texttt{BenchmarkTools} package}
+
+An objective way to determine which of the two functions is better is to test if one is faster.  Let's test if 10,000 is perfect or not.  Using \verb!@time! on both of these:
+\begin{jlblock}[nt]
+@time isPerfect(10_000)
+\end{jlblock}
+returns \jlc[nt]{display(@time isPerfect(10_000))} \printpythontex[verbatim]
+%
+Running:
+\begin{jlblock}[nt]
+@time isPerfect2(10_000)
+\end{jlblock}
+returns \jlc[nt]{display(@time isPerfect2(10_000))} 
+\printpythontex[verbatim]  
+These both seem to return about the same time, but trying running each of these a number of times.  You'll notice that since the time is fairly short, the results bounce around quite a time.  This is common for functions that don't take much time. 
+
+We'll examine the \texttt{BenchmarkTools} package.  Recall that you need to add it using the package manager decribed in Appendix \ref{ch:packages}.  Once you have added the package, we'll need to tell julia that we're using it by
+\begin{jlblock}[nt]
+using BenchmarkTools
+\end{jlblock}
+
+And this package has the macro \verb!@btime!, which is much like the \verb!@time! macro, however is much more accurate in that it runs the code a few times, reporting the average results.  
+
+\begin{jlblock}[nt]
+@btime isPerfect(10_000)
+\end{jlblock}
+%
+returns (and you'll notice it takes a while) \jlc[nt]{display(@btime isPerfect(10_000))} \printpythontex[verbatim]
+%
+and
+\begin{jlblock}[nt]
+@btime isPerfect2(10_000)
+\end{jlblock}
+results in \jlc[nt]{display(@btime isPerfect2(10_000))} \printpythontex[verbatim]
+
+Note that the $\mu s$ is microseconds where 1 $\mu s$ is $1/10^6$ seconds.  If you rerun each of these a few times, you'll get consistent results and times.  That's the point of the package \texttt{BenchmarkTools}.  It runs the code many times and returns an average time.  
+
+About the results, since both versions of the \texttt{isPerfect} function are nearly identical, you may want to check a wider range of numbers (try this for numbers in the millions) to see if there is a difference.  
+
+
+\section{Happy Numbers}
+
+Here's another fun example. A number $n$ is called \emph{happy} if you perform the following steps:
+\begin{enumerate}
+\item Take the digits of $n$ and square each one.
+\item Sum the squares.
+\item If the sum is 1, then the number is happy.  If not repeat these steps. 
+\end{enumerate}
+
+Note: it's also helpful that if this process results in the number 4,
+then you can never result in a sequence that reaches 1. You can call
+these number \emph{unhappy}.  
+
+Here's some examples:
+
+\begin{itemize}
+
+\item 13 is happy because $1^{2}+3^{2}=10$ and $1^{2}+0^{2}=1$, so the result ends in 1.
+\item
+  The number 19 is also a happy number  because $1^{2}+9^{2}=1+81=82$, then\\ $8^{2}+2^{2}=64+4=68$, then $6^{2}+8^{2}=36+64=100$, then $1^{2}+0^{2}+0^{2}=1$.
+\item The number $4$ isn't happy because
+
+\begin{itemize}
+\item  $4^{2}=16$, then
+\item $1^{2}+6^{2}=1+36=37$, then
+\item $3^{2}+7^{2}=9+49=58$, then
+\item $5^{2}+8^{2}=25+64=89$, then
+\item $8^{2}+9^{2}=64+81=145$, then
+\item $1^{2}+4^{2}+5^{2}=1+16+25=42$, then
+\item $4^{2}+2^{2}=16+4=20$, then
+  \item $2^{2}+0^{2}=4$
+  \end{itemize}
+%
+and since we have returned to 4, this will continue cycling, so we stop and say 4 is \emph{unhappy}. Any number in this sequence is unhappy as well.  (It has been proven that any unhappy number will eventually hit this cycle.)
+\end{itemize}
+
+\subsection{Computing Happy Numbers in Julia}
+
+Julia has a built-in function to take a number and split the digits called \verb!digits!.  For example \jlb[nt]{digits(1234)} returns \jlc[nt]{print(digits(1234))} \printpythontex[verb], where the position in the array is the digit in the corresponding place in the number.  For example, the 4 in the first slot in the array is the ones digit and the 1 is the thousands digit (since it is element 4 of the array). 
+
+Next, let's write a function called \texttt{isHappy} which determines
+if a number \texttt{n} is happy. The function should be recursive and
+return true if it is 1, return false if it is 4 and do the steps above
+otherwise. The template for the function should be
+
+\begin{jlblock}[nt]
+function isHappy(n::Integer)
+
+end
+\end{jlblock}
+
+Our first attempt will be with a loop.  We need to go through the digits, square the numbers and find the sum.  We can do this as
+%
+\begin{jlblock}[nt][numbers=left]
+function isHappy(n::Integer)
+  if n==1
+    return true
+  elseif n==4 
+    return false
+  else 
+    local d = digits(n)
+    local sum = 0
+    for i=1:length(d)
+      sum += d[i]^2
+    end
+    return isHappy(sum)
+  end
+end
+\end{jlblock}
+
+Here's a few things to note:
+\begin{itemize}
+\item Since we want a recursive function we call \jlv{isHappy} inside the function.
+\item Also since it is recursive, we need to make sure that there is a way to stop the recursion.  This occurs in the first two parts of the if statement.
+\item The for loop between lines 9 and 11 sum the squares of each of the digits.
+\item the \verb!return isHappy(sum)! statement on line 12 calls the function recursively on the sum of the digits.  
+\end{itemize}
+
+\subsection{Exercise}
+
+Try running the \verb!isHappy! code on many positive integers. 
+
+\subsection{Alternative forms}
+
+We can shorten the last block of code into the following:
+\begin{jlblock}[nt]
+function isHappy2(n::Integer)
+  if n==1
+    return true
+  elseif n==4 
+    return false
+  else 
+    return isHappy2(sum(x->x^2,digits(n)))
+  end
+end
+\end{jlblock}
+where instead of using a for loop, we sum the squares of an array using the \texttt{sum} command. 
+
+Lastly, we can write this a bit shorter again using the ternary \texttt{if-then-else} (but in this case, it is nested as
+\begin{jlblock}[nt]
+function isHappy3(n::Integer)
+  n == 1 ? true : (n == 4 ? false : isHappy3(sum(x->x^2,digits(n))))
+end
+\end{jlblock}
+%
+and unless you're strange (like me) and like such if-then-else statements, this is much less readable. 
+
+\subsection{Exercise}
+
+Test the three versions of \verb!isHappy! presented here using the macro \verb!@btime! from the package \verb!BenchmarkTools! to see if there is a difference in speed.  
+
+\subsection{Finding Happy numbers}
+
+One way to find happy numbers then is check a range of integers using
+the function you wrote above. For example, you can type
+
+\begin{jlblock}[nt]
+[isHappy(n) for n=1:100]
+\end{jlblock}
+%
+which will return an array of true/false if the number is happy or not.  Try running it. 
+
+This isn't so helpful.  If your look down through the list, it's hard to tell which number are happy and which are not.  A better way to do this is to use julia's built-in function \texttt{filter} that we saw in Chapter \ref{ch:arrays}.  For example,
+
+\begin{jlblock}[nt]
+filter(isHappy, 1:100)
+\end{jlblock}
+%
+returns all integers between 1 and 100 that are happy or
+
+\jlc[nt]{print(filter(isHappy,1:100))} \printpythontex[verbatim]
+
+We saw the \texttt{filter} command with an array, but you can also use it with a range as shown above.  
+
+\section{Primes can be big!!}
+
+If you do a quick google search on the largest prime number known,
+you'll see that primes are big. As of early 2020, the largest prime had
+24,862,048 digits. Let's not go that big.
+
+The number $2^{89}-1$ is prime. However, if we type \jlb[nt]{2^89-1} into julia,
+we get \texttt{-1}.  Does this imply that $2^{89}=0$? Recall that the
+problem with this is that $2^{89}$ does not fit into \texttt{Int64}
+and we are getting an overflow error without being informed. You would need at least 89 bits to store this number, so it could be stored as a \verb!Int128!. 
+
+As we saw in an earlier chapter, we can use \texttt{BigInt} so
+
+\begin{jlblock}[nt]
+n = big(2)^89-1
+\end{jlblock}
+
+will give \jlc[nt]{print(n)} \printpythontex[verb]. However, don't throw
+this at your \texttt{isPrime} function because it will not complete
+this because we have used a fairly bad algorithm for finding factors or
+testing for primality.
+
+
+\section{\texorpdfstring{Speeding up \texttt{isPrime}}{Speeding up is\_prime}}
+
+Let's time the \texttt{isPrime} function that you wrote above on a reasonable-sized number. With
+\begin{jlcode}[nt]
+function isPrime(n::Integer)
+  length(findAllFactors(n))==2
+end
+\end{jlcode}
+\begin{jlblock}[nt]
+@btime isPrime(1_000_003)
+\end{jlblock}
+and the results are \jlc[nt]{display(@btime isPrime(1_000_003))} \printpythontex[verbatim]
+%
+Although this may not seem slow, 1 million is small if you are studying prime numbers and as we saw in the previous section, they get large fast.   The reason this is slower is because \texttt{isPrime} relies on the \texttt{findAllFactors} function which checks every every number between 2 and $n-1$ to see if it is a factor. This is very inefficient, so we will try some ways to speed things up.
+
+
+\subsection{Speedup \#1: Rewrite \texttt{findAllFactors} to stop earlier}
+
+In the function \texttt{findAllFactors} we go to $n-1$ to check for a factor.  There's actually no reason to do this.  For example, consider $n=100$, the factors are (and you can check this) are $1,2,4,5,10,20,25,50,100$.  The second largest factor is at most half of the value $n$.  Let's consider then the following
+
+\begin{jlblock}[nt]
+function findAllFactors2(n::Integer)
+  factors = [1]
+  for i=2:div(n,2)
+    if mod(n,i)==0
+      push!(factors,i)
+    end
+  end
+  push!(factors,n)
+end
+\end{jlblock}
+where \texttt{div(n,2)} is integer division.  You will see in an exercise that doing \texttt{n/2} results in slowing down the function.  This is because doing \verb!n/2! results in a floating point, and all operations with floating points are slower than integers.  
+
+To show that this works:
+\begin{jlblock}[nt]
+@btime findAllFactors(10_000);
+\end{jlblock}
+results in \jlc[nt]{@btime findAllFactors(10_000);} 
+\printpythontex[verbatim] whereas 
+
+\begin{jlblock}[nt]
+@btime findAllFactors2(10_000);
+\end{jlblock}
+results in 
+%\jlc[nt]{@btime findAllFactors2(10_000)}
+\printpythontex[verbatim] and this is a significant speedup.  We will also a new version of \texttt{isPrime} to take advantage of this new factors algorithm.  
+
+\begin{jlblock}[nt]
+function isPrime2(n::Integer)
+  length(findAllFactors2(n))==2
+end
+\end{jlblock}
+
+If we run \jlb[nt]{@btime isPrime2(1_000_003)} we get 
+\jlc[nt]{display(@btime isPrime2(1_000_003))} \printpythontex[verbatim]
+which runs in about 50\% faster than our original \texttt{isPrime} function.  
+
+\subsection{Speedup \#2: Rewrite \texttt{findAllFactors} to not check all integers as factors}
+
+Notice that in both of the cases, we go through of the integers up to $n-1$ or $n \div 2$, whereas that isn't necessary because most of the time, factors come in pairs.  Consider $n=200$, We can write the factors in the following way:
+
+\begin{center}
+\begin{tabular}{cccccc}
+1 & 2 & 4 & 5 & 8 & 10 \\
+200 & 100 & 50 &  40 & 25 & 20
+\end{tabular}
+\end{center}
+%
+and there are pairs of factors and unless the number is a perfect square, they always occur in pairs.(Check $n=100$ as an example).  We will go through integers, but can stop at $\sqrt{n}$.  The following will compute this:
+\begin{jlblock}[nt][numbers=left]
+function findAllFactors3(n::Integer)
+  local x = floor(Int,sqrt(n)) # x is the integer smaller than or equal to sqrt(n)
+  local factors = [1,n]
+  local j=2 # keep track where to insert elements
+  for k=2:x-1
+    if n%k==0
+      # insert the new factors in the middle of the factors array
+      splice!(factors,j:(j-1),[k,div(n,k)])
+      j+=1
+    end
+  end
+  if x^2==n # if n is a perfect square
+    insert!(factors,j,x)
+  end
+  factors
+end
+\end{jlblock} 
+%
+and notice that if we try to evaluate time this:
+\begin{jlblock}[nt]
+@btime findAllFactors3(10_000)
+\end{jlblock}
+returns \jlc[nt]{display(@btime findAllFactors3(10_000))} \printpythontex[verbatim]
+
+Since we really want to test the speed of an \verb!isPrime! function, let's write:
+\begin{jlblock}[nt]
+function isPrime3(n::Integer)
+  length(findAllFactors3(n))==2
+end
+\end{jlblock}
+%
+and
+\begin{jlblock}[nt]
+@btime isPrime3(1_000_003)
+\end{jlblock}
+returns \jlc[nt]{@btime isPrime3(1_000_003)} \printpythontex[verbatim]
+
+and to compare to the original that we did above, this is about 1000 times faster and about 700 times faster than version 2.  
+
+\subsection{Speedup \#3: Don't use \texttt{findAllFactors} at all}
+
+If we are only interested with determining if a number is prime or not, we don't really need to calculate all of the factors.  Let's start with the \verb!findAllFactors3! function, which seems fast, but we will get rid of the array. Consider the following:
+\begin{jlblock}[nt]
+function isPrime4(n::Integer)
+  for k=2:floor(Int,sqrt(n)) # integer nearest sqrt(n)
+    if n%k==0
+      return false
+    end
+  end
+  true
+end
+\end{jlblock}
+and
+\begin{jlblock}[nt]
+@btime isPrime4(1_000_003)
+\end{jlblock}
+returns \jlc[nt]{@btime isPrime4(1_000_003)} \printpythontex[verbatim]
+
+Note that this is just slightly faster that \texttt{isPrime3}.  It may be that the number of operations is comparable, just done in a slightly diffrent way.  
+
+\subsection{Speedup \#4: Don't do unnecessary calculations}
+
+One thing I noticed while writing this function is that the for loops goes through all numbers up to $\sqrt{n}$.  A quick way to eliminate many of these is to check 2 then all odds between 3 and $\sqrt{n}$.  This is because if $2$ isn't a factor of $n$, then any even cannot be either.  Here's a way to do that. 
+
+\begin{jlblock}[nt]
+function isPrime5(n::Integer)
+  if n%2==0
+    return false
+  end
+  for k=3:2:floor(Int,sqrt(n)) # odd integers to sqrt(n)
+    if n%k==0
+      return false
+    end
+  end
+  true
+end
+\end{jlblock}
+and checking the time on this
+\begin{jlblock}[nt]
+@btime isPrime5(1_000_003)
+\end{jlblock}
+returns \jlc[nt]{@btime isPrime5(1_000_003)} \printpythontex[verbatim]
+%
+which is about twice as fast as the previous one.  This makes sense in that one is eliminating almost all of the even numbers.  
+
+	
+\subsection{Speedup \#5: check only primes as possible factors}
+
+We can continue the thought of the previous algorithm in that the only factors we need to check are prime numbers.  
+
+However, there's a bit of circular reasoning here that we are checking to see if a number is prime and we would use primes to check this, but here goes.  
+
+An exercise above asked to generated a list of primes up to some number.  The \href{https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes}{Sieve of Eratosthenes} is one that generates a list of primes up to a number $m$ in the following way. 
+\begin{enumerate}
+\item Write down all numbers between 2 and $m$.
+\item Start with 2 and cross out all multiples of 2.
+\item The next number greater than 2 not crossed out is 3. Cross out all multiples of 3.
+\item The next number greater than 3 not crossed out is 5.Cross out all multiples of 5. 
+\item Continue this process until you reach $\sqrt{n}$. 
+\item The resulting list are all prime. 
+\end{enumerate}
+
+See the animation on the wikipedia page linked above for a nice visual.  
+
+Here's a julia version of this algorithm:
+\begin{jlblock}[nt][numbers=left]
+function getPrimes(m::Integer) ## return all primes up to n using 
+  # the sieve of Eratosthenes
+  local is_prime=trues(m) ## assume all are prime
+  local k=2
+  while k < sqrt(m)
+    is_prime[2*k:k:m] .= false # all multiples of k are not prime
+    k = findnext(is_prime,k+1) # find the next prime after k
+  end
+  findall(is_prime)[2:end]
+end
+\end{jlblock}
+and for example, \jlb[nt]{getPrimes(100)} returns
+\jlc[nt]{print(getPrimes(100))}\printpythontex[verbatim]
+
+Now, we can adapt the \verb!isPrime! code to use only primes in the following way:
+\begin{jlblock}[nt]
+function isPrime6(n::Integer)
+  if n==1
+    return false
+  end
+  # get all primes up to the square root of n
+  for k in getPrimes(floor(Int,sqrt(n))) 
+    if n%k==0
+      return false
+    end
+  end
+  true
+end
+\end{jlblock}
+
+Lastly, let's just test the speed of this function:
+\begin{jlblock}[nt]
+@btime isPrime6(1_000_003)
+\end{jlblock}
+which returns \jlc[nt]{display(@btime isPrime6(1_000_003))} \printpythontex[verbatim]
+%
+Surprisingly, this is actually slower than \texttt{isPrime5} by about a factor of 2.  This shows that you that if speed is important that you always need to test.\footnote{I decided to leave this last example in. My expectations were just off but that is why we test. In fact after the first results, I figured it would pay off for larger numbers.  It didn't appear that way.} 
+
+Noting that the allocations (about 13 kB) is significant whereas the previous algorithm had virtually no allocations, this probably results in the difference in speed.  
+
+
+\section{Summary of \texttt{isPrime} functions}
+
+Since this was all a lot to take in, let's summarize all of these functions.  We'll stick with \jlb[nt]{n=1_000_003}, which is a prime number
+
+\medskip
+
+\begin{tabular}{@{}ll@{}} \toprule 
+command & time \\ \midrule
+\jlb[nt]{isPrime(n)} & \jlc[nt]{@btime isPrime(n);} \printpythontex[verb] \\
+\jlb[nt]{isPrime2(n)} & \jlc[nt]{@btime isPrime2(n);} \printpythontex[verb]\\
+\jlb[nt]{isPrime3(n)} & \jlc[nt]{@btime isPrime3(n);} \printpythontex[verb]\\
+\jlb[nt]{isPrime4(n)} & \jlc[nt]{@btime isPrime4(n);} \printpythontex[verb]\\
+\jlb[nt]{isPrime5(n)} & \jlc[nt]{@btime isPrime5(n);} \printpythontex[verb]\\
+\jlb[nt]{isPrime6(n)} & \jlc[nt]{@btime isPrime6(n);} \printpythontex[verb]\\
+\end{tabular}
+
+\medskip
+
+It appears that \texttt{isPrime5} is the fastest of the algorithms we developed here.  Note that this just checks for a single number, whereas, the values may changes as one increases the value of n.    
+
+\section{\texorpdfstring{Testing for Primes using the \texttt{Primes} library}{Testing for Primes using the Primes library}}
+
+Load the \texttt{Primes} library (and if you haven't added it yet, do
+so):
+
+\begin{jlblock}[nt]
+using Primes
+\end{jlblock}
+
+The \texttt{Primes} library has the \texttt{isprime} function to test
+for primality. Let's test a few examples.
+
+\begin{jlblock}[nt]
+@btime isprime(1_000_003)
+\end{jlblock}
+returns \jlc[nt]{display(@btime isprime(1_000_003))} \printpythontex[verbatim]
+%
+and this is about twice as fast as our algorithm, \texttt{isPrime5}.  Note that the time is given in ns or nanoseconds and 1000 nanoseconds is 1 $\mu$s. 
+
+
+Note that the \texttt{isprime} function is quite fast.  If we put in $2^{89}-1$, it still finds the answer quite quickly.   
+\begin{jlblock}[nt]
+@btime isprime(big(2)^89-1)
+\end{jlblock}
+returns \jlc[nt]{display(@btime isprime(big(2)^89-1))} \printpythontex[verbatim]
+
+
+
+
