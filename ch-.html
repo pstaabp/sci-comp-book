@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<html lang="en-US" dir="ltr">
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Creating Modules and using Unit Tests</title>
+<meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="Scientific Computing and Visualization">
+<meta property="book:author" content="Peter Staab">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "extpfeil",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math"
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/extpfeil",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js/lib"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/themes/prism.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-dubtf8xMHSQlExGRQ5R7toxHLgSDZ0K7AunqPWHXmJQ8XyVIG19S1T95gBxlAeGOK02P4Da2RTnQz0Za0H0ebQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha512-cbQXwDFK7lj2Fqfkuxbo5iD1dSbLlJGXGpfTDqbggqjHJeyzx88I3rfwjS38WJag/ihH7lzuGlGHpDBymLirZQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.css" integrity="sha512-nXlJLUeqPMp1Q3+Bd8Qds8tXeRVQscMscwysJm821C++9w6WtsFbJjPenZ8cQVMXyqSAismveQJc0C1splFDCA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.js" integrity="sha512-93uCmm0q+qO5Lb1huDqr7tywS8A2TFA+1/WHvyiWaK6/pvsFl6USnILagntBx8JnVbQH5s3n0vQZY6xNthNfKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><link href="_static/pretext/css/pretext_search.css" rel="stylesheet" type="text/css">
+<script src="_static/pretext/js/lib/jquery.min.js"></script><script src="_static/pretext/js/lib/jquery.sticky.js"></script><script src="_static/pretext/js/lib/jquery.espy.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><script src="_static/pretext/js/user_preferences.js"></script><script src="_static/pretext/js/lib/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&amp;family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&amp;family=Tinos:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/dejavu-serif" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:opsz,wdth,wght@8..144,50..150,100..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wdth,wght@75..100,300..800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+<link href="_static/pretext/css/pretext.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/pretext_add_on.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/shell_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/banner_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/navbar_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/toc_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/knowls_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/style_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/colors_blue_red.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/setcolors.css" rel="stylesheet" type="text/css">
+</head>
+<body id="changeme" class="pretext book ignore-math">
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner">
+<a id="logo-link" class="logo-link" target="_blank" href=""></a><div class="title-container">
+<h1 class="heading"><a href="my-great-book.html"><span class="title">Scientific Computing and Visualization:</span> <span class="subtitle">Coding mathematics using Julia</span></a></h1>
+<p class="byline">Peter Staab</p>
+</div>
+</div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5d2;</span><span class="name">Contents</span></button><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe8b6;</span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"></span><span class="treebuttons"><a class="previous-button button" href="ch-adv-functions.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="part-advanced.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="backmatter.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 parts"><ul class="structural contains-active toc-item-list">
+<li class="toc-item toc-frontmatter"><div class="toc-title-box"><a href="frontmatter.html" class="internal"><span class="title">Front Matter</span></a></div></li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-intro.html" class="internal"><span class="codenumber">1</span> <span class="title">Introduction to Scientific Computing</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-3.html" class="internal"><span class="codenumber">1.1</span> <span class="title">Examples of Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-4.html" class="internal"><span class="codenumber">1.2</span> <span class="title">Modeling</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-5.html" class="internal"><span class="codenumber">1.3</span> <span class="title">Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-6.html" class="internal"><span class="codenumber">1.4</span> <span class="title">Ideas needed to do Effective Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-7.html" class="internal"><span class="codenumber">1.5</span> <span class="title">Writing Code for Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-8.html" class="internal"><span class="codenumber">1.6</span> <span class="title">Let’s get started</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-part">
+<div class="toc-title-box"><a href="part-julia-basics.html" class="internal"><span class="codenumber">I</span> <span class="title">Scientific Computation and Julia Basics</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-variables.html" class="internal"><span class="codenumber">2</span> <span class="title">Storing number and strings and using Julia syntax</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-3" class="internal"><span class="codenumber">2.1</span> <span class="title">Numbers</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-variables.html#ch-variables-4" class="internal"><span class="codenumber">2.2</span> <span class="title">Assignment Statement and Variables</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-4-3" class="internal"><span class="codenumber">2.2.1</span> <span class="title">Storing Variable in a Virtual Whiteboard</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-variables.html#ch-variables-5" class="internal"><span class="codenumber">2.3</span> <span class="title">Strings</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-5-3" class="internal"><span class="codenumber">2.3.1</span> <span class="title">String Operations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-5-4" class="internal"><span class="codenumber">2.3.2</span> <span class="title">String Interpolation</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-6" class="internal"><span class="codenumber">2.4</span> <span class="title">Expressions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#sect-oper-precedence" class="internal"><span class="codenumber">2.5</span> <span class="title">Operator Precendence</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-8" class="internal"><span class="codenumber">2.6</span> <span class="title">Comments</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-data-types.html" class="internal"><span class="codenumber">3</span> <span class="title">Introduction to Data Types</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-3" class="internal"><span class="codenumber">3.1</span> <span class="title">Integers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-3-3" class="internal"><span class="codenumber">3.1.1</span> <span class="title">Unsigned Integers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-3-4" class="internal"><span class="codenumber">3.1.2</span> <span class="title">Signed Integers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-3-5" class="internal"><span class="codenumber">3.1.3</span> <span class="title">Overflow and Underflow of integer operations</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-4" class="internal"><span class="codenumber">3.2</span> <span class="title">Floating Point Numbers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-5" class="internal"><span class="codenumber">3.3</span> <span class="title">Extending integers, the <code class="code-inline tex2jax_ignore">BigInt</code> type</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-6" class="internal"><span class="codenumber">3.4</span> <span class="title">Extending Floating Point Numbers with <code class="code-inline tex2jax_ignore">BigFloat</code></span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-6-3" class="internal"><span class="codenumber">3.4.1</span> <span class="title">Limitations of <code class="code-inline tex2jax_ignore">BigFloats</code></span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#sect-rational-numbers" class="internal"><span class="codenumber">3.5</span> <span class="title">Rational numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-rational-type" class="internal"><span class="codenumber">3.5.1</span> <span class="title">The Rational Type</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-other-operations-with-rationals" class="internal"><span class="codenumber">3.5.2</span> <span class="title">Other Operations with Rationals</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-rational-numbers-5" class="internal"><span class="codenumber">3.5.3</span> <span class="title">Limitations of Rational Numbers</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data-types.html#sect-complex-numbers" class="internal"><span class="codenumber">3.6</span> <span class="title">Complex Numbers</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#sect-abstract-type" class="internal"><span class="codenumber">3.7</span> <span class="title">Abstract and Concrete Number Types</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-abstract-type-3" class="internal"><span class="codenumber">3.7.1</span> <span class="title">Abstract Number types</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-abstract-type-4" class="internal"><span class="codenumber">3.7.2</span> <span class="title">Concrete Number Types</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-10" class="internal"><span class="codenumber">3.8</span> <span class="title">Converting numbers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-10-3" class="internal"><span class="codenumber">3.8.1</span> <span class="title">Converting to Integers</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#sect-tuples" class="internal"><span class="codenumber">3.9</span> <span class="title">Tuples</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-tuples-3" class="internal"><span class="codenumber">3.9.1</span> <span class="title">Named Tuples</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-tuples-4" class="internal"><span class="codenumber">3.9.2</span> <span class="title">Tuples are Immutable</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-intro-functions.html" class="internal"><span class="codenumber">4</span> <span class="title">Introduction to Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#sect-simple-example" class="internal"><span class="codenumber">4.1</span> <span class="title">Simple example</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-4" class="internal"><span class="codenumber">4.2</span> <span class="title">Function Arguments</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-5" class="internal"><span class="codenumber">4.3</span> <span class="title">Returning values from a function</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-5-3" class="internal"><span class="codenumber">4.3.1</span> <span class="title">Indentation in Functions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-6" class="internal"><span class="codenumber">4.4</span> <span class="title">Specifying Argument Types</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-7" class="internal"><span class="codenumber">4.5</span> <span class="title">Multiple Dispatch</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-7-3" class="internal"><span class="codenumber">4.5.1</span> <span class="title">Multiple Dispatch of built-in functions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#sect-varargs" class="internal"><span class="codenumber">4.6</span> <span class="title">Variable Number of arguments</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-9" class="internal"><span class="codenumber">4.7</span> <span class="title">Multiple Return Values</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-intro-functions.html#sect-factorial" class="internal"><span class="codenumber">4.8</span> <span class="title">Factorial Function</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-intro-functions.html#sect-factorial-3" class="internal"><span class="codenumber">4.8.1</span> <span class="title">Exercise</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#sect-recursion" class="internal"><span class="codenumber">4.9</span> <span class="title">Recursive Functions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-12" class="internal"><span class="codenumber">4.10</span> <span class="title">Variable Scope</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-boolean-loops.html" class="internal"><span class="codenumber">5</span> <span class="title">Boolean Statements, Loops and Branching</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-3" class="internal"><span class="codenumber">5.1</span> <span class="title">Boolean values and if statements</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-3-3" class="internal"><span class="codenumber">5.1.1</span> <span class="title">Compounds boolean statements</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-4" class="internal"><span class="codenumber">5.2</span> <span class="title">If Statements</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-4-3" class="internal"><span class="codenumber">5.2.1</span> <span class="title">Further choices with if statements</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-5" class="internal"><span class="codenumber">5.3</span> <span class="title">Ternary <code class="code-inline tex2jax_ignore">if-then-else</code></span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-6" class="internal"><span class="codenumber">5.4</span> <span class="title">Loops</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-6-3" class="internal"><span class="codenumber">5.4.1</span> <span class="title">While Loops</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-6-4" class="internal"><span class="codenumber">5.4.2</span> <span class="title">Infinite Loops</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-6-5" class="internal"><span class="codenumber">5.4.3</span> <span class="title">For loops</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-6-6" class="internal"><span class="codenumber">5.4.4</span> <span class="title">While Loops Versus For Loops</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7" class="internal"><span class="codenumber">5.5</span> <span class="title">Ranges</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#sect-lin-range" class="internal"><span class="codenumber">5.5.1</span> <span class="title">Linear Ranges</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-arrays.html" class="internal"><span class="codenumber">6</span> <span class="title">Arrays</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-contructing-arrays" class="internal"><span class="codenumber">6.1</span> <span class="title">Constructing arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-comprehensions" class="internal"><span class="codenumber">6.2</span> <span class="title">Comprehensions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-accessing-arrays" class="internal"><span class="codenumber">6.3</span> <span class="title">Accessing elements of an array</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-6" class="internal"><span class="codenumber">6.4</span> <span class="title">Common Operations on Arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-broadcasting" class="internal"><span class="codenumber">6.5</span> <span class="title">Element by Element Operations</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-8" class="internal"><span class="codenumber">6.6</span> <span class="title">Other Operations on Arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-9" class="internal"><span class="codenumber">6.7</span> <span class="title">Sorting Vectors and matrices</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-10" class="internal"><span class="codenumber">6.8</span> <span class="title">Push and Pop; Array as a Stack</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11" class="internal"><span class="codenumber">6.9</span> <span class="title">Other Nice Array Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11-3" class="internal"><span class="codenumber">6.9.1</span> <span class="title">Append</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11-4" class="internal"><span class="codenumber">6.9.2</span> <span class="title">Adding and Removing Elements in the Middle of an Array</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11-5" class="internal"><span class="codenumber">6.9.3</span> <span class="title">It Splices, It Dices!! --- okay, it doesn’t dice</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11-6" class="internal"><span class="codenumber">6.9.4</span> <span class="title">Filtering Arrays</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11-7" class="internal"><span class="codenumber">6.9.5</span> <span class="title">Removing Duplicate Elements</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Spliting String</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-functional-programming.html" class="internal"><span class="codenumber">7</span> <span class="title">Functional Programming</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-3" class="internal"><span class="codenumber">7.1</span> <span class="title">Functional vs. Non-functional forms</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-3-3" class="internal"><span class="codenumber">7.1.1</span> <span class="title">Anonymous Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-3-4" class="internal"><span class="codenumber">7.1.2</span> <span class="title">Mapping over two arrays</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-reduce-array" class="internal"><span class="codenumber">7.2</span> <span class="title">Reducing an array</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#section-mapreduce" class="internal"><span class="codenumber">7.3</span> <span class="title">The <code class="code-inline tex2jax_ignore">mapreduce</code> function</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-6" class="internal"><span class="codenumber">7.4</span> <span class="title">Mapping a Function over an 2D array</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7" class="internal"><span class="codenumber">7.5</span> <span class="title">Writing fast code</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7-3" class="internal"><span class="codenumber">7.5.1</span> <span class="title">Attempt #1</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7-4" class="internal"><span class="codenumber">7.5.2</span> <span class="title">Attempt #2</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7-5" class="internal"><span class="codenumber">7.5.3</span> <span class="title">Attempt #3</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7-6" class="internal"><span class="codenumber">7.5.4</span> <span class="title">Attempt #4</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7-7" class="internal"><span class="codenumber">7.5.5</span> <span class="title">Attempt #5</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-8" class="internal"><span class="codenumber">7.6</span> <span class="title">Summary of Results</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-functional-programming.html#sect-faster-fibonacci" class="internal"><span class="codenumber">7.7</span> <span class="title">Computing Fibonacci Numbers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-faster-fibonacci-3" class="internal"><span class="codenumber">7.7.1</span> <span class="title">Speeding Up Fibonacci</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-number-theory.html" class="internal"><span class="codenumber">8</span> <span class="title">Number theory and Algorithm Development</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-3" class="internal"><span class="codenumber">8.1</span> <span class="title">Prime Numbers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-4" class="internal"><span class="codenumber">8.2</span> <span class="title">Finding Primes</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5" class="internal"><span class="codenumber">8.3</span> <span class="title">Perfect Numbers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5-3" class="internal"><span class="codenumber">8.3.1</span> <span class="title">Timing the two functions and the <code class="code-inline tex2jax_ignore">BenchmarkTools</code> package</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6" class="internal"><span class="codenumber">8.4</span> <span class="title">Happy Numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-3" class="internal"><span class="codenumber">8.4.1</span> <span class="title">Computing Happy Numbers in Julia</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-4" class="internal"><span class="codenumber">8.4.2</span> <span class="title">Alternative forms</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-5" class="internal"><span class="codenumber">8.4.3</span> <span class="title">Finding Happy numbers</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7" class="internal"><span class="codenumber">8.5</span> <span class="title">Primes can be big!!</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8" class="internal"><span class="codenumber">8.6</span> <span class="title">Speeding up <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-3" class="internal"><span class="codenumber">8.6.1</span> <span class="title">Speedup #1: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to stop earlier</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-4" class="internal"><span class="codenumber">8.6.2</span> <span class="title">Speedup #2: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to not check all integers as factors</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-5" class="internal"><span class="codenumber">8.6.3</span> <span class="title">Speedup #3: Don’t use <code class="code-inline tex2jax_ignore">findAllFactors</code> at all</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-6" class="internal"><span class="codenumber">8.6.4</span> <span class="title">Speedup #4: Don’t do unnecessary calculations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-7" class="internal"><span class="codenumber">8.6.5</span> <span class="title">Speedup #5: check only primes as possible factors</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9" class="internal"><span class="codenumber">8.7</span> <span class="title">Summary of <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-10" class="internal"><span class="codenumber">8.8</span> <span class="title">Testing for Primes using the <code class="code-inline tex2jax_ignore">Primes</code></span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html" class="internal"><span class="codenumber">9</span> <span class="title">Algorithm Analysis</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-3" class="internal"><span class="codenumber">9.1</span> <span class="title">Big-O Notation</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4" class="internal"><span class="codenumber">9.2</span> <span class="title">Polynomial Evaluation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#sect-horner" class="internal"><span class="codenumber">9.2.1</span> <span class="title">Horner’s Form</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4-4" class="internal"><span class="codenumber">9.2.2</span> <span class="title">Benchmarking Polynomial Evaluation</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4-4-3" class="internal"><span class="codenumber">9.2.2.1</span> <span class="title">Horner’s Form</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5" class="internal"><span class="codenumber">9.3</span> <span class="title">Interpreting big-O results</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-6" class="internal"><span class="codenumber">9.4</span> <span class="title">Using Data to determine Algorithm order</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-rootfinding.html" class="internal"><span class="codenumber">10</span> <span class="title">Solving Quadratics and Rootfinding</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-3" class="internal"><span class="codenumber">10.1</span> <span class="title">Absolute and Relative Errors</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4" class="internal"><span class="codenumber">10.2</span> <span class="title">Rounding Errors and the Quadratic Formula</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-3" class="internal"><span class="codenumber">10.2.1</span> <span class="title">Be skeptical of numerical answers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-4" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Can we ever be confident of answers?</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5" class="internal"><span class="codenumber">10.3</span> <span class="title">Are We Sunk?  Examining the Quadratic Formula</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton" class="internal"><span class="codenumber">10.4</span> <span class="title">Newton’s Method</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton-3" class="internal"><span class="codenumber">10.4.1</span> <span class="title">Code for Newton’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton-4" class="internal"><span class="codenumber">10.4.2</span> <span class="title">Using Automatic Differentiation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton-5" class="internal"><span class="codenumber">10.4.3</span> <span class="title">Newton’s Method with Automatic Differentiation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton-6" class="internal"><span class="codenumber">10.4.4</span> <span class="title">Adding an extra stopping condition</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-comp-types.html" class="internal"><span class="codenumber">11</span> <span class="title">Creating New Data Types in Julia</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-3" class="internal"><span class="codenumber">11.1</span> <span class="title">Basics of Julia’s Composite Datatype</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4" class="internal"><span class="codenumber">11.2</span> <span class="title">A Card datatype</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4-3" class="internal"><span class="codenumber">11.2.1</span> <span class="title">Constructors of new data types</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4-4" class="internal"><span class="codenumber">11.2.2</span> <span class="title">Creating a Hand datatype</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5" class="internal"><span class="codenumber">11.3</span> <span class="title">Polynomials: A parametric data type</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5-3" class="internal"><span class="codenumber">11.3.1</span> <span class="title">Adding Two Polynomials</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5-4" class="internal"><span class="codenumber">11.3.2</span> <span class="title">Evaluating the polynomial</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-6" class="internal"><span class="codenumber">11.4</span> <span class="title">Plotting the Polynomial</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-6-3" class="internal"><span class="codenumber">11.4.1</span> <span class="title">Changing other parameters</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-6-4" class="internal"><span class="codenumber">11.4.2</span> <span class="title">Setting Default parameters</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-7" class="internal"><span class="codenumber">11.5</span> <span class="title">A Rootfinding datatype</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-part">
+<div class="toc-title-box"><a href="part-plotting.html" class="internal"><span class="codenumber">II</span> <span class="title">Plotting in Julia</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="ch-plotting-basics.html" class="internal"><span class="codenumber">12</span> <span class="title">Plotting Basics</span></a></div></li>
+<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="ch-makie.html" class="internal"><span class="codenumber">13</span> <span class="title">Using Makie for Plots</span></a></div></li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-plots-package.html" class="internal"><span class="codenumber">14</span> <span class="title">The Plots Package</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-3" class="internal"><span class="codenumber">14.1</span> <span class="title">Plotting Functions</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-4" class="internal"><span class="codenumber">14.2</span> <span class="title">Presenting Results with Visualization, an overview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-4-3" class="internal"><span class="codenumber">14.2.1</span> <span class="title">Plotting Functions and other Curves</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-5" class="internal"><span class="codenumber">14.3</span> <span class="title">Other Function Plots</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#sect-para-plot" class="internal"><span class="codenumber">14.3.1</span> <span class="title">Parametric Plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#sect-implicit-curve" class="internal"><span class="codenumber">14.3.2</span> <span class="title">Implicit Curves</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#sect-contour-plot" class="internal"><span class="codenumber">14.3.3</span> <span class="title">Contour Plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#sect-surf-plot" class="internal"><span class="codenumber">14.3.4</span> <span class="title">Surface Plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#sect-heat-map" class="internal"><span class="codenumber">14.3.5</span> <span class="title">Heat maps</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-6" class="internal"><span class="codenumber">14.4</span> <span class="title">Plotting Data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-6-3" class="internal"><span class="codenumber">14.4.1</span> <span class="title">Bar plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-6-4" class="internal"><span class="codenumber">14.4.2</span> <span class="title">Animation</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-7" class="internal"><span class="codenumber">14.5</span> <span class="title">Other Plots and subplots</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-8" class="internal"><span class="codenumber">14.6</span> <span class="title">Backends of the Plots package</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-8-3" class="internal"><span class="codenumber">14.6.1</span> <span class="title">Changing the attributes of the plot</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-part">
+<div class="toc-title-box"><a href="part-simulation.html" class="internal"><span class="codenumber">III</span> <span class="title">Simulation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-probability-random.html" class="internal"><span class="codenumber">15</span> <span class="title">Probability Distributions and Pseudorandom Numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-3" class="internal"><span class="codenumber">15.1</span> <span class="title">Basic Defintions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-4" class="internal"><span class="codenumber">15.2</span> <span class="title">Random Variables</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-5" class="internal"><span class="codenumber">15.3</span> <span class="title">Discrete Random Variables</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-5-3" class="internal"><span class="codenumber">15.3.1</span> <span class="title">Properties of a discrete probability distribution</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-6" class="internal"><span class="codenumber">15.4</span> <span class="title">Continuous Probability</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-6-3" class="internal"><span class="codenumber">15.4.1</span> <span class="title">The Calculus of Continuous Probabilities</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-6-4" class="internal"><span class="codenumber">15.4.2</span> <span class="title">Cumulative Distribution Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-6-5" class="internal"><span class="codenumber">15.4.3</span> <span class="title">Inverse Cumulative Distribution Functions</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-7" class="internal"><span class="codenumber">15.5</span> <span class="title">Standard Continuous Distributions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-7-2" class="internal"><span class="codenumber">15.5.1</span> <span class="title">Uniform Distribution</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-7-3" class="internal"><span class="codenumber">15.5.2</span> <span class="title">The Normal Distribution</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-8" class="internal"><span class="codenumber">15.6</span> <span class="title">Pseudo Random Number Generator</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-8-3" class="internal"><span class="codenumber">15.6.1</span> <span class="title">Seeds and Pseudorandom Numbers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-8-4" class="internal"><span class="codenumber">15.6.2</span> <span class="title">Using Julia to simulate the rolling of a	die</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-8-5" class="internal"><span class="codenumber">15.6.3</span> <span class="title">Coin flips in Julia</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-8-6" class="internal"><span class="codenumber">15.6.4</span> <span class="title">Floating Point random numbers</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-9" class="internal"><span class="codenumber">15.7</span> <span class="title">The Normal Distribution</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-10" class="internal"><span class="codenumber">15.8</span> <span class="title">Other Distributions</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-prob-models.html" class="internal"><span class="codenumber">16</span> <span class="title">Using Random Numbers and Probability Models</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-3" class="internal"><span class="codenumber">16.1</span> <span class="title">Flipping Coins</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-3-3" class="internal"><span class="codenumber">16.1.1</span> <span class="title">Flipping multiple coins</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-4" class="internal"><span class="codenumber">16.2</span> <span class="title">Rolling Dice</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-5" class="internal"><span class="codenumber">16.3</span> <span class="title">Rolling 2 dice</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-6" class="internal"><span class="codenumber">16.4</span> <span class="title">Other Probability Models</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-6-3" class="internal"><span class="codenumber">16.4.1</span> <span class="title">Random Permutations</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-prob-models.html#sect-calc-pi-prob" class="internal"><span class="codenumber">16.5</span> <span class="title">Calculating <span class="process-math">\(\pi\)</span> using pseudo random numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-prob-models.html#sect-calc-pi-prob-3" class="internal"><span class="codenumber">16.5.1</span> <span class="title">Buffon’s Needle Experiment</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-prob-models.html#sect-calc-pi-prob-4" class="internal"><span class="codenumber">16.5.2</span> <span class="title">Circle in the Square</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-poker.html" class="internal"><span class="codenumber">17</span> <span class="title">Simulating Poker Hands</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-poker.html#ch-poker-3" class="internal"><span class="codenumber">17.1</span> <span class="title">A user-defined package</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-poker.html#ch-poker-3-3" class="internal"><span class="codenumber">17.1.1</span> <span class="title">Writing a Full House function</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-poker.html#ch-poker-4" class="internal"><span class="codenumber">17.2</span> <span class="title">Simulating Poker Hands</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-poker.html#ch-poker-4-3" class="internal"><span class="codenumber">17.2.1</span> <span class="title">Results of the simulation</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-poker.html#ch-poker-5" class="internal"><span class="codenumber">17.3</span> <span class="title">Probabilities of Other Hands</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-poker.html#ch-poker-5-3" class="internal"><span class="codenumber">17.3.1</span> <span class="title">Building a Royal Flush function</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-poker.html#ch-poker-5-4" class="internal"><span class="codenumber">17.3.2</span> <span class="title">Building a Two Pair function</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-poker.html#ch-poker-6" class="internal"><span class="codenumber">17.4</span> <span class="title">Summary of Simulation</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-part contains-active">
+<div class="toc-title-box"><a href="part-advanced.html" class="internal"><span class="codenumber">IV</span> <span class="title">Advanced Features of Julia</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-adv-functions.html" class="internal"><span class="codenumber">18</span> <span class="title">Advanced Function Features of Julia</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-3" class="internal"><span class="codenumber">18.1</span> <span class="title">Testing Arguments</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-4" class="internal"><span class="codenumber">18.2</span> <span class="title">Optional arguments</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-5" class="internal"><span class="codenumber">18.3</span> <span class="title">Handling Special Cases</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-6" class="internal"><span class="codenumber">18.4</span> <span class="title">Keyword Arguments</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-6-3" class="internal"><span class="codenumber">18.4.1</span> <span class="title">Keyword Arguments for complex functions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#sect-parametric-methods" class="internal"><span class="codenumber">18.5</span> <span class="title">Parametric Methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter active">
+<div class="toc-title-box"><a href="ch-.html" class="internal"><span class="codenumber">19</span> <span class="title">Creating Modules and using Unit Tests</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-.html#ch--3" class="internal"><span class="codenumber">19.1</span> <span class="title">The <code class="code-inline tex2jax_ignore">Revise</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-.html#ch--4" class="internal"><span class="codenumber">19.2</span> <span class="title">Creating a Module</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-.html#sect-unit-tests" class="internal"><span class="codenumber">19.3</span> <span class="title">Unit Tests</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-.html#ch--6" class="internal"><span class="codenumber">19.4</span> <span class="title">Creating a test suite</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-.html#ch--6-3" class="internal"><span class="codenumber">19.4.1</span> <span class="title">Putting all tests in a file</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-.html#ch--7" class="internal"><span class="codenumber">19.5</span> <span class="title">Modules and Unit Tests</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-.html#ch--8" class="internal"><span class="codenumber">19.6</span> <span class="title">A Rootfinding Module</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-.html#ch--8-3" class="internal"><span class="codenumber">19.6.1</span> <span class="title">A Test Suite for Rootfinding</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-backmatter">
+<div class="toc-title-box"><a href="backmatter.html" class="internal"><span class="title">Backmatter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="ch-getting-started.html" class="internal"><span class="codenumber">A</span> <span class="title">Getting Started with Julia</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-3" class="internal"><span class="codenumber">A.1</span> <span class="title">using the <code class="code-inline tex2jax_ignore">Repl.it</code> website</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-3-3" class="internal"><span class="codenumber">A.1.1</span> <span class="title">Limitations of <code class="code-inline tex2jax_ignore">Repl.it</code></span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-4" class="internal"><span class="codenumber">A.2</span> <span class="title">Downloading and Installing Julia</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-4-3" class="internal"><span class="codenumber">A.2.1</span> <span class="title">The julia REPL and windows</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-5" class="internal"><span class="codenumber">A.3</span> <span class="title">Downloading and running Jupyter</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-5-3" class="internal"><span class="codenumber">A.3.1</span> <span class="title">Installing Jupyter on Mac</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-5-3-3" class="internal"><span class="codenumber">A.3.1.1</span> <span class="title">Installing Python</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-5-3-4" class="internal"><span class="codenumber">A.3.1.2</span> <span class="title">Installing IJulia</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-5-3-5" class="internal"><span class="codenumber">A.3.1.3</span> <span class="title">Running Jupyter</span></a></div></li>
+</ul>
+</li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-6" class="internal"><span class="codenumber">A.4</span> <span class="title">Using Jupyter</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-7" class="internal"><span class="codenumber">A.5</span> <span class="title">Installing Visual Studio Code</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-8" class="internal"><span class="codenumber">A.6</span> <span class="title">Running Julia code inside VSCode</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-8-3" class="internal"><span class="codenumber">A.6.1</span> <span class="title">Running a Julia REPL</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#sect-kernel" class="internal"><span class="codenumber">A.7</span> <span class="title">The kernel</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#sect-kernel-3" class="internal"><span class="codenumber">A.7.1</span> <span class="title">The REPL</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#sect-kernel-4" class="internal"><span class="codenumber">A.7.2</span> <span class="title">Juno and the Atom Editor</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10" class="internal"><span class="codenumber">A.8</span> <span class="title">Restarting the Kernel</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10-3" class="internal"><span class="codenumber">A.8.1</span> <span class="title">Restarting the Kernel in the julia REPL</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10-4" class="internal"><span class="codenumber">A.8.2</span> <span class="title">Restarting the Kernel in Jupyter</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10-5" class="internal"><span class="codenumber">A.8.3</span> <span class="title">Restarting the Kernel in Atom/Juno</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="ch-packages.html" class="internal"><span class="codenumber">B</span> <span class="title">Managing Packages</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-packages.html#ch-packages-3" class="internal"><span class="codenumber">B.1</span> <span class="title">Managing Packages in Julia</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-3" class="internal"><span class="codenumber">B.1.1</span> <span class="title">Adding a package</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-4" class="internal"><span class="codenumber">B.1.2</span> <span class="title">Package Status</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-5" class="internal"><span class="codenumber">B.1.3</span> <span class="title">Removing a Package</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-6" class="internal"><span class="codenumber">B.1.4</span> <span class="title">Updating packages</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-7" class="internal"><span class="codenumber">B.1.5</span> <span class="title">Building Packages</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-8" class="internal"><span class="codenumber">B.1.6</span> <span class="title">Precompiling packages</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-9" class="internal"><span class="codenumber">B.1.7</span> <span class="title">Testing a Packages</span></a></div></li>
+</ul>
+</li></ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="ch-num-rep.html" class="internal"><span class="codenumber">C</span> <span class="title">Binary Represenation of Numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3" class="internal"><span class="codenumber">C.1</span> <span class="title">Integer Representation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3-3" class="internal"><span class="codenumber">C.1.1</span> <span class="title">Converting from decimal to binary</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3-4" class="internal"><span class="codenumber">C.1.2</span> <span class="title">Representing Negative Integers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3-5" class="internal"><span class="codenumber">C.1.3</span> <span class="title">Including negative Integers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3-6" class="internal"><span class="codenumber">C.1.4</span> <span class="title">A binary to decimal function</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-4" class="internal"><span class="codenumber">C.2</span> <span class="title">Operations on Binary Integers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-4-3" class="internal"><span class="codenumber">C.2.1</span> <span class="title">Unary minus</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-5" class="internal"><span class="codenumber">C.3</span> <span class="title">Subtraction of binary integers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-6" class="internal"><span class="codenumber">C.4</span> <span class="title">Multiplication of Binary Integers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-rep.html#sect-scientific-notation" class="internal"><span class="codenumber">C.5</span> <span class="title">Scientific Notation</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-8" class="internal"><span class="codenumber">C.6</span> <span class="title">Floating Point Numbers of a given size</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="backmatter-5.html" class="internal"><span class="title">Colophon</span></a></div></li>
+</ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="chapter" id="ch-"><h2 class="heading">
+<span class="type">Chapter</span><span class="space"> </span><span class="codenumber">19</span><span class="space"> </span><span class="title">Creating Modules and using Unit Tests</span>
+</h2>
+<section class="introduction" id="ch--2"><div class="para" id="ch--2-1">Throughout this text, we have added and loaded packages or modules. These were generally official ones. In this section, we will now learn how to write our own module. We will learn how to do this by creating a <code class="code-inline tex2jax_ignore">PlayingCards</code> module with all of the types and functions associated with it from <a href="ch-poker.html" class="internal" title="Chapter 17: Simulating Poker Hands">Chapter 17</a> as well as the rootfinding functions and structs of <a href="ch-rootfinding.html" class="internal" title="Chapter 10: Solving Quadratics and Rootfinding">Chapter 10</a>. As needed, you should review the material in those chapters.</div></section><section class="section" id="ch--3"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">19.1</span><span class="space"> </span><span class="title">The <code class="code-inline tex2jax_ignore">Revise</code></span>
+</h3>
+<div class="para" id="ch--3-2">Although this isn’t necessary, the <code class="code-inline tex2jax_ignore">Revise</code> package makes developing a module much easier. You should add and the load it with</div>
+<div class="para logical" id="ch--3-3"><pre class="code-display tex2jax_ignore">
+			using Revise
+			</pre></div>
+<div class="para" id="ch--3-4">This will allow changes to a module updated automatically.  You can use this with either the REPL or a Jupyter notebook.</div></section><section class="section" id="ch--4"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">19.2</span><span class="space"> </span><span class="title">Creating a Module</span>
+</h3>
+<div class="para" id="ch--4-2">To begin with, let’s look at a module template:</div>
+<div class="para logical" id="ch--4-3"><pre class="code-display tex2jax_ignore">
+			module PlayingCards
+			## definitions of types and functions
+			end
+			</pre></div>
+<div class="para" id="ch--4-4">As you can see above, a module has a name (in this case <code class="code-inline tex2jax_ignore">PlayingCards</code>) and ends with the keyword <code class="code-inline tex2jax_ignore">end</code>. We will next put a number of types and functions inside the module, but in order for someone loading the module, you need to export anything to be used.  We have used the naming convention of capital letters (often called Pascal case) for a Module name.</div>
+<div class="para" id="ch--4-5">We will take all of the structs, constructors and functions associated with playing cards that we developed earlier and place them in the module.</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">module PlayingCards
+import Base.show
+export Card, Hand, isFullHouse
+ranks = ['A','2','3','4','5','6','7','8','9','T','J','Q','K']
+suits = ['\u2660','\u2661','\u2662','\u2663']
+struct Card
+  rank::Int
+  suit::Int
+  # construct a card based on the rank and suit
+  function Card(r::Int,s::Int)
+    1 &lt;= r &lt;=13  || throw(ArgumentError("The rank must be an integer between 1 and 13."))
+        1 &lt;= s &lt;= 4  || throw(ArgumentError("The suit must be an integer between 1 and 4."))
+    new(r,s)
+  end
+  # construct a card based on the number in a deck
+  function Card(i::Int)
+    1 &lt;= i &lt;= 52 || throw(ArgumentError("The argument must be an integer between 1 and 52"))
+    i%13==0 ? new(13,div(i,13)) : new(i%13,div(i,13)+1)
+  end
+  # construct a card based on a string representation of the card
+  function Card(str::String)
+    length(str)==2 || throw(ArgumentError("The string should only be 2 characters"))
+    local r = findfirst(a -&gt;a==str[1],ranks)
+    r != nothing &amp;&amp;  1 &lt;= r &lt;= 13 || throw(ArgumentError(string("The first character should be one of ",join(ranks,","))))
+    local s=findfirst(a -&gt;a==str[2],suits)
+    s != nothing &amp;&amp; 1&lt;= s &lt;= 4 || throw(ArgumentError(string("The second character should be one of ",join(suits,","))))
+    new(r,s)
+  end
+end
+struct Hand
+  cards::Array{Card,1}
+  Hand(cards::Array{Card,1}) = new(cards)
+  Hand(cards::Array{String,1}) = new(map(Card,cards))
+  Hand(s::String) = new(map(Card,map(String,split(s,','))))
+end
+function Base.show(io::IO, c::Card)
+  print(io,string(ranks[c.rank],suits[c.suit]))
+end
+function Base.show(io::IO, h::Hand)
+  print(io,string("[",join(map(c -&gt;string(ranks[c.rank], suits[c.suit]), h.cards), ",")), "]")
+end
+function isFullHouse(h::Hand)
+  local r=sort(map(c -&gt;c.rank,h.cards))
+  r[2]==r[1] &amp;&amp; r[5]==r[4] &amp;&amp; r[2] != r[4] &amp;&amp; (r[3]==r[2] || r[4]==r[3])
+end
+end #module PlayingCards
+</code></pre></div>
+<div class="para" id="ch--4-7">Open a new text file in jupyter and copy-paste the above module into the empty file. It will need to be called <code class="code-inline tex2jax_ignore">PlayingCards.jl</code> and should be in the same directory as the file you’re working on. Note: in Jupyter, it is important to have the <code class="code-inline tex2jax_ignore">.jl</code> suffix on the filename so the coloring/formatting is correct for the file.</div>
+<div class="para" id="ch--4-8">To load this module, we will do:</div>
+<div class="para logical" id="ch--4-9"><pre class="code-display tex2jax_ignore">
+			includet("PlayingCards.jl")
+			using .PlayingCards
+			</pre></div>
+<div class="para" id="ch--4-10">where the <code class="code-inline tex2jax_ignore">includet</code> function is in the <code class="code-inline tex2jax_ignore">Revise</code> package.  It includes the file and the t stands for tracking.  What will happen if you update anything in the file and then make any call to those that are in the package, you will get the new revised code without restarting the kernel or reloading the package.</div>
+<div class="para logical" id="ch--4-11">
+<div class="para">Here are some things to note about the module:</div>
+<ul class="disc">
+<li id="ch--4-11-1-1"><div class="para" id="ch--4-11-1-1-1">Line 3: <code class="code-inline tex2jax_ignore">import Base.show</code> will import the <code class="code-inline tex2jax_ignore">show</code> command from <code class="code-inline tex2jax_ignore">Base</code>, and will be needed to develop good format for cards and hands.</div></li>
+<li id="ch--4-11-1-2"><div class="para" id="ch--4-11-1-2-1">Line 5:  <code class="code-inline tex2jax_ignore">export Card, Hand, isFullHouse</code> says what will be available if the module is loaded.</div></li>
+<li id="ch--4-11-1-3"><div class="para" id="ch--4-11-1-3-1">Staring on Line 10, the <code class="code-inline tex2jax_ignore">Card</code> struct is defined as we saw in <a href="ch-comp-types.html" class="internal" title="Chapter 11: Creating New Data Types in Julia">Chapter 11</a>. We have added an additional constructor starting at line 28, that creates a card based on a string.</div></li>
+<li id="ch--4-11-1-4"><div class="para" id="ch--4-11-1-4-1">Staring on Line 39, the <code class="code-inline tex2jax_ignore">Hand</code> struct is defined as we saw in <a href="ch-comp-types.html" class="internal" title="Chapter 11: Creating New Data Types in Julia">Chapter 11</a>. This one is a bit different in that chapter because we have added to additional constructors.</div></li>
+<li id="ch--4-11-1-5"><div class="para" id="ch--4-11-1-5-1">the functions <code class="code-inline tex2jax_ignore">Base.show</code> functions for both <code class="code-inline tex2jax_ignore">Card</code> and <code class="code-inline tex2jax_ignore">Hand</code> are defined on lines 46 and 50.   The command <code class="code-inline tex2jax_ignore">Base.show</code> is automatically loaded, so these didn’t need to be exported.</div></li>
+<li id="ch--4-11-1-6"><div class="para" id="ch--4-11-1-6-1">the <code class="code-inline tex2jax_ignore">isFullHouse</code> functions is defined starting on line 54.</div></li>
+</ul>
+</div>
+<div class="para" id="ch--4-12">Once you have saved and successfully loaded the module, let’s test it a bit.  First let’s build some of the hands that we did in <a href="ch-poker.html" class="internal" title="Chapter 17: Simulating Poker Hands">Chapter 17</a>:</div>
+<div class="para logical" id="ch--4-13"><pre class="code-display tex2jax_ignore">
+			fh1 = Hand([Card(4,1),Card(4,3),Card(4,4),Card(7,1),Card(7,2)])
+			fh2 = Hand([Card(4,1),Card(4,3),Card(7,4),Card(7,1),Card(7,2)])
+			fh3 = Hand([Card(2,1),Card(4,3),Card(4,4),Card(7,1),Card(7,2)])
+			</pre></div>
+<div class="para" id="ch--4-14">and the last hand should look like \jlc[module]{display(fh3)} \printpythontex[verbatim]</div>
+<details id="ch--4-15" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">19.1</span><span class="period">.</span>
+</h4></summary><article class="exercise exercise-like knowl__content"><article class="task exercise-like" id="ch--4-15-1"><h5 class="heading"><span class="codenumber">(a)</span></h5>
+<div class="para" id="ch--4-15-1-1-1">Add the <code class="code-inline tex2jax_ignore">isOneSuit</code>, <code class="code-inline tex2jax_ignore">hasRun</code>, <code class="code-inline tex2jax_ignore">royalFlush</code>, <code class="code-inline tex2jax_ignore">isTwoPair</code> and <code class="code-inline tex2jax_ignore">runTrials</code> functions from Chapter \ref{ch:poker} to the module.</div></article><article class="task exercise-like" id="ch--4-15-2"><h5 class="heading"><span class="codenumber">(b)</span></h5>
+<div class="para" id="ch--4-15-2-1-1">Add the <code class="code-inline tex2jax_ignore">royalFlush</code>, <code class="code-inline tex2jax_ignore">isTwoPair</code> and <code class="code-inline tex2jax_ignore">runTrials</code> functions to be exported (top of the module)</div></article><article class="task exercise-like" id="ch--4-15-3"><h5 class="heading"><span class="codenumber">(c)</span></h5>
+<div class="para" id="ch--4-15-3-1-1">Create a hand that is a Royal Flush poker hand and one that is not.</div></article><article class="task exercise-like" id="ch--4-15-4"><h5 class="heading"><span class="codenumber">(d)</span></h5>
+<div class="para" id="ch--4-15-4-1-1">Create a hand that is a Two Pair poker hand and one that is not.</div></article><article class="task exercise-like" id="ch--4-15-5"><h5 class="heading"><span class="codenumber">(e)</span></h5>
+<div class="para" id="ch--4-15-5-1-1">Test that the <code class="code-inline tex2jax_ignore">runTrials</code> function is working by testing one of the</div></article></article></details></section><section class="section" id="sect-unit-tests"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">19.3</span><span class="space"> </span><span class="title">Unit Tests</span>
+</h3>
+<div class="para" id="sect-unit-tests-2">Writing a module is important, but making sure it does what it is supposed to is just as important. At first, when you start writing code, you typically make sure there are no bugs, but after time, code changes and you’re not sure that the code still works. The notion of a unit test is a set of tests to determine if you get out from the code what you expect. This is a language-independent idea and should be created once you write any level of substantial code.</div>
+<div class="para" id="sect-unit-tests-3">To run a test in Julia, first import the <code class="code-inline tex2jax_ignore">Test</code> package:</div>
+<div class="para logical" id="sect-unit-tests-4"><pre class="code-display tex2jax_ignore">
+			using Test
+			</pre></div>
+<div class="para" id="sect-unit-tests-5">To do a test, we’ll use the <code class="code-inline tex2jax_ignore">@test</code> macro and it’s a good idea to check out the <a class="external" href="https://docs.julialang.org/en/latest/stdlib/Test/" target="_blank">Julia documentation on Test</a>. For this module, let’s first test that the constructor is working using the <code class="code-inline tex2jax_ignore">isa</code> function.</div>
+<div class="para logical" id="sect-unit-tests-6"><pre class="code-display tex2jax_ignore">
+			@test isa(Card(1,4),Card)
+			</pre></div>
+<div class="para" id="sect-unit-tests-7">should return \jlc[module]{print(@test isa(PlayingCards.Card(1,4),PlayingCards.Card))} \printpythontex[verbatim]. Recall also that we can pass in an integer between 1 and 52, so</div>
+<div class="para logical" id="sect-unit-tests-8"><pre class="code-display tex2jax_ignore">
+			@test isa(Card(24),Card)
+			</pre></div>
+<div class="para" id="sect-unit-tests-9">should also return \jlc[module]{print(@test isa(PlayingCards.Card(24),PlayingCards.Card))} \printpythontex[verbatim]. If we try to create a card that is not valid, then we won’t get a Test Passed. For example:</div>
+<div class="para logical" id="sect-unit-tests-10"><pre class="code-display tex2jax_ignore">
+			@test isa(Card(78),Card)
+			</pre></div>
+<div class="para" id="sect-unit-tests-11">will return <code class="code-inline tex2jax_ignore">Error During Test</code>. A better way to test for this is using the <code class="code-inline tex2jax_ignore">@test_throws</code> method to test if an error is thrown:</div>
+<div class="para logical" id="sect-unit-tests-12"><pre class="code-display tex2jax_ignore">
+			@test_throws ArgumentError Card(78)
+			</pre></div>
+<div class="para" id="sect-unit-tests-13">returns \jlc[module]{display(@test_throws ArgumentError PlayingCards.Card(78))} \printpythontex[verbatim]</div>
+<div class="para" id="sect-unit-tests-14">Here’s another nice test that will check if the two different ways to create Cards are the same. For this we will need a way to test if two Cards are equal.  Add the following to the Playing Cards module.</div>
+<div class="para logical" id="sect-unit-tests-15"><pre class="code-display tex2jax_ignore">
+			function isequal(x::Card,y::Card)
+			x.rank==y.rank &amp;&amp; x.suit==y.suit
+			end
+			</pre></div>
+<div class="para" id="sect-unit-tests-16">then create two cards</div>
+<div class="para logical" id="sect-unit-tests-17"><pre class="code-display tex2jax_ignore">
+			c1=Card(2,3)
+			c2=Card(28)
+			</pre></div>
+<div class="para" id="sect-unit-tests-18">and test if they are the same with</div>
+<div class="para logical" id="sect-unit-tests-19"><pre class="code-display tex2jax_ignore">
+			@test isequal(Card(2,3),Card(28))
+			</pre></div>
+<div class="para" id="sect-unit-tests-20">and this returns \jlc[module]{print(@test isequal(Card(2,3),Card(28)))} \printpythontex[verb].</div>
+<details id="sect-unit-tests-21" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">19.2</span><span class="period">.</span>
+</h4></summary><article class="exercise exercise-like knowl__content"><div class="introduction" id="sect-unit-tests-21-1"><div class="para" id="sect-unit-tests-21-1-1">Write a test that the <code class="code-inline tex2jax_ignore">isFullHouse</code> method is working. To do this:</div></div>
+<article class="task exercise-like" id="sect-unit-tests-21-2"><h5 class="heading"><span class="codenumber">(a)</span></h5>
+<div class="para" id="sect-unit-tests-21-2-1-1">Create a hand that is a full house, called <code class="code-inline tex2jax_ignore">h1</code>. Run <code class="code-inline tex2jax_ignore">@test isFullHouse(h1)</code>.</div></article><article class="task exercise-like" id="sect-unit-tests-21-3"><h5 class="heading"><span class="codenumber">(b)</span></h5>
+<div class="para" id="sect-unit-tests-21-3-1-1">Create another hand called <code class="code-inline tex2jax_ignore">h2</code> that is a full house and test it.</div></article><article class="task exercise-like" id="sect-unit-tests-21-4"><h5 class="heading"><span class="codenumber">(c)</span></h5>
+<div class="para" id="sect-unit-tests-21-4-1-1">Create a third hand called <code class="code-inline tex2jax_ignore">h3</code> that is not a full house and test it. To get the test to return passed, perform <code class="code-inline tex2jax_ignore">@test !isFullHouse(h3)</code>.</div></article></article></details></section><section class="section" id="ch--6"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">19.4</span><span class="space"> </span><span class="title">Creating a test suite</span>
+</h3>
+<section class="introduction" id="ch--6-2"><div class="para" id="ch--6-2-1">Often in a set of tests, there are mulitple tests that go together. For example, if we just want to test that the construction of Cards are working, we can create a test set in the following:</div> <div class="para logical" id="ch--6-2-2"><pre class="code-display tex2jax_ignore">
+				@testset "Legal Card Constructor" begin
+				@test isa(Card(1,3),Card)
+				@test isa(Card(45),Card)
+				@test isa(Card("3\u2660"),Card)
+				end;
+				</pre></div> <div class="para" id="ch--6-2-3">where all three methods to construct a card are used and all should work. If you run this, you should get:</div> <div class="para logical" id="ch--6-2-4"><pre class="code-display tex2jax_ignore">
+</pre></div> <div class="para" id="ch--6-2-5">which just shows that we passed all of the tests. If one of them doesn’t pass, you will get information about the one that wasn’t passed. Try changing one of the tests above to get an illegal card.</div></section><section class="subsection" id="ch--6-3"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">19.4.1</span><span class="space"> </span><span class="title">Putting all tests in a file</span>
+</h4>
+<div class="para" id="ch--6-3-2">The <a class="external" href="test-playing-cards.jl" target="_blank">Playing Card test file</a> is a better way to run a set of tests. To use this, download the file, put it in the current directory of jupyter and then run it with:</div>
+<div class="para logical" id="ch--6-3-3"><pre class="code-display tex2jax_ignore">
+				include("test-playing-cards.jl")
+				</pre></div>
+<div class="para" id="ch--6-3-4">and you should see: \printpythontex[verbatim] % printed out.</div>
+<details id="ch--6-3-5" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
+<span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">19.3</span><span class="period">.</span>
+</h5></summary><article class="exercise exercise-like knowl__content"><article class="task exercise-like" id="ch--6-3-5-1"><h6 class="heading"><span class="codenumber">(a)</span></h6>
+<div class="para" id="ch--6-3-5-1-1-1">Create a test set with at least 3 hands to test for Royal Flush.</div></article><article class="task exercise-like" id="ch--6-3-5-2"><h6 class="heading"><span class="codenumber">(b)</span></h6>
+<div class="para" id="ch--6-3-5-2-1-1">Create a test set with at least 3 hands to test for Two Pair.</div></article><article class="task exercise-like" id="ch--6-3-5-3"><h6 class="heading"><span class="codenumber">(c)</span></h6>
+<div class="para" id="ch--6-3-5-3-1-1">Add these test sets to the <code class="code-inline tex2jax_ignore">test-playing-cards</code> file.</div></article></article></details></section></section><section class="section" id="ch--7"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">19.5</span><span class="space"> </span><span class="title">Modules and Unit Tests</span>
+</h3>
+<div class="para" id="ch--7-2">Once you have enough code to write a module, the first thing should be to start writing unit tests to make sure it is correct. In fact, good programming practice is to write the API (Application Programming Interface), which is just the function signatures with no function bodies, then the test cases before any working code is written.</div>
+<div class="para" id="ch--7-3">In any case, once you have unit tests working, you should write and revise any code and after any changes are made, rerun any unit tests.</div></section><section class="section" id="ch--8"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">19.6</span><span class="space"> </span><span class="title">A Rootfinding Module</span>
+</h3>
+<section class="introduction" id="ch--8-2"><div class="para" id="ch--8-2-1">We now develop a rootfinding module based on what we’ve developed in <a href="ch-rootfinding.html" class="internal" title="Chapter 10: Solving Quadratics and Rootfinding">Chapter 10</a>, <a href="ch-comp-types.html" class="internal" title="Chapter 11: Creating New Data Types in Julia">Chapter 11</a> and <a href="ch-adv-functions.html" class="internal" title="Chapter 18: Advanced Function Features of Julia">Chapter 18</a>. We will pull a few of the structs and functions in as:</div> <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">module Rootfinding
+using ForwardDiff
+import Base.show
+export Root, newton
+struct Root
+  root::Float64    #  approximate value of the root
+  x_eps::Float64   #  estimate of the error in the x variable
+  f_eps::Float64   #  function value at the root f(root)
+  num_steps::Int   #  number of steps the method used
+  converged::Bool  #  whether or not the stopping criterion was reached
+  max_steps::Int   #  the maximum number of steps allowed
+end
+function Base.show(io::IO,r::Root)
+  if(r.converged)
+    str = string("The root is approximately x̂ = $(r.root)\n")
+    str = string(str,"An estimate for the error is $(r.x_eps)\n")
+    str = string(str,"with f(x̂) = $(r.f_eps)\n")
+    str = string(str,"which took $(r.num_steps) steps")
+  else
+    str = string("The root was not found within $(r.max_steps) steps.\n");
+    str = string(str,"Currently, the root is approximately x̂ = $(r.root) \n")
+    str = string(str,"An estimate for the error is $(r.x_eps)\n")
+    str = string(str,"with f(x̂) = $(r.f_eps)\n")
+  end
+  print(io,str)
+end
+function newton(f::Function, x0::Number; tol=1e-6, max_steps=10)
+  tol &gt; 0 || throw(ArgumentError("The parameter tol much be positive"))
+  max_steps &gt; 0 || throw(ArgumentError("The parameter max_steps much be positive"))
+  local dx = f(x0)/ForwardDiff.derivative(f,x0)
+  local steps = 0
+  while abs(dx)&gt;tol &amp;&amp; steps&lt;max_steps
+    x0 -= dx
+    dx = f(x0)/ForwardDiff.derivative(f,x0)
+    steps += 1
+  end
+  Root(x0,xstep,f(x0),steps,steps&lt;max_steps,max_steps)
+end
+end # module Rootfinding
+</code></pre></div> <div class="para" id="ch--8-2-3">Recall that once this is saved then enter:</div> <div class="para logical" id="ch--8-2-4"><pre class="code-display tex2jax_ignore">
+				include("Rootfinding.jl")
+				using .Rootfinding
+				</pre></div> <div class="para" id="ch--8-2-5">and now we can use these functions:</div> <div class="para logical" id="ch--8-2-6"><pre class="code-display tex2jax_ignore">
+				root = newton(x -&gt; x^2-5,1)
+				</pre></div> <div class="para" id="ch--8-2-7">returns \jlc[root-mod]{display(root)} \printpythontex[verbatim]</div></section><section class="subsection" id="ch--8-3"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">19.6.1</span><span class="space"> </span><span class="title">A Test Suite for Rootfinding</span>
+</h4>
+<div class="para" id="ch--8-3-2">One of the themes of the text is knowing when computational algorithms succeed and fail. We have seen throughout a few chapters now that Newton’s method fails for functions without roots. It is important to check how well it is working.</div>
+<div class="para" id="ch--8-3-3">In an exercise in Chapter \ref{ch:adv-functions}, you were asked to try to find <span class="process-math">\(\sqrt{10}\text{.}\)</span>  We will do this formally now with a test.  For this section, you will need to do \jlb[root-mod]{using Test}.</div>
+<div class="para" id="ch--8-3-4">If we want to test Newton’s method, we need to choose a function that has a root that we know. You may think that since <span class="process-math">\(f(x)=x^2-2\)</span> has a root at <span class="process-math">\(\sqrt{2}\text{,}\)</span> we can test that.  Let’s try.</div>
+<div class="para" id="ch--8-3-5">A simple test may be</div>
+<div class="para logical" id="ch--8-3-6"><pre class="code-display tex2jax_ignore">
+				val = newton(x -&gt; x^2-2,1)
+				@test val.root == sqrt(2)
+				</pre></div>
+<div class="para" id="ch--8-3-7">which results in \printpythontex[verbatim]</div>
+<div class="para" id="ch--8-3-8">The problem occurs when checking equality between two floating-point numbers.  You can see in the error the two values and although they are identical for about 10 digits, they are exactly the same.  In order for any pairs of numbers to be equal, all bits must be the same and that is hard to achieve with floating points.</div>
+<div class="para" id="ch--8-3-9">Instead, we will test for approximate equality.</div>
+<div class="para logical" id="ch--8-3-10"><pre class="code-display tex2jax_ignore">
+				val = newton(x -&gt; x^2-2,1)
+				@test abs(val.root-sqrt(2)) &lt; 1e-6
+				</pre></div>
+<div class="para" id="ch--8-3-11">which returns <code class="code-inline tex2jax_ignore">Test Passed</code>
+</div>
+<div class="para logical" id="ch--8-3-12">
+<div class="para">Alternatively, we can use the nice approximate test of</div>
+<pre class="code-display tex2jax_ignore">
+				@test val.root≈sqrt(2)
+				</pre>
+</div>
+<div class="para" id="ch--8-3-13">where the <code class="code-inline tex2jax_ignore">≈</code> symbol can be entered with typing <code class="code-inline tex2jax_ignore">\approx</code> then hitting TAB.</div>
+<div class="para" id="ch--8-3-14">We also want to make sure that it returns appropriately when there is no root.  We’ll return to the function <span class="process-math">\(f(x)=x^2+1\)</span> and look for a root. We will build up a test set to test a number of things:</div>
+<div class="para logical" id="ch--8-3-15"><pre class="code-display tex2jax_ignore">
+				@testset "function with no root" begin
+				val = newton(x -&gt; x^2+1,2)
+				@test !val.converged
+				@test val.num_steps == val.max_steps
+				end;
+				</pre></div>
+<div class="para" id="ch--8-3-16">returns \printpythontex[verbatim]</div></section></section></section></div>
+<div class="ptx-content-footer">
+<a class="previous-button button" href="ch-adv-functions.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="backmatter.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="338 3000 8772 6866"><g style="stroke-width:.025in; stroke:black; fill:none"><polyline points="472,3590 472,9732 " style="stroke:#000000;stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke:#000000;stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke:#000000;stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke:#000000;stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke:#000000;stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke:#000000;stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke:#000000;stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke:#000000;stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke:#000000;stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke:#000000;stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke:#000000;stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke:#000000;stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke:#000000;stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke:#000000;stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="https://runestone.academy/runestone/static/images/RAIcon_cropped.png"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="https://www.mathjax.org/badge/badge-square-2.png"></a>
+</div>
+</body>
+</html>

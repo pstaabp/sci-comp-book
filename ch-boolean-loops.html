@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<html lang="en-US" dir="ltr">
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Boolean Statements, Loops and Branching</title>
+<meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="Scientific Computing and Visualization">
+<meta property="book:author" content="Peter Staab">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "extpfeil",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math"
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/extpfeil",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js/lib"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/themes/prism.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-dubtf8xMHSQlExGRQ5R7toxHLgSDZ0K7AunqPWHXmJQ8XyVIG19S1T95gBxlAeGOK02P4Da2RTnQz0Za0H0ebQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.css" integrity="sha512-cbQXwDFK7lj2Fqfkuxbo5iD1dSbLlJGXGpfTDqbggqjHJeyzx88I3rfwjS38WJag/ihH7lzuGlGHpDBymLirZQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.css" integrity="sha512-nXlJLUeqPMp1Q3+Bd8Qds8tXeRVQscMscwysJm821C++9w6WtsFbJjPenZ8cQVMXyqSAismveQJc0C1splFDCA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.js" integrity="sha512-93uCmm0q+qO5Lb1huDqr7tywS8A2TFA+1/WHvyiWaK6/pvsFl6USnILagntBx8JnVbQH5s3n0vQZY6xNthNfKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><link href="_static/pretext/css/pretext_search.css" rel="stylesheet" type="text/css">
+<script src="_static/pretext/js/lib/jquery.min.js"></script><script src="_static/pretext/js/lib/jquery.sticky.js"></script><script src="_static/pretext/js/lib/jquery.espy.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><script src="_static/pretext/js/user_preferences.js"></script><script src="_static/pretext/js/lib/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&amp;family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&amp;family=Tinos:ital,wght@0,400;0,700;1,400;1,700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/dejavu-serif" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:opsz,wdth,wght@8..144,50..150,100..900&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wdth,wght@75..100,300..800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+<link href="_static/pretext/css/pretext.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/pretext_add_on.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/shell_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/banner_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/navbar_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/toc_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/knowls_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/style_default.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/colors_blue_red.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/setcolors.css" rel="stylesheet" type="text/css">
+<style>
+#ch-intro-functions-2-2-1 { counter-set: ch-intro-functions-2-2-1 0; }
+#ch-intro-functions-2-2-1 > li::marker { content: ""counter(ch-intro-functions-2-2-1,decimal)"."; }
+#ch-intro-functions-2-2-1 > li { counter-increment: ch-intro-functions-2-2-1; }
+#sect-comprehensions-8-1-2-1 { counter-set: sect-comprehensions-8-1-2-1 0; }
+#sect-comprehensions-8-1-2-1 > li::marker { content: ""counter(sect-comprehensions-8-1-2-1,decimal)"."; }
+#sect-comprehensions-8-1-2-1 > li { counter-increment: sect-comprehensions-8-1-2-1; }
+#sect-broadcasting-8-2-1 { counter-set: sect-broadcasting-8-2-1 0; }
+#sect-broadcasting-8-2-1 > li::marker { content: ""counter(sect-broadcasting-8-2-1,decimal)"."; }
+#sect-broadcasting-8-2-1 > li { counter-increment: sect-broadcasting-8-2-1; }
+#ch-functional-programming-3-3-6-1-1 { counter-set: ch-functional-programming-3-3-6-1-1 0; }
+#ch-functional-programming-3-3-6-1-1 > li::marker { content: ""counter(ch-functional-programming-3-3-6-1-1,decimal)"."; }
+#ch-functional-programming-3-3-6-1-1 > li { counter-increment: ch-functional-programming-3-3-6-1-1; }
+#sect-reduce-array-8-1 { counter-set: sect-reduce-array-8-1 0; }
+#sect-reduce-array-8-1 > li::marker { content: ""counter(sect-reduce-array-8-1,decimal)"."; }
+#sect-reduce-array-8-1 > li { counter-increment: sect-reduce-array-8-1; }
+#sect-reduce-array-15-1 { counter-set: sect-reduce-array-15-1 0; }
+#sect-reduce-array-15-1 > li::marker { content: ""counter(sect-reduce-array-15-1,decimal)"."; }
+#sect-reduce-array-15-1 > li { counter-increment: sect-reduce-array-15-1; }
+#sect-faster-fibonacci-3-7-1-1 { counter-set: sect-faster-fibonacci-3-7-1-1 0; }
+#sect-faster-fibonacci-3-7-1-1 > li::marker { content: ""counter(sect-faster-fibonacci-3-7-1-1,decimal)"."; }
+#sect-faster-fibonacci-3-7-1-1 > li { counter-increment: sect-faster-fibonacci-3-7-1-1; }
+#ch-number-theory-6-2-2-1 { counter-set: ch-number-theory-6-2-2-1 0; }
+#ch-number-theory-6-2-2-1 > li::marker { content: ""counter(ch-number-theory-6-2-2-1,decimal)"."; }
+#ch-number-theory-6-2-2-1 > li { counter-increment: ch-number-theory-6-2-2-1; }
+#ch-number-theory-8-7-5-1 { counter-set: ch-number-theory-8-7-5-1 0; }
+#ch-number-theory-8-7-5-1 > li::marker { content: ""counter(ch-number-theory-8-7-5-1,decimal)"."; }
+#ch-number-theory-8-7-5-1 > li { counter-increment: ch-number-theory-8-7-5-1; }
+#ch-probability-random-8-2-5-1 { counter-set: ch-probability-random-8-2-5-1 0; }
+#ch-probability-random-8-2-5-1 > li::marker { content: ""counter(ch-probability-random-8-2-5-1,decimal)"."; }
+#ch-probability-random-8-2-5-1 > li { counter-increment: ch-probability-random-8-2-5-1; }
+#ch-prob-models-5-10-1-1-2-1 { counter-set: ch-prob-models-5-10-1-1-2-1 0; }
+#ch-prob-models-5-10-1-1-2-1 > li::marker { content: ""counter(ch-prob-models-5-10-1-1-2-1,decimal)"."; }
+#ch-prob-models-5-10-1-1-2-1 > li { counter-increment: ch-prob-models-5-10-1-1-2-1; }
+#ch-prob-models-6-2-8-1 { counter-set: ch-prob-models-6-2-8-1 0; }
+#ch-prob-models-6-2-8-1 > li::marker { content: ""counter(ch-prob-models-6-2-8-1,decimal)"."; }
+#ch-prob-models-6-2-8-1 > li { counter-increment: ch-prob-models-6-2-8-1; }
+#ch-poker-5-5-3-1 { counter-set: ch-poker-5-5-3-1 0; }
+#ch-poker-5-5-3-1 > li::marker { content: ""counter(ch-poker-5-5-3-1,decimal)"."; }
+#ch-poker-5-5-3-1 > li { counter-increment: ch-poker-5-5-3-1; }
+#ch-adv-functions-6-2-2-1 { counter-set: ch-adv-functions-6-2-2-1 0; }
+#ch-adv-functions-6-2-2-1 > li::marker { content: ""counter(ch-adv-functions-6-2-2-1,decimal)"."; }
+#ch-adv-functions-6-2-2-1 > li { counter-increment: ch-adv-functions-6-2-2-1; }
+#ch-parallel-3-3-13-2-1 { counter-set: ch-parallel-3-3-13-2-1 0; }
+#ch-parallel-3-3-13-2-1 > li::marker { content: ""counter(ch-parallel-3-3-13-2-1,decimal)"."; }
+#ch-parallel-3-3-13-2-1 > li { counter-increment: ch-parallel-3-3-13-2-1; }
+#ch-data-5-3-7-2 { counter-set: ch-data-5-3-7-2 0; }
+#ch-data-5-3-7-2 > li::marker { content: ""counter(ch-data-5-3-7-2,decimal)"."; }
+#ch-data-5-3-7-2 > li { counter-increment: ch-data-5-3-7-2; }
+#ch-manipulating-data-9-3-1 { counter-set: ch-manipulating-data-9-3-1 0; }
+#ch-manipulating-data-9-3-1 > li::marker { content: ""counter(ch-manipulating-data-9-3-1,decimal)"."; }
+#ch-manipulating-data-9-3-1 > li { counter-increment: ch-manipulating-data-9-3-1; }
+#ch-census-4-2-2-1 { counter-set: ch-census-4-2-2-1 0; }
+#ch-census-4-2-2-1 > li::marker { content: ""counter(ch-census-4-2-2-1,decimal)"."; }
+#ch-census-4-2-2-1 > li { counter-increment: ch-census-4-2-2-1; }
+#ch-olympics-2-1-1 { counter-set: ch-olympics-2-1-1 0; }
+#ch-olympics-2-1-1 > li::marker { content: ""counter(ch-olympics-2-1-1,decimal)"."; }
+#ch-olympics-2-1-1 > li { counter-increment: ch-olympics-2-1-1; }
+#ch-num-int-3-17-1 { counter-set: ch-num-int-3-17-1 0; }
+#ch-num-int-3-17-1 > li::marker { content: ""counter(ch-num-int-3-17-1,decimal)"."; }
+#ch-num-int-3-17-1 > li { counter-increment: ch-num-int-3-17-1; }
+#ch-getting-started-5-3-3-3-1 { counter-set: ch-getting-started-5-3-3-3-1 0; }
+#ch-getting-started-5-3-3-3-1 > li::marker { content: ""counter(ch-getting-started-5-3-3-3-1,decimal)"."; }
+#ch-getting-started-5-3-3-3-1 > li { counter-increment: ch-getting-started-5-3-3-3-1; }
+#ch-num-rep-5-3-1 { counter-set: ch-num-rep-5-3-1 0; }
+#ch-num-rep-5-3-1 > li::marker { content: ""counter(ch-num-rep-5-3-1,decimal)"."; }
+#ch-num-rep-5-3-1 > li { counter-increment: ch-num-rep-5-3-1; }
+</style>
+</head>
+<body id="changeme" class="pretext book ignore-math">
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner">
+<a id="logo-link" class="logo-link" target="_blank" href=""></a><div class="title-container">
+<h1 class="heading"><a href="my-great-book.html"><span class="title">Scientific Computing and Visualization:</span> <span class="subtitle">Coding mathematics using Julia</span></a></h1>
+<p class="byline">Peter Staab</p>
+</div>
+</div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5d2;</span><span class="name">Contents</span></button><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe8b6;</span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"></span><span class="treebuttons"><a class="previous-button button" href="ch-intro-functions.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="part-julia-basics.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="ch-arrays.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 parts"><ul class="structural contains-active toc-item-list">
+<li class="toc-item toc-frontmatter"><div class="toc-title-box"><a href="frontmatter.html" class="internal"><span class="title">Front Matter</span></a></div></li>
+<li class="toc-item toc-part">
+<div class="toc-title-box"><a href="part-intro.html" class="internal"><span class="codenumber">I</span> <span class="title">Introduction to Scientific Computing</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-intro.html" class="internal"><span class="codenumber">1</span> <span class="title">Introduction to Scientific Computing</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-3" class="internal"><span class="codenumber">1.1</span> <span class="title">Examples of Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-4" class="internal"><span class="codenumber">1.2</span> <span class="title">Modeling</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-5" class="internal"><span class="codenumber">1.3</span> <span class="title">Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-6" class="internal"><span class="codenumber">1.4</span> <span class="title">Ideas needed to do Effective Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-7" class="internal"><span class="codenumber">1.5</span> <span class="title">Writing Code for Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-8" class="internal"><span class="codenumber">1.6</span> <span class="title">Let’s get started</span></a></div></li>
+</ul>
+</li></ul>
+</li>
+<li class="toc-item toc-part contains-active">
+<div class="toc-title-box"><a href="part-julia-basics.html" class="internal"><span class="codenumber">II</span> <span class="title">Scientific Computation and Julia Basics</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-variables.html" class="internal"><span class="codenumber">2</span> <span class="title">Storing number and strings and using Julia syntax</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-3" class="internal"><span class="codenumber">2.1</span> <span class="title">Numbers</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-variables.html#ch-variables-4" class="internal"><span class="codenumber">2.2</span> <span class="title">Assignment Statement and Variables</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-4-3" class="internal"><span class="codenumber">2.2.1</span> <span class="title">Storing Variable in a Virtual Whiteboard</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-variables.html#ch-variables-5" class="internal"><span class="codenumber">2.3</span> <span class="title">Strings</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-5-3" class="internal"><span class="codenumber">2.3.1</span> <span class="title">String Operations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-5-4" class="internal"><span class="codenumber">2.3.2</span> <span class="title">String Interpolation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-5-5" class="internal"><span class="codenumber">2.3.3</span> <span class="title">Other String Functions</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-6" class="internal"><span class="codenumber">2.4</span> <span class="title">Expressions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#sect-oper-precedence" class="internal"><span class="codenumber">2.5</span> <span class="title">Operator Precendence</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-8" class="internal"><span class="codenumber">2.6</span> <span class="title">Comments</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-data-types.html" class="internal"><span class="codenumber">3</span> <span class="title">Introduction to Data Types</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-3" class="internal"><span class="codenumber">3.1</span> <span class="title">Integers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-3-3" class="internal"><span class="codenumber">3.1.1</span> <span class="title">Unsigned Integers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-3-4" class="internal"><span class="codenumber">3.1.2</span> <span class="title">Signed Integers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-3-5" class="internal"><span class="codenumber">3.1.3</span> <span class="title">Overflow and Underflow of integer operations</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-4" class="internal"><span class="codenumber">3.2</span> <span class="title">Floating Point Numbers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-5" class="internal"><span class="codenumber">3.3</span> <span class="title">Extending integers, the <code class="code-inline tex2jax_ignore">BigInt</code> type</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-6" class="internal"><span class="codenumber">3.4</span> <span class="title">Extending Floating Point Numbers with <code class="code-inline tex2jax_ignore">BigFloat</code></span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#ch-data-types-6-3" class="internal"><span class="codenumber">3.4.1</span> <span class="title">Limitations of <code class="code-inline tex2jax_ignore">BigFloats</code></span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#sect-rational-numbers" class="internal"><span class="codenumber">3.5</span> <span class="title">Rational numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-rational-numbers-3" class="internal"><span class="codenumber">3.5.1</span> <span class="title">Exercise</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-rational-type" class="internal"><span class="codenumber">3.5.2</span> <span class="title">The Rational Type</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-other-operations-with-rationals" class="internal"><span class="codenumber">3.5.3</span> <span class="title">Other Operations with Rationals</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-rational-numbers-6" class="internal"><span class="codenumber">3.5.4</span> <span class="title">Limitations of Rational Numbers</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data-types.html#sect-complex-numbers" class="internal"><span class="codenumber">3.6</span> <span class="title">Complex Numbers</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#sect-abstract-type" class="internal"><span class="codenumber">3.7</span> <span class="title">Abstract and Concrete Number Types</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-abstract-type-3" class="internal"><span class="codenumber">3.7.1</span> <span class="title">Abstract Number types</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-abstract-type-4" class="internal"><span class="codenumber">3.7.2</span> <span class="title">Concrete Number Types</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#sect-convert-numbers" class="internal"><span class="codenumber">3.8</span> <span class="title">Converting numbers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-convert-numbers-3" class="internal"><span class="codenumber">3.8.1</span> <span class="title">Converting to Integers</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data-types.html#sect-tuples" class="internal"><span class="codenumber">3.9</span> <span class="title">Tuples</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-tuples-3" class="internal"><span class="codenumber">3.9.1</span> <span class="title">Named Tuples</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data-types.html#sect-tuples-4" class="internal"><span class="codenumber">3.9.2</span> <span class="title">Tuples are Immutable</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-intro-functions.html" class="internal"><span class="codenumber">4</span> <span class="title">Introduction to Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#sect-simple-example" class="internal"><span class="codenumber">4.1</span> <span class="title">Simple example</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-4" class="internal"><span class="codenumber">4.2</span> <span class="title">Function Arguments</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-5" class="internal"><span class="codenumber">4.3</span> <span class="title">Returning values from a function</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-5-3" class="internal"><span class="codenumber">4.3.1</span> <span class="title">Indentation in Functions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-6" class="internal"><span class="codenumber">4.4</span> <span class="title">Specifying Argument Types</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-7" class="internal"><span class="codenumber">4.5</span> <span class="title">Multiple Dispatch</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-7-3" class="internal"><span class="codenumber">4.5.1</span> <span class="title">Multiple Dispatch of built-in functions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#sect-varargs" class="internal"><span class="codenumber">4.6</span> <span class="title">Variable Number of arguments</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-9" class="internal"><span class="codenumber">4.7</span> <span class="title">Multiple Return Values</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-intro-functions.html#sect-factorial" class="internal"><span class="codenumber">4.8</span> <span class="title">Factorial Function</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-intro-functions.html#sect-factorial-3" class="internal"><span class="codenumber">4.8.1</span> <span class="title">Exercise</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#sect-recursion" class="internal"><span class="codenumber">4.9</span> <span class="title">Recursive Functions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-12" class="internal"><span class="codenumber">4.10</span> <span class="title">Variable Scope</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro-functions.html#ch-intro-functions-13" class="internal"><span class="codenumber">4.11</span> <span class="title">Summary of Function basics</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter active">
+<div class="toc-title-box"><a href="ch-boolean-loops.html" class="internal"><span class="codenumber">5</span> <span class="title">Boolean Statements, Loops and Branching</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-3" class="internal"><span class="codenumber">5.1</span> <span class="title">Boolean values and if statements</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-3-3" class="internal"><span class="codenumber">5.1.1</span> <span class="title">Compounds boolean statements</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-4" class="internal"><span class="codenumber">5.2</span> <span class="title">If Statements</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-4-3" class="internal"><span class="codenumber">5.2.1</span> <span class="title">Further choices with if statements</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-5" class="internal"><span class="codenumber">5.3</span> <span class="title">Ternary <code class="code-inline tex2jax_ignore">if-then-else</code></span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-6" class="internal"><span class="codenumber">5.4</span> <span class="title">Loops</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-6-3" class="internal"><span class="codenumber">5.4.1</span> <span class="title">While Loops</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-6-4" class="internal"><span class="codenumber">5.4.2</span> <span class="title">Infinite Loops</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7" class="internal"><span class="codenumber">5.5</span> <span class="title">For loops</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7-3" class="internal"><span class="codenumber">5.5.1</span> <span class="title">While Loops Versus For Loops</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-8" class="internal"><span class="codenumber">5.6</span> <span class="title">Ranges</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#sect-lin-range" class="internal"><span class="codenumber">5.6.1</span> <span class="title">Linear Ranges</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-arrays.html" class="internal"><span class="codenumber">6</span> <span class="title">Arrays</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-contructing-arrays" class="internal"><span class="codenumber">6.1</span> <span class="title">Constructing arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-comprehensions" class="internal"><span class="codenumber">6.2</span> <span class="title">Comprehensions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-accessing-arrays" class="internal"><span class="codenumber">6.3</span> <span class="title">Accessing elements of an array</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-6" class="internal"><span class="codenumber">6.4</span> <span class="title">Common Operations on Arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-broadcasting" class="internal"><span class="codenumber">6.5</span> <span class="title">Element by Element Operations</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-8" class="internal"><span class="codenumber">6.6</span> <span class="title">Other Operations on Arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-9" class="internal"><span class="codenumber">6.7</span> <span class="title">Sorting Vectors and matrices</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-10" class="internal"><span class="codenumber">6.8</span> <span class="title">Push and Pop; Array as a Stack</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11" class="internal"><span class="codenumber">6.9</span> <span class="title">Other Nice Array Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11-3" class="internal"><span class="codenumber">6.9.1</span> <span class="title">Append</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11-4" class="internal"><span class="codenumber">6.9.2</span> <span class="title">Adding and Removing Elements in the Middle of an Array</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11-5" class="internal"><span class="codenumber">6.9.3</span> <span class="title">It Splices, It Dices!! --- okay, it doesn’t dice</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11-6" class="internal"><span class="codenumber">6.9.4</span> <span class="title">Filtering Arrays</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-11-7" class="internal"><span class="codenumber">6.9.5</span> <span class="title">Removing Duplicate Elements</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Spliting Strings</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-functional-programming.html" class="internal"><span class="codenumber">7</span> <span class="title">Functional Programming</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-3" class="internal"><span class="codenumber">7.1</span> <span class="title">Functional vs. Non-functional forms</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-3-3" class="internal"><span class="codenumber">7.1.1</span> <span class="title">Anonymous Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-3-4" class="internal"><span class="codenumber">7.1.2</span> <span class="title">Mapping over two arrays</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-reduce-array" class="internal"><span class="codenumber">7.2</span> <span class="title">Reducing an array</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#section-mapreduce" class="internal"><span class="codenumber">7.3</span> <span class="title">The <code class="code-inline tex2jax_ignore">mapreduce</code> function</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-6" class="internal"><span class="codenumber">7.4</span> <span class="title">Mapping a Function over an 2D array</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7" class="internal"><span class="codenumber">7.5</span> <span class="title">Writing fast code</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7-3" class="internal"><span class="codenumber">7.5.1</span> <span class="title">Attempt #1</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7-4" class="internal"><span class="codenumber">7.5.2</span> <span class="title">Attempt #2</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7-5" class="internal"><span class="codenumber">7.5.3</span> <span class="title">Attempt #3</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7-6" class="internal"><span class="codenumber">7.5.4</span> <span class="title">Attempt #4</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7-7" class="internal"><span class="codenumber">7.5.5</span> <span class="title">Attempt #5</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-8" class="internal"><span class="codenumber">7.6</span> <span class="title">Summary of Results</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-functional-programming.html#sect-faster-fibonacci" class="internal"><span class="codenumber">7.7</span> <span class="title">Computing Fibonacci Numbers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-faster-fibonacci-3" class="internal"><span class="codenumber">7.7.1</span> <span class="title">Speeding Up Fibonacci</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-number-theory.html" class="internal"><span class="codenumber">8</span> <span class="title">Number theory and Algorithm Development</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-3" class="internal"><span class="codenumber">8.1</span> <span class="title">Prime Numbers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-4" class="internal"><span class="codenumber">8.2</span> <span class="title">Finding Primes</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5" class="internal"><span class="codenumber">8.3</span> <span class="title">Perfect Numbers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5-3" class="internal"><span class="codenumber">8.3.1</span> <span class="title">Timing the two functions and the <code class="code-inline tex2jax_ignore">BenchmarkTools</code> package</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6" class="internal"><span class="codenumber">8.4</span> <span class="title">Happy Numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-3" class="internal"><span class="codenumber">8.4.1</span> <span class="title">Computing Happy Numbers in Julia</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-4" class="internal"><span class="codenumber">8.4.2</span> <span class="title">Alternative forms</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-5" class="internal"><span class="codenumber">8.4.3</span> <span class="title">Finding Happy numbers</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7" class="internal"><span class="codenumber">8.5</span> <span class="title">Primes can be big!!</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8" class="internal"><span class="codenumber">8.6</span> <span class="title">Speeding up <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-3" class="internal"><span class="codenumber">8.6.1</span> <span class="title">Speedup #1: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to stop earlier</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-4" class="internal"><span class="codenumber">8.6.2</span> <span class="title">Speedup #2: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to not check all integers as factors</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-5" class="internal"><span class="codenumber">8.6.3</span> <span class="title">Speedup #3: Don’t use <code class="code-inline tex2jax_ignore">findAllFactors</code> at all</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-6" class="internal"><span class="codenumber">8.6.4</span> <span class="title">Speedup #4: Don’t do unnecessary calculations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-7" class="internal"><span class="codenumber">8.6.5</span> <span class="title">Speedup #5: check only primes as possible factors</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9" class="internal"><span class="codenumber">8.7</span> <span class="title">Summary of <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-10" class="internal"><span class="codenumber">8.8</span> <span class="title">Testing for Primes using the <code class="code-inline tex2jax_ignore">Primes</code></span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html" class="internal"><span class="codenumber">9</span> <span class="title">Algorithm Analysis</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-3" class="internal"><span class="codenumber">9.1</span> <span class="title">Big-O Notation</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4" class="internal"><span class="codenumber">9.2</span> <span class="title">Polynomial Evaluation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#sect-horner" class="internal"><span class="codenumber">9.2.1</span> <span class="title">Horner’s Form</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4-4" class="internal"><span class="codenumber">9.2.2</span> <span class="title">Benchmarking Polynomial Evaluation</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4-4-3" class="internal"><span class="codenumber">9.2.2.1</span> <span class="title">Horner’s Form</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5" class="internal"><span class="codenumber">9.3</span> <span class="title">Interpreting big-O results</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-6" class="internal"><span class="codenumber">9.4</span> <span class="title">Using Data to determine Algorithm order</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-rootfinding.html" class="internal"><span class="codenumber">10</span> <span class="title">Solving Quadratics and Rootfinding</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-3" class="internal"><span class="codenumber">10.1</span> <span class="title">Absolute and Relative Errors</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4" class="internal"><span class="codenumber">10.2</span> <span class="title">Rounding Errors and the Quadratic Formula</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-3" class="internal"><span class="codenumber">10.2.1</span> <span class="title">Investigating Errors with Code</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-4" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Be skeptical of numerical answers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-5" class="internal"><span class="codenumber">10.2.3</span> <span class="title">Can we ever be confident of answers?</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5" class="internal"><span class="codenumber">10.3</span> <span class="title">Are We Sunk?  Examining the Quadratic Formula</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton" class="internal"><span class="codenumber">10.4</span> <span class="title">Newton’s Method</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton-3" class="internal"><span class="codenumber">10.4.1</span> <span class="title">Code for Newton’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton-4" class="internal"><span class="codenumber">10.4.2</span> <span class="title">Using Automatic Differentiation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton-5" class="internal"><span class="codenumber">10.4.3</span> <span class="title">Newton’s Method with Automatic Differentiation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton-6" class="internal"><span class="codenumber">10.4.4</span> <span class="title">Adding an extra stopping condition</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-comp-types.html" class="internal"><span class="codenumber">11</span> <span class="title">Creating New Data Types in Julia</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-3" class="internal"><span class="codenumber">11.1</span> <span class="title">Basics of Julia’s Composite Datatype</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4" class="internal"><span class="codenumber">11.2</span> <span class="title">A Card datatype</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4-3" class="internal"><span class="codenumber">11.2.1</span> <span class="title">Constructors of new data types</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4-4" class="internal"><span class="codenumber">11.2.2</span> <span class="title">Creating a Hand datatype</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-comp-types.html#sect-poly-parametric" class="internal"><span class="codenumber">11.3</span> <span class="title">Polynomials: A parametric data type</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#sect-poly-parametric-3" class="internal"><span class="codenumber">11.3.1</span> <span class="title">Adding Two Polynomials</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#sect-poly-parametric-4" class="internal"><span class="codenumber">11.3.2</span> <span class="title">Evaluating the polynomial</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-6" class="internal"><span class="codenumber">11.4</span> <span class="title">Plotting the Polynomial</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-6-3" class="internal"><span class="codenumber">11.4.1</span> <span class="title">Changing other parameters</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-6-4" class="internal"><span class="codenumber">11.4.2</span> <span class="title">Setting Default parameters</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-7" class="internal"><span class="codenumber">11.5</span> <span class="title">A Rootfinding datatype</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-part">
+<div class="toc-title-box"><a href="part-plotting.html" class="internal"><span class="codenumber">III</span> <span class="title">Plotting in Julia</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-plotting-basics.html" class="internal"><span class="codenumber">12</span> <span class="title">Plotting Basics</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-3" class="internal"><span class="codenumber">12.1</span> <span class="title">Introduction to Makie</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-4" class="internal"><span class="codenumber">12.2</span> <span class="title">Introduction to the <em class="emphasis">Plots</em> package</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-5" class="internal"><span class="codenumber">12.3</span> <span class="title">Plotting is Hard</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-6" class="internal"><span class="codenumber">12.4</span> <span class="title">Presenting Results with Visualization, an overview</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-6-3" class="internal"><span class="codenumber">12.4.1</span> <span class="title">Scatter Plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-6-4" class="internal"><span class="codenumber">12.4.2</span> <span class="title">Function Plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-6-5" class="internal"><span class="codenumber">12.4.3</span> <span class="title">Parametric Plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-6-6" class="internal"><span class="codenumber">12.4.4</span> <span class="title">Parametric Plots in 3D</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-6-7" class="internal"><span class="codenumber">12.4.5</span> <span class="title">Surface Plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-6-8" class="internal"><span class="codenumber">12.4.6</span> <span class="title">Implicit Curves</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-6-9" class="internal"><span class="codenumber">12.4.7</span> <span class="title">Contour Plots</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-7" class="internal"><span class="codenumber">12.5</span> <span class="title">Plotting Backends</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-plotting-makie.html" class="internal"><span class="codenumber">13</span> <span class="title">Using Makie for Plots</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-3" class="internal"><span class="codenumber">13.1</span> <span class="title">Basic Plotting</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#sect-layout-makie" class="internal"><span class="codenumber">13.2</span> <span class="title">Figures and Grid Layout in Makie</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#sec-makie-axis" class="internal"><span class="codenumber">13.3</span> <span class="title">Axis Options</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-6" class="internal"><span class="codenumber">13.4</span> <span class="title">Adding Plots to Axes</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-plots-package.html" class="internal"><span class="codenumber">14</span> <span class="title">The Plots Package</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-3" class="internal"><span class="codenumber">14.1</span> <span class="title">Plotting Functions</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-4" class="internal"><span class="codenumber">14.2</span> <span class="title">Other Function Plots</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#sect-para-plot" class="internal"><span class="codenumber">14.2.1</span> <span class="title">Parametric Plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#sect-implicit-curve" class="internal"><span class="codenumber">14.2.2</span> <span class="title">Implicit Curves</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#sect-contour-plot" class="internal"><span class="codenumber">14.2.3</span> <span class="title">Contour Plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#sect-surf-plot" class="internal"><span class="codenumber">14.2.4</span> <span class="title">Surface Plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#sect-heat-map" class="internal"><span class="codenumber">14.2.5</span> <span class="title">Heat maps</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-5" class="internal"><span class="codenumber">14.3</span> <span class="title">Plotting Data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-5-3" class="internal"><span class="codenumber">14.3.1</span> <span class="title">Bar plots</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-5-4" class="internal"><span class="codenumber">14.3.2</span> <span class="title">Animation</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-6" class="internal"><span class="codenumber">14.4</span> <span class="title">Other Plots and subplots</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-7" class="internal"><span class="codenumber">14.5</span> <span class="title">Backends of the Plots package</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-plots-package.html#ch-plots-package-7-3" class="internal"><span class="codenumber">14.5.1</span> <span class="title">Changing the attributes of the plot</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-part">
+<div class="toc-title-box"><a href="part-simulation.html" class="internal"><span class="codenumber">IV</span> <span class="title">Simulation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-probability-random.html" class="internal"><span class="codenumber">15</span> <span class="title">Probability Distributions and Pseudorandom Numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-3" class="internal"><span class="codenumber">15.1</span> <span class="title">Basic Defintions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-4" class="internal"><span class="codenumber">15.2</span> <span class="title">Random Variables</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-5" class="internal"><span class="codenumber">15.3</span> <span class="title">Discrete Random Variables</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-5-3" class="internal"><span class="codenumber">15.3.1</span> <span class="title">Properties of a discrete probability distribution</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-6" class="internal"><span class="codenumber">15.4</span> <span class="title">Continuous Probability</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-6-3" class="internal"><span class="codenumber">15.4.1</span> <span class="title">The Calculus of Continuous Probabilities</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-6-4" class="internal"><span class="codenumber">15.4.2</span> <span class="title">Cumulative Distribution Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-6-5" class="internal"><span class="codenumber">15.4.3</span> <span class="title">Inverse Cumulative Distribution Functions</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-7" class="internal"><span class="codenumber">15.5</span> <span class="title">Standard Continuous Distributions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-7-2" class="internal"><span class="codenumber">15.5.1</span> <span class="title">Uniform Distribution</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-7-3" class="internal"><span class="codenumber">15.5.2</span> <span class="title">The Normal Distribution</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-8" class="internal"><span class="codenumber">15.6</span> <span class="title">Pseudo Random Number Generator</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-8-3" class="internal"><span class="codenumber">15.6.1</span> <span class="title">Seeds and Pseudorandom Numbers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-8-4" class="internal"><span class="codenumber">15.6.2</span> <span class="title">Using Julia to simulate the rolling of a	die</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-8-5" class="internal"><span class="codenumber">15.6.3</span> <span class="title">Coin flips in Julia</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-8-6" class="internal"><span class="codenumber">15.6.4</span> <span class="title">Floating Point random numbers</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-9" class="internal"><span class="codenumber">15.7</span> <span class="title">The Normal Distribution</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-10" class="internal"><span class="codenumber">15.8</span> <span class="title">Other Distributions</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-prob-models.html" class="internal"><span class="codenumber">16</span> <span class="title">Using Random Numbers and Probability Models</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-3" class="internal"><span class="codenumber">16.1</span> <span class="title">Flipping Coins</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-3-3" class="internal"><span class="codenumber">16.1.1</span> <span class="title">Flipping multiple coins</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-4" class="internal"><span class="codenumber">16.2</span> <span class="title">Rolling Dice</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-5" class="internal"><span class="codenumber">16.3</span> <span class="title">Rolling 2 dice</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-6" class="internal"><span class="codenumber">16.4</span> <span class="title">Other Probability Models</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-6-3" class="internal"><span class="codenumber">16.4.1</span> <span class="title">Random Permutations</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-prob-models.html#sect-calc-pi-prob" class="internal"><span class="codenumber">16.5</span> <span class="title">Calculating <span class="process-math">\(\pi\)</span> using pseudo random numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-prob-models.html#sect-calc-pi-prob-3" class="internal"><span class="codenumber">16.5.1</span> <span class="title">Buffon’s Needle Experiment</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-prob-models.html#sect-calc-pi-prob-4" class="internal"><span class="codenumber">16.5.2</span> <span class="title">Circle in the Square</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-poker.html" class="internal"><span class="codenumber">17</span> <span class="title">Simulating Poker Hands</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-poker.html#ch-poker-3" class="internal"><span class="codenumber">17.1</span> <span class="title">A user-defined package</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-poker.html#ch-poker-3-3" class="internal"><span class="codenumber">17.1.1</span> <span class="title">Writing a Full House function</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-poker.html#ch-poker-4" class="internal"><span class="codenumber">17.2</span> <span class="title">Simulating Poker Hands</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-poker.html#ch-poker-4-3" class="internal"><span class="codenumber">17.2.1</span> <span class="title">Results of the simulation</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-poker.html#ch-poker-5" class="internal"><span class="codenumber">17.3</span> <span class="title">Probabilities of Other Hands</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-poker.html#ch-poker-5-3" class="internal"><span class="codenumber">17.3.1</span> <span class="title">Helping Functions for the Poker Hands</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-poker.html#ch-poker-5-4" class="internal"><span class="codenumber">17.3.2</span> <span class="title">Building a Royal Flush function</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-poker.html#ch-poker-5-5" class="internal"><span class="codenumber">17.3.3</span> <span class="title">Building a Two Pair function</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-poker.html#ch-poker-6" class="internal"><span class="codenumber">17.4</span> <span class="title">Summary of Simulation</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-part">
+<div class="toc-title-box"><a href="part-advanced.html" class="internal"><span class="codenumber">V</span> <span class="title">Advanced Features of Julia</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-adv-functions.html" class="internal"><span class="codenumber">18</span> <span class="title">Advanced Function Features of Julia</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-3" class="internal"><span class="codenumber">18.1</span> <span class="title">Testing Arguments</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-4" class="internal"><span class="codenumber">18.2</span> <span class="title">Optional arguments</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-5" class="internal"><span class="codenumber">18.3</span> <span class="title">Handling Special Cases</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-6" class="internal"><span class="codenumber">18.4</span> <span class="title">Keyword Arguments</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-6-3" class="internal"><span class="codenumber">18.4.1</span> <span class="title">Keyword Arguments for complex functions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#sect-parametric-methods" class="internal"><span class="codenumber">18.5</span> <span class="title">Parametric Methods</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-modules.html" class="internal"><span class="codenumber">19</span> <span class="title">Creating Modules and using Unit Tests</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-3" class="internal"><span class="codenumber">19.1</span> <span class="title">The <code class="code-inline tex2jax_ignore">Revise</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-4" class="internal"><span class="codenumber">19.2</span> <span class="title">Creating a Module</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#sect-unit-tests" class="internal"><span class="codenumber">19.3</span> <span class="title">Unit Tests</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-modules.html#ch-modules-6" class="internal"><span class="codenumber">19.4</span> <span class="title">Creating a test suite</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-6-3" class="internal"><span class="codenumber">19.4.1</span> <span class="title">Putting all tests in a file</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-7" class="internal"><span class="codenumber">19.5</span> <span class="title">Modules and Unit Tests</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-modules.html#ch-modules-8" class="internal"><span class="codenumber">19.6</span> <span class="title">A Rootfinding Module</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-8-3" class="internal"><span class="codenumber">19.6.1</span> <span class="title">A Test Suite for Rootfinding</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-parallel.html" class="internal"><span class="codenumber">20</span> <span class="title">Parallel Computing</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-3" class="internal"><span class="codenumber">20.1</span> <span class="title">Running parallel code</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-3-3" class="internal"><span class="codenumber">20.1.1</span> <span class="title">Assigning code to workers</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4" class="internal"><span class="codenumber">20.2</span> <span class="title">Managing Processes</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4-3" class="internal"><span class="codenumber">20.2.1</span> <span class="title">The <code class="code-inline tex2jax_ignore">procs</code> command</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4-4" class="internal"><span class="codenumber">20.2.2</span> <span class="title">Adding all of the cores</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4-5" class="internal"><span class="codenumber">20.2.3</span> <span class="title">Removing cores</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-5" class="internal"><span class="codenumber">20.3</span> <span class="title">Parallel for loops</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-6" class="internal"><span class="codenumber">20.4</span> <span class="title">Writing a parallel card simulator</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-6-3" class="internal"><span class="codenumber">20.4.1</span> <span class="title">parallelizing the ....</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-7" class="internal"><span class="codenumber">20.5</span> <span class="title">A Parallel Map Function</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-7-3" class="internal"><span class="codenumber">20.5.1</span> <span class="title">When to use <code class="code-inline tex2jax_ignore">pmap</code></span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-8" class="internal"><span class="codenumber">20.6</span> <span class="title">Shared arrays</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-regexp.html" class="internal"><span class="codenumber">21</span> <span class="title">Regular Expressions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3" class="internal"><span class="codenumber">21.1</span> <span class="title">Simple Pattern Matching</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3-3" class="internal"><span class="codenumber">21.1.1</span> <span class="title">Optional matches</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3-4" class="internal"><span class="codenumber">21.1.2</span> <span class="title">Digits and alphabetic characters</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3-5" class="internal"><span class="codenumber">21.1.3</span> <span class="title">Quantifiers</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-4" class="internal"><span class="codenumber">21.2</span> <span class="title">Matching integers and decimals</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-5" class="internal"><span class="codenumber">21.3</span> <span class="title">Matching and Capture Groups</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-6" class="internal"><span class="codenumber">21.4</span> <span class="title">Replacing substrings with regular expressions.</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7" class="internal"><span class="codenumber">21.5</span> <span class="title">Parsing a Polynomial</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-3" class="internal"><span class="codenumber">21.5.1</span> <span class="title">Testing the regular expression</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-4" class="internal"><span class="codenumber">21.5.2</span> <span class="title">Linear Functions with decimal coefficients</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-5" class="internal"><span class="codenumber">21.5.3</span> <span class="title">Splitting a Polynomial into terms</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-6" class="internal"><span class="codenumber">21.5.4</span> <span class="title">Parsing Polynomial Terms</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-part">
+<div class="toc-title-box"><a href="part-data-analysis.html" class="internal"><span class="codenumber">VI</span> <span class="title">Data Analysis</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-data.html" class="internal"><span class="codenumber">22</span> <span class="title">Introduction to Data Analysis</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data.html#ch-data-3" class="internal"><span class="codenumber">22.1</span> <span class="title">Data from the <code class="code-inline tex2jax_ignore">RDatasets</code> package</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data.html#ch-data-4" class="internal"><span class="codenumber">22.2</span> <span class="title">Dataframes</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-4-3" class="internal"><span class="codenumber">22.2.1</span> <span class="title">Constructing a DataFrame</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-4-4" class="internal"><span class="codenumber">22.2.2</span> <span class="title">Plotting with <code class="code-inline tex2jax_ignore">StatsPlots</code></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-4-5" class="internal"><span class="codenumber">22.2.3</span> <span class="title">Basic Statistics</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data.html#ch-data-5" class="internal"><span class="codenumber">22.3</span> <span class="title">The pipe command</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-5-3" class="internal"><span class="codenumber">22.3.1</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">Chain</code> package</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-data.html#sect-missing" class="internal"><span class="codenumber">22.4</span> <span class="title">Missing Data</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#sect-missing-3" class="internal"><span class="codenumber">22.4.1</span> <span class="title">Missing Data in a Dataset</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data.html#sect-csv-file" class="internal"><span class="codenumber">22.5</span> <span class="title">Loading Data from a CSV File</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data.html#sect-excel-file" class="internal"><span class="codenumber">22.6</span> <span class="title">Loading Data from an Excel File</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-manipulating-data.html" class="internal"><span class="codenumber">23</span> <span class="title">Manipulating DataFrames</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-3" class="internal"><span class="codenumber">23.1</span> <span class="title">Subsets of DataFrames</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-3-3" class="internal"><span class="codenumber">23.1.1</span> <span class="title">Subsets of Columns</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-4" class="internal"><span class="codenumber">23.2</span> <span class="title">Filtering (or Subsetting) Rows</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-5" class="internal"><span class="codenumber">23.3</span> <span class="title">Transforming DataFrames</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-6" class="internal"><span class="codenumber">23.4</span> <span class="title">Sorting DataFrames</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-7" class="internal"><span class="codenumber">23.5</span> <span class="title">Joining DataFrames</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-8" class="internal"><span class="codenumber">23.6</span> <span class="title">Summarizing Data</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-9" class="internal"><span class="codenumber">23.7</span> <span class="title">Multiple Steps on a DataFrame</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#sect-split-apply-combine" class="internal"><span class="codenumber">23.8</span> <span class="title">Split-Apply-Combine</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-11" class="internal"><span class="codenumber">23.9</span> <span class="title">Summary of DataFrame Transformations</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-census.html" class="internal"><span class="codenumber">24</span> <span class="title">Analyzing Census Data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-census.html#ch-census-3" class="internal"><span class="codenumber">24.1</span> <span class="title">Loading Packages and the Dataset</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-census.html#ch-census-4" class="internal"><span class="codenumber">24.2</span> <span class="title">Answering Census Questions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-3" class="internal"><span class="codenumber">24.2.1</span> <span class="title">What are the top 10 areas in population?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-4" class="internal"><span class="codenumber">24.2.2</span> <span class="title">Find the total population of the areas west of 120 degrees longitude?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-5" class="internal"><span class="codenumber">24.2.3</span> <span class="title">Give a histogram plot in terms of population?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-6" class="internal"><span class="codenumber">24.2.4</span> <span class="title">What is the total population of all areas?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-7" class="internal"><span class="codenumber">24.2.5</span> <span class="title">What the top 10 area in housing density?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-8" class="internal"><span class="codenumber">24.2.6</span> <span class="title">What is the total number of housing units?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-9" class="internal"><span class="codenumber">24.2.7</span> <span class="title">What are the top 10 areas in land size?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-10" class="internal"><span class="codenumber">24.2.8</span> <span class="title">What are the top 10 areas in water size?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-11" class="internal"><span class="codenumber">24.2.9</span> <span class="title">What are the Massachusetts areas in the data?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-12" class="internal"><span class="codenumber">24.2.10</span> <span class="title">What is the average population, median and standard deviation of the each of the areas?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-olympics.html" class="internal"><span class="codenumber">25</span> <span class="title">Olympic Medals</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-3" class="internal"><span class="codenumber">25.1</span> <span class="title">Downloading the Data and Loading the Packages</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-4" class="internal"><span class="codenumber">25.2</span> <span class="title">Loading the file</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5" class="internal"><span class="codenumber">25.3</span> <span class="title">Answering the Questions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-2" class="internal"><span class="codenumber">25.3.1</span> <span class="title">What is the total number of medals given in all Olympics in the dataset?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-3" class="internal"><span class="codenumber">25.3.2</span> <span class="title">Give the top 10 athletes by number of medals in the Summer Olympics</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-4" class="internal"><span class="codenumber">25.3.3</span> <span class="title">Which athlete had the most Olympic gold medals in the Summer 2000 games? How many medals?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-5" class="internal"><span class="codenumber">25.3.4</span> <span class="title">List the top 10 countries by medals in only winter Olympics.</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-6" class="internal"><span class="codenumber">25.3.5</span> <span class="title">Plot the average weight for male and female in each year over the entire span of the Olympic games.</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-7" class="internal"><span class="codenumber">25.3.6</span> <span class="title">Plot the number of medals that the U.S. collected over each olympic year.</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-8" class="internal"><span class="codenumber">25.3.7</span> <span class="title">What age the most common athlete?  What we are looking for is the mode of the age of all athletes.</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-9" class="internal"><span class="codenumber">25.3.8</span> <span class="title">What are the top 5 sports (not events) by total medals given for winter olympics between 1950 and 1970?</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-6" class="internal"><span class="codenumber">25.4</span> <span class="title">Exercise</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-part">
+<div class="toc-title-box"><a href="part-linear-algebra.html" class="internal"><span class="codenumber">VII</span> <span class="title">Linear Algebra</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-lin-alg-intro.html" class="internal"><span class="codenumber">26</span> <span class="title">Introduction to Linear Algebra</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3" class="internal"><span class="codenumber">26.1</span> <span class="title">Vectors and Matrices</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-3" class="internal"><span class="codenumber">26.1.1</span> <span class="title">Addition and Subtraction of Vectors and Matrices</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-4" class="internal"><span class="codenumber">26.1.2</span> <span class="title">scalar multiplication</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-5" class="internal"><span class="codenumber">26.1.3</span> <span class="title">Matrix-vector products</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-6" class="internal"><span class="codenumber">26.1.4</span> <span class="title">Matrix Transpose</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-7" class="internal"><span class="codenumber">26.1.5</span> <span class="title">Trace and Determinant of a Matrix</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-8" class="internal"><span class="codenumber">26.1.6</span> <span class="title">Identity Matrix</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-4" class="internal"><span class="codenumber">26.2</span> <span class="title">Matrix Inverse</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-5" class="internal"><span class="codenumber">26.3</span> <span class="title">Solving Linear Systems</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-6" class="internal"><span class="codenumber">26.4</span> <span class="title">Eigenvalues and Eigenvectors</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-7" class="internal"><span class="codenumber">26.5</span> <span class="title">Special Matrices</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-7-3" class="internal"><span class="codenumber">26.5.1</span> <span class="title">Diagonal Matrices</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-7-4" class="internal"><span class="codenumber">26.5.2</span> <span class="title">Tridiagonal Matrices</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-8" class="internal"><span class="codenumber">26.6</span> <span class="title">Abstract Matrices</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-8-3" class="internal"><span class="codenumber">26.6.1</span> <span class="title">Solving with Matrices/Division</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-adv-lin-alg.html" class="internal"><span class="codenumber">27</span> <span class="title">Advanced Topics in Linear Algebra</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-lin-alg.html#sect-sparse-matrices" class="internal"><span class="codenumber">27.1</span> <span class="title">Sparse Matrices</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-part">
+<div class="toc-title-box"><a href="part-calc-diff-eqns.html" class="internal"><span class="codenumber">VIII</span> <span class="title">Calculus and Differential Equations</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-num-int.html" class="internal"><span class="codenumber">28</span> <span class="title">Numerical Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-3" class="internal"><span class="codenumber">28.1</span> <span class="title">Trapezoid Rule</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-4" class="internal"><span class="codenumber">28.2</span> <span class="title">Simpson’s Rule</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-4-3" class="internal"><span class="codenumber">28.2.1</span> <span class="title">Plotting the Error Function</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-5" class="internal"><span class="codenumber">28.3</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">NumericalIntegration package</code></span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-diffeq.html" class="internal"><span class="codenumber">29</span> <span class="title">Differential Equations</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-3" class="internal"><span class="codenumber">29.1</span> <span class="title">Euler’s Method</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-3-3" class="internal"><span class="codenumber">29.1.1</span> <span class="title">Implementing Euler’s method in Julia</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-4" class="internal"><span class="codenumber">29.2</span> <span class="title">Runge Kutta methods</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-4-3" class="internal"><span class="codenumber">29.2.1</span> <span class="title">RK4 in julia</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5" class="internal"><span class="codenumber">29.3</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">DifferentialEquations package</code></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-3" class="internal"><span class="codenumber">29.3.1</span> <span class="title">A Simple Example</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-4" class="internal"><span class="codenumber">29.3.2</span> <span class="title">Example of a system of differential equations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-5" class="internal"><span class="codenumber">29.3.3</span> <span class="title">The Lorenz System</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-6" class="internal"><span class="codenumber">29.3.4</span> <span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-optimization.html" class="internal"><span class="codenumber">30</span> <span class="title">Optimization</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-3" class="internal"><span class="codenumber">30.1</span> <span class="title">Newton’s Method</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-4" class="internal"><span class="codenumber">30.2</span> <span class="title">Gradient Descent</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-4-3" class="internal"><span class="codenumber">30.2.1</span> <span class="title">Gradient Descent using Julia</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-4-4" class="internal"><span class="codenumber">30.2.2</span> <span class="title">The Barzilai–Borwein method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-5" class="internal"><span class="codenumber">30.3</span> <span class="title">Fitting Data to a Line -- Linear Regression</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-5-3" class="internal"><span class="codenumber">30.3.1</span> <span class="title">Fitting Data to Polynomial</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-6" class="internal"><span class="codenumber">30.4</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">JuMP</code> package</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-6-3" class="internal"><span class="codenumber">30.4.1</span> <span class="title">Linear Regression with JuMP</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-complex.html" class="internal"><span class="codenumber">31</span> <span class="title">Complex Numbers and Analysis</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-complex.html#ch-complex-3" class="internal"><span class="codenumber">31.1</span> <span class="title">Complex Numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-3-3" class="internal"><span class="codenumber">31.1.1</span> <span class="title">Functions of Complex Numbers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-3-4" class="internal"><span class="codenumber">31.1.2</span> <span class="title">Functions with Special Meaning for Complex Numbers</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-4" class="internal"><span class="codenumber">31.2</span> <span class="title">Linear Algebra with Complex Numbers</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-complex.html#ch-complex-5" class="internal"><span class="codenumber">31.3</span> <span class="title">Discrete Fourier Transforms</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-5-3" class="internal"><span class="codenumber">31.3.1</span> <span class="title">Fast Fourier Transform</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-part">
+<div class="toc-title-box"><a href="part-projects.html" class="internal"><span class="codenumber">IX</span> <span class="title">Scientific Computing Projects</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-polynomial.html" class="internal"><span class="codenumber">32</span> <span class="title">Creating a Polynomial Module</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#sec-poly-module" class="internal"><span class="codenumber">32.1</span> <span class="title">Polynomial Module</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#sec-test-poly" class="internal"><span class="codenumber">32.2</span> <span class="title">Testing the Polynomial Module</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#sect-test-poly-string" class="internal"><span class="codenumber">32.3</span> <span class="title">Testing the Stringification</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-6" class="internal"><span class="codenumber">32.4</span> <span class="title">Test Driven Development</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-7" class="internal"><span class="codenumber">32.5</span> <span class="title">Tests for Addition, Subtraction and Multiplication</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-8" class="internal"><span class="codenumber">32.6</span> <span class="title">Creating tests for string contructors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-9" class="internal"><span class="codenumber">32.7</span> <span class="title">Testing polynomial evalution</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-calc-pi.html" class="internal"><span class="codenumber">33</span> <span class="title">Calculating the digits of <span class="process-math">\(\pi\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-3" class="internal"><span class="codenumber">33.1</span> <span class="title">Power Series of Arctangent</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-4" class="internal"><span class="codenumber">33.2</span> <span class="title">Euler Improves this</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-5" class="internal"><span class="codenumber">33.3</span> <span class="title">Speed of the arctangent series</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-6" class="internal"><span class="codenumber">33.4</span> <span class="title">If I had a million <del class="delete">dollars</del> digits</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-7" class="internal"><span class="codenumber">33.5</span> <span class="title">Machin’s Formula and related Formulas</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-7-3" class="internal"><span class="codenumber">33.5.1</span> <span class="title">Using Machin’s Formulas to Calculate <span class="process-math">\(\pi\)</span></span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-8" class="internal"><span class="codenumber">33.6</span> <span class="title">The Chudnovsky Brothers and Ramanujan</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-8-3" class="internal"><span class="codenumber">33.6.1</span> <span class="title">A parallel version of the Chudnovsky Algorithm</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-backmatter">
+<div class="toc-title-box"><a href="backmatter.html" class="internal"><span class="title">Backmatter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="ch-getting-started.html" class="internal"><span class="codenumber">A</span> <span class="title">Getting Started with Julia</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-3" class="internal"><span class="codenumber">A.1</span> <span class="title">using the <code class="code-inline tex2jax_ignore">Repl.it</code> website</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-3-3" class="internal"><span class="codenumber">A.1.1</span> <span class="title">Limitations of <code class="code-inline tex2jax_ignore">Repl.it</code></span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-4" class="internal"><span class="codenumber">A.2</span> <span class="title">Downloading and Installing Julia</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-4-3" class="internal"><span class="codenumber">A.2.1</span> <span class="title">The julia REPL and windows</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-5" class="internal"><span class="codenumber">A.3</span> <span class="title">Downloading and running Jupyter</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-5-3" class="internal"><span class="codenumber">A.3.1</span> <span class="title">Installing Jupyter on Mac</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-5-3-3" class="internal"><span class="codenumber">A.3.1.1</span> <span class="title">Installing Python</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-5-3-4" class="internal"><span class="codenumber">A.3.1.2</span> <span class="title">Installing IJulia</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-5-3-5" class="internal"><span class="codenumber">A.3.1.3</span> <span class="title">Running Jupyter</span></a></div></li>
+</ul>
+</li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-6" class="internal"><span class="codenumber">A.4</span> <span class="title">Using Jupyter</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-7" class="internal"><span class="codenumber">A.5</span> <span class="title">Installing Visual Studio Code</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-8" class="internal"><span class="codenumber">A.6</span> <span class="title">Running Julia code inside VSCode</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-8-3" class="internal"><span class="codenumber">A.6.1</span> <span class="title">Running a Julia REPL</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#sect-kernel" class="internal"><span class="codenumber">A.7</span> <span class="title">The kernel</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#sect-kernel-3" class="internal"><span class="codenumber">A.7.1</span> <span class="title">The REPL</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#sect-kernel-4" class="internal"><span class="codenumber">A.7.2</span> <span class="title">Juno and the Atom Editor</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10" class="internal"><span class="codenumber">A.8</span> <span class="title">Restarting the Kernel</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10-3" class="internal"><span class="codenumber">A.8.1</span> <span class="title">Restarting the Kernel in the julia REPL</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10-4" class="internal"><span class="codenumber">A.8.2</span> <span class="title">Restarting the Kernel in Jupyter</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10-5" class="internal"><span class="codenumber">A.8.3</span> <span class="title">Restarting the Kernel in Atom/Juno</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="ch-packages.html" class="internal"><span class="codenumber">B</span> <span class="title">Managing Packages</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-packages.html#ch-packages-3" class="internal"><span class="codenumber">B.1</span> <span class="title">Managing Packages in Julia</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-3" class="internal"><span class="codenumber">B.1.1</span> <span class="title">Adding a package</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-4" class="internal"><span class="codenumber">B.1.2</span> <span class="title">Package Status</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-5" class="internal"><span class="codenumber">B.1.3</span> <span class="title">Removing a Package</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-6" class="internal"><span class="codenumber">B.1.4</span> <span class="title">Updating packages</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-7" class="internal"><span class="codenumber">B.1.5</span> <span class="title">Building Packages</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-8" class="internal"><span class="codenumber">B.1.6</span> <span class="title">Precompiling packages</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-packages.html#ch-packages-3-9" class="internal"><span class="codenumber">B.1.7</span> <span class="title">Testing a Packages</span></a></div></li>
+</ul>
+</li></ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="ch-num-rep.html" class="internal"><span class="codenumber">C</span> <span class="title">Binary Represenation of Numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3" class="internal"><span class="codenumber">C.1</span> <span class="title">Integer Representation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3-3" class="internal"><span class="codenumber">C.1.1</span> <span class="title">Converting from decimal to binary</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3-4" class="internal"><span class="codenumber">C.1.2</span> <span class="title">Representing Negative Integers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3-5" class="internal"><span class="codenumber">C.1.3</span> <span class="title">Including negative Integers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3-6" class="internal"><span class="codenumber">C.1.4</span> <span class="title">A binary to decimal function</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-4" class="internal"><span class="codenumber">C.2</span> <span class="title">Operations on Binary Integers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-4-3" class="internal"><span class="codenumber">C.2.1</span> <span class="title">Unary minus</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-5" class="internal"><span class="codenumber">C.3</span> <span class="title">Subtraction of binary integers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-6" class="internal"><span class="codenumber">C.4</span> <span class="title">Multiplication of Binary Integers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-rep.html#sect-scientific-notation" class="internal"><span class="codenumber">C.5</span> <span class="title">Scientific Notation</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-8" class="internal"><span class="codenumber">C.6</span> <span class="title">Floating Point Numbers of a given size</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="backmatter-5.html" class="internal"><span class="title">Colophon</span></a></div></li>
+</ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="chapter" id="ch-boolean-loops"><h2 class="heading">
+<span class="type">Chapter</span><span class="space"> </span><span class="codenumber">5</span><span class="space"> </span><span class="title">Boolean Statements, Loops and Branching</span>
+</h2>
+<section class="introduction" id="ch-boolean-loops-2"><div class="para" id="ch-boolean-loops-2-1">The basic computer science structures of if statements, while and for loops are crucial in scientific computing. In this chapter, we cover the basics of these structures in Julia. We will see all of these in more context in later chapters, but here’s the syntax and basics.</div> <div class="para" id="ch-boolean-loops-2-2">Lastly, because of the syntax of a <code class="code-inline tex2jax_ignore">for</code> loop, we show details about ranges in julia, which is a compact way to write a set of numbers that are either sequential or sequential with skips in it.</div></section><section class="section" id="ch-boolean-loops-3"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">5.1</span><span class="space"> </span><span class="title">Boolean values and if statements</span>
+</h3>
+<section class="introduction" id="ch-boolean-loops-3-2"><div class="para" id="ch-boolean-loops-3-2-1">A boolean value is something that is either <code class="code-inline tex2jax_ignore">true</code> or <code class="code-inline tex2jax_ignore">false</code>. These are built-in constants in Julia. Sometimes we will want to know if a statement is true or false, but generally, we will use them in other structures.</div> <div class="para" id="ch-boolean-loops-3-2-2">We often use boolean to test various conditions. For each, testing equality using <code class="code-inline tex2jax_ignore">==</code>, or comparison of numbers we use <code class="code-inline tex2jax_ignore">&lt;,  &lt;=, &gt;, &gt;=</code> for less than, less than or equal, greater than and greater than or equal respectively.</div> <div class="para" id="ch-boolean-loops-3-2-3">If we set <code class="code-inline tex2jax_ignore">x=3</code> and then can just type <code class="code-inline tex2jax_ignore">x==3</code>, <code class="code-inline tex2jax_ignore">x &lt; 3 </code>, <code class="code-inline tex2jax_ignore">x &gt; 3</code> to test a variety of comparisons.</div></section><section class="subsection" id="ch-boolean-loops-3-3"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">5.1.1</span><span class="space"> </span><span class="title">Compounds boolean statements</span>
+</h4>
+<div class="para" id="ch-boolean-loops-3-3-2">We often want to test multiple boolean statements and can build up compound ones with either the <em class="emphasis">and</em> (using the code <code class="code-inline tex2jax_ignore">&amp;&amp;</code>) or <em class="emphasis">or</em> (using the code <code class="code-inline tex2jax_ignore">||</code>) operators. Recall the following table for <code class="code-inline tex2jax_ignore">&amp;&amp;</code> and <code class="code-inline tex2jax_ignore">||</code>
+</div>
+<figure class="table table-like" id="ch-boolean-loops-3-3-3"><figcaption><span class="type">Table</span><span class="space"> </span><span class="codenumber">5.1<span class="period">.</span></span><span class="space"> </span>Truth Table</figcaption><div class="tabular-box natural-width"><table class="tabular">
+<tr>
+<td class="l m b0 r0 l0 t0 lines">AND</td>
+<td class="l m b0 r0 l0 t0 lines">T</td>
+<td class="l m b0 r0 l0 t0 lines">F</td>
+<td class="l m b0 r0 l0 t0 lines"></td>
+<td class="l m b0 r0 l0 t0 lines">OR</td>
+<td class="l m b0 r0 l0 t0 lines">T</td>
+<td class="l m b0 r0 l0 t0 lines">F</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">T</td>
+<td class="l m b0 r0 l0 t0 lines">T</td>
+<td class="l m b0 r0 l0 t0 lines">F</td>
+<td class="l m b0 r0 l0 t0 lines"></td>
+<td class="l m b0 r0 l0 t0 lines">T</td>
+<td class="l m b0 r0 l0 t0 lines">T</td>
+<td class="l m b0 r0 l0 t0 lines">T</td>
+</tr>
+<tr>
+<td class="l m b0 r0 l0 t0 lines">F</td>
+<td class="l m b0 r0 l0 t0 lines">F</td>
+<td class="l m b0 r0 l0 t0 lines">F</td>
+<td class="l m b0 r0 l0 t0 lines"></td>
+<td class="l m b0 r0 l0 t0 lines">F</td>
+<td class="l m b0 r0 l0 t0 lines">T</td>
+<td class="l m b0 r0 l0 t0 lines">F</td>
+</tr>
+</table></div></figure><div class="para" id="ch-boolean-loops-3-3-4">If we have <code class="code-inline tex2jax_ignore">x=3</code> and <code class="code-inline tex2jax_ignore">y=10</code>, if we want to test that <code class="code-inline tex2jax_ignore">x</code> is greater than 0 and <code class="code-inline tex2jax_ignore">y</code> is 5, by</div>
+<div class="para logical" id="ch-boolean-loops-3-3-5"><pre class="code-display tex2jax_ignore">x &gt;= 0 &amp;&amp; y==5
+</pre></div>
+<div class="para" id="ch-boolean-loops-3-3-6">which will return <code class="code-inline tex2jax_ignore">false</code>, since only the first is true and both must be true for this compound statement to be true. However,</div>
+<div class="para logical" id="ch-boolean-loops-3-3-7"><pre class="code-display tex2jax_ignore">x &gt;= 0 || y==5
+</pre></div>
+<div class="para" id="ch-boolean-loops-3-3-8">returns <code class="code-inline tex2jax_ignore">true</code>, because the first is true.</div>
+<div class="para" id="ch-boolean-loops-3-3-9">In both of these examples, it is important to note the order of operations or operator precedence.  This was mentioned in <a href="ch-variables.html#sect-oper-precedence" class="internal" title="Section 2.5: Operator Precendence">Section 2.5</a>, however as the number of operators grows, it’s important to know the precedence. In these cases the tests <code class="code-inline tex2jax_ignore">==,&lt;=,&lt;,&gt;=,&gt;</code> have precedence over <code class="code-inline tex2jax_ignore">&amp;&amp;</code> and <code class="code-inline tex2jax_ignore">||</code>.</div>
+<div class="para" id="ch-boolean-loops-3-3-10">Also, <code class="code-inline tex2jax_ignore">&amp;&amp;</code> has precedence over <code class="code-inline tex2jax_ignore">||</code> in that if we evaluate</div>
+<div class="para logical" id="ch-boolean-loops-3-3-11"><pre class="code-display tex2jax_ignore">x &gt;=0 &amp;&amp; y &gt; 7 || y == 5
+</pre></div>
+<div class="para" id="ch-boolean-loops-3-3-12">results in <code class="code-inline tex2jax_ignore">true</code>.  You can think of this resulting in <code class="code-inline tex2jax_ignore"> true &amp;&amp; true || false</code> and because of precedence the first pair is tested (to be <code class="code-inline tex2jax_ignore">true</code>) then the result <code class="code-inline tex2jax_ignore">true || false</code> results in <code class="code-inline tex2jax_ignore">true</code>.</div>
+<div class="para" id="ch-boolean-loops-3-3-13">Often when precedence is unclear, adding parentheses can be helpful.  Instead, perhaps write the above as:</div>
+<div class="para logical" id="ch-boolean-loops-3-3-14"><pre class="code-display tex2jax_ignore">(x &gt;=0 &amp;&amp; y &gt; 7) || y == 5
+</pre></div></section></section><section class="section" id="ch-boolean-loops-4"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">5.2</span><span class="space"> </span><span class="title">If Statements</span>
+</h3>
+<section class="introduction" id="ch-boolean-loops-4-2"><div class="para" id="ch-boolean-loops-4-2-1">An <code class="code-inline tex2jax_ignore">if</code> statement is used to do different things depending on the value of a variable. A standard example of this is the piecewise version of the absolute value. Mathematically, we write:</div> <div class="para logical" id="ch-boolean-loops-4-2-2"><div class="displaymath process-math">
+\begin{equation*}
+|x|=\begin{cases} x &amp; x \geq 0 \\ -x &amp; x &lt; 0 \end{cases}
+\end{equation*}
+</div></div> <div class="para" id="ch-boolean-loops-4-2-3">We could write this as a function as</div> <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function absValue(x::Real)
+  if x &gt;= 0
+     return x
+  end
+  return -1*x
+end
+</code></pre></div> <div class="para" id="ch-boolean-loops-4-2-5">Evaluate <code class="code-inline tex2jax_ignore">absValue(3)</code> and <code class="code-inline tex2jax_ignore">absValue(-7)</code> to ensure this is returning expected results.</div> <div class="para" id="ch-boolean-loops-4-2-6">Notice that we basically had two situations here, either <span class="process-math">\(x\)</span> was greater than or equal to 0 or else not. We can rewrite this use an <code class="code-inline tex2jax_ignore">if-else</code> statement.</div> <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function absValue(x::Real)
+  if x &gt;= 0
+    return x
+  else
+    return -1*x
+  end
+end
+</code></pre></div> <div class="para" id="ch-boolean-loops-4-2-8">Try entering this and seeing if the results are the same.</div> <div class="para" id="ch-boolean-loops-4-2-9">The absolute value function is quite important in mathematics and thus is built-in to julia as <code class="code-inline tex2jax_ignore">abs</code>.</div></section><section class="subsection" id="ch-boolean-loops-4-3"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">5.2.1</span><span class="space"> </span><span class="title">Further choices with if statements</span>
+</h4>
+<div class="para" id="ch-boolean-loops-4-3-2">You may need more than 2 choices on an if statement. Recall the <a class="external" href="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)" target="_blank">quadrants</a><details class="ptx-footnote" aria-live="polite" id="ch-boolean-loops-4-3-2-2"><summary class="ptx-footnote__number" title="Footnote 5.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="ch-boolean-loops-4-3-2-2"><code class="code-inline tex2jax_ignore">wikipedia</code></div></details> of the <span class="process-math">\(xy\)</span>-plane start at I for the upper right and increase as you traverse counterclockwise.  A function could be written:</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function quadrant(x::Real,y::Real)
+  if x &gt; 0 &amp;&amp; y &gt; 0
+    return "I"
+  elseif x &lt; 0 &amp;&amp; y &gt; 0
+    return "II"
+  elseif x &lt; 0 &amp;&amp; y &lt; 0
+    return "III"
+  elseif x &gt; 0 &amp;&amp; y &lt; 0
+    return "IV"
+  else
+    return "NONE"
+  end
+end
+</code></pre></div>
+<div class="para" id="ch-boolean-loops-4-3-4">and technically if you are on an axis, then you are not in a quadrant, so that is the reason for the last option.</div>
+<details id="ch-boolean-loops-4-3-5" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
+<span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">5.2</span><span class="period">.</span>
+</h5></summary><article class="exercise exercise-like knowl__content"><div class="introduction" id="ch-boolean-loops-4-3-5-1"><div class="para" id="ch-boolean-loops-4-3-5-1-1">Evaluate the function <code class="code-inline tex2jax_ignore">quadrant</code> at the following points and see if the results are as expected.</div></div>
+<article class="task exercise-like" id="ch-boolean-loops-4-3-5-2"><h6 class="heading"><span class="codenumber">(a)</span></h6>
+<div class="para" id="ch-boolean-loops-4-3-5-2-1-1"><span class="process-math">\((2,1)\)</span></div></article><article class="task exercise-like" id="ch-boolean-loops-4-3-5-3"><h6 class="heading"><span class="codenumber">(b)</span></h6>
+<div class="para" id="ch-boolean-loops-4-3-5-3-1-1"><span class="process-math">\((-4,-2)\)</span></div></article><article class="task exercise-like" id="ch-boolean-loops-4-3-5-4"><h6 class="heading"><span class="codenumber">(c)</span></h6>
+<div class="para" id="ch-boolean-loops-4-3-5-4-1-1"><span class="process-math">\((0,5)\)</span></div></article></article></details></section></section><section class="section" id="ch-boolean-loops-5"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">5.3</span><span class="space"> </span><span class="title">Ternary <code class="code-inline tex2jax_ignore">if-then-else</code></span>
+</h3>
+<div class="para" id="ch-boolean-loops-5-2">A common use of an <code class="code-inline tex2jax_ignore">if-then-else</code> statement is to assign a value to a varible (or return from a function) depending on some condition.  There is a compact way to do this with a ternary <code class="code-inline tex2jax_ignore">if-then-else</code> statement that has the form:</div>
+<div class="para logical" id="ch-boolean-loops-5-3"><pre class="code-display tex2jax_ignore">condition ? value_if_condition_is_true : value_if_condition_is_false
+</pre></div>
+<div class="para" id="ch-boolean-loops-5-4">which returns <code class="code-inline tex2jax_ignore">value_if_condition_is_true</code> if condition is true otherwise <code class="code-inline tex2jax_ignore">value_if_condition_is_false</code> is returned. The absolute value example above can be written as a single line:</div>
+<div class="para logical" id="ch-boolean-loops-5-5"><pre class="code-display tex2jax_ignore">absVal2(x::Real) = x &gt;= 0 ? x : -1*x
+</pre></div>
+<div class="para" id="ch-boolean-loops-5-6">and once you practice with this, it will be easy to read and much shorter (1 line versus 7). Be careful with the syntax of this.  It is required that the expressions around the ? be padded with spaces to parse correctly.  The error is reasonably clear if you don’t write it correctly.</div>
+<div class="para" id="ch-boolean-loops-5-7">Alternatively, you can write this as</div>
+<div class="para logical" id="ch-boolean-loops-5-8"><pre class="code-display tex2jax_ignore">absVal3(x::Real)=ifelse(x &gt;=0, x, -1*x)
+</pre></div>
+<div class="para" id="ch-boolean-loops-5-9">We will see else syntax of this operator often throughout this course.</div>
+<details id="ch-boolean-loops-5-10" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">5.3</span><span class="period">.</span>
+</h4></summary><article class="exercise exercise-like knowl__content"><div class="para" id="ch-boolean-loops-5-10-1">Write the recursive factorial function above using the ternary if-then-else.</div></article></details></section><section class="section" id="ch-boolean-loops-6"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">5.4</span><span class="space"> </span><span class="title">Loops</span>
+</h3>
+<section class="introduction" id="ch-boolean-loops-6-2"><div class="para" id="ch-boolean-loops-6-2-1">A <em class="emphasis">loop</em> is a series of statements that are repeated either a fixed number of times or until a condition occurs. They can be very helpful if a large number of operations need to be done in a predictable manner.</div></section><section class="subsection" id="ch-boolean-loops-6-3"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">5.4.1</span><span class="space"> </span><span class="title">While Loops</span>
+</h4>
+<div class="para" id="ch-boolean-loops-6-3-2">Another very common construction for programming is called a while loop. Basically, we want to run a few statements while some boolean statement is true. Here’s a simple, but uninteresting example:</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">let
+  local n=1
+  while n &lt; 10
+    println(n)
+    n+=1
+  end
+end
+</code></pre></div>
+<div class="para" id="ch-boolean-loops-6-3-4">and note that the expression <code class="code-inline tex2jax_ignore">n+=1</code> is shorthand for <code class="code-inline tex2jax_ignore">n=n+1</code>.</div>
+<div class="para" id="ch-boolean-loops-6-3-5">A more practical example of a for loop will be the <a class="external" href="https://en.wikipedia.org/wiki/Bisection_method" target="_blank">Bisection Method</a><details class="ptx-footnote" aria-live="polite" id="ch-boolean-loops-6-3-5-2"><summary class="ptx-footnote__number" title="Footnote 5.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-boolean-loops-6-3-5-2"><code class="code-inline tex2jax_ignore">wikipedia</code></div></details> for finding a root.</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function bisection(f::Function, a::Real, b::Real)
+	local c
+	while (b-a) &gt; 1e-6
+		c = 0.5*(a+b)  # find the midpoint
+		# test if f(a) and f(c) have opposite signs to determine the new interval
+		(a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
+	end
+	c
+end
+</code></pre></div>
+<div class="para" id="ch-boolean-loops-6-3-7">In short, this method takes a function <span class="process-math">\(f\)</span> and an interval <span class="process-math">\([a,b]\)</span> and continually bisects it ensuring there is a root in the resulting interval.  It continues while the length of the interval is greater than <code class="code-inline tex2jax_ignore">1e-6</code> or <span class="process-math">\(10^{-6}\text{.}\)</span> To test it, consider</div>
+<div class="para logical" id="ch-boolean-loops-6-3-8"><pre class="code-display tex2jax_ignore">f(x) = x^2-2
+</pre></div>
+<div class="para" id="ch-boolean-loops-6-3-9">which has a root of <span class="process-math">\(\sqrt{2}\text{.}\)</span>  The function call</div>
+<div class="para logical" id="ch-boolean-loops-6-3-10"><pre class="code-display tex2jax_ignore">bisection(f,1,2)
+</pre></div>
+<div class="para" id="ch-boolean-loops-6-3-11">returns <code class="code-inline tex2jax_ignore">1.4142141342163086</code>, which is approximately <span class="process-math">\(\sqrt{2}\text{.}\)</span>
+</div>
+<div class="para" id="ch-boolean-loops-6-3-12">Note that we used a ternary if-then-else in the <code class="code-inline tex2jax_ignore">bisection</code> function in conjunction with a tuple to update both points in the interval.  This makes the function reasonably simple.  A standard <code class="code-inline tex2jax_ignore">if-then-else</code> statement can be used instead if desired.</div></section><section class="subsection" id="ch-boolean-loops-6-4"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">5.4.2</span><span class="space"> </span><span class="title">Infinite Loops</span>
+</h4>
+<div class="para" id="ch-boolean-loops-6-4-2">It is common in a <code class="code-inline tex2jax_ignore">while</code> loop to keep running it forever. This occurs if there is some bug or you haven’t considered all cases.  For example, in the bisection method above, if the function doesn’t have a root (like <span class="process-math">\(f(x)=x^2+2\)</span>), then this will never stop.</div>
+<div class="para" id="ch-boolean-loops-6-4-3">Here’s a few things that can help prevent or debug the code:</div>
+<div class="para logical" id="ch-boolean-loops-6-4-4"><ul class="disc" id="ch-boolean-loops-6-4-4-1">
+<li id="ch-boolean-loops-6-4-4-1-1"><div class="para" id="ch-boolean-loops-6-4-4-1-1-1">Make sure something is changing in your loop. If you intend to stop the loop on an index, make sure the index is updating.</div></li>
+<li id="ch-boolean-loops-6-4-4-1-2"><div class="para" id="ch-boolean-loops-6-4-4-1-2-1">Look at your code and see if you have something that you think will stop the loop. What ever is in the boolean statement needs to eventually switch.</div></li>
+<li id="ch-boolean-loops-6-4-4-1-3"><div class="para" id="ch-boolean-loops-6-4-4-1-3-1">Consider an additional stopping condition.  You may need to add a variable to count the number of times you’ve gone through the loop and stop if it hits some maximum, which is greater than what you would expect.</div></li>
+<li id="ch-boolean-loops-6-4-4-1-4"><div class="para" id="ch-boolean-loops-6-4-4-1-4-1">Stop the code if you need to. You may need to interrupt the kernel.  In the REPL, CTRL-C will stop and in Jupyter, selecting the <em class="emphasis">Kernel</em> menu then <em class="emphasis">Interrupt</em> should stop it.  The square in the toolbar should work too.  See section \ref{sect:kernel} for more information.</div></li>
+<li id="ch-boolean-loops-6-4-4-1-5"><div class="para" id="ch-boolean-loops-6-4-4-1-5-1">If you can’t figure out why it is in an infinite loop, use <code class="code-inline tex2jax_ignore">@show</code> to print out values of variables.</div></li>
+</ul></div>
+<div class="para" id="ch-boolean-loops-6-4-5"><dfn class="terminology">MAYBE CITE A DEBUG SECTION?</dfn></div></section></section><section class="section" id="ch-boolean-loops-7"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">5.5</span><span class="space"> </span><span class="title">For loops</span>
+</h3>
+<section class="introduction" id="ch-boolean-loops-7-2"><div class="para" id="ch-boolean-loops-7-2-1">A for loop executes some code a fixed number of times and has a variable (called an index) that updates.  The next few examples are not practical, but are designed to illustrate the syntax and what is possible. The following is a simple for loop that prints out the numbers 1 to 10</div> <div class="para logical" id="ch-boolean-loops-7-2-2"><pre class="code-display tex2jax_ignore">for i=1:10
+  println(i)
+end
+</pre></div> <div class="para" id="ch-boolean-loops-7-2-3">If you want to skip numbers or count backwards, a range in the form <em class="emphasis">start</em>:<em class="emphasis">skip</em>:<em class="emphasis">stop</em> is used.  The following starts at 1 and skips by 2 up to 21:</div> <div class="para logical" id="ch-boolean-loops-7-2-4"><pre class="code-display tex2jax_ignore">for i=1:2:21
+  println(i)
+end
+</pre></div> <div class="para" id="ch-boolean-loops-7-2-5">and the following starts at 10, counting down to 1:</div> <div class="para logical" id="ch-boolean-loops-7-2-6"><pre class="code-display tex2jax_ignore">for i=10:-1:0
+  println(i)
+end
+</pre></div> <div class="para" id="ch-boolean-loops-7-2-7">We can use the <code class="code-inline tex2jax_ignore">for var in list</code> form to go through elements in a list or array (or tuple).  The following adds all numbers in the list (array) <code class="code-inline tex2jax_ignore">[1,5,7,11,20]</code>:</div> <div class="para logical" id="ch-boolean-loops-7-2-8"><pre class="code-display tex2jax_ignore">let
+  local sum=0
+  for i in [1,5,7,11,20]
+    sum += i
+  end
+  sum
+end
+</pre></div> <div class="para" id="ch-boolean-loops-7-2-9">Recall that in <a href="ch-intro-functions.html#sect-varargs" class="internal" title="Section 4.6: Variable Number of arguments">Section 4.6</a> we used this in the formation to find the mean:</div> <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function theMean(x::Number...) local sum=0
+  for val in x
+    sum += val
+  end
+  sum/length(x)
+end
+</code></pre></div></section><section class="subsection" id="ch-boolean-loops-7-3"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">5.5.1</span><span class="space"> </span><span class="title">While Loops Versus For Loops</span>
+</h4>
+<div class="para" id="ch-boolean-loops-7-3-2">No this, isn’t a smackdown between these while and for loops. A big question often is when I have a problem that I want to solve and I know a loop is needed, when should I use a <code class="code-inline tex2jax_ignore">while</code> loop and when should I use a <code class="code-inline tex2jax_ignore">for</code> loop. The general rule of thumb is:</div>
+<div class="para logical" id="ch-boolean-loops-7-3-3"><ul class="disc" id="ch-boolean-loops-7-3-3-1">
+<li id="ch-boolean-loops-7-3-3-1-1"><div class="para" id="ch-boolean-loops-7-3-3-1-1-1">If you know that you need to run code for a fixed number of times, use a for loop</div></li>
+<li id="ch-boolean-loops-7-3-3-1-2"><div class="para" id="ch-boolean-loops-7-3-3-1-2-1">If you don’t use a while loop. Generally, the <em class="emphasis">doing</em> something in the loop will affect how many times the loop is run.</div></li>
+</ul></div>
+<div class="para" id="ch-boolean-loops-7-3-4">Notice in the examples above, the bisection method used a <code class="code-inline tex2jax_ignore">while</code> loop because it is unclear when you start how many times you want to go through the loop. Instead we stopped in while the interval was small enough.</div>
+<div class="para" id="ch-boolean-loops-7-3-5">In the summing of the terms for the mean, a for loop was used because of the fixed number of values in the tuple <code class="code-inline tex2jax_ignore">x</code>.</div></section></section><section class="section" id="ch-boolean-loops-8"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">5.6</span><span class="space"> </span><span class="title">Ranges</span>
+</h3>
+<section class="introduction" id="ch-boolean-loops-8-2"><div class="para" id="ch-boolean-loops-8-2-1">In a for loop with the syntax <code class="code-inline tex2jax_ignore">var=x:y:z</code>, such as</div> <div class="para logical" id="ch-boolean-loops-8-2-2"><pre class="code-display tex2jax_ignore">for i=1:4
+  println(i)
+end
+</pre></div> <div class="para" id="ch-boolean-loops-8-2-3">The syntax <code class="code-inline tex2jax_ignore">1:4</code> is called a <code class="code-inline tex2jax_ignore">Range</code> and is shorthand for all integer between 1 and 4 inclusively. Technically, this is called a <code class="code-inline tex2jax_ignore">UnitRange</code> because the skip size between numbers is 1.</div> <div class="para" id="ch-boolean-loops-8-2-4">If you type <code class="code-inline tex2jax_ignore">typeof(1:4)</code>, it will return <code class="code-inline tex2jax_ignore">UnitRange{Int64}</code>, a composite type which is a <code class="code-inline tex2jax_ignore">UnitRange</code> with integers. Note the difference using <code class="code-inline tex2jax_ignore">1.0:4.0</code>.  This is of type <code class="code-inline tex2jax_ignore">StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}</code>, and the details of this are skipped for now.  In short, it is Floating Point version of a <code class="code-inline tex2jax_ignore">UnitRange</code>.</div> <div class="para" id="ch-boolean-loops-8-2-5">The other ranges we say included <code class="code-inline tex2jax_ignore">1:2:11</code> and entering <code class="code-inline tex2jax_ignore">typeof(1:2:11)</code> results in <code class="code-inline tex2jax_ignore">StepRange{Int64, Int64}</code>.</div> <div class="para" id="ch-boolean-loops-8-2-6">We will see in <a href="ch-arrays.html" class="internal" title="Chapter 6: Arrays">Chapter 6</a> that there is a handy way of expanding this shorthand way of writing these sets of numbers to that of an entire list (or technically array) of numbers.</div></section><section class="subsection" id="sect-lin-range"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">5.6.1</span><span class="space"> </span><span class="title">Linear Ranges</span>
+</h4>
+<div class="para" id="sect-lin-range-2">As we see above, it easy to make ranges if we know the step between each pair. Another use would be to know the starting and ending value and the number of values. For example, if we want to start at 3 and end at 11 with 5 values, it’s not too hard to compute this, but julia has a built-in way to do it with the <code class="code-inline tex2jax_ignore">range</code> command. For example,</div>
+<div class="para logical" id="sect-lin-range-3"><pre class="code-display tex2jax_ignore">range(3,11,length=5)
+</pre></div>
+<div class="para" id="sect-lin-range-4">returns <code class="code-inline tex2jax_ignore">3.0:2.0:11.0</code> and note that even though all of the arguments were integers that the result is a floating point range.</div>
+<div class="para" id="sect-lin-range-5">Another nice function that does a similar thing is the <code class="code-inline tex2jax_ignore">LinRange</code> function.</div>
+<div class="para logical" id="sect-lin-range-6"><pre class="code-display tex2jax_ignore">LinRange(3,11,5)
+</pre></div>
+<div class="para" id="sect-lin-range-7">which returns <code class="code-inline tex2jax_ignore">3.0, 5.0, 7.0, 9.0, 11.0</code> and this is an expanded version from above.</div></section></section></section></div>
+<div class="ptx-content-footer">
+<a class="previous-button button" href="ch-intro-functions.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-arrays.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="338 3000 8772 6866"><g style="stroke-width:.025in; stroke:black; fill:none"><polyline points="472,3590 472,9732 " style="stroke:#000000;stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke:#000000;stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke:#000000;stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke:#000000;stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke:#000000;stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke:#000000;stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke:#000000;stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke:#000000;stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke:#000000;stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke:#000000;stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke:#000000;stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke:#000000;stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke:#000000;stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke:#000000;stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="https://runestone.academy/runestone/static/images/RAIcon_cropped.png"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="https://www.mathjax.org/badge/badge-square-2.png"></a>
+</div>
+</body>
+</html>
