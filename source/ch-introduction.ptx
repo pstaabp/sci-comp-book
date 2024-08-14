@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="ch-intro" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Introduction to Scientific Computing</title>
+	<introduction>
+		<p>
+			So you picked up (or probably actually clicked on) this text and maybe you wonder what Scientific Computing actually is.
+			This will give a brief overview of the field and try to explain with some actual examples.
+		</p>
+
+		<p>
+			In short, scientific computing is a field of study that solves problems from the sciences and mathematics that are generally too difficulty to solve using standard techniques and need to resort to writing some computer code to get an answer.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Examples of Scientific Computing</title>
+		<p>
+			The classic example of scientific computing is that of weather prediction.
+			Atmospheric scientists and meteorologists use weather models (mathematical equations) that are run on fairly powerful computers.
+			The results are generally a large amount of data (temperature, pressure, humidity, etc.) that often is plotted for various regions of the U.S.
+			or other countries.
+			The resulting data gives the standard forecasts that many of us look at on smart phone apps or on TV or other places.
+		</p>
+
+		<p>
+			Data analysis is also ubiquitous and one can think about this falling in the realm of scientific computing.
+			Although this varies, an autonomous vehicle can generate 25 Gb of data per day.\footnote{\url{https://www.tuxera.com/blog/autonomous-cars-300-tb-of-data-per-year/}}.
+			Although there is plenty of scientific computing without the data generation in self-driving cars, this is an example of needing to handle and analyze large amount of data quite quickly.
+		</p>
+
+		<p>
+			Recently, disease modeling came into focus with the COVID-19 pandemic.
+			Plenty of research posted updates on predicted cases and deaths in the U.S.
+			and throughout the world.
+			Most of these model involve using existing data to fit mathematical functions and then use the resulting functions to predict the future.
+			In addition, due to the diversity of conditions in different regions of the country and world, many localized models are developed at once with some predicted interaction as people travel from region to region.
+		</p>
+	</section>
+
+	<section>
+		<title>Modeling</title>
+		<p>
+			In nearly every example of scientific computing, a mathematical model is used.
+			In short, a model is an equation, set of equations or some algorithm that is assumed as a mathematical understanding of the underlying problem.
+			Mathematical models range vastly from field to field and generally the details are only taught in the individual fields, so we're not covering too much about models in this course, but here's a few examples.
+		</p>
+
+		<p>
+			<ul>
+				<li>
+					<p>
+						In weather prediction, if the underlying physics is assumed, there is a large set of partial differential equations called the Navier-Stokes equations.
+						Some approximation of these is used often with some statistical modeling for weather models.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						In the autonomous car example above, modeling of the car dynamics often consists of the physics of moving objects which link position, velocity, acceleration and force.
+						There is also a lot of artificial intelligence (AI) for object detection.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						In the contagious disease models, there is usually some please of differential equations (the SIR model is a simple version) and some probability modelling.
+						We will discuss both of these in this text.
+					</p>
+				</li>
+			</ul>
+		</p>
+	</section>
+
+	<section>
+		<title>Computing</title>
+		<p>
+			The computing side of Scientific Computing is generally very important as well.
+			As mentioned above, most of the problems studied get much too large or complicated to solve analytically (generally as a mathematical problem) and some sort of approximation is needed.
+		</p>
+
+		<p>
+			In many cases, there are existing algorithms that are developed to solve some underlying mathematical problem and the main focus is on setting up the problem is the right way.
+			For example, if there is a differential equation to solve, a package can be loaded to use a particular differential equation solver and then the results need to be analyzed.
+		</p>
+
+		<p>
+			But in general, those that succeed in Scientific Computation are good at the coding/computation side of things.
+			It takes such skills to manage problems common in this fields.
+		</p>
+
+		<p>
+			I want to emphasize that Scientific computation, however, is not just computer programming.
+			It takes a blend of skills to succeed at this.
+			One needs a fairly deep knowledge of the field they are working in to understand how solving the problem using some algorithm is generating the correct answer.
+		</p>
+	</section>
+
+	<section>
+		<title>Ideas needed to do Effective Scientific Computing</title>
+		<p>
+			Scientific Computing is generally used to solve problems in Mathematics
+			and various Science fields.
+			There are a number of important things that
+			you need to know to solve problems effectively.
+		</p>
+
+		<p>
+			<ul>
+				<li>
+					<p>
+						\textbf{Find/develop code that runs quickly.} Everyone wants the answer as soon as possible.
+						However, if you write some code that doesn't take long to develop and returns the correct answer in a few seconds, it probably doesn't matter how efficient the algorithm is.
+						However, if it takes a few hours to run, you probably want to investigate your solution algorithm.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						\textbf{Find/develop code that uses an appropriate amount of memory.}
+						Another important aspect is that of memory consumption.
+						It's not hard
+						to find datasets these days that are 1TB or more in size, however few
+						desktop/laptop machines have more than 16 or 32Gb of RAM, so you can't
+						load the entire file into memory.
+						Such a dataset would need to be
+						processed in chunks.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						\textbf{Make sure you have known solutions/unit tests} How do you know
+						that your solution is correct? It is important to have relatively
+						simple cases that you can test your code on before solving more
+						complex things.
+					</p>
+				</li>
+			</ul>
+			\hypertarget{examples-of-scientific-computing}{%
+			\section{Examples of Scientific
+			Computing}\label{examples-of-scientific-computing}}
+			<ul>
+				<li>
+					<p>
+						Consider a list of 5 cities that you need to visit and return to where
+						you started.
+						If you know the distances between each pair of cities,
+						what is the most efficient path (in terms of distance or time) that
+						gets you to each city and return.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Poker is a card game in which certain sets of cards (hands) beat other
+						hands.
+						Determine the probability (or chance) of getting any particular
+						hand in Poker.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Given a dataset of Major League Baseball scores from 2000-2017, find
+						the game with the largest score, most innings played, biggest winning
+						margin, etc.
+					</p>
+				</li>
+			</ul>
+		</p>
+
+		<p>
+			We will look at these an other problems in this course.
+		</p>
+	</section>
+
+	<section>
+		<title>Writing Code for Scientific Computing</title>
+		<p>
+			Look back at the list of requirements for Scientific Computing projects.
+			A general rule of thumb is to use a computing language that you know
+			will work well for those tasks.
+			Typically, most students have learned
+			one or two languages and aren't quite sure which to use.
+			In most cases
+			it doesn't matter what to use, but for complex problems it will matter.
+		</p>
+
+		<p>
+			One of the best languages for scientific computing has been Matlab over
+			the past 3 or 4 decades.
+			It is used extensively in engineering firms
+			throughout the world (and the headquarters is in nearby Natick, MA).
+			We won't be
+			using Matlab here though.
+			One of the nice things about taking a class is
+			exploring new languages.
+			Here we will use
+		</p>
+
+		<p>
+			\href{http://julialang.org}{Julia}, which is a very new language that a
+			lot of people in scientific computing are excited about.
+			We will give
+			examples using Julia, but the ideas here should be applicable to other
+			languages.
+			Julia was designed as a scientific computing language, but in short is a modern language.
+			There are number of aspects that makes julia a good language for this.
+			Julia is
+		</p>
+
+		<p>
+			<ul>
+				<li>
+					<p>
+						\emph{a scripting language with dynamic types}.
+						This means you can get started right away--there's no need to learn about compilation--and you can prototype things quickly.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						\emph{a language with just-in-time compilation}.
+						Most of the time scripting languages are slow, however with modern under-the-hood tools, languages can be compiled on the fly to create very fast runtimes.
+						There is a \href{https://www.julialang.org/benchmarks/}{webpage on benchmarks} comparing julia to other standard languages.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						\emph{open source.}  Although often open-source implies free but not high-quality, the free part holds, but more important is that anyone can contributed to the code.
+						The Julia community is committed to creating a high-quality piece of software and many discussion revolve around writing code that will improve the speed or other aspects.
+						This is very opaque and unclear if it happens with commercial software.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						\emph{easy to use}.
+						The syntax of julia is similar to that of python, a very popular language, and is often intuitive.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						\emph{a joy to use}.
+						Additionally, the structure of the language makes it easy to start with, but as projects get more complex, it can be written in a simple way.
+					</p>
+				</li>
+			</ul>
+		</p>
+	</section>
+
+	<section>
+		<title>Let's get started</title>
+    <p>
+		You can start by just reading the book, but to get the most out of this, make sure that you have a computer with access to julia.
+		If you already have this, great.
+		If not, see Appendix \ref{append:getting-started} which will show you a few way to get the code up and running.
+    </p>
+		<p>
+			Solving Scientific Computing problems ultimately boils down to manipulating data and at the most basic is that of strings and numbers.
+			We begin with understanding these data types and how to store values in them.
+			We also show some of julia syntax, which looks like other languages (like python).
+			Hopefully you have some basic knowledge of computing, but no assumption of any particular language is necessary.
+		</p>
+	</section>
+
+	</chapter>

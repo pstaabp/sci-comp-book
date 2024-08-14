@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-intro-functions">
+	<title>Introduction to Functions</title>
+
+	<introduction>
+		<p>
+			In any language, the function is one of the most important ideas and this chapter covers the introduction of functions with examples in julia. There are four main purposes of functions in scientific computation.
+		</p>
+
+		<p>
+			<ol>
+				<li>
+					<p>
+						A function in a computer language mimics that of a mathematical function, which are crucial in this field.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Functions simplify code.  Wherever code is repeated either exactly or nearly exactly, functions are one way to reduce the amount of code written and makes code conceptually easier.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Functions abstract code.  If you can create a piece of code that does a particular task, then this helps in the abstraction process.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Functions allow separation of code.  If there is a large code and a section of it does a specific task, making it a function will separate code.
+					</p>
+				</li>
+			</ol>
+		</p>
+	</introduction>
+
+	<section xml:id="sect-simple-example">
+		<title>Simple example</title>
+
+		<p>
+			A simple example of a julia function is
+			<cd>
+			<cline>function sq(x)</cline>
+			<cline>  x*x</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			which just returns the square of the argument, called <c>x</c>.  The name of the function is <c>sq</c> and the <c>x</c> inside the parentheses is called the <em>argument</em> of the function.  Both the function name and any argument must adhere to the rules of variables from <xref ref="ch-data-types"/>.
+		</p>
+
+		<p>
+			An alternative way to write this is the following:
+			<cd>
+			<cline>sq(x)=x*x</cline>
+			</cd>
+		</p>
+
+		<p>
+			which is often used if a function is a single line of code.  This also looks a lot like a mathematical function. To make it even more mathematical, we could also write this as
+			<cd>
+			<cline>sq(x)=x^2</cline>
+			</cd>
+		</p>
+
+		<p>
+			To call a function, it is much like that of any other language. If we type <c>sq(3)</c>, which returns <c>9</c>, the square of 3 and <c>sq(-4)</c> returns <c>16</c>.  In the latter case, this assigns the argument <c>x</c> the value <c>-4</c> and runs the code in the function.
+		</p>
+	</section>
+
+	<section>
+		<title>Function Arguments</title>
+
+		<p>
+			The function arguments are names associated with data passed into the function. In the function <c>sq</c> above, the number <c>x</c> is the only argument. We can have more arguments by separating by commas. The (quite unnecessary function) <c>theSum</c> will take two arguments and add the result:
+			<cd>
+			<cline>theSum(x,y) = x+y</cline>
+			</cd>
+		</p>
+
+		<p>
+			Typically, if a function can be written in one line, we will use this style of functions. For more complex functions, use the <c>function</c> keyword as a block of code.
+		</p>
+
+		<exercise>
+			<p>
+				Write a function <c>theMean</c> that finds the mean (average) of two arguments <c>x</c> and <c>y</c>.
+			</p>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Returning values from a function</title>
+
+		<introduction>
+			<p>
+				The functions <c>sq</c> or <c>theSum</c> returned the value that is the last line of the function. If you want to return a value before the last line you can use the <c>return</c> command. The following will return true if the number is odd and false if the number is true:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+      function isOdd(n)
+        if mod(n,2)==1
+          return true
+        end
+        false
+      end
+				</input>
+			</program>
+
+			<p>
+				The <c>mod</c> function is the remainder of <c>n</c> divided by 2 and can also be written <c>n % 2</c>. If the remainder is 1, then the number is odd. On line #3, <c>return true</c> the code stops here and exits the function and doesn't execute any of the other lines.
+			</p>
+
+			<p>
+				Note: the <c>==</c> tests for equality. This will be discussed in <xref ref="ch-boolean-loops"/>.
+			</p>
+
+			<p>
+				A better way to write this (but doesn't use the return statement) just evaluates if <c>mod(n,2)</c> is 1 or not:
+			</p>
+
+			<p>
+				<cd>
+				<cline>isOdd(n) = mod(n,2) == 1</cline>
+				</cd>
+			</p>
+
+			<p>
+				which will return <c>true</c> if <c>mod(n,2)</c> is actually 1 and <c>false</c> if it is anything else (but the only other possibility is 0). Again, since this is just one line, we'll use the shorthand notation.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Indentation in Functions</title>
+
+			<p>
+				You should notice that the <c>isOdd</c> function written above as a block of 5 lines has different indentation.  In Julia, the indentation doesn't matter <fn>This isn't true of all languages.  Python, for example, relies significantly on indentation for blocks of code and therefore the <c>end</c> isn't needed to terminate a block.</fn> but it is standard to indent for clarity.  Notice first that in all of the functions so far, the code has been indented <fn>I have a preference for 2 spaces, but 3 and 4 are common as well.</fn> two spaces and then the <c>if</c> block is indented again 2 spaces.  One can use any number of spaces for indentation as long as it is consistent.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Specifying Argument Types</title>
+
+		<p>
+			The <c>isOdd</c> function above should only work on integers, but if type <c>isOdd(3.5)</c> you get a result. (But does it give you want you want?). What if you enter <c>isOdd("odd")</c>? Try it.
+		</p>
+
+		<p>
+			Since odd numbers only make sense with positive integers, declaring the type of argument makes sense.  Therefore, if instead, you specify a type in the following way:
+			<cd>
+			<cline>isOdd(n::Integer) = mod(n,2)==1</cline>
+			</cd>
+		</p>
+
+		<p>
+			where the double colon, <c>::</c> tells the type of the argument <c>n</c>. Any type that is an Integer can go in here and note that we used the abstract data type <c>Integer</c> as seen in <xref ref="sect-abstract-type"/>.
+		</p>
+
+		<p>
+			Also, make sure to restart the kernel and details on how to do this can be found in <xref ref="sect-kernel"/>.  After restarting the kernel make sure that you rerun the function <c>isOdd</c> above.
+		</p>
+
+		<p>
+			Once you have done this, entering <c>isOdd(3.5)</c> returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>MethodError: no method matching isOdd(::Float64)</cline>
+			<cline>The function `isOdd` exists, but no method is defined for this combination of argument types. </cline>
+			</cd>
+		</p>
+
+		<p>
+			This just means that there is not function <c>isOdd</c> that takes a <c>Float64</c> as an argument, which is what we want.  A similar error should now occur for <c>isOdd("odd")</c>.
+		</p>
+
+		<p>
+			Throughout the rest of this text, we will always specific an argument type. This is not only good style and practice, we will see that this results in faster code.
+		</p>
+
+		<exercise>
+			<statement>
+				<p>
+					Rewrite the <c>theMean</c> function from above using types for the arguments. Since both floats and integers are real numbers, use the abstract <c>Real</c> type for this. Restart the kernel and test your function using both numbers (floats, integers or rationals) and non numbers (like a string).
+				</p>
+			</statement>
+
+			<solution>
+				<p>
+					<cd>
+					<cline>theMean(x::Real, y::Real) = (x+y)/2</cline>
+					</cd>
+				</p>
+			</solution>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Multiple Dispatch</title>
+
+		<introduction>
+			<p>
+				Before starting this, make sure that you have completed the exercise above to write a 2-argument version of the mean and it is currently in the kernel (this means, just run it again, if in doubt.)
+			</p>
+
+			<p>
+				It would be nice to have a mean function that takes more than 2 numbers as well, so the following is a three-argument version of the mean function can be written
+			</p>
+
+			<p>
+				<cd>
+				<cline>theMean(x::Real,y::Real,z::Real) = (x+y+z)/3</cline>
+				</cd>
+			</p>
+
+			<p>
+				Depending on the number of arguments, julia will call the appropriate function. This is an example of <url href="https://en.wikipedia.org/wiki/Multiple_dispatch" visual="wikipedia.org"> Multiple Dispatch</url>, in which either the number or type of arguments determine the actual function call.
+			</p>
+
+			<p>
+				If you look back at your document when you declared the functions, you should see that the second one entered said <c>theMean (generic function with 2 methods)</c>, which says that there are two functions called mean. Typing <c>methods(theMean)</c> results in:
+			</p>
+
+			<p>
+				<cd>
+				<cline># 3 methods for generic function theMean from Main:</cline>
+				<cline>	theMean(x::Real, y::Real) in Main at /Users/pstaab/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
+				<cline>	theMean(x, y) in Main at /Users/pstaab/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
+				<cline>	theMean(x::Real, y::Real, z::Real) in Main at /Users/pstaab/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
+				</cd>
+			</p>
+
+			<p>
+				Much of yours will be different depending on using the REPL or a jupyter notebook, however the important part is that you will see that there are 3 methods and the rest shows where they were defined.
+			</p>
+
+			<p>
+				Multiple dispatch also allows different types of arguments as well. Let's say we want to create a function <c>theMean</c> that take a single string as a argument like:
+			</p>
+
+			<p>
+				<cd>
+				<cline>function theMean(str::String)</cline>
+				<cline>  "This should return the definition of $str"</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				and entering <c>methods(theMean)</c> shows you that there are now 4 functions. Try typing
+			</p>
+
+			<p>
+				<cd>
+				<cline>theMean("definition")</cline>
+				</cd>
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Multiple Dispatch of built-in functions</title>
+
+			<p>
+				Multiple dispatch allows julia to be quite nice.  For example, the <c>+</c> function allows code to be written with the plus symbol and execute different code.  Type <c>methods(+)</c> and the top of the results should be similar to
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+					# 197 methods for generic function + from Base:
+					+(B::BitMatrix, J::LinearAlgebra.UniformScaling) in LinearAlgebra at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/LinearAlgebra/src/uniformscaling.jl:151
+					+(x::Bool, z::Complex{Bool}) in Base at complex.jl:308
+					+(x::Bool, y::Bool) in Base at bool.jl:166
+					+(x::Bool) in Base at bool.jl:163
+					+(x::Bool, z::Complex) in Base at complex.jl:315
+					+(x::Real, z::Complex{Bool}) in Base at complex.jl:322
+					+(x::Bool, y::T) where T&gt;:AbstractFloat in Base at bool.jl:173
+					+(x::Dates.CompoundPeriod, y::Dates.CompoundPeriod) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:335
+					+(x::Dates.CompoundPeriod, y::Dates.Period) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:333
+					+(x::Dates.CompoundPeriod, y::Dates.TimeType) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:363
+					+(dt::Dates.DateTime, y::Dates.Year) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:25
+					+(dt::Dates.DateTime, z::Dates.Month) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:49
+					+(x::Dates.DateTime, y::Dates.Quarter) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:77
+					+(x::Dates.DateTime, y::Dates.Period) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:83
+					+(z::Complex{Bool}, x::Bool) in Base at complex.jl:309
+					+(z::Complex{Bool}, x::Real) in Base at complex.jl:323
+				</input>
+			</program>
+
+			<p>
+				A few things about this:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							There are 197 different methods for <c>+</c>.  This doesn't include all of the packages that could be loaded.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Each of the methods shows where the method is defined. Generally, you can click on the link and go directly to the code.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Line 13 adds a <c>Date</c> and a <c>Month</c>, useful for handles dates.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Many of the rest are adding a number (often a Complex) and a Bool.
+						</p>
+					</li>
+				</ul>
+			</p>
+		</subsection>
+	</section>
+
+	<section xml:id="sect-varargs">
+		<title>Variable Number of arguments</title>
+
+		<p>
+			From the last exercise, it would be unfortunate if we have to write different functions for different number of arguments. We can write a variable number of arguments with a <c>...</c> trailing the last argument. The following is a generalized version of the mean:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+  function theMean(x::Real...)
+    local sum=0
+    for val in x
+      sum += val
+    end
+    sum/length(x)
+  end
+			</input>
+		</program>
+
+		<p>
+			which uses a for loop that we will discuss later. This function will now find the mean using any number of arguments. Try <c>theMean(1,2,3,4)</c>, <c>theMean(11//2,5//6,1//9)</c> and <c>theMean(1.0,2.0,3.0,4.0,5.0)</c> and determine if it is returning what you expect.<fn>You may notice that the mean of the two rational numbers results in a floating-point number.  A better way to do this would be to return a rational.</fn>
+		</p>
+
+		<p>
+			Also, note that the argument <c>x</c> with the ... is a tuple, (see <xref ref="sect-tuples"/>).  An alternative way to access the individual elements of <c>x</c> would be to use brackets.  For example, <c>x[3]</c> would be the third argument.
+		</p>
+	</section>
+
+	<section>
+		<title>Multiple Return Values</title>
+
+		<p>
+			A very nice feature of Julia functions is that of multiple return values. Instead of only being able to return a single number (or requiring to send an array or structural type), you can return more than 1 number (or other data type). For example:
+		</p>
+
+		<p>
+			<cd>
+			<cline>function h(x,y)</cline>
+			<cline>  x+y,x-y</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and if you call this, say <c>h(3,5)</c> you will get the result <c>(8,-2)</c> or if you say
+		</p>
+
+		<p>
+			<cd>
+			<cline>p,q=h(3,5)</cline>
+			</cd>
+		</p>
+
+		<p>
+			The variable <c>p</c> will take on the value <c>8</c>  and <c>q</c> will take on the value of <c>-2</c>.
+		</p>
+
+		<p>
+			The result of this function is a tuple as we saw in <xref ref="sect-tuples"/>. Although in that section we used parentheses around the tuple, it is not necessary and generally isn't used to return a tuple in a function. We will use this for the result of the quadratic formula in <xref ref="ch-rootfinding"/>.
+		</p>
+	</section>
+
+	<section xml:id="sect-factorial">
+		<title>Factorial Function</title>
+
+		<introduction>
+			<p>
+				Mathematically, we define the factorial as a function on a non-negative integer as
+			</p>
+
+			<p>
+				<me>
+					n! = n(n-1)(n-2)\cdots 3 \cdot 2 \cdot 1
+				</me>
+			</p>
+
+			<p>
+				or the product of all of the numbers from itself down to 1. There are a number of ways to program this function as we will see. Using
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+  function fact(n::Integer)
+    local prod=1
+    for i=1:n
+      prod *= i
+    end
+    prod
+  end
+				</input>
+			</program>
+
+			<p>
+				uses a <c>for</c> loop and we will see the details of this in <xref ref="ch-boolean-loops"/>. The for loop first assigns <c>i</c> the value 1 then executes the lines, then sets the value to 2, then executes the block, and so on until <c>i</c> is <c>n</c>.  Since <c>prod</c> starts as 1, this multiplies <c>prod</c> by every integer between 1 and <m>n</m>, and thus is the factorial.  The result in <c>prod</c> is returned.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Exercise</title>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							Test the function above for various positive integers.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							What happens if you put in 0 or a negative integer?
+						</p>
+					</li>
+
+					<li>
+						<p>
+							What happens if you put in a number that is not an integer?
+						</p>
+					</li>
+				</ul>
+			</p>
+		</subsection>
+	</section>
+
+	<section xml:id="sect-recursion">
+		<title>Recursive Functions</title>
+
+		<p>
+			Any function that calls itself within its block of code is called a <em>recursive function</em>. One of the standard examples of this is the factorial function.
+		</p>
+
+		<p>
+			Above, we saw how to compute the factorial of a number using a for loop. There's another way to do this. We can define the factorial in the following way:
+		</p>
+
+		<p>
+			<me>
+				n!= \begin{cases} 1 &amp; n=0 \\ n\cdot(n-1)! &amp; \text{otherwise} \end{cases}
+			</me>
+		</p>
+
+		<p>
+			and this is a mathematical piecewise function that returns 1 if <m>n=0</m> and otherwise returns <m>n\cdot(n-1)!</m>.
+		</p>
+
+		<p>
+			The reason that this is recursive is that the factorial function is within the function.  That is it calls itself.
+		</p>
+
+		<p>
+			We can write the julia version of the factorial in the following:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+				function factr(n::Integer)
+				  if n == 0
+				    return 1
+				  else
+				    return n*factr(n-1)
+				  end
+				end
+			</input>
+		</program>
+
+		<p>
+			where <c>n == 0</c> tests if the variable <c>n</c> is 0 or not. If <c>n</c> is 0, then 1 is returned.  Otherwise, <c>n*factr(n-1)</c> is calculated and then returned.  The equality test as well as the <em>if-then-else</em> statement will be covered in detail in <xref ref="ch-boolean-loops"/>.
+		</p>
+
+		<exercise>
+			<p>
+				Another example of a recursive function is that of a Fibonacci number. If we let <m>f(1)=1</m>, <m>f(2)=1</m>, and then
+			</p>
+
+			<p>
+				<me>
+					f(n)=f(n-1)+f(n-2) \qquad \text{for $n &gt; 2$}.
+				</me>
+			</p>
+
+			<p>
+				The first few values are 1, 1, 2, 3, 5, 8, 13, 21, ... Write a recursive function that produces fibonacci numbers. Test it on values of <m>n</m> that are smaller than 20<fn>If you play with this a bit, you will that computing the fibonacci numbers in a recursive manner, although simple, is very slow as the values increase.  In <xref ref="sect-faster-fibonacci"/>, we will examine another way to compute this more quickly.</fn>
+			</p>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Variable Scope</title>
+
+		<p>
+			If you are using the command line julia (also called the REPL) or iJulia, then entering <c>x=6</c> will create <c>x</c> as a global variable, even without saying so explicitly. If we consider the factorial function above:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+function fact(n::Integer)
+  prod=1
+  for i=1:n
+    prod *= i
+  end
+  prod
+end
+			</input>
+		</program>
+
+		<p>
+			then recall that <c>n</c> is the function argument and the variable <c>prod</c> is actually declared locally implicitly and it is good form to say it is local by
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+function fact(n::Integer)
+  local prod=1
+  for i=1:n
+    prod *= i
+  end
+  prod
+end
+			</input>
+		</program>
+
+		<p>
+			The variable <c>prod</c> is not defined or visible outside the function. If we type <c>2*prod</c> for example, an error will occur saying that <c>prod</c> is not defined.
+		</p>
+
+		<p>
+			If we have:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+x=3
+function f()
+  local x=2
+  x
+end
+f()
+			</input>
+		</program>
+
+		<p>
+			then this will return <c>2</c> and typing <c>x</c> (to see it's value) returns <c>3</c>, indicating that there are two different <c>x</c> variables.
+		</p>
+
+		<p>
+			If we indeed need a variable inside of a function to use a global, we can use the <c>global</c> keyword.  If instead we have
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+x=3
+function g()
+	global x
+	x += 1
+end
+			</input>
+		</program>
+
+		<p>
+			then executing <c>g()</c> results in <c>4</c> showing that it is using the global value.  We will use a global variable to determine the number of function evaluations to test a function in <xref ref="sect-faster-fibonacci"/>.
+		</p>
+	</section>
+
+	<section>
+		<title>Summary of Function basics</title>
+
+		<p>
+			Functions are useful to separate code into a series of statements that should do one thing.  A function is designated with a name and has arguments which should be typed for clarity and speed.
+		</p>
+
+		<p>
+			<url href="http://docs.julialang.org/en/latest/manual/functions/" visual="docs.julialang.org"> Julia documentation on functions</url> is a has additional information on functions and we will cover some advanced features of functions in <xref ref="ch-functional-programming"/> and <xref ref="ch-adv-functions"/>.
+		</p>
+	</section>
+</chapter>

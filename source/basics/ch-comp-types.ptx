@@ -1,0 +1,1151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="ch-comp-types">
+	<title>Creating New Data Types in Julia</title>
+	<introduction>
+		<p>
+			Although there are many standard Julia data types that are useful for Scientific
+			Computing, we can make new types called a composite data type.  We will start
+			with developing a <c>PlayingCard</c> type that simplifies the poker hand
+			simulations that we will see in <xref ref="ch-poker"/>.  We will also look
+			at a <c>Polynomial</c> data type and finally create a <c>Root</c> type
+			that will help with the rootfinding from <xref ref="ch-rootfinding"/>.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Basics of Julia's Composite Datatype</title>
+		<p>
+			The composite data type in Julia is called a <c>struct</c> and consists of
+			some number of fields of an existing type.  A simple one is
+		</p>
+
+		<p>
+			<cd>
+			<cline>struct Mystruct</cline>
+			<cline>  num::Integer</cline>
+			<cline>  str::String</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			which has the two fields <c>num</c> and <c>str</c>. We are using the standard
+			naming convention of a struct starting with a capital letter.  We can create an
+			object<fn>Although a Julia struct is not an object in the sense of an object-oriented language,
+			the terminology is pervasive in the Julia community.</fn> of type <c>Mystruct</c> by
+		</p>
+
+		<p>
+			<cd>
+			<cline>m = Mystruct(13,"hello")</cline>
+			</cd>
+		</p>
+
+		<p>
+			and we can access the fields of the struct with <c>m.num</c> and <c>m.str</c>.
+			They will return <c>13</c> and <c>"hello"</c> respectively.
+			Also, you can get an array of the names of the fields with <c>fieldnames(Mystruct)</c>.
+			Note that the <c>fieldnames</c> command needs the datatype, not a variable of the datatype.
+			This example is not very realistic, but the rest of the chapter will include more-practical examples.
+		</p>
+
+		<p>
+			One cannot change the fields of a <c>struct</c>.  If <c>m</c> is defined as above and you try
+			<c>m.str = "goodbye"</c>, then Julia will report the error:
+		</p>
+
+		<p>
+			<cd>
+			<cline>setfield!: immutable struct of type Mystruct cannot be changed</cline>
+			</cd>
+		</p>
+
+		<p>
+			This is exactly like trying to redefine a <c>const</c>.  As we will see
+			most of the examples in this text are these constant types of <c>struct</c>s,
+			you can make non-constant <c>structs</c> using the <c>mutable</c> keyword.
+			For example:
+		</p>
+
+		<p>
+			<cd>
+			<cline>mutable struct MutableStruct</cline>
+			<cline>  a::Float64</cline>
+			<cline>  b::Integer</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and then define an object such as
+		</p>
+
+		<p>
+			<cd>
+			<cline>s=MutableStruct(1,2)</cline>
+			</cd>
+		</p>
+
+		<p>
+			Then the redefinition <c>s.a=4.5</c> is allowed.  Note: that if you try to
+			do <c>s.b=7.1</c>, the you will get the error:
+		</p>
+
+		<p>
+			<cd>
+			<cline>InexactError: Int64(7.1)</cline>
+			</cd>
+		</p>
+
+		<p>
+			which happens because you are trying to assign the value 7.1 to an integer, since the
+			field <c>b</c> is an integer.
+		</p>
+	</section>
+
+	<section>
+		<title>A Card datatype</title>
+		<introduction>
+			<p>
+				In <xref ref="ch-poker"/>, we will use simulations to determine the probabilities of certain poker hands.
+				Although the calculations can be done with built-in types, the result would be difficult to read and
+				hard to understand.  Here, we will create a <c>Card</c> datatype that will help clarify the code
+				by creating a type with a rank (1 to 13 corresponding to Ace, 2, through 10, Jack, Queen, King)
+				and a suit (1 to 4 corresponding to the suits ``spades'', ``hearts'', ``diamonds'', ``clubs''),
+				which we define as the characters arrays:
+			</p>
+
+			<p>
+				<cd>
+				<cline>ranks = ['A','2','3','4','5','6','7','8','9','T','J','Q','K']</cline>
+				<cline>suits = ['\u2660','\u2661','\u2662','\u2663']</cline>
+				</cd>
+			</p>
+
+			<p>
+				where the suits are the unicode characters<fn>See
+				<url href="http://docs.julialang.org/en/latest/manual/unicode-input/" visual="julialang.org">the julia
+				documentation on unicode</url>.</fn> for the suits.
+				(Note: <c>ranks</c> and <c>suits</c> are arrays of characters (not strings). This is because
+				they use single quotes.).  The following datatype:
+			</p>
+
+			<p>
+				<cd>
+				<cline>struct Card</cline>
+				<cline>  rank::Integer</cline>
+				<cline>  suit::Integer</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				will be used to store a <c>Card</c>.  Note that the suits and ranks are each integers,
+				where we uses the suits 1, 2, 3, and 4 (which will corresponds to the actual suits)
+				and the ranks will be the integers 1 to 13.
+			</p>
+
+			<p>
+				To create a <c>Card</c>, just call the struct like a function with the given rank and
+				suit, like <c>c = Card(3,2)</c>, which will create a card of rank 3
+				and suit 2 (hearts). To access the fields of the type, we use dot notation.
+				For example <c>c.rank</c> will return <c>3</c> and <c>c.suit</c> will return <c>2</c>.
+			</p>
+
+			<p>
+				Notice that the result of the card is <c>Card(3,2)</c>, which isn't very human
+				friendly-I'd rather see the actual rank and suit.  Fortunately, a nice
+				feature of Julia is to override the output using <c>Base.show</c>.  For example,
+			</p>
+
+			<p>
+				<cd>
+				<cline>Base.show(io::IO, c::Card) = print(io, "$(ranks[c.rank])$(suits[c.suit])")</cline>
+				</cd>
+			</p>
+
+			<p>
+				where the arguments of <c>Base.show</c> should be of type <c>IO</c> and then the datatype.
+				The output from <c>Base.show</c> should call <c>print</c> as above. The result
+				will be the concatenation of the characters corresponding to the rank and suit
+				of the card.  Any of the forms in <xref ref="ch-variables"/> that do string
+				concatentation will work, I'm a fan of string interpolation.
+				Try this out by typing <c>c</c> and you should get <c>3♡</c>.
+			</p>
+
+			<p>
+				Note: this is different than just a <c>print</c> or <c>println</c> within a
+				function, which is highly discouraged. This function is called whenever a
+				card type is displayed.
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>Constructors of new data types</title>
+			<p>
+				When julia calls <c>Card(3,2)</c>, actually, it executes a special function
+				called a constructor, which creates an instance of the type, which we have
+				called an object. Although Julia creates the basic constructor--that is the
+				one that fills the fields of the type in the order defined, we may want some
+				additional features.  For example if we call <c>Card(-10,78)</c>, then julia returns
+			</p>
+
+			<p>
+				<cd>
+				<cline>BoundsError: attempt to access 13-element Vector{Char} at index [-10]</cline>
+				</cd>
+			</p>
+
+			<p>
+				and we got the error because on <c>Base.show</c> we are trying to access an array
+				outside of it's bounds.  We just told Julia to make a new data type with two integers
+				and <c>Card(-10,78)</c> is the new data type with two integers.
+			</p>
+
+			<p>
+				We can ensure that that the Cards only take the first argument as numbers
+				between 1 and 13 and the second as between 1 and 4 by the updating the
+				Card datatype as follows:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+struct Card
+  rank::Int
+  suit::Int
+  # construct a card based on the rank and suit
+  function Card(r::Int,s::Int)
+    1 &lt;= r &lt;=13  || throw(ArgumentError("The rank must be an integer between 1 and 13."))
+    1 &lt;= s &lt;= 4  || throw(ArgumentError("The suit must be an integer between 1 and 4."))
+    new(r,s)
+  end
+end
+				</input>
+			</program>
+
+			<p>
+				If you enter the above <c>struct</c> you should see the error:
+			</p>
+
+			<p>
+				<cd>
+				<cline>invalid redefinition of type Card</cline>
+				</cd>
+			</p>
+
+			<p>
+				Recall, from the beginning of this chapter, this is because a <c>struct</c> is fixed,
+				much like if a constant is declared and then it is redefined.  We want to
+				replace the first <c>struct</c> with this one, so we will restart the kernel<fn>
+				Recall, in Juypter, select <em>restart kernel</em> at the top and if you are
+				using VS Code, the <em>restart</em> button will do the same.
+				</fn>	You will need to reenter all of the needed cells,
+				like the one with the ranks and suits as well as the one that starts
+				<c>Base.show</c>.  In <xref ref="ch-modules"/>, we will put structs
+				inside a module and not have to restart the kernel as you develop a new datatype.
+			</p>
+
+			<p>
+				After restarting the kernel and rerunning the important cells, if we call
+				<c>Card(-10,78)</c>, then we get
+			</p>
+
+			<p>
+				<cd>
+				<cline>ArgumentError: The rank must be an integer between 1 and 13.</cline>
+				</cd>
+			</p>
+
+			<p>
+				which is what we want and should notice that this error is what we said to do when
+				the rank is not between 1 and 13.   Although we haven't covered handling errors yet,
+				the <c>throw</c> function will send an error and we have the ability to
+				catch and handle these errors gracefully if we want.
+			</p>
+
+			<p>
+				Some other things to note about this new definition of <c>Card</c>
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							There are still two members of the struct, <c>rank</c> and <c>suit</c> listed
+							on lines 2 and 3.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							There is a function defined on lines 5 through 9 now.  This is what is called
+							when <c>Card</c> is called with two integers and is called a <term>constructor</term>.
+							Line 6 checks if the rank (for this
+							function is called <c>r</c>) is between 1 and 13 and similarly on line 7
+							checks if the suits (called <c>s</c>) is between 1 and 4.  If either of these
+							are outside the bounds an error is thrown.  We'll talk specifically about what
+							<c>throw</c> does later in the text.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Inside the the contructor, line 8 is <c>new(r,s)</c>.  This assigns the
+							member <c>rank</c> the value <c>r</c> and <c>suit</c> the value <c>s</c>.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				We would also like another constructor that will take an integer between 1
+				and 52 and returns the appropriate card. The following example will do this.
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+struct Card
+  rank::Int
+  suit::Int
+  # construct a card based on the rank and suit
+  function Card(r::Int,s::Int)
+    1 &lt;= r &lt;=13  || throw(ArgumentError("The rank must be an integer between 1 and 13."))
+    1 &lt;= s &lt;= 4  || throw(ArgumentError("The suit must be an integer between 1 and 4."))
+    new(r,s)
+  end
+  # construct a card based on the number in a deck
+  function Card(i::Int)
+    1 &lt;= i &lt;= 52 || throw(ArgumentError("The argument must be an integer between 1 and 52"))
+    mod(i,13)==0 ? new(13,div(i,13)) : new(mod(i,13),div(i,13)+1)
+  end
+end
+				</input>
+			</program>
+
+			<p>
+				And if you get the error that you cannot redefine <c>Card</c>, then again, restart
+				the kernel.  The big difference with this definition is a second constructor
+				function on lines 13-16 is another function with name <c>Card</c>.
+				The important parts of this second constructor is
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							Line 13 defines the input of the constructor.  The only input is a single
+							integer.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Line 14 checks that the input <c>i</c> is between 1 and 52.  If not an error
+							is thrown.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Line 15 defines the new <c>Card</c>. First, notice that there is a
+							ternary <c>if-then-else</c>.  A check is made if <c>i mod 13</c> is zero.
+							That is, 13, 26, 39 or 52.  If that is the case, set the rank to 13 (King)
+							and the rank is i/13 (using <c>div</c> for integer division). Recall
+							that <c>new</c> is used to set <c>rank</c> and <c>suit</c> of the struct.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							If <c>i mod 13</c> is not zero, then the rank is <c>mod(i,13)</c>.
+							It will be an integer 1 through 12.  The suit is <c>div(i,13)+1</c>,
+							which ensures that suit will be between 1 and 4.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<remark>
+				<p>
+					Notice that we have 3 different versions of the <c>Card</c> type. In the first
+					version, only the members were defined.  There were no constructors.  Often, this
+					is all that is needed for a type/struct, however, if you need to do some checking
+					on arguments, then you will need to write a constructor or two.
+				</p>
+
+				<p>
+					If you do use a constructor, define it as a function with the same name
+					as the type (the case must be the same as well). The last line in contructor
+					function must be the <c>new</c> function that fills the member fields in the
+					same order as listed in the struct. See
+					<url href="https://docs.julialang.org/en/latest/manual/constructors/\#man-constructors-1" visual="julialang.org">additional
+					information about constructors in the Julia Documentation</url>
+				</p>
+			</remark>
+		</subsection>
+
+		<subsection>
+			<title>Creating a Hand datatype</title>
+			<p>
+				As we will see in <xref ref="ch-poker"/>, a hand is also helpful in playing
+				card games, we will define a hand in the following way:
+			</p>
+
+			<p>
+				<cd>
+				<cline>struct Hand</cline>
+				<cline>cards::Vector{Card}</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				which is just an array of cards. (Note: there is nothing here that
+				specifies that the Hand has to be 5 cards, but that could be included by
+				doing some error checking in the constructor).  An example hand would be
+			</p>
+
+			<p>
+				<cd>
+				<cline>h1=Hand([Card(2,3),Card(12,1),Card(10,1),Card(10,4),Card(5,2)])</cline>
+				</cd>
+			</p>
+
+			<p>
+				and again, since this looks a bit ugly, we can define a <c>Base.show</c> method
+				for a hand:
+			</p>
+
+			<p>
+				<cd>
+				<cline>Base.show(io::IO,h::Hand) = print(io, "[$(join(h.cards,", "))]")</cline>
+				</cd>
+			</p>
+
+			<p>
+				Then let's define a card using the following:
+			</p>
+
+			<p>
+				<cd>
+				<cline>h1=Hand([Card(2,3),Card(12,1),Card(10,1),Card(10,4),Card(5,2)])</cline>
+				</cd>
+			</p>
+
+			<p>
+				now <c>h1</c> should now return <c>[2♢, Q♠, T♠, T♣, 5♡]</c>.
+			</p>
+
+			<p>
+				We will return to this in <xref ref="ch-poker"/> where we will use this
+				datatype to help with simulations.
+			</p>
+
+			<p>
+				A note about the <c>Base.show</c> function for the <c>Hand</c>.  As will
+				the <c>Base.show</c> for the <c>Card</c> type, the arguments are something of
+				type <c>IO</c> and then something of type <c>Hand</c>. The function then
+				calls <c>print</c> with the second argument a <c>String</c>.  The main part of
+				this is the <c>join</c> command which takes an array of strings and joins
+				(recall this from <xref ref="sect-join-split"/>)
+				them separated by the second argument, <c>", "</c>. The rest of this just
+				surrounds them by square brackets.
+			</p>
+		</subsection>
+	</section>
+
+	<section xml:id="sect-poly-parametric">
+		<title>Polynomials: A parametric data type</title>
+		<introduction>
+			<p>
+				Recall that a polynomial is the sum of nonnegative powers of <m>x</m> with
+				constant coefficients.  That is anything of the form:
+			</p>
+
+			<p>
+				<me>
+					P(x) = a_0 + a_1 x + a_2 x^2 + \cdots + a_n x^n
+				</me>
+			</p>
+
+			<p>
+				and we may want to solve problems with them and it may be helpful to have a
+				data type of this form.  We can represent any polynomial by the coefficients.
+				For example, the following will construct a datatype that is a polynomial with
+				integer coefficients<fn>As well will see in <xref ref="ch-lin-alg-intro"/>,
+				a <c>Vector</c> is shorthand or an alias for a 1D array</fn>:
+			</p>
+
+			<p>
+				<cd>
+				<cline>struct Polynomial</cline>
+				<cline>coeffs::Vector{Int64}</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				We can then represent the polynomial <m>P(x) = 2-x+3x^2</m> with
+			</p>
+
+			<p>
+				<cd>
+				<cline>p = Polynomial([2,-1,3])</cline>
+				</cd>
+			</p>
+
+			<p>
+				Let's say that we want to construct methods to add, subtract, multiply two
+				polynomials and peform a scalar multiply as well. However, if we want to allow Polynomials with coefficients
+				other than integer coefficients, such as rational or real or complex, then we
+				would need to write a set of functions to do this for each datatype, which is 1)
+				painfully dull, 2) hard to maintain since there are many copies of the same
+				function and 3) unnecessary because Julia has a nice feature called a parametric type.
+			</p>
+
+			<p>
+				We could define the Polynomial as
+			</p>
+
+			<p>
+				<cd>
+				<cline>struct Polynomial{T}</cline>
+				<cline>coeffs::Vector{T}</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				which has Polynomial that has a type <c>T</c>. This now allows with one
+				definition to have a polynomial of integers, floats, complex and rationals.
+				However, this would also allow us to define a polynomial of strings or <c>Card</c>s,
+				which doesn't make any sense.  We can restrict the coefficients to number types with
+			</p>
+
+			<p>
+				<cd>
+				<cline>struct Polynomial{T &lt;: Number}</cline>
+				<cline>coeffs::Vector{T}</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				which defines the coefficients to be a <c>Vector</c> of type <c>T</c> and <c>T</c>
+				from the first line is any subtype of <c>Number</c>, which is what the notation
+				<c> &lt;: Number</c> means.  Recall that <xref ref="ch-data-types"/> explain
+				the data typing system and how to determine subtypes of a type.  If a <c>struct</c>
+				is created in a way like this to depend on a type, it is called a
+				<term>parametric type</term>.
+			</p>
+
+			<p>
+				For example, using the above definition of <c>Polynomial</c>, we can define the following
+			</p>
+
+			<p>
+				<cd>
+				<cline>poly1=Polynomial([1, 2, 3])</cline>
+				<cline>poly2=Polynomial([1.0, 2.0, 3.0])</cline>
+				<cline>poly3=Polynomial([2//3, 3//4, 5//8])</cline>
+				<cline>poly4=Polynomial([im, 2+0im, 3-2im, -im])</cline>
+				<cline>poly5=Polynomial([n for n=1:6])</cline>
+				</cd>
+			</p>
+
+			<p>
+				and the result of the last will be <c>Polynomial{Int64}([1, 2, 3, 4, 5, 6])</c>.
+			</p>
+
+			<p>
+				The beginning of the output, <c>Polynomial{Int64}</c> explains that it is a
+				type polynomial.  The <c>Int64</c> within the <c>Polynomial</c> type explains
+				what type the coefficients have.  If you enter the variable name, like <c>poly3</c>,
+				then you will see the type of the coefficient (type <c>Rational{Int64}</c>)
+				for that variable as well.
+			</p>
+
+			<p>
+				It would be nice if the result looked like a polynomial. In this case,
+				we can use the <c>Base.show</c> command.
+			</p>
+
+			<p>
+				<cd>
+				<cline>function Base.show(io::IO, p::Polynomial)</cline>
+				<cline>  print(io, reduce((str, n) -&gt; "$str $(n==1 ? "" : "+") $(p.coeffs[n]) x^$(n-1)", 1:length(p.coeffs),init=""))</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				Now, if we reevaluate <c>poly5</c>, then Julia returns
+				<c>1 x^0 + 2 x^1 + 3 x^2 + 4 x^3 + 5 x^4 + 6 x^5</c>.
+				The <c>Base.show</c> command is complicated, so let's break this down a bit
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							The first argument is of type <c>IO</c>.  Note that we also call the argument <c>io</c>.
+							It doesn't matter what it is called, but we'll always use <c>io</c> in this book.
+							The second argument is of type <c>Polynomial</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							The output as before is a <c>print</c> with first argument <c>io</c> and second
+							argument a string using the <c>reduce</c> function.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Recall from section <xref ref="sect-reduce-array"/> that the <c>reduce</c> function takes
+							an array and a function and returns a single value.  In this case, our array is the
+							coefficients from the <c>Polynomial</c> which is accessed with <c>p.coeffs</c>.
+							The function that creates the reduced string.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							The string consists of four parts, <c>$str</c> is the current value of the
+							string.  This is basically string concatenation. <c>$(n==1) ? "" : "+")</c>
+							puts a "+" in front of each coefficent and <c>$(p.coeffs[n])</c> is the
+							coefficients and <c>x^$(n-1)</c> is the power of x.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							The array that is used for the <c>reduce</c> is the <c>UnitStep</c>
+							<c>1:length(p.coeffs)</c> instead of the coefficients themselves.  This allows
+							the powers of x to be generated.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							This isn't perfect.  For example, if there are negative coefficients,
+							then you'll see a +- for a term.  This can be taken care of with
+							another ternary <c>if-then-else</c>. Also, it would be nice to eliminate the <c>x^0</c>
+							term (because it is just 1 as well as instead of writing <c>x^1</c> write <c>x</c>,
+							but this is just a little icing.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Note that there are many other ways to write this <c>Base.show</c>
+							for a polynomial.  One way would be to use a <c>for</c> loop to
+							go through the polynomials.  I used a <c>reduce</c> to show another
+							example of how to use this function in practical way.
+						</p>
+					</li>
+				</ul>
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>Adding Two Polynomials</title>
+			<p>
+				Another nice thing that we'd like to do is have an add command and use the symbol
+				<c>+</c> for this.  However, if we enter <c>poly1+poly2</c>, then we get the error:
+			</p>
+
+			<p>
+				<cd>
+				<cline>MethodError: no method matching +(::Polynomial{Int64}, ::Polynomial{Float64})</cline>
+				<cline>The function `+` exists, but no method is defined for this combination of argument types.</cline>
+				</cd>
+			</p>
+
+			<p>
+				To create a function that adds two polynomials, we first need to do the following:
+			</p>
+
+			<p>
+				<cd>
+				<cline>import Base.+</cline>
+				</cd>
+			</p>
+
+			<p>
+				and then define how to add two polynomials with:
+			</p>
+
+			<p>
+				<cd>
+				<cline>function +(p1::Polynomial{T}, p2::Polynomial{S}) where {T &lt;: Number, S &lt;: Number}</cline>
+				<cline>  Polynomial(p1.coeffs+p2.coeffs)</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				and then we can rerun the function <c>+</c> above.  This is now a function that
+				adds two polynomials.  Note that the coefficients do not need to be the same type,
+				so there are two types, <c>T</c> and <c>S</c> available. If we now enter
+				<c>poly1+poly2</c>, the result is <c>2.0 x^0 + 4.0 x^1 + 6.0 x^2</c>.
+			</p>
+
+			<p>
+				Note that this now a polynomial with floating point coefficients.
+			</p>
+
+			<exercise>
+				<introduction>
+					<p>
+						Similar to the function above, write functions that
+					</p>
+				</introduction>
+
+
+				<task>
+					<statement>
+						<p>
+							subtract two polynomials (you'll need to <c>import Base.-</c>)
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							multiply a polynomial by a constant.  (you'll need to <c>import Base.*</c>)
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							multiply two polynomials.  Note: remember to multiply polynomials you need
+							to distribute (aka FOIL), not just multiply the coefficients.
+						</p>
+					</statement>
+				</task>
+			</exercise>
+		</subsection>
+
+		<subsection>
+			<title>Evaluating the polynomial</title>
+			<p>
+				Another helpful function is to actually evaluate the polynomial. The
+				basic way to do this is to sum the terms of the polynomial.  A possible
+				way to write this is using the reduce function that we saw in <xref ref="sect-reduce-array"/>.
+			</p>
+
+			<p>
+				<cd>
+				<cline>function eval(poly::Polynomial{T}, x::Number) where T &lt;: Number</cline>
+				<cline>  reduce((val,i) -&gt; val + poly.coeffs[i]*x^(i-1), 1:length(poly.coeffs))</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				and now if we evaluate <c>poly1</c> when <c>x=-2</c>, we enter <c>eval(poly1,-2)</c>
+				and get <c>9</c>.
+			</p>
+
+			<p>
+				An alternative to this is to use
+				<url href="https://en.wikipedia.org/wiki/Horner\%27s_method" visual="wikipedia.org">
+				Horner's form of the polynomial</url> that we saw in <xref ref="sect-horner"/>:
+			</p>
+
+			<p>
+				<cd>
+				<cline>function eval(poly::Polynomial{T}, x::Number) where T &lt;: Number</cline>
+				<cline>  reduce((val,c) -&gt; x*val+c, reverse(poly.coeffs))</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>We have used <c>reduce</c> for each of these evalution methods. Let's dive into these
+				a bit more
+			</p>
+			<p>
+				<ul>
+					<li>
+						<p>
+							The definition of the function is identical in both methods.  Recall that
+							since <c>Polynomial</c> is a parametric type (that is, it has multiple subtypes)
+							we need to specify the type with <c>T</c> and say that <c>T &lt;: Number</c>.
+						</p>
+					</li>
+					<li>
+						<p>
+							In the first eval method, the function is the terms themselves, <c>poly.coeffs[i]*x^(i-1)</c>
+							and like the <c>Base.show</c> function above, the array used in <c>1:length(poly.coeffs)</c>
+							not the coefficients.  This allows the use of the powers.
+						</p>
+					</li>
+					<li>
+						<p>
+							In the section method (Horner's method), again we use <c>reduce</c> however
+							is much simpler.  First, the innermost part of the method is
+							<c>a_{n-1} + a_n * x</c>, and this is exactly the function used above, where
+							<c>val</c> is the cumulative value going through the coefficients.
+							Also, note that we needed to reverse the coefficient array because it's
+							important that we go inside out--that is, the last coefficient is used first.
+						</p>
+					</li>
+					<li>
+						<p>
+							Reduce also has  <c>init</c> option that we didn't use here.  This is
+							because initially these are both 0 and that is the default.  This differs
+							from the <c>Base.show</c> above, in that initially we needed the empty
+							string to start.
+						</p>
+					</li>
+				</ul>
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Plotting the Polynomial</title>
+		<introduction>
+			<p>
+				MOVE THIS SECTION
+			</p>
+
+			<p>
+				Recall that using the <c>Plots</c> package, one can consider plotting the
+				polynomial by creating a function that pulls out the coefficients.  However,
+				the <c>Plots</c> package has a related package called <c>RecipesBase</c>
+				that allows one to create a plotting recipe.  That is if <c>p</c> is a <c>Polynomial</c>,
+				then we can write <c>plot(p)</c> and it will plot the polynomial.  Let's see
+				how and don't forget to add the package and then enter <c>using RecipesBase</c>.
+			</p>
+
+			<p>
+				The package <c>RecipesBase</c> includes the macro <c>@recipe</c> and
+				although the documentation is sparse,
+				<url href="https://github.com/JuliaPlots/RecipesBase.jl" visual="">this page</url>
+				is helpful in the background.  The basic idea on a plot recipe is to do the following:
+			</p>
+
+			<p>
+				<cd>
+				<cline>@recipe f(t::TheType,...)</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				where <c>TheType</c> is any datatype (either built-in or user defined).  The recipe
+				needs to return some number of vectors of points (depending on if it is 1D, 2D or a
+				3D plot). A simple version of this for type  <c>Polynomial</c> is
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+@recipe function f(poly::Polynomial,xmin::Number=-2,xmax::Number=2)
+  xpts = LinRange(xmin,xmax,200)
+  ypts = map(x-&gt;eval(poly,x),xpts)
+  xpts,ypts
+end
+				</input>
+			</program>
+
+			<p>
+				where line 2 creates an array of x values of length 200, then line 3 creates
+				the y values for each x value.  Line 4 returns a tuple of the pairs of points.
+				We can now use this to plot a polynomial and we will need to <c>using Plots</c> to:
+			</p>
+
+			<p>
+				<cd>
+				<cline>plot(poly1)</cline>
+				</cd>
+			</p>
+
+			<p>
+				and since we defaulted the plot range from -2 to 2, we get the following plot:
+				\begin{center}
+				\pgfplotsset{scale=0.6}
+				\plot{plots/comp-type/plot01.tex}{poly}
+				\end{center}
+			</p>
+
+			<p>
+				and if we want to specify the plotting range:
+			</p>
+
+			<p>
+				<cd>
+				plot(poly1,0,4)
+				</cd>
+			</p>
+
+			<p>
+				we get
+				\begin{center}
+				\pgfplotsset{scale=0.6}
+				\plot{plots/comp-type/plot02.tex}{poly}
+				\end{center}
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>Changing other parameters</title>
+			<p>
+				But wait... There's more... One of the fantastic things about using <c>RecipesBase</c>
+				is that we can still use all of the other parameters associated
+				with plot as we normally would. For example:
+			</p>
+
+			<p>
+				<cd>
+				<cline>plot(poly1,0,4,linecolor=:orange,title="A quadratic", lw=2, legend=false)</cline>
+				</cd>
+			</p>
+
+			<p>
+				produces the plot:
+				%
+				\begin{center}
+				\pgfplotsset{scale=0.5}
+				\plot{plots/comp-type/plot03.tex}{poly}
+				\end{center}
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Setting Default parameters</title>
+			<p>
+				Recipes also allow to set default parameters. Let's say that if we want
+				to always plot a polynomial green without a legend that we can put these
+				default parameters in the recipe:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+@recipe function f(poly::Polynomial,xmin::Number=-2,xmax::Number=2)
+  legend --> false
+  linecolor --> :green
+  xpts = LinRange(xmin,xmax,200)
+  ypts = map(x-&gt;eval(poly,x),xpts)
+  xpts,ypts
+end
+				</input>
+			</program>
+
+			<p>
+				If we have this definition then <c>plot(poly1,0,4)</c> produces the following plot:
+				\begin{center}
+				\pgfplotsset{scale=0.5}
+				\plot{plots/comp-type/plot04.tex}{poly}
+				\end{center}
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>A Rootfinding datatype</title>
+		<p>
+			The last example of a new data type will be related to finding the root of a function.
+			We explored this in <xref ref="ch-rootfinding"/>.  One major issue with that function
+			is that if Newton's method did not find the root, it wasn't clear if it was a root
+			or just that the algorithm stopped because it reached 10 steps.  There was no way that you (the user)
+			knew which case occurred.  We will use a <c>struct</c> to store the information about
+			the rootfinding in this section which then conveys what happens.
+		</p>
+
+		<p>
+			In <xref ref="sect-newton"/>, we developed the following function for solving Newton's method:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+using ForwardDiff
+function newton(f::Function, x0::Number)
+  local dx = 1
+  local x1 = x0
+  local steps = 0
+  while abs(dx) &gt; 1e-6 &amp;&amp; steps &lt; 10
+    dx = f(x1)/ForwardDiff.derivative(f,x1)
+    x1 -= dx
+    steps += 1
+  end
+  x1
+end
+			</input>
+		</program>
+
+		<p>
+			Although if the function has a root and the method converges to it, then
+			this method will probably find it, however, just running it, we don't know
+			if it has exceeded the total number of steps (hardcoded as 10 steps in this example)
+			or reached the root.
+		</p>
+
+		<p>
+			We are going to define a <c>struct</c> to deliver more information as follows:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+struct Root
+  root::Float64    #  approximate value of the root
+  x_eps::Float64   #  estimate of the error in the x variable
+  f_eps::Float64   #  function value at the root f(root)
+  num_steps::Int   #  number of steps the method used
+  converged::Bool  #  whether or not the stopping criterion was reached
+  max_steps::Int   #  the maximum number of steps allowed
+end
+			</input>
+		</program>
+
+		<p>
+			and then return an object of type <c>Root</c>.  Thus we will replace the
+			function <c>newton</c> above with
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+function newton(f::Function, x0::Number)
+  local dx = 1
+  local x1 = x0
+  local steps = 0
+  while abs(dx) &gt; 1e-6 &amp;&amp; steps &lt; 10
+    dx = f(x1)/ForwardDiff.derivative(f,x1)
+    x1 -= dx
+    steps += 1
+  end
+  Root(x1, dx, f(x1), steps, steps &lt; 10, 10)
+end
+			</input>
+		</program>
+
+		<p>
+			and note that we store extra information that is returned.  Let's run Newton's method
+			on <m>f(x)=x^2-2</m> as an example by evaluating
+		</p>
+
+		<p>
+			<cd>
+			newton(x-&gt;x^2-2,1)
+			</cd>
+		</p>
+
+		<p>
+			returns <c>Root(1.0, 1.0, -1.0, 0, true, 10)</c>,
+			which again gives a lot of information, but perhaps not very easy to read since
+			you would need to know each of the fields and what each means.  We could then create a <c>Base.show</c>
+			function to help with readability:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+function Base.show(io::IO,r::Root)
+  str = r.converged ? """The root is approximately x̂ = $(r.root)
+    An estimate for the error is $(r.x_eps)
+    with f(x̂) = $(r.f_eps)
+    which took $(r.num_steps) steps""" :
+    """The root was not found within $(r.max_steps) steps.
+    Currently, the root is approximately x̂ = $(r.root).
+    An estimate for the error is $(r.x_eps)
+    with f(x̂) = $(r.f_eps)."""
+  print(io,str)
+end
+			</input>
+		</program>
+
+		<p>
+			which will print out different information if it converges or not.  Notice also that we
+			have used the string interpolation <c>$( )</c> explained in <xref ref="ch-variables"/>.
+		</p>
+
+		<p>
+			If we now run Newton's method on <m>f(x)=x^2-2</m> with <c>newton(x-&gt;x^2-2,1)</c>
+			then we get:
+		</p>
+		<p>
+			<cd>
+				<cline>The root is approximately x̂ = 1.4142135623730951</cline>
+					<cline>An estimate for the error is 1.5947429102833119e-12</cline>
+					<cline>with f(x̂) = 4.440892098500626e-16</cline>
+					<cline>which took 5 steps</cline>
+			</cd>
+		</p>
+
+		<p>
+			and then if we run it on a function that does not have a root. Recall in <xref ref="ch-rootfinding"/>,
+			we ran Newton's method on <m>f(x)=x^2+1</m>.  Since <m>x^2</m> is nonnegative
+			then the function <m>x^2+1</m> is positive and so never is zero.  If we enter
+			<c>newton(x-&gt;x^2+1,1.1)</c> then the result is
+		</p>
+
+		<p>
+			<cd>
+			<cline>The root was not found within 10 steps.</cline>
+			<cline>Currently, the root is approximately x̂ = 0.030421004027873844.</cline>
+			<cline>An estimate for the error is 1.0004626117382218</cline>
+			<cline>with f(x̂) = 1.0009254374860639.</cline>
+			</cd>
+		</p>
+
+		<p>
+			And now it's clear that Newton's method did not converge within 10 steps and there is
+			information about the estimated root and it's error.
+		</p>
+
+		<exercise>
+			<introduction>
+				<p>
+					Adapt the <c>Root</c> struct and the <c>newton</c> function to include the following:
+				</p>
+			</introduction>
+
+
+			<task>
+				<statement>
+					<p>
+						Extend the <c>Root</c> struct to include an array of the x values that save all
+						of the steps of Newton's method.  (Recall that you will need to restart the
+						kernel to change the <c>struct</c>).
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						Store the <c>x</c> values that Newton's method iterates through and then assign
+						them to the <c>Root</c> datatype. You will need to update the <c>newton</c> method.
+						Before the <c>while</c> loop, set the array equal to the initial point <c>x0</c>
+						and each time in the while loop perform, push the new value of <c>x0</c> to the
+						end of the array.
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						Write a <c>showSteps</c> function that takes in an object of type <c>Root</c> and prints out a table of the x values.
+					</p>
+				</statement>
+			</task>
+		</exercise>
+	</section>
+</chapter>

@@ -1,0 +1,1149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="ch-probability-random">
+	<title>Probability Distributions and Pseudorandom Numbers</title>
+	<introduction>
+		<p>
+			One big part of scientific computation is the subject of Monte Carlo
+			simulations in which random numbers are used to model some situation.
+			We'll spend the next part of this course covering this subject.
+		</p>
+
+		<p>
+			I'm sure you have some sense of what probability is, that is a way to measure the randomness of something
+			or how sure you are that something will happen.  This chapter starts with basic definitions of
+			probability and randomness and then covers both discrete and continuous probability distributions
+			and then continue with a firm mathematical description.  We will take a pause from coding to
+			build up a bit of probability background.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Basic Defintions</title>
+		<p>
+			An <term>experiment</term> is something that produces outcomes.  The terminology arises
+			from scientific experiments and may produce images of chemistry labs, however, it is more
+			general than that.  An experiment may be a chemistry lab with measurements, but could be a
+			drug-effectiveness study with tens of thousands of individuals, and also may include
+			flipping a coin.
+		</p>
+
+		<definition>
+			<title>Sample Space</title>
+			<statement>
+				<p>
+					The <term>sample space</term> of an experiment is the set of  all possible outcomes.
+				</p>
+			</statement>
+		</definition>
+
+		<p>
+			In the example drug study, it may be the possible measurable levels in a blood sample
+			of whatever is being analyzed.  In the coin flip it is the set <m>\{H,T\}</m>.
+		</p>
+
+		<example xml:id="ex-three-coins">
+			<title>Sample Space</title>
+			<statement>
+				<p>
+					The sample space of flipping 3 coins is
+					<me>
+						\{HHH,HHT,HTH,HTT,THH,THT,TTH, TTT\}
+					</me>
+				</p>
+			</statement>
+		</example>
+
+		<definition>
+			<title>Event</title>
+			<statement>
+				<p>
+					An <term>event</term> is a subset of the sample space.
+				</p>
+			</statement>
+		</definition>
+
+		<example>
+			<title>Event</title>
+			<statement>
+				<p>
+					What is the event that you flip 2 heads out of 3 coins.
+				</p>
+			</statement>
+
+			<solution>
+				<p>
+					If we examine the set that has 2 heads out of the set in
+					<xref ref="ex-three-coins"/>, then it is the set
+				</p>
+
+				<p>
+					<me>
+						A = \{HHT,HTH, THH\}
+					</me>
+				</p>
+
+				<p>
+					It will be important to understand events as sets and will help finding other information.
+				</p>
+			</solution>
+		</example>
+
+		<p>
+			If the number of elements in a sample space is finite and denoted <m>n(S)</m>, then we
+			can find the probability that an event <m>A</m> occurs with
+		</p>
+
+		<p>
+			<me>
+				P(A) = \frac{n(A)}{n(S)}
+			</me>
+		</p>
+
+		<p>
+			where <m>n(A)</m> returns the number of elements in the set/event <m>A</m>.
+		</p>
+	</section>
+
+	<section>
+		<title>Random Variables</title>
+		<p>
+			We often will need to know what the probability that an event occurs.  Because events
+			correspond to elements of the space, we often examine how every element in the sample
+			space behaves in some way.
+		</p>
+
+		<definition>
+			<title></title>
+			<statement>
+				<p>
+					A <term>random variable</term> is a function from the sample space <m>S</m> to some
+					real number.
+				</p>
+			</statement>
+		</definition>
+
+		<example>
+			<title></title>
+			<statement>
+				<p>
+					Let's consider a six-sided die.  The sample space is
+				</p>
+
+				<p>
+					<me>
+						S=\{\text{\drawdie{1}},\text{\drawdie{2}},\text{\drawdie{3}},\text{\drawdie{4}},\text{\drawdie{5}},\text{\drawdie{6}}\}.
+					</me>
+				</p>
+
+				<p>
+					Let <m>X</m> be the number of dots on each die.  Since <m>X</m> is a function from the sample space to the integers (subset of the reals), <m>X</m> is a random variable.
+				</p>
+			</statement>
+		</example>
+
+		<example>
+			<statement>
+				<p>
+					Let the sample space be that of the 3 coin flips from
+					<xref ref="ex-three-coins"/>.
+					Let <m>X</m> be the number of <m>H</m> in each coin flip.
+				</p>
+			</statement>
+		</example>
+
+		<example>
+			<statement>
+				<p>
+					Consider an experiment in which the amount of rain (in either inches or cm) is
+					measured in your hometown on a given day.  The sample space is
+					<m>\{ x \geq 0 \; | \; x \in \mathbb{R}\}</m> or nonnegative real numbers.
+					A random variable for this could simply be the amount of rain in the day.
+				</p>
+			</statement>
+		</example>
+	</section>
+
+	<section>
+		<title>Discrete Random Variables</title>
+		<introduction>
+			<p>
+				A set is <term>discrete</term> if it either contains finite number of elements or
+				if the number of elements are infinite, they can be ordered (technically mapped
+				to the natural numbers).  This is important because if the sample space is
+				discrete or not will determine how we treat the probabilities.  A random variable
+				is <term>discrete</term> if the sample space is discrete.  The examples above with
+				the coin flip (either 1 or 3 coins) and the dice are examples of discrete random
+				variables.  The random variable in Example \ref{ex:rain} is not.
+			</p>
+
+			<definition>
+				<statement>
+					<p>
+						If a random variable is discrete, that is, the underlying sample space is discrete,
+						the <term>probability distribution</term> or <term>probability density function</term>
+						or pdf is a function <m>f(x)</m> defined by <m>p(x) = P(X=x)</m> for all
+						<m>x \in S</m>, the sample space.
+					</p>
+				</statement>
+			</definition>
+
+			<p>
+				More colloquially, the probability density function gives the probability of every
+				outcome in the sample space.
+			</p>
+
+			<example>
+				<statement>
+					<p>
+						Consider the six-sided die. If the die is fair then the probability of
+						each die coming up are the same.
+					</p>
+
+					<p>
+						<me>
+							p(x) = 1/6 \qquad \text{for all $x \in \{1,2,3,4,5,6\}$.}
+						</me>
+					</p>
+
+					<p>
+						We can plot the distribution <m>p(x)</m> with
+					</p>
+
+					<p>
+						<cd>
+						<cline>using Plots</cline>
+						<cline>bar(1:6, [1/6 for i=1:6], legend=false)</cline>
+						</cd>
+					</p>
+
+					<p>
+						which results in the plot
+					</p>
+
+					<figure xml:id="fig-die-dist">
+						<caption></caption>
+						<image source="plots/prob-random/die-dist.png">
+							<shortdescription>(for accessibility)</shortdescription>
+						</image>
+					</figure>
+				</statement>
+			</example>
+
+			<example>
+				<statement>
+					<p>
+						Find the probability distribution of a 3-coin flip experiment, where
+						<m>X</m> is the number of heads.  Assume the coin is fair.
+					</p>
+				</statement>
+
+				<solution>
+					<p>
+						<md>
+							<mrow>
+							p(0) \amp = 1/8 \amp p(1) \amp = 3/8 \amp p(2) \amp = 3/8 \amp p(3) = 1/8
+							</mrow>
+						</md>
+					</p>
+
+					<p>
+						We can plot distribution with
+					</p>
+
+					<p>
+						<cd>
+						<cline>using Plots</cline>
+						<cline>bar(0:3, [1/8,3/8,3/8,1/8], legend=false)</cline>
+						</cd>
+					</p>
+          <figure xml:id="fig-three-coin-dist">
+            <caption></caption>
+            <image source="plots/prob-random/three-coin-dist.png">
+              <shortdescription>(for accessibility)</shortdescription>
+            </image>
+          </figure>
+
+				</solution>
+			</example>
+		</introduction>
+
+		<subsection>
+			<title>Properties of a discrete probability distribution</title>
+			<p>
+				A function let <m>x_i</m> be the domain of a discrete random variable.
+				The function <m>p(x)</m> is a probability density function if
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							<m>p(X=x_i) \geq 0</m> for all <m>x_i</m>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<m>\displaystyle p(x_1)+p(x_2) + \cdots + p(x_n) = 1</m>
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<example>
+				<statement>
+					<p>
+						Consider rolling two fair dice and let <m>X</m>, the random variable be
+						the sum of the number of dots on the dice. Find the probability density function.
+					</p>
+				</statement>
+
+				<solution>
+					<p>
+						Think about the two dice have different colors, a red die and a green die.
+						Since each die have 6 outcomes, there are <m>6^2=36</m> different outcomes
+						and here are all the possible rolls (where the first number is the roll on
+						the red die and the second number is the number on the green die).
+					</p>
+
+					<p>
+						<md>
+							<mrow>(1,1) \amp\amp (1,2) \amp\amp (1,3) \amp\amp (1,4) \amp\amp (1,5) \amp\amp (1,6) </mrow>
+							<mrow>(2,1) \amp\amp (2,2) \amp\amp (2,3) \amp\amp (2,4) \amp\amp (2,5) \amp\amp (2,6) </mrow>
+							<mrow>(3,1) \amp\amp (3,2) \amp\amp (3,3) \amp\amp (3,4) \amp\amp (3,5) \amp\amp (3,6) </mrow>
+							<mrow>(4,1) \amp\amp (4,2) \amp\amp (4,3) \amp\amp (4,4) \amp\amp (4,5) \amp\amp (4,6) </mrow>
+							<mrow>(5,1) \amp\amp (5,2) \amp\amp (5,3) \amp\amp (5,4) \amp\amp (5,5) \amp\amp (5,6) </mrow>
+							<mrow>(6,1) \amp\amp (6,2) \amp\amp (6,3) \amp\amp (6,4) \amp\amp (6,5) \amp\amp (6,6) </mrow>
+						</md>
+					</p>
+
+					<p>
+						Now to find <m>p(x)</m>, we need to determine the probability of each of sum of the dice.
+						The values of <m>x</m> can be any integer 2 through 12 and then the probability is the number
+						of the sum over 36.  For example, <m>p(2)=1/36</m> is because the only way to get a 2 is
+						with the results (1,1).  The value of <m>p(3)=2/36</m> because one can get 3 with a
+						(1,2) or a (2,1).  This logic continues for all values from 2 to 12.  The values of <m>p(x)</m> are
+					</p>
+
+					<p>
+						<md>
+							<mrow>p(2) \amp = 1/36 \amp p(3) \amp = 2/36 \amp p(4) \amp = 3/36 \amp p(5) \amp = 4/36 \amp p(6) \amp = 5/36 \amp p(7) \amp = 6/36</mrow>
+							<mrow>p(8) \amp = 5/36 \amp p(9) \amp = 4/36 \amp p(10) \amp = 3/36 \amp p(11) \amp = 2/36 \amp p(12) \amp = 1/36</mrow>
+						</md>
+					</p>
+
+					<p>
+						A plot of this distribution is
+					</p>
+
+					<p>
+						<cd>
+						<cline>bar(2:12,[(6-abs(i-7))/36 for i=2:12], xticks=2:12, legend=false)</cline>
+						</cd>
+					</p>
+
+          <figure xml:id="fig-two-dice-dist">
+            <caption></caption>
+            <image source="plots/prob-random/two-dice-dist.png">
+              <shortdescription>(for accessibility)</shortdescription>
+            </image>
+          </figure>
+				</solution>
+			</example>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Continuous Probability</title>
+		<introduction>
+			<p>
+				If a random variable is not discrete it is called a <term>continuous random variable</term>
+				and generally occurs if the values it takes on are subsets of the real line.
+				Let's consider a set <m>A=\{x \; | \; 0 \leq x \leq 1\}</m> or all real
+				numbers between 0 and 1. Events are still subsets of the set <m>A</m>,
+				however the probability that events occur is the fraction of the set.
+			</p>
+
+			<example>
+				<statement>
+					<p>
+						The following are examples of continuous random variables:
+					</p>
+
+					<p>
+						<ul>
+							<li>
+								<p>
+									The amount of rain in Fitchburg on a given day as we saw above.
+								</p>
+							</li>
+
+							<li>
+								<p>
+									The length of time a cell phone battery will last until it ``dies.''
+								</p>
+							</li>
+
+							<li>
+								<p>
+									The amount of contaminant that a brewery dumps into the Nashua River.
+								</p>
+							</li>
+						</ul>
+					</p>
+				</statement>
+			</example>
+		</introduction>
+
+		<subsection>
+			<title>The Calculus of Continuous Probabilities</title>
+			<p>
+				The probability distribution function or <term>pdf</term> is a function,
+				<m>f</m> defined on a set <m>S</m> with the following properties:
+			</p>
+
+			<p>
+				<md>
+					<mrow xml:id="eq-nonneg" number="yes"> f(x) \amp \geq 0 \qquad \text{for all $x \in S$}</mrow>
+					<mrow xml:id="eq-prob-is-one" number="yes">\int_S f(x) \,dx \amp = 1 </mrow>
+				</md>
+			</p>
+
+			<p>
+				where the set <m>S</m> is generally a real interval or the infinite or semi-infinite line.
+				The first property ensures that probability will always be positive and the second
+				property ensures that probabilities are at most 1 and only 1 with the entire set.
+				Also, if <m>f</m> is a continuous pdf, then the probability that a random variable
+				<m>X</m> takes on a value in the set <m>A</m> is
+			</p>
+
+			<p>
+				<me>
+					P(A) = \int_A f(x) \, dx
+				</me>
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Cumulative Distribution Functions</title>
+			<p>
+				Another helpful function of random variables is that of the
+				<term>cumulative distribution function</term> or cdf for a given pdf,
+				<m>f(x)</m>.  Denote <m>F(x)</m>, the cdf, which is defined as
+			</p>
+
+			<p>
+				<me>
+					F(x)  = \int_{-\infty}^x f(t) \, dt
+				</me>
+			</p>
+
+			<p>
+				or simply the antiderivative. Graphically, if we have a function <m>f</m> as
+				shown below, then <m>F(x)</m> represents the area under the curve to the right
+				of the value <m>x</m>.
+			</p>
+
+			<figure xml:id="fig-pdf">
+				<caption>Area under a probability density function.</caption>
+				<image width="60%">
+					<shortdescription></shortdescription>
+					<latex-image>
+					<![CDATA[
+					\begin{tikzpicture}
+					\fill[lightgray] plot [smooth] coordinates {(-1,0.1) (0,0.25) (1,0.5) (2,1) (2.5,0.75) (3,1) (4,0.25)} -- (4,0) -- (-1,0) -- cycle ;
+					\draw [->] (-1,0) -- (5,0) node [above right] {$t$};
+					\draw [->] (0,-0.5) -- (0,2.5);
+					\draw [<->] plot [smooth] coordinates {(-1,0.1) (0,0.25) (1,0.5) (2,1) (2.5,0.75) (3,1) (4,0.25) (5,0.1)};
+					\draw (4,0.1) -- (4,-0.1) node [below] {$x$};
+					\end{tikzpicture}
+					]]>
+					</latex-image>
+				</image>
+			</figure>
+
+			<p>
+				Also, since <m>F</m> is the antiderivative, then the cdf can be used to find the probability.
+			</p>
+
+			<remark>
+				<p>
+					Let <m>F(x)</m> be a cdf where <m>f(x)</m> is the given pdf of the random variable <m>X</m>.  The probability can be found using
+				</p>
+
+				<p>
+					<me>
+						P(a \leq X \leq b) = F(b) - F(a)
+					</me>
+				</p>
+			</remark>
+		</subsection>
+
+		<subsection>
+			<title>Inverse Cumulative Distribution Functions</title>
+			<p>
+				There are many nice properties of <m>F(x)</m>, the cdf.  We know:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							<m>\lim_{x \rightarrow -\infty} F(x) = 0 </m>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<m>\lim_{x \rightarrow \infty} F(x) = 1</m>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<m>F(x)</m> is continuous.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<m>F(x)</m> is nondecreasing.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				where some of these properties are explored in the exercises. The last 2 properties  above result give that the function <m>F(x)</m> is one-to-one and therefore has an inverse.  The function <m>F^{-1}(x)</m> is called the inverse cumulative distribution function.
+				The section above, showed the importance of evaluating a cdf for probabilities.  That is given
+			</p>
+
+			<p>
+				<me>
+					F(x)  = \int_{-\infty}^x f(t) \, dt
+				</me>
+			</p>
+
+			<p>
+				evaluating <m>F(a)</m> for a given value of <m>a</m>.  We will see that it is just as important to solve <m>F(x)=p</m> for <m>x</m>.  This corresponds to the same plot as above:
+			</p>
+
+			<figure xml:id="fig-pdf-2">
+				<caption></caption>
+				<image width="60%">
+					<shortdescription></shortdescription>
+					<latex-image>
+					<![CDATA[
+					\begin{tikzpicture}
+					\fill[lightgray] plot [smooth] coordinates {(-1,0.1) (0,0.25) (1,0.5) (2,1) (2.5,0.75) (3,1) (4,0.25)} -- (4,0) -- (-1,0) -- cycle ;
+					\draw [->] (-1,0) -- (5,0) node [above right] {$t$};
+					\draw [->] (0,-0.5) -- (0,2.5);
+					\draw [<->] plot [smooth] coordinates {(-1,0.1) (0,0.25) (1,0.5) (2,1) (2.5,0.75) (3,1) (4,0.25) (5,0.1)};
+					\draw (2,0.5) node {$p$};
+					\draw (4,0.1) -- (4,-0.1) node [below] {$x$};
+					\end{tikzpicture}
+					]]>
+					</latex-image>
+				</image>
+			</figure>
+
+			<p>
+				where given a value of <m>p</m>, we are seeking <m>x</m>.  Since <m>F(x)=p</m>,
+				we also write <m>x=F^{-1}(p)</m>.
+				The function <m>F^{-1}(x)</m> have the properties:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							<m>F^{-1}</m> is increasing
+						</p>
+					</li>
+
+					<li>
+						<p>
+							The domain of <m>F^{-1}</m> is <m>[0,1]</m>.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				and in short, this function finds <m>x</m> values for given probabilities values.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Standard Continuous Distributions</title>
+		<subsection>
+			<title>Uniform Distribution</title>
+			<p>
+				The example above at the top of the previous section was an example of a
+				uniform distribution with pdf:
+			</p>
+
+			<p>
+				<me>
+					u(x)  = \begin{cases}
+					1 \amp 0 \leq x \leq 1 \\
+					0 \amp \text{otherwise}
+					\end{cases}
+				</me>
+			</p>
+
+			<p>
+				It is clear that the property in (\ref{eq:nonneg}) is satisfied and note that
+			</p>
+
+			<p>
+				<me>
+					\int_{\mathbb{R}} u(x) = \int_0^1 1 \, dx = 1
+				</me>
+			</p>
+
+			<p>
+				so the property in <xref ref="eq-prob-is-one"/> is satisfied.  Also
+				if the set <m>X</m> is defined as above as
+			</p>
+
+			<p>
+				<me>
+					X=\left\{x \; \biggr| \; \frac{1}{3} \leq x \leq \frac{1}{2}\right\},
+				</me>
+			</p>
+
+			<p>
+				then
+			</p>
+
+			<p>
+				<me>
+					P(X) = \int_{1/3}^{1/2} 1 \,dx = \frac{1}{2} - \frac{1}{3} = \frac{1}{6}
+				</me>.
+			</p>
+
+			<p>
+				Also, a plot of the distribution is
+			</p>
+
+			<figure xml:id="fig-uniform">
+				<caption></caption>
+				<image width="60%">
+					<shortdescription></shortdescription>
+					<latex-image>
+					<![CDATA[
+					\begin{tikzpicture}[scale=2]
+					\draw[->] (-0.5,0) -- (1.5,0) node [above right] {$x$}; \foreach \x in {1} \draw (\x,0.1) -- (\x,-0.1) node [below] {\x};
+					\draw[->] (0,-0.5) -- (0,1.25) node [above right] {$y$};
+					\foreach \y in {1} \draw (0.1,\y) -- (-0.1,\y) node [left] {\y};
+					\draw[red] (0,1) -- (1,1);
+					\end{tikzpicture}
+					]]>
+					</latex-image>
+				</image>
+			</figure>
+
+			<exercise>
+				<statement>
+					<p>
+						Find the pdf of a uniform distribution that is a positive constant
+						<m>c</m> on <m>a \leq x \leq b</m> and 0 elsewhere.
+						Note, you must find the value of <m>c</m> so the pdf satisfies <xref ref="eq-prob-is-one"/>.
+					</p>
+				</statement>
+			</exercise>
+		</subsection>
+
+		<subsection>
+			<title>The Normal Distribution</title>
+			<p>
+				Probably<fn>No pun intended.</fn> the most important continuous distribution is
+				the normal distribution (also known as the bell curve) which is symmetric about
+				some center value and tapers off to zero in both directions.  An example is:
+			</p>
+
+			<figure xml:id="fig-normal">
+				<caption></caption>
+				<image xml:id="im-normal" width="60%">
+					<shortdescription></shortdescription>
+					<latex-image>
+					<![CDATA[ \begin{tikzpicture}
+					\draw[->] (-3.5,0) -- (3.5,0) node [above right] {$x$};
+          \foreach \x in {-3,-2,-1,1,2,3} \draw (\x,0.1) -- (\x,-0.1) node [below] {\x};
+					\draw[->] (0,-0.25) -- (0,1.25) node [above right] {$y$};
+					\draw[<->] plot[domain=-3.5:3.5,samples=150] (\x,{exp(-pow(\x,2))});
+					\end{tikzpicture}
+					]]>
+					</latex-image>
+				</image>
+			</figure>
+
+			<p>
+				The shape of the normal distribution has two important parameters, the mean,
+				<m>\mu</m>, which is the line of symmetry and the standard deviation,
+				<m>\sigma</m> which determines how spread out it is.  The functional form of the pdf is
+			</p>
+
+			<p>
+				<me>
+					f(x \, | \, \mu, \sigma) = \frac{1}{\sqrt{2\pi \sigma^2}} e^{-(x-\mu)^2/(2\sigma^2)}
+				</me>
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Pseudo Random Number Generator</title>
+		<introduction>
+			<p>
+				In the next few chapters of the text, we will solving problems with random numbers.
+				Thus far, we talked about flipping coins and rolling dice and we will also see about
+				drawing cards from a shuffled deck.  Since each of these is a physical process,
+				we can't directly do them, however, we will simulate them with random numbers,
+				and technically on a computer we will use a pseudorandom number generator.
+			</p>
+			<!-- %
+			%\href{https://en.wikipedia.org/wiki/Pseudorandom_number_generator}{The
+			%Wikipedia Pseudo-random Number Generator page} gives an overview of the
+			%subject and a lot of technical details. In short, a truly random number
+			%on a computer is very difficult to generate and generally not necessary
+			%because a pseudorandom number is sufficient. I also won't try to explain
+			%this in general term since you'd need a significant mathematical
+			%background. -->
+			<p>
+				A pseudo-random number generator is a function or procedure that produces a sequence
+				of numbers that behave like random numbers. Let's examine what this means
+				in terms of the discrete probability with discrete probability space
+				<m>S=\{1,2,3,4,5,6\}</m> which would generate a simulation of rolling a
+				single fair die.
+				If a pseudo-random number generator produces a sequence from this set
+				then the sequence should have the following property:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							If the event <m>X=\{i\}</m> for any <m>i</m> between 1 and 6, then
+							<m>P(X)\approx 1/6</m>. And by approximately, as the sequence gets
+							larger, the approximation becomes closer to 1/6.
+						</p>
+
+						<p>
+							Is this enough? No, the sequence
+						</p>
+
+						<p>
+							<me>
+								\{1,2,3,4,5,6,1,2,3,4,5,6,\ldots\}
+							</me>
+						</p>
+
+						<p>
+							satisfies the above property, but I don't think anyone would consider
+							this random. Another property would be:
+						</p>
+					</li>
+
+					<li>
+						<p>
+							If we know the sequence <m>\{a_1,a_2,a_3,\ldots,a_n\}</m> then we can't
+							predict the next number <m>a_{n+1}</m>.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				This is obviously violated in the sequence above.
+				A little more technical definition of a sequence of pseudo-random
+				numbers Let\\ <m>(a_1,a_2,a_3, \ldots)</m> be a random sequence. Typically we
+				mean the following properties need to hold:
+			</p>
+
+			<p>
+				<ol>
+					<li>
+						<p>
+							any number in the range 1 to 6 is equally likely to occur.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Take <m>N</m> random numbers and let <m>s_n</m> be the number of times the
+							number <m>n</m> occurs. The fraction <m>s_n/N</m> should go to 1/6 in the
+							limit as <m>n\rightarrow \infty</m>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Knowing the sequence <m>s_1, s_2, \ldots, s_k</m> does not allow us to
+							predict <m>s_{k+1}</m>
+						</p>
+					</li>
+				</ol>
+			</p>
+			<!-- %\begin{enumerate}
+			%\def\labelenumi{\arabic{enumi}.}
+			%\setcounter{enumi}{2}
+			%
+			%
+			<li>
+				<p>
+				</p>
+			</li>
+			%  Let <m>s_{[c,d]}(a_1,a_2,a_3, \ldots)</m> be the total of the numbers
+			%  that satisfy <m>c < a_k < d</m>. Then as the number of random numbers
+			%  approach infinity <m>s_{[c,d]}=d-c</m>
+			%\end{enumerate} -->
+		</introduction>
+
+		<subsection>
+			<title>Seeds and Pseudorandom Numbers</title>
+			<p>
+				For pseudorandom numbers, the third condition above is not true.
+				In fact, there is a function that generates the next number in the sequence or
+        there is a
+        function <m>F</m> such that <m>s_{n+1}=F(s_n)</m>, however, it is not evident
+        that there is such a function.  Because pseudorandom numbers are generated with
+        a function, it needs a number to determine the next one.  This starting number
+        is often chosen using the current date/time, however, you can set this, called
+        the seed. In julia, we can set the seed with the <c>Random.seed!</c> function.
+			</p>
+
+			<p>
+				<cd>
+				<cline>using Random</cline>
+				<cline>Random.seed!(1234)</cline>
+				</cd>
+			</p>
+
+			<p>
+				and any positive integer can be set here.
+				Note: you don't need to set the seed for random numbers.  It is useful in the case of writing a book in which you hope that the readers will follow along.  In this case, everything should be randomly generated in an identical way.
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Using Julia to simulate the rolling of a	die</title>
+			<p>
+				First, the main commands that are built-in to Julia are listed in the
+				<url href="https://docs.julialang.org/en/latest/stdlib/Random/#Random-Numbers-1" visual="">Julia Manual for Random Numbers</url>. We can generate 10 random numbers between 1
+				and 6 using
+			</p>
+
+			<p>
+				<cd>
+          <cline>S=rand(1:6,10)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which returns the array <c>[2, 4, 2, 6, 3, 3, 6, 5, 3, 5] </c>.
+			</p>
+
+			<p>
+				Notice that if you rerun the command, you'll get a different
+				sequence of random numbers. We can check that this is doing what we
+				expect by checking the probability that we get a 1 (or any other
+				number).
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Coin flips in Julia</title>
+			<p>
+				We can flip coins by selecting a random boolean.  For example, the
+				following will simulate 10 coin flips.
+			</p>
+
+			<p>
+				<cd>
+          <cline>coins=rand(Bool,10)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which returns the array <c>[0, 0, 0, 1, 1, 0, 1, 0, 1, 0]</c>
+				This is a boolean <c>Vector</c>, note the <c>Bool</c> at the beginning.
+        The 1s represent true and 0, false for compactness.
+				Generally, as we did above, we will flip multiple coins and ask questions
+        about the number of heads.  We will examine this in the next chapter.
+				If we are interested in unfair coin flips, we can choose randomly from an
+        array where the unfair balance is known.  For example,
+			</p>
+
+			<p>
+				<cd>
+          <cline>rand([false,false,false,true,true],10)</cline>
+				</cd>
+			</p>
+
+			<p>
+				gives 10 coin flips or the array <c>[0 ,0 ,0 ,1 ,1 ,1 ,1 ,1 ,0 ,0]</c>
+				as a weighted coin where <m>P(H)=2/5</m> and <m>P(T)=3/5</m>.
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Floating Point random numbers</title>
+			<p>
+				For continuous random variable, like the uniform distribution or the Normal distribution, there are some different properties of the pseudo random number generate.  Assume that the floating point number is in the range
+				<m>0 &lt; x &lt; 1</m>. Then the sequence <m>(a_1,a_2,a_3, \ldots)</m> is random
+				if
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							The fraction of values <m>a_k</m> within the interval <m>[b,c]</m> is <m>c-b</m>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Knowing the sequence <m>a_1, a_2, \ldots, a_k</m> does not allow us to predict <m>a_{k+1}</m>.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				To generate an array of 20 random numbers distributed uniformly on <m>[0,1)</m>, type
+			</p>
+
+			<p>
+				<cd>
+          <cline>S=rand(20)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which returns
+			</p>
+      <p>
+        <cd>
+          <cline>20-element Vector{Float64}:</cline>
+          <cline>  0.3020595409518265</cline>
+          <cline>  0.05842018425830109</cline>
+          <cline>  0.20552381705814504</cline>
+          <cline>  0.7079246996200363</cline>
+          <cline>  0.41775698944882156</cline>
+          <cline>  0.22721762712581473</cline>
+          <cline>  0.7836312465908486</cline>
+          <cline>  0.20071380866783706</cline>
+          <cline>  0.6020380841683062</cline>
+          <cline>  0.5653680870733934</cline>
+          <cline>  0.7008893474454004</cline>
+          <cline>  0.4527965951678993</cline>
+          <cline>  0.13067526601187207</cline>
+          <cline>  0.4578870482605456</cline>
+          <cline>  0.6665192594508963</cline>
+          <cline>  0.5008741327606322</cline>
+          <cline>  0.8106990681415074</cline>
+          <cline>  0.46484850303763725</cline>
+          <cline>  0.9770123967639948</cline>
+          <cline>  0.5001612179097075</cline>
+        </cd>
+      </p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>The Normal Distribution</title>
+		<p>
+			The normal distribution is the most important continuous distributions.
+			We can investigate it with the <c>Distributions</c> package in julia:
+		</p>
+
+		<p>
+			<cd>
+			<cline>using Distributions</cline>
+			</cd>
+		</p>
+
+		<p>
+			To produce a standard normal (mean of 0, standard deviation of 1),
+		</p>
+
+		<p>
+			<cd>
+			<cline>std_normal = Normal()</cline>
+			</cd>
+		</p>
+
+		<p>
+			which returns <c>Normal{Float64}(μ=0.0, σ=1.0)</c> and notice the mean
+        and standard deviation are what we expect.
+        Other means and standard deviations can be found by adding arguments.
+			We can plot the normal distribution with
+		</p>
+
+		<p>
+			<cd>
+			<cline>using StatsPlots</cline>
+			<cline>plot(std_normal)</cline>
+			</cd>
+		</p>
+
+    <figure xml:id="fig-std-normal">
+      <caption></caption>
+      <image source="plots/prob-random/std-normal.png">
+        <shortdescription>(for accessibility)</shortdescription>
+      </image>
+    </figure>
+
+		<p>
+			To generate an array of normally distributed values,
+		</p>
+
+		<p>
+			<cd>
+			<cline>random_normals = rand(std_normal,10)</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns
+		</p>
+    <p>
+      <cd>
+        <cline>10-element Vector{Float64}:</cline>
+        <cline>  2.121560382124172</cline>
+        <cline> -0.26224077844309135</cline>
+        <cline>  0.3455010838287982</cline>
+        <cline>  0.44394906831563774</cline>
+        <cline>  0.44133351371484625</cline>
+        <cline> -1.3397752732187238</cline>
+        <cline>  0.21507132788419303</cline>
+        <cline>  0.28927403687088354</cline>
+        <cline> -0.6365687810422291</cline>
+        <cline> -0.8196796137020412</cline>
+      </cd>
+    </p>
+	</section>
+
+	<section>
+		<title>Other Distributions</title>
+		<p>
+			Julia has many other distributions available in the <c>Distributions</c>
+			package and the best place to start is at the <url href="https://juliastats.org/Distributions.jl/stable/" visual="">Distributions package website</url>
+		</p>
+	</section>
+</chapter>
+<!--
+<subsection>
+	<title>Expected Values of Discrete Random Variables</title>
+	%A writing assignment is given to a large college class.  Let <m>X</m> be the number of pages in the writing assignment.  The following table shows the probability distribution of the number of pages:
+	%
+	%\begin{center}
+	%\begin{tabular}{|l|l|l|l|l|l|}
+	%<m>x</m> & 1 & 2 & 3 & 4 & 5 \\
+	%<m>p(x)</m> & 0.05 & 0.25 & 0.4 & 0.2 & 0.1
+	%\end{tabular}
+	%\end{center}
+	%
+	%We may want to know how many pages does the ``average'' paper have.  This falls into the <term>expected value</term> of the random variable.
+	%
+	%\begin{definition}
+	%The <term>expected value</term> or mean of a discrete random variable with pdf <m>p(x)</m> is
+	%
+	<me>
+		%E(x) = \sum_{x \in S} x \cdot p(x)
+		%
+	</me>
+	%where <m>S</m> is the sample space.
+	%
+</definition>
+%
+%\begin{example}
+%Find the expected value of the writing assignment example above.
+%
+%\solution
+%
+%
+<me>
+	%E(X) & = 1 (0.05) + 2(0.25) + 3(0.4) + 4 (0.2) + 5(0.1) =  3.05
+	%
+</me>
+%
+</example>
+%
+%\begin{example}
+%Find the variance and standard deviation of a two-dice roll where <m>X</m> is the sum of the roll.
+%
+%\solution
+%
+%First, we need to specify the probability distribution function:
+%
+<me>
+	%p(2) & = 1/36 & p(3) & = 2/36 & p(4) & = 3/36 \\
+	%p(5) & = 4/36 & p(6) & = 5/36 & p(7) & = 6/36 \\
+	%p(8) & = 5/36 & p(9) & = 4/36 & p(10) & = 3/36 \\
+	%p(11) & = 2/36 & p(12) & = 1/36
+	%
+</me>
+%and
+%
+<me>
+	%E(x) & = 2(1/36) + 3(2/36) + 4(3/36) + 5(4/36) + 6(5/36) + 7(6/36) + \\
+	%&  \qquad 8 (5/36) + 9(4/36) + 10 (3/36) + 11 (2/36) + 12 (1/36) \\
+	%& = 14 \biggl( \frac{1}{36} + \frac{2}{36} + \frac{3}{36} + \frac{4}{36} + \frac{5}{36} \biggr) + 7 \cdot \frac{6}{36} \\
+	%& = 7
+	%
+</me>
+%
+</example>
+%
+%
+%
+<section>
+	<title>Probability</title>\label{probability}
+	%
+	%To fully understand how to use random numbers and how Monte Carlo
+	%simulations work, we need some basic probability. When understanding
+	%probability there are two types continuous and discrete, which for what
+	%we need will come down to using floating point or integers.
+	%
+	%
+	<subsection>
+		<title>Discrete Probability</title>
+		%
+		%We'll first discuss discrete probability. A \emph{discrete probability
+		%distribution} is a finite set (often will be a subset of integers.) For
+		%example, let's use the set
+		%
+		<me>
+			%A=\{1,2,3,4,5,6\}
+			%
+		</me>
+		%%
+		%and an event, <m>X</m> is subset of these numbers. For example, let
+		%<m>X=\{1\}</m>, then the probability that this event occurs in the ratio of
+		%the number of elements in each set or \[P(X)=\frac{N(X)}{N(A)}\]
+		%
+		%In this case, <m>P(X)=1/6</m> and that means that the probability that the
+		%number 1 comes up is 1/6. Think about this in the case of rolling a die.
+		%This says that the probability that 1 comes up is 1/6.
+		%
+		%
+		<subsection>
+			<title>Continuous Probability</title>
+			%
+			%Another type of probability distribution is called a continuous
+			%distribution and in this case we'll only consider a type of continuous
+			%probability distribution called a uniform distribution.
+			%
+			%Let's consider a set <m>A=\{x \; | \; 0 \leq x \leq 1\}</m> or all real
+			%numbers between 0 and 1. Events are still subsets of the set <m>A</m>,
+			%however the probability that events occur is the fraction of the set.
+			%
+			%For example, if <m>X=\{x \; | \; 1/3 \leq x \leq 1/2\}</m>, then <m>P(X)</m>
+			%is the fraction
+			%\[P(X) = \frac{\frac{1}{2}-\frac{1}{3}}{1-0}=\frac{1}{6}\]
+			%-->

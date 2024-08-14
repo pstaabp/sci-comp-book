@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-rootfinding">
+	<title>Solving Quadratics and Rootfinding</title>
+
+	<introduction>
+		<p>
+			A <term>root</term> of an equation is a number <m>x^{\star}</m>, such that <m>f(x^{\star})=0</m>.  For example, if <m>f(x)=x^2-4</m>, then both <m>x=2</m> and <m>x=-2</m> are roots of the equation.  Finding roots of functions is often impossible algebraically, but finding roots is crucial in many cases.  In this chapter, we discuss how to find roots of both quadratic functions and general functions, but also use this to discuss both errors in a algorithm as well as round off error, which occurs often when solving problems.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Absolute and Relative Errors</title>
+
+		<p>
+			Consider an algorithm that tries to find the value of <m>x^{\star}</m>. If the algorithm actually returns the value <m>x</m>, then there will be some error. The <term>absolute error</term> is <m>|x - x^{\star}|</m> and the <term>relative error</term> is
+			<me>
+				\left|\frac{x-x^{\star}}{x^{\star}}\right|.
+			</me>
+		</p>
+
+		<p>
+			Often, the <term>percent error</term> is helpful as well, which is just the relative error times 100.
+		</p>
+
+		<example>
+			<statement>
+				<p>
+					Consider an algorithm that returns <m>x=0.0153</m> and the actual answer is <m>x^{\star}=0.0150</m>. Find both the absolute and relative errors.
+				</p>
+
+				<p>
+					The absolute error is <m>|0.0153-0.015|= 0.0003</m> and the relative error is
+					<me>
+						\left|\frac{0.0153-0.015}{0.015}\right|=0.02
+					</me>
+					or 2%.
+				</p>
+
+				<p>
+					We can do this is julia with
+				</p>
+
+				<p>
+					<cd>
+					<cline>xstar = 0.0150</cline>
+					<cline>x = 0.0153</cline>
+					<cline>abs(x-xstar)</cline>
+					</cd>
+				</p>
+
+				<p>
+					which returns <c>0.0002999999999999999</c> and
+				</p>
+
+				<p>
+					<cd>
+					<cline>abs((x-xstar)/xstar)</cline>
+					</cd>
+				</p>
+
+				<p>
+					returns <c>0.019999999999999997</c>
+				</p>
+			</statement>
+		</example>
+
+		<p>
+			To make thing easier in this chapter, we'll create functions for these:
+		</p>
+
+		<p>
+			<cd>
+			<cline>absErr(x::Real,xstar::Real) = abs(x-xstar)</cline>
+			<cline>relErr(x::Real,xstar::Real) = abs((x-xstar)/xstar)</cline>
+			</cd>
+		</p>
+
+		<p>
+			which now allows us to use <c>absErr(0.153,0.150)</c> and <c>relErr(0.153,0.150)</c> and we get the same results as above.
+		</p>
+	</section>
+
+	<section>
+		<title>Rounding Errors and the Quadratic Formula</title>
+
+		<introduction>
+			<p>
+				The following example shows how a well-know formula (the quadratic formula) can lead to incorrect results due to rounding errors.
+			</p>
+
+			<p>
+				Remember if you solve <m>a{x}^{2}+bx+c=0</m>, the the quadratic formula finds the solution:
+				<me>
+					x=\frac{-b \pm \sqrt{b^{2}-4ac} } {2a}
+				</me>
+			</p>
+
+			<p>
+				Next, let's consider the quadratic equation
+			</p>
+
+			<p>
+				<men xml:id="eq-quad">
+					12.242{x}^{2}+42.382x+0.0012=0.
+				</men>
+			</p>
+
+			<p>
+				We are going to solve this using the quadratic equation in julia.  To study rounding effects we're going to solve these using both 16-bit and 64-bit floating point numbers.  We'll assume that the 64-numbers are the actual answers in determining errors.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Investigating Errors with Code</title>
+
+			<p>
+				First, consider the quadratic formula as a julia function:
+			</p>
+
+			<p>
+				<cd>
+				<cline>function qSol(a::Real,b::Real,c::Real)</cline>
+				<cline>  d=sqrt(b^2-4*a*c)</cline>
+				<cline>  (-b+d)/(2*a),(-b-d)/(2*a)</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				We can solve the quadratic in <xref ref="eq-quad"/> with
+			</p>
+
+			<p>
+				<cd>
+				<cline>x64a,x64b = qSol(12.242,42.382,0.0012)</cline>
+				</cd>
+			</p>
+
+			<p>
+				leads to <c>(-2.831413841486606e-5, -3.461987696317393)</c>. Note that since the default floating-point type is <c>Float64</c>, these are 64-bit results.
+			</p>
+
+			<p>
+				To solve this using 16-bit floating-point numbers,
+			</p>
+
+			<p>
+				<cd>
+				<cline>x16a,x16b = qSol(Float16(12.242),Float16(42.382),Float16(0.0012))</cline>
+				</cd>
+			</p>
+
+			<p>
+				leads to <c>(Float16(0.0), Float16(-3.46))</c>.
+			</p>
+
+			<p>
+				Let's assume that the 64-bit answers are correct. Find the absolute and relative errors for the two solutions.
+			</p>
+
+			<p>
+				The absolute errors are:
+				<ul>
+					<li>
+						<p>
+							<c>absErr(x16a,x64a) = 2.831413841486606e-5</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>absErr(x16b,x64b) = 0.001050196317392782</c>.
+						</p>
+					</li>
+				</ul>
+				and the relative errors are:
+				<ul>
+					<li>
+						<p>
+							<c>relErr(x16a,x64a) = 1.0</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>relErr(x16b,x64b)= 0.00030335067871844356</c>.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				The relative error 1 (or 100%) means that the answer is way off. The second answer is quite close though.
+			</p>
+
+			<exercise>
+				<p>
+					Use the quadratic formula to solve <m>2.56632x^{2}+ 17.34x+ 0.01734=0</m> using both <c>BigFloat</c>s and 64-bit floats. Assume that the <c>BigFloat</c> versions are exact and find the absolute and relative errors in the 64-bit numbers.
+				</p>
+			</exercise>
+		</subsection>
+
+
+		<subsection>
+			<title>Be skeptical of numerical answers</title>
+
+			<p>
+				Even though the example above was manufactured to produce bad results, you never know if a numerical solution is accurate or not. One way to look at the above example is to not use 16-bit floating point numbers.  This is a good idea, but assume (like we did above) that 64-bit is the actual answer.  There are cases where you will get the wrong answer with 64-bit.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Can we ever be confident of answers?</title>
+
+			<p>
+				It's crucial to have a good sense of the problem (whether it be mathematical or a scientific question). Additionally, testing is an important part of the solution process. In Chapter <xref ref="ch-modules"/>, we will spend some time discussing testing of code.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Are We Sunk?  Examining the Quadratic Formula</title>
+
+		<p>
+			The above example shows that we had quite a large error.  From what we've seen so far, we could try to use other data types, like <c>BigFloat</c> to solve this problem, but as we've seen they are slow and we should only use that type when needed.  So what can we do.
+		</p>
+
+		<p>
+			If we're careful about things, we can often rewrite algorithms to do a better job with roundoff.  The problem that occurred for the general quadratic equation
+		</p>
+
+		<p>
+			<me>
+				ax^2+bx+c=0
+			</me>
+		</p>
+
+		<p>
+			is if <m>d=\sqrt{b^{2}-4ac}</m> and when <m>b&gt; 0</m>, the formula has <m>-b+d</m>, which is basically subtraction.  In the case above, <m>b=42.382</m> and <m>d=\sqrt{b^{2}-4ac}=42.38130675663505</m>. The difference in these is quite small and that is where the round-off error is introduced.
+		</p>
+
+		<p>
+			Let's assume that <m>b &gt; 0</m> and let <m>d=\sqrt{b^{2}-4ac}</m>. The roundoff occurs when the value of <m>b</m> and <m>d</m> are close to each other. (Note: if <m>b</m> is negative, you can multiply the entire equation through by <m>-1</m> to get <m>b &gt; 0</m> without changing the answer.) To change the quadratic formula we are going to exchange the addition with a subtraction (however we will not have the catastrophic subtraction error we saw above). ``How can you do that you ask?'' Here we go...
+		</p>
+
+		<p>
+			Start with the quadratic formula for the <m>+</m> case:
+		</p>
+
+		<p>
+			<md>
+				<mrow>x&amp; =\frac{-b + \sqrt{b^{2}-4ac}} {2a} &amp;&amp;\text{Multiply by a convenient form of 1} </mrow>
+				<mrow>&amp; =\frac{-b + \sqrt{b^{2}-4ac}} {2a} \cdot \frac{-b-\sqrt{b^{2}-4ac}}{-b-\sqrt{b^{2}-4ac}} </mrow>
+				<mrow>&amp; = \frac{b^{2}-(b^{2}-4ac)}{2a(-b-\sqrt{b^{2}-4ac})} </mrow>
+				<mrow>&amp; = \frac{4ac}{2a(-b-\sqrt{b^{2}-4ac})} </mrow>
+				<mrow>&amp; = -\frac{2c}{b+\sqrt{b^{2}-4ac}}</mrow>
+			</md>
+		</p>
+
+		<p>
+			and there is a similar solution if the <m>-</m> root is taken above. Note that we have changed the sign of the <m>b</m> term in the top of the standard formula.  Basically, this has switched a subtraction (which is prone to roundoff errors) to an addition (which is not prone to roundoff). In julia, the alternative quadratic formula is:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+function qSol2(a::Real,b::Real,c::Real)
+  d=sqrt(b^2-4*a*c)
+  -2*c/(b+d),(-2*c)/(b-d)
+end
+			</input>
+		</program>
+
+		<exercise>
+			<task>
+				<statement>
+					<p>
+						Use the new quadratic formula (<c>qSol2</c>) to find the roots of <m>x^{2}-x-110=0</m>. Do you get the same results as above?
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						Use the new quadratic formula to solve <m>12.242{x}^{2}+42.382x+0.0012=0</m>. Find the absolute and relative errors if we assume that the 64-bit answers are exact and the 16-bit answers are approximate.  Compare your results with that of the standard quadratic formula.
+					</p>
+				</statement>
+			</task>
+		</exercise>
+	</section>
+
+	<section xml:id="sect-newton">
+		<title>Newton's Method</title>
+
+		<introduction>
+			<p>
+				Solving an equation is a very important part of mathematics and other scientific fields. However, finding general solutions to equations is not very easy. Consider a cubic equation like <m>x^{3}-10x^{2}+24x-17</m>. In the spirit of (but not very simple) the quadratic formula, there is a <url href="https://en.wikipedia.org/wiki/Cubic_function\#Roots_of_a_cubic_function" visual="wikipedia.org">cubic formula</url>. Much of the wikipedia page spends time solving the cubic with all possibilities. In short, it's not very easy.
+			</p>
+
+			<p>
+				In lieu of using such a formula, a more robust approach is to solve it numerically. Let's consider
+			</p>
+
+			<p>
+				<me>
+					15{x}^{3}-143{x}^2+226x+280=0
+				</me>
+			</p>
+
+			<p>
+				This cubic actually factors, but finding those factors is quite difficult to do in general. We then look at using <url href="https://en.wikipedia.org/wiki/Newton%27s_method" visual="">Newton's method</url> to solve this. Note the plot below:
+			</p>
+
+			<figure xml:id="fig-rootfinding-cubic">
+				<caption></caption>
+				<image width="90%" source="plots/rootfinding/plot01.png">
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
+				</image>
+			</figure>
+			<!-- \begin{jlcode}[root] f(x)=15x^3-143x^2+226x+280 plot([f,x-&gt;0],-2,10,label=["f(x)" "x-axis"]) \end{jlcode} \begin{center} \pgfplotsset{scale=0.7} \plot{plots/rootfinding/plot03.tex}{root} \end{center} -->
+			<p>
+				and the three intersection points between the red curve (<m>x</m>-axis) and the blue line (the function, <m>y=f(x)</m>) are the three roots.
+			</p>
+
+			<p>
+				Newton's method starts with a ``guess'' at the root and then refines it. Let <m>x_0</m> be the guess, then
+			</p>
+
+			<p>
+				<me>
+					x_1 = x_0 - \frac{f(x_0)}{f'(x_0)}
+				</me>
+			</p>
+
+			<p>
+				Let's look at this in Julia for the function above.
+				<cd>
+				<cline>f(x)=15x^3-143x^2+226x+280</cline>
+				</cd>
+			</p>
+
+			<p>
+				and we need the derivative so
+			</p>
+
+			<p>
+				<cd>
+				<cline>df(x)=45x^2-286x+226</cline>
+				</cd>
+			</p>
+
+			<p>
+				Let's say that <c>x0=0</c> and find <c>x1</c> using Newton's method:
+			</p>
+
+			<p>
+				<cd>
+				<cline>x0 = 0</cline>
+				<cline>x1 = x0-f(x0)/df(x0)</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>-1.238938053097345</c>. We then use the result and perform another step of Newton's method or
+			</p>
+
+			<p>
+				<cd>
+				<cline>x2 = x1-f(x1)/df(x1)</cline>
+				</cd>
+			</p>
+
+			<p>
+				this time we get <c>-0.8570123580970569</c>, seems to be closer looking at the plot above. A few more iterations of this, you should get quite close to<c>-0.8</c>.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Code for Newton's Method</title>
+
+			<p>
+				We are going to go through building a function to do this.  First, let's consider the template of the function, which will have an arguments <c>f, df</c> and <c>x0</c>. Thus a good template is
+			</p>
+
+			<p>
+				<cd>
+				<cline>function newton(f::Function, df::Function, x0::Number)</cline>
+				<cline></cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				Here are considerations while building the function:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							You will need to do the two steps above many times so you will need a loop. Since you don't know how many times you will need to run through the loop use a <c>while</c> loop and your condition should be that the two steps <c>x0</c> and <c>x1</c> are apart from each other.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Checking if two floating-point numbers are equal are generally not a good idea, because they have to be equal to all bits, so instead we will run the while loop while the difference in the numbers <c>x0</c> and <c>x1</c> are larger than some default (like <m>10^{-6}</m>).
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				Here's more a frame of the function:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function newton(f::Function, df::Function, x0::Number)
+  x1 = x0 - f(x0)/df(x0)
+  while abs(x1-x0) &gt; 1e-6 # while the two numbers are larger than 10^(-6)
+    x0 = x1
+    x1 = x0 - f(x0)/df(x0)
+  end
+  x1
+end
+				</input>
+			</program>
+
+			<p>
+				Using this we can now call this function as
+			</p>
+
+			<p>
+				<cd>
+				<cline>newton(f,df,0)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which returns <c>-0.8000000000000933</c>.
+			</p>
+
+			<p>
+				Just to simplify this, we will define <c>dx</c> as <c>-f(x0)/df(x0)</c>, which is the distance between successive x values, so we'll use this to determine when to stop the loop:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function newton(f::Function, df::Function, x0::Number)
+  local dx = 1
+  local x1 = x0
+  while abs(dx) &gt; 1e-6
+    dx = f(x1)/df(x1)
+    x1 -= dx
+  end
+  x1
+end
+				</input>
+			</program>
+
+			<p>
+				First, we need to define <c>dx</c> first to determine if we need to go into the loop.  We just set it to some value to get it started. We have also used the operator <c>-=</c>. The line <c>x0 -= dx</c> is shorthand for <c>x0 = x0 - dx</c>
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Using Automatic Differentiation</title>
+
+			<p>
+				If you have used Computational Algebra Systems like Maple or Mathematica, you know that computers have the ability to differentiate. Julia does not have this capability built-in, although it has some capability of doing some of the feature set of these programs. There is a system called <term>automatic differentiation</term> that will compute the exact derivative to a function at a given point. That is, if you have a function <m>f(x)</m> and a number <m>a</m>, it will give you <m>f'(a)</m>. The package is called <c>ForwardDiff</c> and you may need to add it and then
+			</p>
+
+			<p>
+				<cd>
+				<cline>using ForwardDiff</cline>
+				</cd>
+			</p>
+
+			<p>
+				For example, if you define:
+			</p>
+
+			<p>
+				<cd>
+				<cline>g(x) =x^2</cline>
+				</cd>
+			</p>
+
+			<p>
+				to find <m>g'(3)</m>, type
+			</p>
+
+			<p>
+				<cd>
+				<cline>ForwardDiff.derivative(g,3)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which will return <c>6</c>.	Try something much more complicated:
+			</p>
+
+			<p>
+				<cd>
+				<cline>ForwardDiff.derivative(x-&gt;exp(sin(x^2+pi/x)),1.0)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which returns <c>0.2658898634234979</c> and if you are careful with the derivative (or have access to a Computer Algebra System), see if your answer is correct.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Newton's Method with Automatic Differentiation</title>
+
+			<p>
+				With this nice package, let's rewrite Newton's method
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function newton(f::Function, x0::Number)
+  local dx = 1
+  while abs(dx) &gt; 1e-6
+    dx = f(x0)/ForwardDiff.derivative(f,x0)
+    x0 -= dx
+  end
+  x0
+end
+				</input>
+			</program>
+
+			<p>
+				And note that if we run this with <c>newton(f,0)</c> we get <c>-0.8000000000000933</c> the same result as above.
+			</p>
+
+			<exercise>
+				<task>
+					<statement>
+						<p>
+							Find the intersection point of the functions <m>y=x</m> and <m>y=\sin x</m>. Hint set the two equations equal and use algebra to write it as a function <m>g(x)</m> which is equal to 0.
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							Use your function above to find all three of the roots of the cubic function, <m>f(x)=15{x}^{3}-143{x}^2+226x+280</m>.
+						</p>
+					</statement>
+				</task>
+			</exercise>
+		</subsection>
+
+
+		<subsection>
+			<title>Adding an extra stopping condition</title>
+
+			<p>
+				One problem that can arise is if you call <c>newton</c> on a function that does not have a root. For example, consider <m>f(x)=x^2+1</m>, which is always positive.  If you run
+			</p>
+
+			<p>
+				<cd>
+				<cline>newton(x-&gt;x^2+1,2)</cline>
+				</cd>
+			</p>
+
+			<p>
+				then you reach an infinite loop.  You'll need to interrupt the process.
+			</p>
+
+			<p>
+				To prevent this, we need to add a stopping condition if this occurs. One way to do this is to add a  counter include in the <c>while</c> loop that the number of steps is small. Here's a possible update to Newton's method:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function newton(f::Function, x0::Number)
+  local dx = 1
+  local x1 = x0
+  local steps = 0
+  while abs(dx) &gt; 1e-6 &amp;&amp; steps &lt; 10
+    dx = f(x1)/ForwardDiff.derivative(f,x1)
+    x1 -= dx
+    steps += 1
+  end
+  x1
+end
+				</input>
+			</program>
+
+			<p>
+				Now if we try:
+			</p>
+
+			<p>
+				<cd>
+				<cline>newton(x-&gt;x^2+1,2)</cline>
+				</cd>
+			</p>
+
+			<p>
+				we get <c>0.001953125</c>.
+			</p>
+
+			<p>
+				Now, this still isn't perfect because when we run it, we only get a single number out. In this case, the value is not a root, but how do you know?  We will see in <xref ref="ch-comp-types"/> how to develop a new type which stores information about the root and if a solution was reached.
+			</p>
+		</subsection>
+	</section>
+</chapter>

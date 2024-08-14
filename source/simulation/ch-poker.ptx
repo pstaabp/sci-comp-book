@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-poker">
+	<title>Simulating Poker Hands</title>
+
+	<introduction>
+		<p>
+			This chapter will analyze poker hands using the idea of the last two chapters. If you are unfamiliar with poker or the hands of poker, here's a quick synopsis and the <url href="https://en.wikipedia.org/wiki/List_of_poker_hands" visual="">Wikipedia page on Poker Hands</url> is quite helpful. And recall from <xref ref="ch-comp-types"/> that a card has both a rank (Ace, 2--10, Jack, Queen, King) and a suit (hearts, diamonds, clubs and spades).
+		</p>
+
+		<p>
+			In this chapter, we are only concerned with 5 cards with no jokers and just determining if a hand satisfies one of the following:
+		</p>
+
+		<p>
+			<ul>
+				<li>
+					<p>
+						<em>Royal Flush:</em> the ranks of the cards are 10, J, Q, K, A and all cards have the same suit.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Straight Flush:</em> the ranks are sequential and all cards have the same suit. We will allow Ace to be both high (as in a Royal Flush) and low, like, A, 2, 3, 4, 5.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Flush:</em> All cards have the same suit.  We will exclude straight flushes, but ace can be high or low.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Straight:</em> The ranks of the 5 cards are sequential.  Again, we will exclude straight flushes.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Four of a kind:</em> four of the cards have the same rank
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Full House:</em> two cards have the same rank, the other three cards have the same rank.  The suit doesn't matter.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Three of a kind:</em> three of the cards have the same rank.  The other two cards do not have the same rank.  The suit of the cards doesn't matter and also, make sure that the other two cards are not a pair or that would be a full house.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Two pairs:</em> Two cards have the same rank.  Two of the remaining cards have the same rank, but different than the first two pair.  The 5th card does not make it a full house.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>One pair:</em> two cards have the same rank.  The remaining cards do not make it a different type of hand (full house, three of a kind, etc.)
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>No pair or nothing:</em> the cards don't form any other hand.  This is also called <em>High Card</em>, in that if comparing hands, the highest card in the hand is important.
+					</p>
+				</li>
+			</ul>
+		</p>
+	</introduction>
+
+	<section>
+		<title>A user-defined package</title>
+
+		<introduction>
+			<p>
+				In <xref ref="ch-modules"/>, we will create a module, but it is helpful for the topics in this chapter to use that module.  Download <c>PlayingCards.jl</c> from ???. This module contains the <c>Card</c> and <c>Hand</c> types we developed in <xref ref="ch-comp-types"/>.
+			</p>
+
+			<p>
+				This is a module/package, which like other packages, need to be loaded with either the <c>using</c> or <c>import</c> keyword. Since this is just a file in the current directory, we first run the file and then load it
+			</p>
+
+			<p>
+				<cd>
+				<cline>include("PlayingCards.jl")</cline>
+				<cline>using .PlayingCards</cline>
+				</cd>
+			</p>
+
+			<p>
+				where the <c>.</c> represents a local (current directory) module.  Note that when running a module that has been added (downloaded), no <c>.</c> is needed before its name.
+			</p>
+
+			<p>
+				Once we have the function written, we should test it on a few known and unknown full house hands. Try testing:
+			</p>
+
+			<p>
+				<cd>
+				<cline>fh1 = Hand([Card(4,1),Card(4,3),Card(4,4),Card(7,1),Card(7,2)])</cline>
+				<cline>fh2 = Hand([Card(4,1),Card(4,3),Card(7,4),Card(7,1),Card(7,2)])</cline>
+				<cline>fh3 = Hand([Card(2,1),Card(4,3),Card(4,4),Card(7,1),Card(7,2)])</cline>
+				</cd>
+			</p>
+
+			<p>
+				As entering these, you will see The first 2 are full house hands and the last is not.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Writing a Full House function</title>
+
+			<p>
+				To use simulation, we will need to write a function that will determine if a hand is a full house. First of all, a function template for this will look like:
+			</p>
+
+			<p>
+				<cd>
+				<cline>function isFullHouse(h::Hand)</cline>
+				<cline></cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				and this should return <c>true</c> if <c>h</c> is a full house and <c>false</c> if not.
+			</p>
+
+			<p>
+				We are using the naming convention that if the function returns a boolean then start with <c>is</c> or <c>has</c>.
+			</p>
+
+			<p>
+				Here's some other things to think about:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							Recall that the individual cards are stored in the <c>cards</c> field of the <c>Hand</c> struct. So within the function, we can access the cards with <c>h.cards</c> and this is an array of <c>Card</c>s.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							We can access the individual cards using array notation, so the first card in the hand is <c>h.cards[1]</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Recall that the rank of a card is with the <c>rank</c> field and the suit is in the <c>suit</c> field.  So the rank of the 3rd card could be accessed with <c>h.cards[3].rank</c>.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				Now before just diving into this function, if we try to determine all the possible ways to have a full house that's a lot. That is, if the full house has sevens and threes, the sevens could be in the first card, fourth card and fifth card.  But there are many other combinations.  The order of the cards doesn't matter (and often if you are playing a game with cards in that you can see your hand, you move them around), so we will first sort the cards to help us.
+			</p>
+
+			<p>
+				Within the function, if we call
+			</p>
+
+			<p>
+				<cd>
+				<cline>local r = sort(map(c -&gt; c.rank, h.cards))</cline>
+				</cd>
+			</p>
+
+			<p>
+				This will result in a sorted array of the ranks of each of the cards in your hand. If we have the hand <c>fh1</c> above, the <c>r</c> array will be <c>[4 4 4 7 7]</c>.
+			</p>
+
+			<p>
+				We have now reduced the problem, to a much more manageable set of options.  First, if there is a full house on a hand, there are two possibilities:  1) the first three ranks are equal and the last two ranks are equal or 2) the first two ranks are equal and the last three ranks are equal.
+			</p>
+
+			<p>
+				We could put this in code, however, there's even a bit easier way.  For any full house, the first two cards are equal and the last two are equal.  Then either the 2nd and 3rd card or 3rd and 4th cards' ranks are equal, but not both.  We can write this in the following way:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function isFullHouse(h::Hand)
+  local r=sort(map(c -&gt;  c.rank,h.cards))
+  r[2]==r[1] &amp;&amp; r[5]==r[4] &amp;&amp; r[2] != r[4] &amp;&amp; (r[3]==r[2] || r[4]==r[3])
+end
+				</input>
+			</program>
+
+			<p>
+				Let's test this function on these three hands with:
+			</p>
+
+			<p>
+				<cd>
+				<cline>isFullHouse(fh1),isFullHouse(fh2),isFullHouse(fh3)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which returns <c>(true, true, false)</c> indicating that the first two are full houses and the last is not.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Simulating Poker Hands</title>
+
+		<introduction>
+			<p>
+				Now that we have a function to test if a hand is a full house, we want to perform a Monte Carlo simulation on a large number of poker hands and test if this gives the result we want. An easier way to do this is to develop a function that tests many different hands.  In general, testing each is called a trial, so we'll have following which passes in a function that takes a hand and a number of trials and returns the fraction of times that hand satisfies that function. First, here's the <c>runTrial</c> function.
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+using Random
+function runTrials(f::Function, trials::Integer)
+  local deck=collect(1:52) # creates the array [1,2,3,...,52]
+  local num_hands=0
+  for i=1:trials
+    shuffle!(deck)
+    h = Hand(map(Card,deck[1:5]))  # creates a hand of the first five cards of the shuffled deck
+    if(f(h))
+        num_hands+=1
+    end
+  end
+  num_hands/trials
+end
+				</input>
+			</program>
+
+			<p>
+				Here's a few ideas about this function:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							The argument of the function includes a function.  We will pass the <c>isFullHouse</c> function into the <c>runTrial</c> function.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Line 3 creates an array from 1 to 52.  We will use this to create a hand later.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							The variable <c>num_hands</c> will store how many hands will result in passed in function being true.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							The function <c>shuffle!</c> shuffles the array called <c>deck</c> in line 6. Recall that any julia function with a ! modifies the function arguments, so this modifies the deck array instead.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Line 7 creates a hand from the first five values of the array in <c>deck</c>. This uses the constructor for a card based on an integer between 1 and 52.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				If we run this with the command:
+			</p>
+
+			<p>
+				<cd>
+				<cline>runTrials(isFullHouse,1_000_000)</cline>
+				</cd>
+			</p>
+
+			<p>
+				This returns <c>0.001408</c>, which means that the probability of drawing a full house is 0.1408%.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Results of the simulation</title>
+
+			<p>
+				Is the result of this simulation accurate?  Similar to some of the counting techniques that we saw in <xref ref="ch-probability-random"/>, we can determine the probability of a full house by counting all poker hands that are full houses and dividing by the total number of poker hands.  This is explained in the <url href="https://en.wikipedia.org/wiki/Poker_probability" visual="wikipedia">Wikipedia site for Poker Probabilities</url>. Looking at full house line in the table, the probability of a full house in 0.1441\%, so this isn't bad.  If we increased the number of hands, we would expect to get closer to the true answer.
+			</p>
+
+			<exercise>
+				<p>
+					Run the full house simulation for 10 million hands (and 100 million hands if it doesn't take too long) and determine the probability of a full house.  Did you get a better result?
+				</p>
+			</exercise>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Probabilities of Other Hands</title>
+
+		<introduction>
+			<p>
+				Ultimately, it would be nice to have functions that determine if a hand is any of the ones listed at the top.  We will cover two others, two pair and a flush, however the hardest part of doing this is making sure that functions aren't double counted.  For example, if we have an <c>isFlush</c> function, then we need to make sure that straight flushes and royal flushes aren't counted.  Within the <c>isFlush</c> function, we could call <c>isRoyalFlush</c> and <c>isStraightFlush</c> however, it's easy to get into a circular call if either of these call <c>isFlush</c>.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Helping Functions for the Poker Hands</title>
+
+			<p>
+				To help out with this problem, we will first create two functions <c>isOneSuit</c>, which tests if all cards have the same suit and <c>hasRun</c> to test if a hand has a run of five cards.  Each of the functions we've discussed will then call them without getting into a circular problem.
+			</p>
+
+			<p>
+				The first function is fairly straightforward with:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function isOneSuit(h::Hand)
+  local s = map(c -&gt; c.suit,h.cards)
+  s[1]==s[2]==s[3]==s[4]==s[5]
+end
+				</input>
+			</program>
+
+			<p>
+				Notice that first, if we are testing all suits are equal, there is no reason to sort like we did in the previous two functions.  Also, the line 3 of the function is a shortcut for
+				<cd>
+				<cline>s[1]==s[2] &amp;&amp; s[2]==s[3] &amp;&amp; s[3]==s[4] &amp;&amp; s[4]==s[5]</cline>
+				</cd>
+			</p>
+
+			<p>
+				which would work fine as well, but the above is clear and shorter to write.
+			</p>
+
+			<p>
+				Similarly, the following will test for a run:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function hasRun(h::Hand)
+  local r = sort(map(c-&gt;c.rank,h.cards))
+  r[2]==r[1]+1 &amp;&amp; r[3]==r[2]+1 &amp;&amp; r[4]==r[3]+1 &amp;&amp; r[5]==r[4]+1 ||
+  r[1]==1 &amp;&amp; r[2]==10 &amp;&amp; r[3]==11 &amp;&amp; r[4]==12 &amp;&amp; r[5]==13 ## ace high run
+end
+				</input>
+			</program>
+
+			<p>
+				The 2nd line of the function tests a run by checking if each element of the array is one more than the previous one.
+			</p>
+
+			<exercise>
+				<introduction>
+					<p>
+						Test the two functions we just wrote to make sure that they work.
+					</p>
+				</introduction>
+
+
+				<task>
+					<statement>
+						<p>
+							Test <c>isOneSuit</c> by creating two hands that is only one suit and two hands that are multiple suits.  Make sure the function returns the correct answer.
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							Test <c>HasRun</c> by creating two hands that has a run and two hands that don't.  Make sure the function returns the correct answer.
+						</p>
+					</statement>
+				</task>
+			</exercise>
+		</subsection>
+
+
+		<subsection>
+			<title>Building a Royal Flush function</title>
+
+			<p>
+				Now that we have a <c>isOneSuit</c> and an <c>hasRun</c> functions, we can more easily build the following functions: <c>isRoyalFlush</c>, <c>isStraightFlush</c> and <c>isStraight</c>
+			</p>
+
+			<p>
+				We'll start with checking for a royal flush.  Simply we need to check if it is one of suit and has a run where it is an ace-high run. The following will do this:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function isRoyalFlush(h::Hand)
+  local r = sort(map(c -&gt;  c.rank,h.cards))
+  r[1]==1 &amp;&amp; r[2]==10 &amp;&amp; r[3]==11 &amp;&amp; r[4]==12 &amp;&amp; r[5]==13 &amp;&amp; isOneSuit(h)
+end
+				</input>
+			</program>
+
+			<p>
+				Even though we could call the <c>hasRun</c> function, since we are only looking for an ace-high run, we copy the rank information over and then test additionally if it is one suit.  Because there are so few royal flushes, we need to do many trials to detect. If we enter
+			</p>
+
+			<p>
+				<cd>
+				<cline>runTrials(isRoyalFlush,10_000_000)</cline>
+				</cd>
+			</p>
+
+			<p>
+				then we get <c>7.0e-7</c>, which is the floating point version of <m>7 \times 10^{-7}</m> which is close to the actual probability.
+			</p>
+
+			<exercise>
+				<introduction>
+					<p>
+						Write <c>isStraightFlush</c> and <c>isStraight</c> functions.  In order to eliminate other hands:
+					</p>
+				</introduction>
+
+
+				<task>
+					<statement>
+						<p>
+							Write the <c>isStraightFlush</c> function first, by 1) checking if it has a run, 2) checking that is is one one suit and 3) checking that it is not a royal flush. This can be done in one compound boolean statement.
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							Write the <c>isStraight</c> function by 1) checking it has a run 2) checking it is not a royal flush 3) checking it is not a straight flush.  Again, this can be done in one compound boolean statement.
+						</p>
+					</statement>
+				</task>
+			</exercise>
+		</subsection>
+
+
+		<subsection>
+			<title>Building a Two Pair function</title>
+
+			<p>
+				Similar to the full house function, we will pull out the ranks of the hand since that is all that matters and sort the results. The we have three possibilities:
+			</p>
+
+			<p>
+				<ol>
+					<li>
+						<p>
+							The first and second card ranks and 3rd and 4th card ranks are equal.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							The first and second card ranks and 4th and 5th card ranks are equal.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							The second and third card ranks and 4th and 5th card ranks are equal.
+						</p>
+					</li>
+				</ol>
+			</p>
+
+			<p>
+				We can build a compound boolean statement with ors between these.  The following is a possibility:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function isTwoPair(h::Hand)
+  local r = sort(map(c -&gt;  c.rank,h.cards))
+  (r[1]==r[2] &amp;&amp; r[3] == r[4]) ||
+  (r[1]==r[2] &amp;&amp; r[4] == r[5]) ||
+  (r[2]==r[3] &amp;&amp; r[4] == r[5])
+end
+				</input>
+			</program>
+
+			<p>
+				and note that we have split the statement over the last three lines just for readability.  If we run this with
+			</p>
+
+			<p>
+				<cd>
+				<cline>two_pair = runTrials(isTwoPair,1_000_000)</cline>
+				</cd>
+			</p>
+
+			<p>
+				the result is <c>0.049242</c>. Looking at the results from the Wikipedia Poker Probability page, which says that the probability is 4.7539\%, this looks high.  You could try to run this again or with higher number of trials, but there's another reason this could be high.
+			</p>
+
+			<p>
+				Since the results are larger than expected, we are probability counting other hands that we shouldn't.  It seems that the other hands we are counting could include 4 of a kind and full house.   The best way to handle this would to eventually build up all of the various types of hands.  Inside the <c>isTwoPair</c> function we could then test for these three and return false if any are true.
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function isTwoPair(h::Hand)
+  local r = sort(map(c -&gt;  c.rank,h.cards))
+  ! isFullHouse(h) &amp;&amp;
+    # ! isFourOfAKind(h) ## remove the # at the beginning of the line if you have a isFourOfAKind function
+  ( (r[1]==r[2] &amp;&amp; r[3] == r[4]) ||
+    (r[1]==r[2] &amp;&amp; r[4] == r[5]) ||
+    (r[2]==r[3] &amp;&amp; r[4] == r[5]) )
+end
+				</input>
+			</program>
+
+			<exercise>
+				<p>
+					Write an <c>isFourOfAKind</c> function, test it and then update the <c>isTwoPair</c> function to exclude any four of a kind hands from being counted.
+				</p>
+			</exercise>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Summary of Simulation</title>
+
+		<p>
+			Take this chapter as an example of how to use simulation to solve problems. In short, if there is any randomization that occurs in a problem, using techniques as shown here might be a way to solve them.
+		</p>
+	</section>
+</chapter>

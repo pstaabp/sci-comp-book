@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<part xml:id="part-projects" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<title>Scientific Computing Projects</title>
+
+	<!-- include chapters -->
+	<xi:include href="projects/ch-polynomial-module.ptx" />
+	<xi:include href="projects/ch-calc-pi.ptx" />
+</part>

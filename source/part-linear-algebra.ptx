@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<part xml:id="part-linear-algebra" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Linear Algebra</title>
+  <xi:include href="./linear-algebra/ch-intro-linear-algebra.ptx" />
+  <xi:include href="./linear-algebra/ch-advanced-linear-algebra.ptx" />
+</part>

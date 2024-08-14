@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appendix xml:id="ch-num-rep">
+	<title>Binary Represenation of Numbers</title>
+	<introduction>
+		<p>
+			In <xref ref="ch-data-types"/>, numeric data types were introduced.
+			Some details of integers and floating points were given, however, some of the
+			gorier details were left to here.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Integer Representation</title>
+		<introduction>
+			<p>
+				We discussed the binary representation of non-negative numbers in <xref ref="ch-data-types"/>.
+				Negative numbers is more difficult. This method of data storage in called <em>2's complement</em>.
+				A nice description of this is
+				<url href="https://ryanstutorials.net/binary-tutorial/binary-negative-numbers.php" visual="ryanstutorials.net">
+				Ryan's Tutorial on negative binary numbers</url>.
+			</p>
+
+			<p>
+				Although seems a bit strange, let's first discuss the conversion of binary to integer.  Let the 8-bit binary number be written as <m>x=sa_6a_5a_4a_3a_2a_1a_0</m>, where the first bit is the sign and the other 7-bit compose the number then representation of <m>x</m> in decimal is
+			</p>
+
+			<p>
+				<men xml:id="eq-8bit">
+					x = -s \cdot 2^7 + a_6 2^6 + a_5 2^5 + a_4 2^4 + a_32^3 + a_2 2^2 + a_1 2^1 + a_0 2^0
+				</men>
+			</p>
+
+			<p>
+				As an example, note that if <m>s=0</m>, then this is identical to the integer representation of positive integer.  Again, <c>00010010</c> would be
+			</p>
+
+			<p>
+				<me>
+					x = -0 \cdot 128 + 0 \cdot 64 + 0 \cdot 32 + 1 \cdot 16 + 0 \cdot 8 + 0 \cdot 4 + 1 \cdot 2 + 0 \cdot 1 = 18
+				</me>
+			</p>
+
+			<p>
+				Let's look at an example with a negative number.  Let <c>x=11010111</c>, then in decimal:
+			</p>
+
+			<p>
+				<md>
+					<mrow> x \amp =  -1 \cdot 128 + 1 \cdot 64 + 0 \cdot 32 + 1 \cdot 16 + 0 \cdot 8 + 1 \cdot 4 + 1 \cdot 2 + 1 \cdot 1 \\</mrow>
+					<mrow> \amp = -128 + 64 + 16 + 4 +2 + 1 = -41 </mrow>
+				</md>
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>Converting from decimal to binary</title>
+			<p>
+				Again, like above, let's concentrate only on 8-bit numbers.  That is, we will
+				take a decimal number <c>x</c> in the range <m>[-128,127]</m> and return an array
+				of length 8 of bits (you can even think of booleans) or we need to find
+				<m>s, a_0,a_1,\ldots,a_6</m> from <xref ref="eq-8bit"/>.
+			</p>
+
+			<p>
+				First, let's examine only non-negative numbers, so <m>s=0</m>. And let's use the
+				number <m>x=47</m>.  We'll work from the larger digits to the smaller ones, so
+				<m>a_6</m> to <m>a_0</m>.
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							Let <c>x6 = 47</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Let <c>x5 = mod(x6,64) = 47</c> and <c>a6 = div(x6,64) = 0</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Let <c>x4 = mod(x5,32) = 15</c> and <c>a5 = div(x5,32) = 1</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Let <c>x3 = mod(x4,16) = 15</c> and <c>a4 = div(x4,16) = 0</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Let <c>x2 = mod(x3,8) = 7</c> and <c>a3 = div(x3,8) = 1</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Let <c>x1 = mod(x2,4) = 3</c> and <c>a2 = div(x2,4) = 1</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Let <c>x0 = mod(x1,2) = 1</c> and <c>a1 = div(x1,2) = 1</c>.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				This shows that the result is 00101111.  Again, <c>bitstring(Int8(47))</c>
+				returns <c>"00101111"</c> the same result.
+			</p>
+
+			<p>
+				A function that does this is as follows.
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function dec2bin(n::Int)
+  -128 &lt;= n &lt;=127 || throw(ArgumentError("The value of n must be between -128 and 127"))
+  bdigits=zeros(Bool,8)
+  ## this function calclates the digit of the decimal number k that goes in slot digit
+  function calcDigit(k::Int,digit::Int)
+    if digit==0
+      bdigits[1] = k
+    else
+      bdigits[digit+1] = div(k,2^digit)
+      calcDigit(mod(k,2^digit),digit-1)
+    end
+  end
+  calcDigit(n,6)
+  bdigits
+end
+				</input>
+			</program>
+
+			<p>
+				Note that first this uses recursion as explained in <xref ref="ch-intro-functions"/>.
+				In addition, the error checking is explained in <xref ref="ch-adv-functions"/>.
+				This function returns a boolean array (ones and zeros).  For example:
+			</p>
+
+			<p>
+				<cd>
+				<cline>dec2bin(47)</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>[1 1 1 1 0 1 0 0]</c>.
+				And note that since the array returns the digits in the order from small to large,
+				this result is the same as we showed by hand above and using the function <c>bitstring</c>.
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Representing Negative Integers</title>
+			<p>
+				To find the representation of a negative integer, we return to <xref ref="eq-8bit"/>
+				and note that <m>s=1</m>.  A little algebra results in
+			</p>
+
+			<p>
+				<me>
+					x+s \cdot 2^7 =  a_6 2^6 + a_5 2^5 + a_4 2^4 + a_32^3 + a_2 2^2 + a_1 2^1 + a_0 2^0
+				</me>
+			</p>
+
+			<p>
+				and with <m>s=1</m>, we define the left side as <m>y=x+127</m> and now the right
+				side is the same representation of a positive number and if <m>-128 \leq x \leq -1</m>,
+				then <m>0 \leq y \leq 127</m>.
+			</p>
+
+			<p>
+				Let's check out an example.  Consider <m>x=-67</m>, then <m>y=128+x=61</m>.
+				Using the algorithm to find the binary representation of 61 or <c>dec2bin(61)</c>
+				which returns <c>[1 0 1 1 1 1 0 0]</c> recalling that the order is reversed
+				from the function above.
+			</p>
+
+			<p>
+				Since we are looking for the decimal representation of <c>-67</c>, not <c>61</c>,
+				the sign bit is 1, so we have <c>10111101</c> and checking with the built-in
+				function <c>bitstring(Int8(-67))</c> or <c>"10111101"</c>.
+			</p>
+
+			<p>
+				This method of storage of negative integers is called <em>2's complement</em>.
+			</p>
+
+			<exercise>
+				<introduction>
+					<p>
+						Write out by hand the binary representation of
+					</p>
+				</introduction>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>-10</m>
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>-120</m>
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>-1</m>
+						</p>
+					</statement>
+				</task>
+			</exercise>
+		</subsection>
+
+		<subsection>
+			<title>Including negative Integers</title>
+			<p>
+				If we extend the function above to include negative numbers, the following:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function dec2bin(n::Int)
+  bdigits=zeros(Bool,8)
+  ## this function calclates the digit of the decimal number k that goes in slot digit
+  function calcDigit(k::Int,digit::Int)
+    if digit==0
+      bdigits[1] = k
+    else
+      bdigits[digit+1] = div(k,2^digit)
+      calcDigit(mod(k,2^digit),digit-1)
+    end
+  end
+  if n&gt;=0
+    calcDigit(n,6)
+  else
+    calcDigit(128+n,6)
+    bdigits[8]=1
+  end
+  bdigits
+end
+				</input>
+			</program>
+
+			<p>
+				Calling <c>dec2bin(-57)</c> results in <c>[1 1 1 0 0 0 0 0]</c>
+				and this is the same as above.  The output is a little tricky so we have another
+				function that will take this boolean array to a string.
+			</p>
+
+			<p>
+				<cd>
+				<cline>arr2str(arr::Array{Bool,1}) = reduce((x, y)-&gt;string(x,y ? "1" : "0"),reverse(arr),init="")</cline>
+				</cd>
+			</p>
+
+			<p>
+				where the <c>reduce</c> function in <xref ref="ch-intro-functions"/> is used and
+				the function <c>reverse</c> takes an array and reverses the elements.  This is must
+				more convenient with
+				<cd>
+				arr2str(dec2bin(-57))
+				</cd>
+			</p>
+
+			<p>
+				returns <c>"00000111"</c>, the same as above and the same as <c>bitstring</c> for 8-bit integers.
+			</p>
+
+			<exercise>
+				<introduction>
+					<p>
+						Use the functions <c>dec2bin</c> and <c>arr2str</c> to find the binary represenation of
+					</p>
+				</introduction>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>-10</m>
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>-120</m>
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>-1</m>
+						</p>
+					</statement>
+				</task>
+			</exercise>
+		</subsection>
+
+		<subsection>
+			<title>A binary to decimal function</title>
+			<p>
+				It's also nice to have a function that reverses this.
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+## this function takes a 0-1 array (boolean array) and changes it to a decimal.
+# the first element is the 2^0 digits, the 7th digit is the 2^6 digit and the 8th digit is the sign digit
+# this uses the 2's complement representation
+#
+function bin2dec(arr::Array{Bool,1})
+  sum=0
+  for i=1:7
+    sum += arr[i]*2^(i-1)
+  end
+  sum - arr[8]*128
+end
+				</input>
+			</program>
+
+			<p>
+				To use this, we need to start with a binary array, so let's start with
+			</p>
+
+			<p>
+				<cd>
+				<cline>arr = map(x-&gt; x==1 ? true : false, [1,1,1,0,0,0,1,1])</cline>
+				</cd>
+			</p>
+
+			<p>
+				and then we can use the <c>bin2dec</c> function as
+			</p>
+
+			<p>
+				<cd>
+				<cline>bin2dec(arr)</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>-57</c>.
+			</p>
+
+			<p>
+				And the following is a function that will take a binary string and turn it to an array
+			</p>
+
+			<p>
+				<cd>
+				<cline>str2arr(str::String) = reverse(map(x-&gt; x=="1" ? true : false, split(str,"")))</cline>
+				</cd>
+			</p>
+
+			<p>
+				If we use this in conjunction with <c>bin2dec</c>, we have some convenient functions. That is
+			</p>
+
+			<p>
+				<cd>
+				<cline>bin2dec(str2arr("11000111"))</cline>
+				</cd>
+			</p>
+
+			<p>
+				results in <c>-57</c>.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Operations on Binary Integers</title>
+		<introduction>
+			<p>
+				Adding two positive binary integers is much like adding decimal integers.
+				An example of <m>54+19</m> could be:
+			</p>
+
+			<p>
+				<md>
+					<mrow>&amp; \phantom{+~}00110110</mrow>
+					<mrow>  &amp; \underline{+\phantom{~}00010011}</mrow>
+					<mrow>  &amp; \phantom{+~}01001001</mrow>
+				</md>
+			</p>
+
+			<p>
+				where the standard algorithm is used
+			</p>
+
+			<p>
+				The result of this in decimal is <c>bin2dec(str2arr("01001001"))</c> or
+				<c>73</c>.
+			</p>
+
+			<p>
+				Note that if we try to add <c>01001100</c> and <c>01100010</c> we get <c>10101110</c>
+				(try it!) and if we use the conversion to get back to decimal results in
+				<c>bin2dec(str2arr("10101110"))</c> or <c>-82</c>,
+				which clearly is not the sum of two positive numbers.
+				The reason this occurred is that the sum of the two numbers does not fit
+				in an 8-bit integer, whose max value is 127.  We can tell this directly
+				from the binary result in that the first digit is a 1 (due to the sum of
+				the two one's in the second position).  Recall that this first digit is a sign bit.
+				This is an overflow error.
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>Unary minus</title>
+			<p>
+				The unary minus operator negates a number.  To see how to do this in binary,
+				let's look at what a bit flip looks like with a few examples.  Let's take the decimal
+				number 54 or <c>00110110</c> and flip all of the bits (changes 0s to 1s and 1s to 0s)
+				to get <c>11001001</c> and using <c>bin2dec(str2arr("11001001"))</c>
+				which returns <c>-55</c>.
+				If we use <c>10101010</c> which is <m>-86</m>, the bit flips are <c>01010101</c>
+				which is <m>85</m>.  Note that the sum of a binary number and it's bit flips is
+				<c>11111111</c> which is <m>-1</m>.
+			</p>
+
+			<p>
+				To determine the negation of a binary number, we will 1) flip the bits and 2) add one.
+				So for example, <c>00101101</c> or <c>45</c>.  The bit flip of this is <c>11010010</c>
+				and then add one to get <c>11010011</c>, which is <c>-45</c>.
+			</p>
+
+			<exercise>
+				<task>
+					<statement>
+						<p>
+							Show that the unary minus of 0 in binary is still 0.  (Note: this is one of the very nice features of using 2's complement for storing integers.)
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							There is one 8-bit integer than does not have negative (that is an 8-bit integer).  What is it?
+						</p>
+					</statement>
+				</task>
+			</exercise>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Subtraction of binary integers</title>
+		<p>
+			There are a couple of ways to think about subtraction.  One can use the column algorithm
+			like is standard for subtraction of decimal numbers and adapt to binary integers.
+			However an easier way is to thing of <m>a-b</m> as <m>a+(-b)</m> and use the
+			negative from the previous section.  For example, look at <m>78-85</m>.
+		</p>
+
+		<p>
+			<ol>
+				<li>
+					<p>
+						The two integers in binary are <c>"01001110"</c>and <c>"01010101"</c>.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						The negation of 85 is <c>10101010</c> + <c>00000001</c> or <c>10101011</c>
+					</p>
+				</li>
+
+				<li>
+					<p>
+						The sum of <c>01001110</c> and <c>10101011</c> is <c>"00111001"</c>.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						converting back to decimal results in <m>-7</m>.
+					</p>
+				</li>
+			</ol>
+		</p>
+	</section>
+
+	<section>
+		<title>Multiplication of Binary Integers</title>
+		<p>
+			<md>
+				<mrow>&amp;\phantom{\times~}00001010 </mrow>
+				<mrow>&amp;\underline{\times\phantom{~}00000110~} </mrow>
+				<mrow>&amp;\phantom{\times~}00000000 </mrow>
+				<mrow>&amp;\phantom{\times~}00010100 </mrow>
+				<mrow>&amp;\underline{+\phantom{~}00101000~} </mrow>
+				<mrow>&amp;\phantom{\times~}00111100</mrow>
+			</md>
+		</p>
+
+		<p>
+			which shows that <c>10</c> <m>\times</m> <c>6</c> equals <c>60</c>.
+		</p>
+
+		<p>
+			<term>Discuss multiplication of negative integers...</term>
+		</p>
+
+		<exercise>
+			<introduction>
+				<p>
+					Put all of these functions in a module as in Chapter \ref{ch:modules}. This will include
+				</p>
+			</introduction>
+
+
+			<task>
+				<statement>
+					<p>
+						Creating a type called <c>Integer8</c> which is an alias for a binary array of length 8.
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						Create a <c>Base.show</c> method for <c>Integer8</c> to display as a string.  See Chapter \ref{ch:modules} to do this and use the function in this chapter
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						Create a function <c>parseBin</c>, which takes in a string of length 8, and returns a value of type <c>Integer8</c>.  Use the <c>str2arr</c> function from this chapter.
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						Create a unary minus, plus and minus on the type <c>Integer8</c> types.  Use the example of Polynomials in section \ref{sect:parametric-types} for examples on how to do this.
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						Create a test suite to thoroughly test all of the functions that you write.
+					</p>
+				</statement>
+			</task>
+		</exercise>
+	</section>
+
+	<section xml:id="sect-scientific-notation"><title>Scientific Notation</title>
+		<p>
+			Recall that any number written in decimal form with only a finite number
+			of digits can be written in scientific notation that is in the form:
+			<m>a \times 10^{b}</m>
+		</p>
+
+		<p>
+			where <m>1&lt;|a|&lt;10</m> and <m>b</m> is an integer. For example <m>4003.23</m> can
+			be written as <m>4.00323 \times 10^{3}</m>, so <m>a=4.00323</m> and <m>b=3</m>.
+		</p>
+
+		<p>
+			In this form the number <m>a</m> is often called the \textbf{significand}
+			or \textbf{mantissa} and the number <m>b</m> is \textbf{exponent}. This
+			example has the base 10, however other bases are common (generally base
+			2).
+		</p>
+
+		<p>
+			One major advantage to using numbers in this form is the simple
+			multiplication and division. Consider multiplying
+			<m>x=3.4 \times 10^{2}</m> and <m>y=-4.7 \times 10^{-3}</m>. Using properties
+			of exponentials we get
+		</p>
+
+		<p>
+			<me>
+				xy = (3.4)(-4.7) \times 10^{2-3} = -15.98 \times 10^{-1}
+			</me>
+		</p>
+
+		<p>
+			and typically we would like to put this back into scientific notation by
+			shifting the exponent so <m>xy=-1.598 \times 10^{0}</m>.
+		</p>
+
+		<p>
+			Division can be done in a similar manner and perhaps surprisingly,
+			addition and subtraction are more difficult due to the fact that the
+			exponents of the two numbers need to be equal before adding and
+			subtracting.
+		</p>
+	</section>
+
+	<section>
+		<title>Floating Point Numbers of a given size</title>
+		<p>
+			The reason for using floating point numbers in calculations is twofold.
+			First, there is a finite size of storage for a number and secondly,
+			routines for performing operations on floating-point numbers are fast
+			and usually encoded on a computer chip.
+		</p>
+
+		<p>
+			Consider a floating point of a given size, say 64 bits generally called
+			a <em>double precision floating point number</em>. The first bit is
+			generally used for the sign, the next 11 are the exponent and the final
+			52 bits store the mantissa. A floating point number has two limitations
+			and that is the precision (how many digits that can be stored) and the
+			magnitude (the largest number). Double precision numbers are store in
+			binary and converted to decimal with the form:
+		</p>
+
+		<p>
+			<me>
+				(-1)^{s} 2^{c-1023}(1+f)
+			</me>
+		</p>
+
+		<p>
+			where <m>s</m> is the sign <m>c</m> is the exponent and <m>f</m> stores the mantissa. For example, consider the following number:
+		</p>
+
+		<p>
+			<me>
+				0\;10000000101\;0111011010000000000000000000000000000000000000000000
+			</me>
+		</p>
+
+		<p>
+			where spaces separate out <m>s</m>, <m>c</m> and <m>f</m>. Converting <m>c</m> to decimal:
+		</p>
+
+		<p>
+			<me>
+				c = 1 \cdot 2^{10} + 0 \cdot 2^{9} + \cdots + 1 \cdot 2^{2} + 0 \cdot 2^{1} + 1 \cdot 2^{0} = 1029
+			</me>
+		</p>
+
+		<p>
+			The mantissa is calculated in the following way
+		</p>
+
+		<p>
+			<md>
+				<mrow>f &amp; =  0 \cdot \biggl(\dfrac{1}{2}\biggr)^{1} + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{2} + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{3} + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{4} + 0 \cdot \biggl(\dfrac{1}{2}\biggr)^{5} + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{6} </mrow>
+				<mrow>&amp; \qquad + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{7} + 0 \cdot \biggl(\dfrac{1}{2}\biggr)^{8} + 1 \cdot \biggl(\dfrac{1}{2}\biggr)^{9} = \frac{237}{512}</mrow>
+			</md>
+		</p>
+
+		<p>
+			and thus the floating point number is:
+			<me>
+				(-1)^{0} 2^{1029-1023} \left(1+\dfrac{237}{512}\right) = 93.625
+			</me>
+		</p>
+
+		<p>
+			The double precision number system falls into a class of number systems
+			that we can commonly call floating-point number systems.
+		</p>
+	</section>
+</appendix>
+<!--
+%
+%
+%
+%
+%For binary storage, however, a standard 8-bit integer has a sign (+ or -), so generally the first bit is used to store the sign, so only the last 7 bits are used to store the number.  For example in a 8-bit environment,
+%\begin{center}
+%\begin{tikzpicture}[scale=0.5]
+%\draw(0,0) grid(8,1);
+%\foreach \i in {1,...,8} \draw ({\i-0.5},0.5) node {0};
+%\end{tikzpicture}
+%\end{center}
+%represents the number 0 and
+%\begin{center}
+%\begin{tikzpicture}[scale=0.5]
+%\draw(0,0) grid(8,1);
+%\draw(0.5,0.5) node {0};
+%\foreach \i in {2,...,8} \draw ({\i-0.5},0.5) node {1};
+%\end{tikzpicture}
+%\end{center}
+%is the largest 8-bit integer or 127.
+%
+%
+%
+%Negative numbers are a bit different.  If we enter <c>bitstring(Int8(-1))</c>, you'll probably be surprised to see <c>print(bitstring(Int8(-1)))</c> \printpythontex[verb].  The first bit is a 1, indicating a negative number, however, the rest looks like the number 127 above.
+%
+%I find a better way of thinking about negative integers in different light.  Let's look at <m>+127</m> first, which again has the representation in the box above.
+%
+%If we add 1 to this as <m>00000001_2</m>, we would get <m>10000000_2</m>.  What number is this?  If we look at the
+%
+%
+% -->

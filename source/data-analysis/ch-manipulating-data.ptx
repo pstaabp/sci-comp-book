@@ -1,0 +1,969 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-manipulating-data">
+	<title>Manipulating DataFrames</title>
+
+	<introduction>
+		<p>
+			A typically workflow with a dataframe is to start with some data, manipulate the data, perform some calculations, perhaps plot the result.  In this section, we will see how to perform calculations (as known as transforming the dataset) as well as a very standard split-transform-combine operations, which takes a dataset, splits it into multiple sets based on some characteristics, transform the smaller sets and then combine the results.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Subsets of DataFrames</title>
+
+		<introduction>
+			<p>
+				The typical subsets of a DataFrame are either limiting the columns or the rows in some sense. Let's return to the very simple DataFrame from the previous chapter.
+			</p>
+
+			<p>
+				<cd>
+				<cline>data = DataFrame(</cline>
+				<cline>  A = 1:2:13,</cline>
+				<cline>  B = ["M", "F", "F", "M", "X", "F", "M"],</cline>
+				<cline>  C = [3.0, 2.5, pi, -2.3, 1/3, 56, 100],</cline>
+				<cline>  D = [(-1)^n//n for n=1:7]</cline>
+				<cline>)</cline>
+				</cd>
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Subsets of Columns</title>
+
+			<p>
+				We can select only the columns <c>A</c> and <c>D</c> in the following way:
+			</p>
+
+			<p>
+				<cd> data[:,[:A,:D]] </cd>
+			</p>
+
+			<p>
+				which returns
+			</p>
+
+			<p>
+				<cd>
+				<cline>7×2 DataFrame</cline>
+				<cline>  Row  A      D</cline>
+				<cline>       Int64  Rational…  </cline>
+				<cline>  1    1      -1//1</cline>
+				<cline>  2    3      1//2</cline>
+				<cline>  3    5      -1//3</cline>
+				<cline>  4    7      1//4</cline>
+				<cline>  5    9      -1//5</cline>
+				<cline>  6    11     1//6</cline>
+				<cline>  7    13     -1//7</cline>
+				</cd>
+			</p>
+
+			<p>
+				Alternatively, we can (and generally will) use the <c>select</c> command, which is in the <c>DataFrames</c> package.  The follow gives the same results as above.
+			</p>
+
+			<p>
+				<cd>
+				<cline>select(data, :A, :D)</cline>
+				</cd>
+			</p>
+
+			<p>
+				Lastly, we are going to typically put all of these command in a <c>@chain</c> block, like the following:
+			</p>
+
+			<p>
+				<cd>
+				<cline>@chain data begin</cline>
+				<cline>  select(:A, :D)</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				which also produces the same result.  For this example, this is overkill because it is just a single command on the variable <c>data</c> and using <c>@chain</c> generally only pays off when you apply many commands together.
+			</p>
+
+			<p>
+				The <c>Not</c> and <c>Between</c> functions are helpful as well for select columns. For example,
+			</p>
+
+			<p>
+				<cd>
+				<cline>@chain data begin</cline>
+				<cline>  select(Not(:B))</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns the columns <c>A, C</c> and <c>D</c>. The command
+			</p>
+
+			<p>
+				<cd>
+				<cline>@chain data begin</cline>
+				<cline>  select(Between(:B,:D))</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns the last 3 columns of the DataFrame.  There are other ways of subsetting by columns including passing in a Regular Expression, which can also be helpful.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Filtering (or Subsetting) Rows</title>
+
+		<p>
+			A common method with DataFrames is to filter the rows by some condition.  If you want to return the first few rows, the last few rows or a sequence of them, we can use the same technique from <xref ref="ch-arrays"/>.  For example, if we only want the first three rows, use <c>data[1:3,:]</c> and if we only want rows 5 to the end, use <c>data[5:end,:]</c>.  If we want the odd rows, then <c>data[1:2:end,:]</c>.
+		</p>
+
+		<p>
+			The <c>first</c> and <c>last</c> commands from the <c>DataFrames</c> package is also helpful. The first 3 rows can be found with <c>first(data, 3)</c> and similarly, the last 4 rows can be returned with <c>last(data, 4)</c>.  Use of these is nice within a <c>@chain</c> block in that the previous technique is a bit more difficult.
+		</p>
+
+		<p>
+			There is a <c>filter</c><fn>The syntax of the filter command is similar to that for vectors and not the same as the rest of the other functions in Dataframes, so <c>subset</c> is preferred. With effort, however, <c>filter</c> can be used with DataFrames.</fn> however, we will use the <c>subset</c> function instead.  We'll take a look at a number of examples of this within a <c>@chian</c> block. To begin with, the following returns all rows where values in the <c>A</c> column is less than 10.
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  subset(:A =&gt; a-&gt; a .&lt; 10)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and this returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>5×4 DataFrame</cline>
+			<cline>  Row  A      B       C         D</cline>
+			<cline>       Int64  String  Float64   Rational…</cline>
+			<cline>  1    1      M       3.0       -1//1</cline>
+			<cline>  2    3      F       2.5       1//2</cline>
+			<cline>  3    5      F       3.14159   -1//3</cline>
+			<cline>  4    7      M       -2.3      1//4</cline>
+			<cline>  5    9      X       0.333333  -1//5</cline>
+			</cd>
+		</p>
+
+		<p>
+			There is a lot packed into this command.  First of all, notice that we want to subset on the <c>A</c> column so we use <c> :A =&gt; </c> the rest of this is a function and we use an anonymous function that returns a boolean.  Actually, it is a vector of booleans.  Recall that select a column of a DataFrame is a vector and select expects a boolean vector to do the filtering.  This is which there is a <c>.&lt;</c> instead of a <c>&lt;</c>.  Remove the <c>.</c> and you'll see that there is an error.
+		</p>
+
+		<p>
+			For our next example, we select all rows where column <c>B</c> equals "F". This can be accomplished with
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  subset(:B =&gt; b-&gt; b .== "F")</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			which returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>5×4 DataFrame</cline>
+			<cline>  Row  A      B       C         D</cline>
+			<cline>       Int64  String  Float64   Rational…</cline>
+			<cline>  1    3      F       2.5       1//2</cline>
+			<cline>  2    5      F       3.14159   -1//3</cline>
+			<cline>  3    11     F       56.0      1//6</cline>
+			</cd>
+		</p>
+
+		<p>
+			We can also subset by combinations of columns.  For the next example, we'll find where the product of columns <c>C</c> and <c>D</c> are greater than 2.  We do this with
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  subset([:C, :D] =&gt; (c, d) -&gt; c .* d .&gt; 2)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			which returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>5×4 DataFrame</cline>
+			<cline>  Row  A      B       C         D</cline>
+			<cline>       Int64  String  Float64   Rational…</cline>
+			<cline>  1    11     F       56.0      1//6</cline>
+			</cd>
+		</p>
+
+		<p>
+			The broadcasting notation can be a bit tricky although nearly always one can write a <c>.</c> in front of operators or append a <c>.</c> to the end of function names.  See <xref ref="sect-broadcasting"/> for more details. Recall that the macro <c>@.</c> will take an expression and vectorize (or broadcast it).  Entering
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  subset([:C, :D] =&gt; (c, d) -&gt; @. c * d &gt; 2)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			Returns the same result as above.  Also, in the <c>DataFrames</c> package, there is a function called <c>ByRow</c> that will perform a row-by-row version of a function which is often needed.  The following
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  subset([:C, :D] =&gt; ByRow((c, d) -&gt; c * d &gt; 2))</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			also returns the same DataFrame.
+		</p>
+
+		<exercise>
+			<p>
+				Using the <c>iris</c> dataset, find all <c>setosa</c> irises (look at the Species column) with <c>SepalWidth</c> larger than 4.  How many are there in the dataset?
+			</p>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Transforming DataFrames</title>
+
+		<p>
+			Another important technique needed with DataFrames is that of a transformation.  In general, this means that a new column is created that is a function of one or more columns. There are two commands using DataFrames that transform dataframes, <c>select</c> and <c>transform</c>. The first is used to create a new DataFrame with generally only one or more transformed columns. The <c>transform</c> method includes the original dataframe with the extra columns defined as the transformation.  We'll see the difference here.
+		</p>
+
+		<p>
+			If we generate a new DataFrame which is just the square of the <c>A</c> column as
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  select(:A =&gt; a -&gt; a.^2)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and this returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>7×1 DataFrame</cline>
+			<cline>  Row  A_function</cline>
+			<cline>       Int64</cline>
+			<cline>  1    1</cline>
+			<cline>  2    9</cline>
+			<cline>  3    25</cline>
+			<cline>  4    49</cline>
+			<cline>  5    81</cline>
+			<cline>  6    121</cline>
+			<cline>  7    169</cline>
+			</cd>
+		</p>
+
+		<p>
+			Notice that the only column in the resulting DataFrame is the new column and it has the column name formed by appending <c>_function</c> to the column name. We can give the column a better name setting this with the fat arrow <c>=&gt;</c> such as
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  select(:A =&gt; (a -&gt; a.^2) =&gt; :Asq)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and now the column has the name <c>Asq</c>.  Note that the parentheses around the anonymous function is needed due to order of operations.  Remove them to see the effect.
+		</p>
+
+		<p>
+			In contrast if we use the <c>transform</c> method, then the original matrix is preserved and the new columns is added at the end.
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  transform(:A =&gt; (a -&gt; a.^2) =&gt; :Asq)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			results in
+		</p>
+
+		<p>
+			<cd>
+			<cline>7×5 DataFrame</cline>
+			<cline>  Row  A      B       C         D          Asq</cline>
+			<cline>       Int64  String  Float64   Rational…  Int64  </cline>
+			<cline>  1    1      M       3.0       -1//1      1</cline>
+			<cline>  2    3      F       2.5        1//2       9</cline>
+			<cline>  3    5      F       3.14159   -1//3      25</cline>
+			<cline>  4    7      M       -2.3       1//4       49</cline>
+			<cline>  5    9      X       0.333333  -1//5      81</cline>
+			<cline>  6    11     F       56.0       1//6       121</cline>
+			<cline>  7    13     M       100.0     -1//7      169</cline>
+			</cd>
+		</p>
+
+		<p>
+			Both <c>select</c> and <c>transform</c> can use multiple columns.  The following example, takes the product between columns <c>C</c> and <c>D</c>.
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  select([:C, :D] =&gt; ((c,d) -&gt; @. c*d) =&gt; :prod)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			where the macro <c>@.</c> has been used instead of using <c>.*</c>.  This returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>7×1 DataFrame</cline>
+			<cline>  Row  prod</cline>
+			<cline>       Float64</cline>
+			<cline>  1    -3.0</cline>
+			<cline>  2    1.25</cline>
+			<cline>  3    -1.0472</cline>
+			<cline>  4    -0.575</cline>
+			<cline>  5    -0.0666667</cline>
+			<cline>  6    9.33333</cline>
+			<cline>  7    -14.2857</cline>
+			</cd>
+		</p>
+
+		<p>
+			Note: there are also commands <c>select</c> and <c>transform</c> that perform the operations within the given dataframe.  This can be destructive, but can save a lot of computational time for large DataFrames.  It is recommended to stay with the non mutating (without the !) versions unless you need to save time/memory.
+		</p>
+
+		<exercise>
+			<p>
+				Using the <c>iris</c> dataframe produce a new column called <c>area</c> which is the area of a petal using the <c>PetalLength</c> and <c>PetalWidth</c> variables and the area of an ellipse.
+			</p>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Sorting DataFrames</title>
+
+		<p>
+			The <c>DataFrames</c> package also provides easy ways to sort.  If we want to sort by the C column, we can do
+		</p>
+
+		<p>
+			<cd>
+			<cline>sort(data, :C)</cline>
+			</cd>
+		</p>
+
+		<p>
+			or staying within a <c>@chain</c> block
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  sort(:C)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the results are
+		</p>
+
+		<p>
+			<cd>
+			<cline>7×4 DataFrame</cline>
+			<cline>  Row  A      B       C         D</cline>
+			<cline>       Int64  String  Float64   Rational…</cline>
+			<cline>  1    7      M       -2.3      1//4</cline>
+			<cline>  2    9      X       0.333333  -1//5</cline>
+			<cline>  3    3      F       2.5       1//2</cline>
+			<cline>  4    1      M       3.0       -1//1</cline>
+			<cline>  5    5      F       3.14159   -1//3</cline>
+			<cline>  6    11     F       56.0      1//6</cline>
+			<cline>  7    13     M       100.0     -1//7</cline>
+			</cd>
+		</p>
+
+		<p>
+			where the datatype determines the way to sort. Note that the rows are preserved. This is different than when we saw in <xref ref="ch-arrays"/> which sorted every column in either increasing or decreasing order. In the case of sorting by column C, it is numerically in increasing order. If we want the reverse:
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  sort(:C, rev = true)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			Julia will detect the datatype automatically.  If we sort by column B, via
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  sort(:B)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			the result is
+		</p>
+
+		<p>
+			<cd>
+			<cline>7×4 DataFrame</cline>
+			<cline>  Row  A      B       C         D</cline>
+			<cline>       Int64  String  Float64   Rational…</cline>
+			<cline>  1    3      F       2.5        1//2</cline>
+			<cline>  2    5      F       3.14159   -1//3</cline>
+			<cline>  3    11     F       56.0       1//6</cline>
+			<cline>  4    1      M       3.0       -1//1</cline>
+			<cline>  5    7      M       -2.3       1//4</cline>
+			<cline>  6    13     M       100.0     -1//7</cline>
+			<cline>  7    9      X       0.333333  -1//5</cline>
+			</cd>
+		</p>
+
+		<p>
+			which sorts lexiographically automatically.  Notice that the other items are not sorted or kept in the same order as original.  If we want to sort by another column, say <c>:D</c>, we can do
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  sort([:B,:D])</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			where the column names are placed inside an array.
+		</p>
+	</section>
+
+	<section>
+		<title>Joining DataFrames</title>
+
+		<p>
+			Often, data is split between different tables (or files) and they need to be joined before doing analysis. Let's revisit the dataset from <xref ref="ch-data"/>:
+		</p>
+
+		<p>
+			<cd>
+			<cline>simpsons = DataFrame(</cline>
+			<cline>  name=["Homer","Marge","Lisa","Bart","Maggie","Apu","Moe", "Milhouse", "Patty"],</cline>
+			<cline>  age =[45,42,8,10,1,38,59, 10, 46],</cline>
+			<cline>  current_school_grade = [missing, missing, 2, 4, missing, missing, missing, 4, missing],</cline>
+			<cline>  favorite_food = ["pork chops","casserole","salad","hamburger",missing,"saag paneer","peanuts", missing, "Lady Laramie 100s"]</cline>
+			<cline>)</cline>
+			</cd>
+		</p>
+
+		<p>
+			and a second dataset
+		</p>
+
+		<p>
+			<cd>
+			<cline>jobs = DataFrame(</cline>
+			<cline>  name = ["Homer","Marge","Apu","Moe", "Wiggam"],</cline>
+			<cline>  job = ["nuclear technician", "housewife", "store owner", "bartender", "police chief"],</cline>
+			<cline>  salary = [50_000, 25_000, 60_000, 15_000, 75_000]</cline>
+			<cline>)</cline>
+			</cd>
+		</p>
+
+		<p>
+			and we want to join these two together. In order to join two datasets, one of the columns in each dataframe needs to match. In this case, the column that makes most sense is the <c>name</c> column, which is common to both.  For this example, we'll use the <c>innerjoin</c> command and the keyword attributed <c>on</c> must be used with the format <c> col1 =&gt; col2 </c>, where <c>col1</c> is in the first DataFrame and <c>col2</c> in the second one. The column that the sets are joined on are called the <em>key</em> of the DataFrame.  The <c>innerjoin</c> command returns all rows in which the key is common to both datasets.  The inner part is like the intersection of two sets.  If we perform the following:
+		</p>
+
+		<p>
+			<cd>
+			<cline>innerjoin(data, simpsons, on = :name =&gt; :name)</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the result will be
+		</p>
+
+		<p>
+			<cd>
+			<cline>5×6 DataFrame</cline>
+			<cline>Row  name    age     current_school_grade  favorite_food     job                  salary</cline>
+			<cline>     String  Int64   Int64?                String?           String               Int64</cline>
+			<cline>1    Homer   45      missing               pork chops        nuclear technician   50000</cline>
+			<cline>2    Marge   42      missing               casserole         housewife            25000</cline>
+			<cline>3    Apu     38      missing               saag              paneer  store owner  60000</cline>
+			<cline>4    Moe     59      missing               peanuts           bartender            15000</cline>
+			<cline>5    Patty   46      missing               Lady Laramie 100s missing	             missing</cline>
+			</cd>
+		</p>
+
+		<p>
+			Note: in this case, because the column name on the the two dataframes are the same, you can just do <c>on = :name</c>.
+		</p>
+
+		<p>
+			You may be surprised that there are only 5 rows in this DataFrame, however, recall that <c>innerjoin</c> merges two DataFrames, by including only where the <c>name</c> column is in both of the two DataFrames. There are other ways to join Dataframes, and a summary is:
+		</p>
+
+		<p>
+			<dl>
+			<li>
+				<title><c>innerjoin</c></title>
+
+				<p>
+					the output contains rows for values of the key that exist in all passed data frames.
+				</p>
+			</li>
+
+			<li>
+				<title><c>leftjoin</c></title>
+
+				<p>
+					the output contains rows for values of the key that exist in the first (left) argument, whether or not that value exists in the second (right) argument.
+				</p>
+			</li>
+
+			<li>
+				<title><c>rightjoin</c></title>
+
+				<p>
+					the output contains rows for values of the key that exist in the second (right) argument, whether or not that value exists in the first (left) argument.
+				</p>
+			</li>
+
+			<li>
+				<title><c>outerjoin</c></title>
+
+				<p>
+					the output contains rows for values of the key that exist in any of the passed data frames.
+				</p>
+			</li>
+
+			<li>
+				<title><c>semijoin</c></title>
+
+				<p>
+					Like an inner join, but output is restricted to columns from the first (left) argument.
+				</p>
+			</li>
+
+			<li>
+				<title><c>antijoin</c></title>
+
+				<p>
+					The output contains rows for values of the key that exist in the first (left) but not the second (right) argument. As with semijoin, output is restricted to columns from the first (left) argument.
+				</p>
+			</li>
+
+			<li>
+				<title><c>crossjoin</c></title>
+
+				<p>
+					The output is the cartesian product of rows from all passed data frames.
+				</p>
+			</li>
+			</dl>
+		</p>
+
+		<p>
+			In the exmaple above, suppose we want a DataFrame with all keys (names).  In this case, we will use the <c>outerjoin</c> command.  If we evaluate:
+		</p>
+
+		<p>
+			<cd>
+			<cline>outerjoin(simpsons, jobs, on = :name)</cline>
+			</cd>
+		</p>
+
+		<p>
+			then the result is
+		</p>
+
+		<p>
+			<cd>
+			<cline>9×6 DataFrame</cline>
+			<cline>Row  name      age      current_school_grade  favorite_food      job                 salary</cline>
+			<cline>     String    Int64?   Int64?                String?            String?             Int64?</cline>
+			<cline>1    Homer     45       missing               pork chops         nuclear technician  50000</cline>
+			<cline>2    Marge     42       missing               casserole          housewife           25000</cline>
+			<cline>3    Apu       38       missing               saag paneer        store owner         60000</cline>
+			<cline>4    Moe       59       missing               peanuts            bartender           15000</cline>
+			<cline>5    Patty     46       missing               Lady Laramie 100s	missing             missing</cline>
+			<cline>6    Lisa      8        2                     salad              missing             missing</cline>
+			<cline>7    Bart      10       4                     hamburger          missing             missing</cline>
+			<cline>8    Maggie    1        missing               missing            missing             missing</cline>
+			<cline>9    Milhouse  10       4                     missing            missing             missing</cline>
+			<cline>10   Wiggam    missing  missing               missing            police chief        75000</cline>
+			</cd>
+		</p>
+	</section>
+
+	<section>
+		<title>Summarizing Data</title>
+
+		<p>
+			Generally one wants to summarize a large dataset to a few numbers to get a sense or for comparison purposes.  The <c>describe</c> does this, but in a fixed way.  A more general function to do this is called the <c>combine</c> function.  Consider the following:
+		</p>
+
+		<p>
+			<cd>
+			<cline>combine(data, :C =&gt; mean, :D =&gt; mean, :C=&gt;std, :C =&gt; length)</cline>
+			</cd>
+		</p>
+
+		<p>
+			which returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>1×4 DataFrame</cline>
+			<cline>  Row  C_mean    D_mean      C_std    C_length</cline>
+			<cline>       Float64   Rational…   Float64  Int64</cline>
+			<cline>1      23.2393   -319//2940  39.5518  7</cline>
+			</cd>
+		</p>
+
+		<p>
+			And this returns a new dataframe with 1 row and 4 columns (mean of C, mean of D, standard deviation of C and the number of rows in C).
+		</p>
+
+		<p>
+			We will also use combine after splitting a dataset for comparison purposes.  We'll do this below in <xref ref="sect-split-apply-combine"/>
+		</p>
+	</section>
+
+	<section>
+		<title>Multiple Steps on a DataFrame</title>
+
+		<p>
+			All of the previous examples in this chapter show a single step on a DataFrame.  However, typically this is not how operations on DataFrames are not done.  There are multiple steps. The next section will show this for a particular sequence of steps, but before moving onto that, let's look at a series of steps.  Consider the following steps:
+		</p>
+
+		<p>
+			<ol>
+				<li>
+					<p>
+						Merge/join the <c>simpsons</c> and <c>jobs</c> DataFrames as shown above.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Make a new column that is the salary column minus 400 times the age. Call it <c>happiness</c>.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Drop any rows in which the <c>happiness</c> is missing.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Filter out any rows with the <c>happiness</c> column is negative.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Include only the columns <c>name</c>, <c>age</c>, <c>favorite_food</c> and <c>happiness</c>
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Sort the result by happiness with largest values on top.
+					</p>
+				</li>
+			</ol>
+		</p>
+
+		<p>
+			We're going to set this up as a <c>@chain</c> block with a separate line for each step. First, setup the block and peform the merge using <c>innerjoin</c>.
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain simpsons begin</cline>
+			<cline>  innerjoin(jobs, on = :name)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			And this gives the merged dataset as above. Next, we'll use <c>transform</c> to create the <c>happiness</c> column.
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  innerjoin(simpsons, on = :A =&gt; :id)</cline>
+			<cline>  transform([:age, :salary] =  &gt; ((a, s) -&gt; @. s - 400*a) =&gt; :happiness)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			This will give a new column on the DataFrame with the calculation above.  Notice that there is a <c>missing</c> value because the <c>salary</c> is missing on that row.  For the next step, we add a <c>dropmissing</c> line like:
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  innerjoin(simpsons, on = :A =&gt; :id)</cline>
+			<cline>  transform([:C, :D, :salary] =&gt; ((c, d, s) -&gt; @. s + c*d) =&gt; :happiness)</cline>
+			<cline>  dropmissing(:happiness)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the result of this is the following:
+		</p>
+
+		<p>
+			<cd>
+			<cline>4×7 DataFrame</cline>
+			<cline>Row  name    age    current_school_grade  favorite_food  job                 salary  happiness</cline>
+			<cline>     String  Int64  Int64?                String?        String              Int64?  Int64</cline>
+			<cline>1    Homer   45     missing               pork chops     nuclear technician  50000   32000</cline>
+			<cline>2    Marge   42     missing               casserole      housewife           25000   8200</cline>
+			<cline>3    Apu     38     missing               saag paneer    store owner         60000   44800</cline>
+			<cline>4    Moe     59     missing               peanuts        bartender           15000   -8600</cline>
+			</cd>
+		</p>
+
+		<p>
+			Next, we want to only include the rows with positive <c>happiness</c> and we can add a <c>subset</c> command. Including this in the <c>@chain</c> block.
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  innerjoin(simpsons, on = :A =&gt; :id)</cline>
+			<cline>  transform([:C, :D, :salary] =&gt; ((c, d, s) -&gt; @. s + c*d) =&gt; :happiness)</cline>
+			<cline>  dropmissing(:happiness)</cline>
+			<cline>  subset(:happiness =&gt; h -&gt; h .&gt; 0)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and this drops the last row from the output above.  Note that we have use the broadcast on the greater than (<c>.&gt;</c>), however the <c>@.</c> could have also been used.
+		</p>
+
+		<p>
+			For the next step, we are only considering a few of the columns, and we can do this with the <c>select</c> command.  Adding this to the <c>@chain</c> block as
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  innerjoin(simpsons, on = :A =&gt; :id)</cline>
+			<cline>  transform([:C, :D, :salary] =&gt; ((c, d, s) -&gt; @. s + c*d) =&gt; :happiness)</cline>
+			<cline>  dropmissing(:happiness)</cline>
+			<cline>  subset(:happiness =&gt; h -&gt; h .&gt; 0)</cline>
+			<cline>  select(:name, :age, :favorite_food, :happiness)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			which results in
+		</p>
+
+		<p>
+			<cd>
+			<cline>4×7 DataFrame</cline>
+			<cline>Row  name    age    favorite_food  happiness</cline>
+			<cline>     String  Int64  String?        Int64</cline>
+			<cline>1    Homer   45     pork chops     32000</cline>
+			<cline>2    Marge   42     casserole      8200</cline>
+			<cline>3    Apu     38     saag paneer    44800</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the last step sorts by <c>happiness</c> with <c>rev = true</c> to sort largest to smallest
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain data begin</cline>
+			<cline>  innerjoin(simpsons, on = :A =&gt; :id)</cline>
+			<cline>  transform([:C, :D, :salary] =&gt; ((c, d, s) -&gt; @. s + c*d) =&gt; :happiness)</cline>
+			<cline>  dropmissing(:happiness)</cline>
+			<cline>  subset(:happiness =&gt; h -&gt; h .&gt; 0)</cline>
+			<cline>  select(:name, :age, :favorite_food, :happiness)</cline>
+			<cline>  sort(:happines, rev = true)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and this result is
+		</p>
+
+		<p>
+			<cd>
+			<cline>3×7 DataFrame</cline>
+			<cline>Row  name    age    favorite_food  happiness</cline>
+			<cline>     String  Int64  String?        Int64</cline>
+			<cline>1    Apu     38     saag paneer    44800</cline>
+			<cline>2    Homer   45     pork chops     32000</cline>
+			<cline>3    Marge   42     casserole      8200</cline>
+			</cd>
+		</p>
+	</section>
+
+	<section xml:id="sect-split-apply-combine">
+		<title>Split-Apply-Combine</title>
+
+		<p>
+			A common situation with data analysis is to have a dataset and you want to compare means or standard deviations within a dataset.  What needs to often happen is that you first split a dataset, do some analysis on each group then summarize.  This is know as <em>split-apply-combine</em>. We will demonstrate this with an example.  Let's return to the <c>iris</c> dataset that we loaded in the previous chapter.  Recall that the <c>RDatasets</c> package must be loaded and then load the dataset with
+		</p>
+
+		<p>
+			<cd>
+			<cline>iris = RDatasets.dataset("datasets","iris")</cline>
+			</cd>
+		</p>
+
+		<p>
+			First, we will split the dataset by the <c>Species</c> column using the <c>groupby</c> function in the <c>@chain</c> block as
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain iris begin</cline>
+			<cline>  groupby(:Species)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the result shows two DataFrames (actually <c>GroupedDataFrame</c>s), the first and last.  At the top of the output, it says <c>GroupedDataFrame with 3 groups based on key: Species</c> Even though we have ``split'' the dataset, it is all stored in a single variable of type <c>GroupedDataFrame</c>. It shows part of the first group and part of the last group.  This is mainly because of space for the output.
+		</p>
+
+		<p>
+			Next, we may want to compare the variables between these three groups. For example, to compare the mean of the <c>SepalLength</c> variable, we use the <c>combine</c> function like:
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain iris begin</cline>
+			<cline>  groupby(:Species)</cline>
+			<cline>  combine(:SepalLength =&gt; mean)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the result is
+		</p>
+
+		<p>
+			<cd>
+			<cline>3×2 DataFrame</cline>
+			<cline>Row  Species      SepalLength_mean</cline>
+			<cline>     Cat…         Float64</cline>
+			<cline>1    setosa       5.006</cline>
+			<cline>2    versicolor   5.936</cline>
+			<cline>3    virginica    6.588</cline>
+			</cd>
+		</p>
+
+		<p>
+			If we want the number of rows in each set:
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain iris begin</cline>
+			<cline>  groupby(:Species)</cline>
+			<cline>  combine(nrow)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			which shows that there are 50 rows in each subset. Notice that this is different than the previous example (mean of the SepalLength) in that no column is needed and the function <c>nrow</c> is applied to the entire Grouped Data Frame.
+		</p>
+
+		<p>
+			We can also use <c>combine</c> to produce many summarizing values. If we want the number of rows, the mean of the SepalLength, the standard deviation of the SepalWidth and the maximum of the PetalWidth, we can do this with one command as in
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain iris begin</cline>
+			<cline>  groupby(:Species)</cline>
+			<cline>  combine(nrow, :SepalLength =&gt; mean, :SepalWidth =&gt; std, :PetalWidth =&gt; maximum)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			resulting in
+		</p>
+
+		<p>
+			<cd>
+			<cline>3×5 DataFrame,</cline>
+			<cline>Row   Species     nrow     SepalLength_mean  SepalWidth_std  PetalWidth_maximum</cline>
+			<cline>      Cat…        Int64    Float64           Float64         Float64</cline>
+			<cline>1     setosa      50       5.006             0.379064        0.6</cline>
+			<cline>2     versicolor  50       5.936             0.313798        1.8</cline>
+			<cline>3     virginica   50       6.588             0.322497        2.5 </cline>
+			</cd>
+		</p>
+	</section>
+	<section>
+		<title>Summary of DataFrame Transformations</title>
+		<p>
+			The examples in this chapter are relatively simple.  <xref ref="ch-census"/> and <xref ref="ch-olympics"/> show more realistic data sets with a large census dataset and a olympic event dataset respectively, however use all of the techniques listed above.
+		</p>
+	</section>
+</chapter>

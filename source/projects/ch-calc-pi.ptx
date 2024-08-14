@@ -1,0 +1,1034 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-calc-pi">
+  <title>Calculating the digits of <m>\pi</m></title>
+
+  <introduction>
+    <p>
+      In <xref ref="sect-calc-pi-prob"/>, we saw a method to find the digits of <m>\pi</m> using random numbers.  You should have noticed that it was not a very good method in that it took a million or so random numbers to produce 3 digits of <m>\pi</m>.  In this chapter, we will explore ways to do it using Power Series, a way of representing functions using calculus.
+    </p>
+
+    <p>
+      Recall that a power series is a function of the form:
+    </p>
+
+    <p>
+      <me>
+        a_0+a_1 x + a_2 x^2 + \cdots = \sum_{n=0}^{\infty} a_n x^n
+      </me>
+    </p>
+
+    <p>
+      which is the sum of terms with nonnegative integer powers of <m>x</m> and an important aspect is that power series do not have a highest power.   Nearly every function can be represented by a power series.  The classic one is
+    </p>
+
+    <p>
+      <men xml:id="eq-geom-series">
+        \frac{1}{1-x} = 1+x+x^2+x^3 + \cdots
+      </men>
+    </p>
+
+    <p>
+      which is called the geometric series.
+    </p>
+  </introduction>
+
+  <section>
+    <title>Power Series of Arctangent</title>
+
+    <p>
+      We will see that the arctangent function and resulting power series can produce the digits of <m>\pi</m> to many digits.  Let's dive into the power series of arctangent.
+    </p>
+
+    <p>
+      If we let <m>u=-x^2</m> in <xref ref="eq-geom-series"/>, then
+    </p>
+
+    <p>
+      <md>
+        <mrow>\frac{1}{1+u^2} \amp = 1+(-u^2) +(-u^2)^2 + (-u^2)^3 + \cdots </mrow>
+        <mrow>\amp = 1-u^2 + u^4 - u^6 + \cdots</mrow>
+      </md>
+    </p>
+
+    <p>
+      Since the variable name doesn't matter, we can also write this in <m>x</m> as:
+    </p>
+
+    <p>
+      <me>
+        \frac{1}{1+x^2}  = 1-x^2+x^4-x^6 + \cdots
+      </me>
+    </p>
+
+    <p>
+      If we integrate both sides:
+      <md>
+        <mrow>\int \frac{1}{1+x^2}\, dx \amp = \int (1-x^2+x^4-x^6 + \cdots ) \, dx </mrow>
+        <mrow number="yes" xml:id="eq-arctan-ps"> \tan^{-1} x  \amp = x -\frac{x^3}{3} + \frac{x^5}{5} - \frac{x^7}{7} + \cdots </mrow>
+      </md>
+    </p>
+
+    <p>
+      and there is an integration constant, but it is 0, so we haven't shown it.
+    </p>
+
+    <p>
+      Now we can use the fact that <m>\tan^{-1} (1) = \pi/4</m>, so if substitute <m>x=1</m> into <xref ref="eq-arctan-ps"/>, then
+    </p>
+
+    <p>
+      <me>
+        \frac{\pi}{4} = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots
+      </me>
+    </p>
+
+    <p>
+      and multiplying through by 4 results in a power series representation of <m>\pi</m> or
+    </p>
+
+    <p>
+      <me>
+        \pi = 4\biggl(1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots \biggr)
+      </me>
+    </p>
+
+    <p>
+      We can estimate <m>\pi</m> using a few terms of the above series in julia with:
+    </p>
+
+    <p>
+      <cd>
+      <cline> 4*(1-1/3+1/5-1/7+1/9-1/11+1/13-1/15+1/17-1/19)</cline>
+      </cd>
+    </p>
+
+    <p>
+      and the results are <c>3.0418396189294032</c>, which hopefully you can tell is not so great.  Let's be more systematic about this though.
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+function calcPi(n::Integer)
+  n &gt; 0 || throw(ArgumentError("The input n must be positive."))
+  local sum = 1.0
+  for k=1:n
+    sum += (-1)^k/(2k+1)
+  end
+  4*sum
+end
+      </input>
+    </program>
+
+    <p>
+      for example, we can now determine 10,000 terms of this series with
+    </p>
+
+    <p>
+      <cd>
+      <cline>pi10_000 = calcPi(10_000)</cline>
+      </cd>
+    </p>
+
+    <p>
+      and get the results <c>3.1416926435905346</c>, which appears to be about 4 digits and actually, a better way to measure is if we have the function:
+    </p>
+
+    <p>
+      <cd>
+      <cline>absErr(x::Real)=abs(x-pi)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which just the absolute error of the approximation using the built-in value <c>pi</c>.  The error above is found with
+    </p>
+
+    <p>
+      <cd>
+      <cline>absErr(pi10_000)</cline>
+      </cd>
+    </p>
+
+    <p>
+      or <c>9.99900007414567e-5</c>
+    </p>
+
+    <p>
+      To see how good (or technically how poorly), this method is, let's look at the errors for a few different series or:
+    </p>
+
+    <p>
+      <cd>
+      <cline>errors = map(n -&gt; absErr(calcPi(10^n)),1:7)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>7-element Vector{Float64}:</cline>
+      <cline>  0.09072315581580082</cline>
+      <cline>  0.009900747481198291</cline>
+      <cline>  0.0009990007497511222</cline>
+      <cline>  9.99900007414567e-5</cline>
+      <cline>  9.999899927226608e-6</cline>
+      <cline>  9.999989813991306e-7</cline>
+      <cline>  9.999998829002266e-8</cline>
+      </cd>
+    </p>
+
+    <p>
+      A visual of this can be found with
+      <cd> scatter(1:7, -log10.(errors), legend=false) </cd>
+    </p>
+
+    <p>
+      where notice that we have taken the negative of the log of the errors to determine the number of digits of accuracy.  The plots is
+    </p>
+
+    <figure xml:id="fig-pi-atan-error">
+      <caption></caption>
+      <image source="plots/calc-pi/pi-atan-error.png">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      and this shows that every power of 10 more terms in the series results in about a 1 digit improvement in calculating <m>\pi</m>--this is because the slope of the line is about <m>1</m>.  Also since
+    </p>
+
+    <p>
+      <cd> @time calcPi(1_000_000) </cd>
+    </p>
+
+    <p>
+      which takes <c>0.077268 seconds</c> to get 20 digits of <m>\pi</m> would take <m>10^{14}</m> times longer than this or about 245,000 years.
+    </p>
+
+    <p>
+      In short, this is a terrible way to calculate <m>\pi</m>.
+    </p>
+  </section>
+
+  <section>
+    <title>Euler Improves this</title>
+
+    <p>
+      This section presents how Euler (the most prolific 18th century mathematician) improved on this.
+    </p>
+
+    <p>
+      You may recall that there is the following formula for the tangent of the sum of two values:
+    </p>
+
+    <p>
+      <me>
+        \tan(a+b) = \frac{\tan a + \tan b}{1-\tan a \tan b}
+      </me>
+    </p>
+
+    <p>
+      If we let
+    </p>
+
+    <p>
+      <md>
+        <mrow>a = \tan^{-1} \frac{1}{2} \amp b \amp = \tan^{-1} \frac{1}{3}</mrow>
+      </md>
+    </p>
+
+    <p>
+      then
+    </p>
+
+    <p>
+      <me>
+        \tan(a+b) = \frac{\frac{1}{2} + \frac{1}{3}}{1-\frac{1}{2}\frac{1}{3}} = \frac{\frac{5}{6}}{\frac{5}{6}} = 1
+      </me>
+    </p>
+
+    <p>
+      so
+    </p>
+
+    <p>
+      <md>
+        <mrow> a+b \amp  = \tan^{-1} 1 = \frac{\pi}{4} \qquad \text{or} </mrow>
+        <mrow xml:id="eq-euler-pi" number="yes"> \pi \amp = 4(a+b) = 4 \bigl( \tan^{-1} \frac{1}{2} + \tan^{-1} \frac{1}{3} \bigr) </mrow>
+      </md>
+    </p>
+
+    <p>
+      so if we use the power series in <xref ref="eq-arctan-ps"/>, we can hopefully improve on the approximation of <m>\pi</m>.
+    </p>
+
+    <p>
+      First, let's define:
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+    function atan_series(x::Real,n::Integer)
+      n &gt; 0 || throw(ArgumentError("The input n must be positive."))
+      local sum = x
+      for k=1:n
+        sum += (-1)^k*x^(2k+1)/(2k+1)
+      end
+      sum
+    end
+      </input>
+    </program>
+
+    <p>
+      which uses <c>n</c> terms of the power series of <m>\tan^{-1}</m> at the value <m>x</m>.
+    </p>
+
+    <p>
+      To estimate <m>\pi</m>, Let's just do 10 terms of this.
+    </p>
+
+    <p>
+      <cd>
+      <cline> 4*(atan_series(1/2,10)+atan_series(1/3,10))</cline>
+      </cd>
+    </p>
+
+    <p>
+      and this returns: <c>3.1415926704506854</c>, which if you don't remember the first 15 digits of <m>\pi</m>, the error is
+    </p>
+
+    <p>
+      <cd>
+      <cline>absErr(4*(atan_series(1/2,10)+atan_series(1/3,10)))</cline>
+      </cd>
+    </p>
+
+    <p>
+      which is <c>1.6860892237957614e-8</c> so this appears to converge much faster than the method in the previous section. If we repeat with 20 terms, the error is
+    </p>
+
+    <p>
+      <cd>
+      <cline>absErr(4*(atan_series(1/2,20)+atan_series(1/3,20)))</cline>
+      </cd>
+    </p>
+
+    <p>
+      which is <c>7.993605777301127e-15</c>, so about 14 digits.  You should notice that quite quickly, the value is converging.  Since we are quickly running out of precision for 64-bit floats, we will switch to <c>BigFloat</c>s and quite easily with:
+    </p>
+
+    <p>
+      <cd> 4*(atan_series(1/big(2),20)+atan_series(1/big(3),20)) </cd>
+    </p>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>3.141592653589801775394859982612606961085892242193168775435423632752985359741545</cline>
+      </cd>
+    </p>
+
+    <p>
+      Let's visually see how quickly this is converging.  First, we'll find the errors with:
+    </p>
+
+    <p>
+      <cd> errors2=map(n -&gt; absErr(4*(atan_series(1/big(2), 10n) + atan_series(1/big(3), 10n))), 1:5) </cd>
+    </p>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>5-element Vector{BigFloat}:</cline>
+      <cline>  1.686089269049955549324338738573041181676956757596130409476023763757476121934317e-08</cline>
+      <cline>  8.536932216599333104076888722842818062954460479040445168953455346681077569196179e-15</cline>
+      <cline>  5.541360098004753291440085860743946761847969162268014510791810751138256936210001e-21</cline>
+      <cline>  4.005347048909364704518520476811412326265959273017889120734252574465535050431139e-27</cline>
+      <cline>  3.075296346725383632749782433311833539450331895967037047902902585859740513243069e-33</cline>
+      </cd>
+    </p>
+
+    <p>
+      <cd> scatter(10:10:50, -log10.(errors2), legend=false) </cd>
+    </p>
+
+    <p>
+      which results in
+    </p>
+
+    <figure xml:id="fig-err-euler">
+      <caption></caption>
+      <image source="plots/calc-pi/error-euler.png">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      The slope of this line is about <m>0.6</m>, which implies that every 10 terms results in another 6 digits of accuracy.  Using the plot, we estimate that 100 digits would give an accuracy of over 60 digits and
+    </p>
+
+    <p>
+      <cd> @time absErr(4*(atan_series(1/big(2),100)+atan_series(1/big(3),100))) </cd>
+    </p>
+
+    <p>
+      took <c>0.000251 seconds</c> and has a accuracy of about 63 digits.
+    </p>
+
+    <p>
+      which  5 times as many digits and is much faster than the estimated 245,000 years that the previous method was predicted to take.
+    </p>
+
+    <p>
+      Since the default number of decimal digits for a <c>BigFloat</c> is about 78 decimal places, we again will quickly run out of precision.  Let's try to see about finding <m>\pi</m> to 1000 digits.  We're going to adjust the precision of <c>BigFloat</c>s, but instead of setting in everywhere we can set it on a block of code with
+    </p>
+
+    <p>
+      <cd>
+      <cline>setprecision(4096) do </cline>
+      <cline># run code here </cline>
+      <cline>end </cline>
+      </cd>
+    </p>
+
+    <p>
+      then the number of digits of precision can be seen with
+    </p>
+
+    <p>
+      <cd>
+      <cline>setprecision(4096) do </cline>
+      <cline>  length(string(1/big(3))) </cline>
+      <cline>end </cline>
+      </cd>
+    </p>
+
+    <p>
+      which creates the <c>BigFloat</c> 1/3, turns it to a string and finds the length.  The result is <c>1237</c>, so this is plenty to calculate to 1000 digits.
+    </p>
+
+    <p>
+      To estimate the number of terms needed for 1000 digits, a line fitting the data above is about <m>d=-0.625(n-20)-14</m>. So a little algebra for letting <m>d=-1000</m>, results in <m>20-984/-0.625= 1594</m> terms. Entering:
+    </p>
+
+    <p>
+      <cd>
+      <cline>setprecision(4096) do </cline>
+      <cline>  @show pi1000=4*(atan_series(1/big(2),1594)+atan_series(1/big(3),1594)) </cline>
+      <cline>  absErr(pi1000)</cline>
+      <cline>end  </cline>
+      </cd>
+    </p>
+
+    <p>
+      results in
+    </p>
+
+    <p>
+      <cd>
+      <cline>pi1000 = 4 * (atan_series(1 / big(2), 1594) + atan_series(1 / big(3), 1594)) = 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321714865601239565154256531508207949971669743165722740018351762297978126407660203701569790495607661311942951883071049126683863914353996276446515815532113161156858922687498386163189387937947070163492538574522358773840865866641344202158314334039229961783600168318495477941285685</cline>
+      <cline> 2.5975351095458754904195491157857696803622131507293634931295093187648738419240192667709752546427822529941468450549877713666966011614851313600669596886196498994143921672175459108290471960863459461639251291662232368565896246328120598260939106463457479630917174483761218561210120412869465176525005824807899438481196329993790493359900522454759482318202266105921331249007978097775724687956301642633550860637174924190228399842631614879639158046917042635291042631965291845166527036203452319813178296082929894900734880740547269432828997961816403444163166354514484699977363284177623290122184020750178932873624933570074682872942723076449879540864947698524422632479056630893008599428469562364494768790325744031011930601596329086026289242110179341279393200929314660273031057473081913078692798691499162555114494444741975803032974623739919031238086655685280832758980871795419698822680825529239750189369473347847251964195124706746244861133322038379060583915976636069455518781609572437864178386621806568957217481465862297442152542221932061173187093506126070914995792754149603406706779637343994385988667569337732890340690567393340395500287349361658707200982844137221365907346244068359959729947248038871713897283543740693133197921478035649291888640453449e-964</cline>
+      </cd>
+    </p>
+
+    <p>
+      The exponential terms is 10 to the  <m>-964</m>, that is about 964 digits of accuracy. Obviously this didn't find <m>\pi</m> to the required 1000 digits.  Our estimate was off a bit.  Before we adjust this, note that we are really just interested in the number of digits, we can find by taking the log of the result or more-specifically:
+    </p>
+
+    <p>
+      <cd>
+      <cline>numDigits(pi_approx::Real) = floor(Int,-log10(absErr(pi_approx)))</cline>
+      </cd>
+    </p>
+
+    <p>
+      So instead, let's
+    </p>
+
+    <p>
+      <cd>
+      <cline>setprecision(4096) do </cline>
+      <cline>  pi1000=4*(atan_series(1/big(2),1594)+atan_series(1/big(3),1594)) </cline>
+      <cline>  numDigits(pi1000)</cline>
+      <cline>end  </cline>
+      </cd>
+    </p>
+
+    <p>
+      which will return <c>963</c>.
+    </p>
+
+    <p>
+      Since the 1594 was an estimate, let's bump up the number of terms to 1700:
+    </p>
+
+    <p>
+      <cd>
+      <cline>@time setprecision(4096) do</cline>
+      <cline>  pi1000=4*(atan_series(1/big(2),1700)+atan_series(1/big(3),1700))</cline>
+      <cline>  numDigits(pi1000)</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      which showed the number of digits is 1027 and took 0.072266 seconds.
+    </p>
+  </section>
+
+  <section>
+    <title>Speed of the arctangent series</title>
+
+    <p>
+      Much of this chapter is about speed.  We want to be able to calculate <m>\pi</m> in a reasonable amount of time.  We can actually speed up the algorithm in a way similar to the Horner's form as in <xref ref="sect-horner" /> in the following way.  If we write <xref ref="eq-arctan-ps"/> in the following way:
+    </p>
+
+    <p>
+      <me>
+        \tan^{-1} = x \biggl(1-x^2\biggl(\frac{1}{3}-x^2 \biggl(\frac{1}{5} -x^2 \biggl(\frac{1}{7} -x^2\biggl(\cdots \biggr)\biggr)\biggr)\biggr)\biggr)
+      </me>
+    </p>
+
+    <p>
+      we can sum this faster.  Consider
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+    function atan_series2(x::Real,n::Integer)
+      n &gt; 0 || throw(ArgumentError("The input n must be positive."))
+      local negxsq = -x^2
+      local sum = 1.0
+      local ak = 1.0
+      for k=2:n
+        ak *= negxsq
+        sum += ak/(2k-1)
+      end
+      x*sum
+    end
+      </input>
+    </program>
+
+    <p>
+      Some of the ways this speeds up is by first calculating <m>-x^2</m> and this is the only power of <m>x</m> calculated.  Then sums of this term are made.  To test the speed, let's first use the <c>BenchmarkTools</c> package and repeat the example above:
+    </p>
+
+    <p>
+      <cd>
+      <cline>@btime setprecision(2^14) do </cline>
+      <cline>  numDigits(4*(atan_series(1/big(2),1700)+atan_series(1/big(3),1700))) </cline>
+      <cline>end </cline>
+      </cd>
+    </p>
+
+    <p>
+      which results in <c>395.834 ms</c>and using the new series with
+    </p>
+
+    <p>
+      <cd>
+      <cline>@btime setprecision(2^14) do </cline>
+      <cline>  numDigits(4*(atan_series2(1/big(2),1700)+atan_series2(1/big(3),1700))) </cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      and this results in <c>39.631 ms</c> which is a 10 times speed enhancement.
+    </p>
+  </section>
+
+  <section>
+    <title>If I had a million <delete>dollars</delete> digits</title>
+
+    <p>
+      With apologies to the Barenaked Ladies,<fn>The <url href="https://en.wikipedia.org/wiki/Barenaked_Ladies" visual="">Barenaked Ladies</url> is a Canadian rock band, which the author was a fan of.  One of their biggest hits was <em>If I had a Million Dollars</em>.</fn> let's see how feasible it is to find <m>\pi</m> to a million digits.  First, we need to make sure that we use a large enough <c>BigFloat</c>.  If we try
+    </p>
+
+    <p>
+      <cd>
+      <cline>setprecision(2^14) do</cline>
+      <cline>  length(string(1/big(3))) </cline>
+      <cline>end </cline>
+      </cd>
+    </p>
+
+    <p>
+      using <m>2^{14}</m> or <c>16384</c> bits results in a <c>BigFloat</c> with <c>4936</c> decimal digits.  If you play with the power on the precision, note that we need a minimum of <m>2^{22}</m> binary digits, this should be enough.  However, note that at this level of precision, calculations slow down quite a bit.  For example,
+    </p>
+
+    <p>
+      <cd>
+      <cline>@time setprecision(2^22) do </cline>
+      <cline>  numDigits(4*(atan_series2(1/big(2),100)+atan_series2(1/big(3),100))) </cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      shows that the same 63 digits of accuracy took 13.153726 seconds.  Also, it can be checked that doubling the number of terms will double the number of digits as well as doubling the time.  It's estimated it would take 58 hours to use this method to find <m>\pi</m>  to 1 million digits.
+    </p>
+  </section>
+
+  <section>
+    <title>Machin's Formula and related Formulas</title>
+
+    <introduction>
+      <p>
+        The reason that Euler's formula worked much better that the first method is that it calculated the arctangents of <m>1/2</m> and <m>1/3</m>.  This converges relatively quickly in that power series are powers of <m>1/2</m> and <m>1/3</m>.  If we can develop similar formula for fractions closer to zero, this may converge even faster.
+      </p>
+
+      <p>
+        Machin in 1706 noticed the relationship
+      </p>
+
+      <p>
+        <men xml:id="eq-machin">
+          \frac{\pi}{4} = 4 \tan^{-1} \frac{1}{5} - \tan^{-1} \frac{1}{239}
+        </men>
+      </p>
+
+      <p>
+        and was able to extend what Euler did as well in a much more efficient manner as we will see below. There are a lot of known Machin-type formula that exist (and check out <url href="https://en.wikipedia.org/wiki/Machin-like_formula" visual="wikipedia">Wikipedia site</url> for some examples).  In the 1970s and 1980s with the accelerated power of computers, many mathematicians and computer scientists founds many other formulas like <xref ref="eq-machin"/>.   For example, in 1982, Kikuo Takano showed that
+      </p>
+
+      <p>
+        <md>
+          <mrow>\frac {\pi }{4} = \amp 12\arctan\biggl(\frac {1}{49}\biggr)+32\arctan\biggl(\frac {1}{57}\biggr)</mrow>
+          <mrow xml:id="eq-takano" number="yes"> \amp \qquad -5\arctan\biggl(\frac {1}{239}\biggr)+12\arctan\biggl(\frac {1}{110443}\biggr). </mrow>
+        </md>
+      </p>
+
+      <p>
+        And for <m>\pi</m>-day in 2024, Matt Parker<fn>A favorite of the author who has both a podcast and youtube channel with fascinating and entertiaining mathematical-related material.</fn> covened many people to hand calculate <m>\pi</m>.  This group used the following relationship:
+      </p>
+
+      <p>
+        <md>
+          <mrow>\frac{\pi}{4} = \amp 83 \tan^{-1} \frac{1}{107}+ 17 \tan^{-1} \frac{1}{1710} -22 \tan^{-1} \frac{1}{103697}  </mrow>
+          <mrow> \amp \qquad -24 \tan^{-1} \frac{1}{2513489} -44 \tan^{-1} \frac{1}{18280007883} </mrow>
+          <mrow> \amp \qquad +12 \tan^{-1} \frac{1}{7939642926390344818} </mrow>
+          <mrow xml:id="eq-parker" number="yes"> \amp \qquad + 22 \tan^{-1} \frac{1}{3054211727257704725384731479018} </mrow>
+        </md>
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Using Machin's Formulas to Calculate <m>\pi</m></title>
+
+      <p>
+        Notice that in <xref ref="eq-euler-pi"/>, <xref ref="eq-machin"/>, <xref ref="eq-takano"/> and <xref ref="eq-parker"/>, they are all linear combinations of integer coefficients with arctangents of 1 over an integer. Because of this, we can write the following Julia function to calculate all of these:
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+    function machin(coeffs::Vector{Int}, xvals::Vector{T},n::Int) where T &lt;: Integer
+      length(coeffs) == length(xvals) || throw(ArgumentError("The lengths of the vectors must match"))
+      local sum=big(0)
+      for i=1:length(coeffs)
+        sum += coeffs[i]*atan_series2(1/big(xvals[i]),n)
+      end
+      4*sum
+    end
+        </input>
+      </program>
+
+      <p>
+        Then for a testing example, we can reproduce the Euler formula with
+      </p>
+
+      <p>
+        <cd>
+        <cline>setprecision(2^14) do </cline>
+        <cline>  numDigits(machin([1,1],[2,3],100)) </cline>
+        <cline>end </cline>
+        </cd>
+      </p>
+
+      <p>
+        and this returns <c>62</c>. Use this on Machine's formula in <xref ref="eq-machin"/> and we'll put the precision back to handling a million digits and the following
+      </p>
+
+      <p>
+        <cd>
+        <cline>@time setprecision(2^22) do </cline>
+        <cline>  numDigits(machin([4,-1],[5,239], 100)) </cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        results in 141 digits of accuracy in <c>11.025900 seconds</c>. If we double the number of terms used from 100 to 200, the time roughly doubles to <c>19.208941 seconds.</c> and the number of terms goes to <c>352</c>.   This would seem to show that to get to million digits would take just about 19 hours, which is shorter than Euler's method, but not great.
+      </p>
+
+      <p>
+        If we apply the Takano's formula in <xref ref="eq-takano"/> with
+      </p>
+
+      <p>
+        <cd>
+        <cline>@time setprecision(2^22) do </cline>
+        <cline>  numDigits(machin([44,7,-12,24],[57,239,682,12943], 100)) </cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        this shows that we get 352 digits of accuracy in 16.688353 seconds.  Again, doubling the number of terms doubles both the accuracy (704 digits) and the time it takes (<c>27.553502 seconds</c>).  Again, extrapolating, Takano's method would take 10.87 hours to do 1 million digits.
+      </p>
+
+      <p>
+        And lastly, the formla that Matt Parker used in <xref ref="eq-parker"/> can be calculated with
+      </p>
+
+      <p>
+        <cd>
+        <cline>@time setprecision(2^22) do</cline>
+        <cline>  numDigits(machin([83,17,-22,-24,-44,12,22],</cline>
+        <cline>    [big(107),big(1710),big(103697),big(2513489),big(18280007883),big(7939642926390344818), big(3054211727257704725384731479018)], 100))</cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        which resulted in 407 digits of accuracy in <c>25.319640 seconds</c>.  Again, doubling the number of terms used doubled the accuracy to 813 digits and took <c>43.706857 seconds</c>.  Extrapolating this would result in a million digits in 14.93 hours.  Notice that each of these Machin's formulas are good, but would take quite a bit of computing time.  Notice that the method of Parker was slower than Takano's formula, but the goal of Matt Parker was to calculate this by hand using the formula.<fn>For a bit of a spoiler, the group calculated <m>\pi</m> to 120 digits during a week of work.</fn>
+      </p>
+    </subsection>
+  </section>
+
+  <section>
+    <title>The Chudnovsky Brothers and Ramanujan</title>
+
+    <introduction>
+      <p>
+        There is a fascinating article in the March 2, 1992 issue of the New Yorker magazine (provide ref)  A pair of brothers with last name Chudnovsky built a supercomputer out of mail-order parts in their New York City apartment with the goal of finding the digits of <m>\pi</m>.  They used the following series:
+      </p>
+
+      <p>
+        <men xml:id="eq-chud">
+          \frac{1}{\pi} = 12 \sum_{k=0}^{\infty} \frac{ (-1)^k (6k)! (545140134 k + 13591409)}{(3k)! (k!)^3 (640320^3)^{k+1/2}}
+        </men>
+      </p>
+
+      <p>
+        which was originally attributed to Ramanujan.<fn>I won't get into the details of the story here or Ramanujan, but the New Yorker story is a easy and great read and learning about Ramanujan is yet another wonderful tangent.</fn>
+      </p>
+
+      <p>
+        This equation can be written as
+      </p>
+
+      <p>
+        <md>
+          <mrow xml:id="eq-chud2" number="yes">\frac{1}{\pi} \amp = \frac{12}{\sqrt{640320^3}} \sum_{k=0}^{\infty} a_k (545140134 k + 13591409)</mrow>
+          <mrow xml:id="eq-chud3" number="yes">\amp = \frac{12}{\sqrt{640320^3}} \biggl( 545140134 \sum_{k=0}^{\infty} k a_k + 13591409 \sum_{k=0}^{\infty} a_k \biggr) </mrow>
+          <mrow>\amp \qquad \qquad \text{where}</mrow>
+          <mrow>a_k \amp = \frac{ (-1)^k (6k)!}{(3k)! (k!)^3 640320^{3k}}</mrow>
+        </md>
+      </p>
+
+      <p>
+        If we let
+      </p>
+
+      <p>
+        <me>
+          S = \biggl( 545140134 \sum_{k=0}^{\infty} k a_k + 13591409 \sum_{k=0}^{\infty} a_k \biggr)
+        </me>
+      </p>
+
+      <p>
+        then using <xref ref="eq-chud3"/> we can solve for <m>\pi</m> with:
+      </p>
+
+      <p>
+        <men xml:id="eq-chud-pi">
+          \pi = \frac{\sqrt{640320^3}}{12S}
+        </men>
+      </p>
+
+      <p>
+        We can do this in julia with the following:
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+    function chud(n::Integer)
+      sum = big(0)
+      for k=0:n
+        ak =  (-1)^k*factorial(big(6k))/factorial(big(3k))/ factorial(big(k))^3/ (big(640320)^3)^(k+0.5)
+        sum += big(545140134)*k*ak + big(13591409)*ak
+      end
+      1/(12sum)
+    end
+        </input>
+      </program>
+
+      <p>
+        and let's check out it's performance by a comparison to Takano's method above:
+      </p>
+
+      <p>
+        <cd>
+        <cline>@time setprecision(2^22) do </cline>
+        <cline>  numDigits(chud(20)) </cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        and the result shows that this calculates <m>\pi</m> to 297 digits and took 145 seconds.  Note that we only used 20 terms for this calculation.  Before, trying to determine the total time to get to 1 million digits, we can use some of the same techniques that we used to speed up the arctangent series in the function <c>atan_series2</c> as
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+    function chudnovsky(n::Integer)
+      local sum1 = big(1.0)
+      local sum2 = big(0.0)
+      local top = big(1)
+      local bottom = big(1)
+      local C = big(640320)^3
+      for k=1:n
+        top *= -24*(6*k-5)*(2*k-1)*(6*k-1)
+        bottom *= C*k^3
+        sum1 += top/bottom
+        sum2 += k * top/bottom
+      end
+      426880*sqrt(big(10005))/(13591409*sum1 + 545140134*sum2)
+    end
+        </input>
+      </program>
+
+      <p>
+        and computing the first 20 terms of this using:
+      </p>
+
+      <p>
+        <cd>
+        <cline>@time setprecision(2^22) do </cline>
+        <cline>  numDigits(chudnovsky(20)) </cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        results in the same 297 terms (which is good that we got the same results) in 7.862153 seconds.
+      </p>
+
+      <p>
+        and try with twice as many terms with:
+      </p>
+
+      <p>
+        <cd>
+        <cline>@time setprecision(2^22) do </cline>
+        <cline>  numDigits(chudnovsky(40)) </cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        and the result is 581 digits in 10.962281 seconds and if we go to 80 terms, then we get 1148 terms in 15.179335 seconds.  The relationship seems to be roughly linear, so we expect the total time to calculate <m>\pi</m> to a million digits would be about 3.67 hours.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>A parallel version of the Chudnovsky Algorithm</title>
+
+      <p>
+        All of the algorithms here in this chapter can be adapted for parallelization because the sums can be split into pieces to be distributed over multiple processors or cores.  If you need to, you may want to review the material in <xref ref="ch-parallel"/> for background on distributed computing in julia.
+      </p>
+
+      <p>
+        <cd> using Distributed </cd>
+      </p>
+
+      <p>
+        We rewrite the <c>chudnovsky</c> function so it can be parallelized. We want to be able to break up the sum in <xref ref="eq-chud2"/> to sum between <m>n_1</m> and <m>n_2</m>.
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+@everywhere function paraChud(n1::Integer,n2::Integer,prec::Integer)
+  setprecision(prec)
+  local C = big(640320)^3
+  local bottom = big(1)
+  local top = big(1)
+  for k=1:n1
+    bottom *= k^3*C
+    top *= -8*(6k-1)*(6k-3)*(6k-5)
+  end
+  local sum1 = n1*top/bottom
+  local sum2 = top/bottom
+  for k=n1+1:n2
+    bottom *= k^3*C
+    top *= -8*(6k-1)*(6k-3)*(6k-5)
+    sum1 += k*top/bottom
+    sum2 += top/bottom
+  end
+  545140134*sum1 + 13591409*sum2
+end
+        </input>
+      </program>
+
+      <p>
+        A number of comments about this function:
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <p>
+              On line 1, recall that <c>@everywhere</c> is needed for parallelization.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Also due to parallelization, we need to set the precision on each core/processor, so the precision is passed into the function and set on line 2.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Line 3--11, build up the values of <c>bottom</c> and <c>top</c> needed for the 2nd for loop.  These are needed because instead of actually calculating the factorial, we build up the values term by term.  Note, we also keep the terms <c>bottom</c> and <c>top</c> as <c>BigInt</c>s for speed instead of calculating each term as a <c>BigFloat</c>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              The <c>for</c> loop in lines 12--17 repeat the calculations for the terms, however in this case calculate the terms for <c>sum1</c> and <c>sum2</c>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              The number that is returned is the number in <xref ref="eq-chud2"/> in the parentheses for the terms <m>n_1</m> through <m>n_2</m>.  This doesn't return <m>\pi</m> because we need to add the terms up first.
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        An example of how to use this function (although not in a parallel fashion) is
+      </p>
+
+      <p>
+        <cd>
+          <cline>@time let</cline>
+          <cline>  prec = 2^22</cline>
+          <cline>  p1 = paraChud(0,9,prec)</cline>
+          <cline>  p2 = paraChud(10,19,prec)</cline>
+          <cline>  p3 = paraChud(20,29,prec)</cline>
+          <cline>  p4 = paraChud(30,39,prec)</cline>
+          <cline>  numDigits(sqrt(big(640320)^3)/(12*(p1+p2+p3+p4)))</cline>
+          <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns:
+      </p>
+
+      <p>
+        Note that <c>p1</c> through <c>p4</c> calculate 10 terms of the series each.  Then the last line is the equation <xref ref="eq-chud-pi"/> and for <m>\pi</m>.
+      </p>
+
+      <p>
+        To do parallelization, we can adapt from above using the <c>pmap</c> function, which recall, does parallel map.  We can repeat the above line as:
+      </p>
+
+      <p>
+        <cd>
+        <cline>@time setprecision(2^22) do </cline>
+        <cline>  local p = pmap(i -&gt; paraChud(10*(i-1),10i-1,2^22),1:4) </cline>
+        <cline>  local s = sum(p) </cline>
+        <cline>  numDigits(sqrt(big(640320)^3)/(12s)) </cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns nearly the same number of digits (597) in 8.644556 seconds just a bit smaller than the non parallel version.  The machine that I am using has 8 cores, so we'll change the end of the second line to <c>1:8</c> or
+      </p>
+
+      <p>
+        <cd>
+        <cline>@time setprecision(2^22) do </cline>
+        <cline>  local p = pmap(i -&gt; paraChud(10*(i-1), 10i-1, 2^22),1:8) </cline>
+        <cline>  local s = sum(p) </cline>
+        <cline>  numDigits(sqrt(big(640320)^3)/(12s)) </cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        which will double to the number of digits to 1134 in 11.959962 seconds.
+      </p>
+
+      <p>
+        Cranking up to a total of 800 terms with
+      </p>
+
+      <p>
+        <cd>
+        <cline>@time setprecision(2^22) do </cline>
+        <cline>  local p = pmap(i->paraChud(100*(i-1),100i-1,2^22),1:8) </cline>
+        <cline>  local s = sum(p) </cline>
+        <cline>  numDigits(sqrt(big(640320)^3)/(12s)) </cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        resulted in 11345 digits of accuracy in 48.279909 seconds and using this method would be predicted that we could calculate <m>\pi</m> to just over 1 million digits in about 71 minutes.  This was on my 8-core Macbook Air.  Just for comparison, the New Yorker article cited above mentioned that the Chudnovsky brothers computed <m>\pi</m> to more that 1 billion digits.  It didn't mention how long it took.
+      </p>
+
+      <p>
+        You can't just take the 18 minutes and multiply by 1000 to get to a billion digits because I used the floating-point precision that was just over a million and would have to scale that.
+      </p>
+
+      <exercise>
+        <task>
+          <statement>
+            <p>
+              Parallelize the <c>machin</c> and <c>atan_series2</c> functions above.  Note: you will need to do similar techniques to that in the <c>paraChud</c> function.
+            </p>
+          </statement>
+        </task>
+
+
+        <task>
+          <statement>
+            <p>
+              Test these by comparing to the non parallelized versions.
+            </p>
+          </statement>
+        </task>
+      </exercise>
+    </subsection>
+  </section>
+</chapter>

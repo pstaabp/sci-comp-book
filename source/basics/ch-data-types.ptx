@@ -1,0 +1,734 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-data-types">
+	<title>Introduction to Data Types</title>
+
+	<introduction>
+		<p>
+			In <xref ref="ch-variables"/>, we saw a little bit about number and string data types. This chapter goes into greater detail about numbers and other datatypes. It is important to understand how integer and floating point number are stored as their binary representation. We will cover this as well.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Integers</title>
+
+		<introduction>
+			<p>
+				Recall that mathematically, an <em>integer</em> is a counting number (<m>1,2,3, \ldots</m>) along with 0 and the negative counting numbers (<m>-1,-2,-3,\ldots</m>). Mathematically thinking, there is no largest (or smallest) integer, however, in reality if we are storing a number on a computer (which is a finite device), there must be a limit on the smallest and largest integers to be stored. Practically speaking, we will limit an integer to some number of bits and the standard sizes are 8, 16, 32, 64 and 128.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Unsigned Integers</title>
+
+			<p>
+				First, we will examine unsigned integers and typically these are thought of as the nonnegative integers (0,1,2,3, ...).  For example, 8-bit unsigned integers have a total of <m>2^8=256</m> nonnegative numbers and since the smallest is 0, the largest is 255.
+			</p>
+
+			<p>
+				In julia, the datatypes for unsigned integers are <c>UInt8, UInt16, UIint32, UInt64</c> and <c>UInt128</c>.  We can get the smallest and largest value for these with the <c>typemin</c> and <c>typemax</c> functions. <c>Int(typemin(UInt8))</c> and <c>Int(typemax(UInt8))</c> return <c>0</c> and <c>255</c> respectively. Note: the functions <c>typemin</c> and <c>typemax</c> on unsigned integers return values in hexadecimal.   The function <c>Int</c> converts to a decimal integer.
+			</p>
+
+			<p>
+				<xref ref="ch-num-rep"/> covers many of the details of representation integers in binary and performing basic operations.  We will cover the a superficial level of integer represenation and operations here in this chapter, but for those with desire for more depth see <xref ref="ch-num-rep"/>.
+			</p>
+
+			<p>
+				In julia, we can use the <c>bitstring</c> function to give the binary representation of integers and floating points.  For example
+				<cd>
+				<cline>bitstring(UInt8(18))</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>00010010</c>.   Notice that <c>bitstring(UInt8(255))</c> returns <c>11111111</c>.
+			</p>
+
+			<p>
+				Similarly, the unsigned integers with more bits work the same with largest range of integers. For example <c>bitstring(UInt64(100000))</c> returns
+			</p>
+
+			<p>
+				<cd>
+				<cline>"0000000000000000000000000000000000000000000000011000011010100000"</cline>
+				</cd>
+			</p>
+
+			<p>
+				which is a string of length 64.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Signed Integers</title>
+
+			<p>
+				In julia, the signed integers are <c>Int8, Int16, Iint32, Int64</c> and <c>Int128</c>. Also, there is a integer type <c>Int</c> which defaults to the sized integer of the typical integer size on your machine.  This is generally <c>Int64</c>.
+			</p>
+
+			<p>
+				Let's look in detail about 8-bit signed integers.  The largest and smallest values that can be stored with <c>Int8</c> can be found with <c>typemin(Int8)</c> and <c>typemax(Int8)</c>, which returns <c>-128</c> and <c>127</c> respectively.  Bascially the number between 0 and 127 are identical	between <c>Int8</c> and <c>UInt8</c>.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Overflow and Underflow of integer operations</title>
+
+			<p>
+				Again, unlike mathematical integers, any computer-based integer has a maximum and minimum values.  In short, if an operation results in a number above the maximum, then there is an overflow error and less than the minimum there is an underflow error.
+			</p>
+
+			<p>
+				Here's a simple example with 8-bit integers.  Let <c>x=Int8(95)</c> and <c>y=Int8(70)</c>. The sum of 95 and 70 is 165 and above the maximum value for <c>Int8</c>.  However, entering <c>x+y</c> results in <c>-91</c>, not either the expected result or an error.
+			</p>
+
+			<p>
+				What just happened?  If you want to know why the value of <c>-91</c> arose, dig into the details in <xref ref="ch-num-rep"/>, but the reason why there was no overflow error is that julia does not automatically check for such errors, due to the fact that there is overhead in checking, which will slow down operations.
+			</p>
+
+			<p>
+				If you want to check, there are a suite of operations that will check. For example <c>Base.checked_add(x,y)</c> will return
+				<cd>
+				<cline>ERROR: OverflowError: 95 + 70 overflowed for type Int8</cline>
+				</cd>
+			</p>
+
+			<p>
+				Go to <url href="https://docs.julialang.org/en/v1/base/math/#Base.Checked.checked_add" visual="docs.julialang.org">julia's documentation on <c>checked_add</c></url> which starts a list of functions that will check for over and underflow. If there is any chance of overflow/underflow errors, then the results may be wrong.  Keep this in mind as in <xref ref="ch-modules"/> we will write tests for code.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Floating Point Numbers</title>
+
+		<p>
+			Many fields in scientific computing rely on using decimals and the standard way to store these in a computer is with <em>floating point numbers</em>. Details on floating-point numbers are in <xref ref="ch-num-rep"/>. Julia has 16-,32- and 64-bit floating point numbers called <c>Float16, Float32</c> and <c>Float64</c> and by default on most systems is the <c>Float64</c>.
+		</p>
+
+		<p>
+			There are two limitations to any floating-point number.  First, the number of digits stored in the number and secondly, the maximum and minimum values. Each built-in type splits the number of bits into storing both and there is a balance between these.  A rule of thumb is that
+		</p>
+
+		<p>
+			<ul>
+				<li>
+					<p>
+						<c>Float16</c> stores 4 decimal digits and the max is about 65,000.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<c>Float32</c> stores 8 decimal digits and the max is about <m>10^{38}</m>.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<c>Float64</c> stores 16 decimal digits and the max is about <m>10^{307}</m>
+					</p>
+				</li>
+			</ul>
+		</p>
+
+		<p>
+			If you tried to find the largest values of these three types, you will notice that you get <c>Inf16, Inf32, Inf</c>, which are constants representing infinity in the three datatypes.   Instead try using the function <c>floatmax</c> on these three types and you will get the largest values that you can represent in these types.
+		</p>
+
+		<p>
+			We can using the <c>bitstring</c> function in julia to find the binary representation. Notice that
+			<cd>
+			<cline>bitstring(Float16(8.625))</cline>
+			</cd>
+			returns <c>"0100100001010000"</c>, which is a binary string of length 16. Again, details are in <xref ref="ch-num-rep"/> but, in short, a floating-point number is stored in scientific notation with the abscissa, exponent and the sign all combined together.
+		</p>
+
+		<p>
+			Unlike integers, most numbers cannot be stored exactly with a floating-point number. For example, <m>1/3</m> divides 1 by 3 and results in the floating-point number closest to the fraction <m>\frac{1}{3}</m>.  In julia this is <c>print(1/3)</c> and also note that <c>bitstring(1/3)</c> results in
+			<cd>
+			<cline>"0011111111010101010101010101010101010101010101010101010101010101"</cline>
+			</cd>
+		</p>
+
+		<p>
+			Notice that there are non-zero bits throughout the number in this case that didn't occur with 8.625.  This is because as a fraction 8.625 has a denominator of 8, which is a power of 2.  If a fraction can be written with such a denominator, the number in binary has 0s that pad the right end of the number.
+		</p>
+
+		<p>
+			What does this matter?  Well, consider the following:
+			<cd>
+			<cline>1/9+1/9+1/9+1/9+1/9+1/9+1/9+1/9+1/9</cline>
+			</cd>
+			which returns <c>1.0000000000000002</c>, which is not 1. This occurred because the closest floating point to the fraction 1/9 was just slightly above 1/9 and adding up 9 of those numbers results in the extra amount.  This is an example of the limitations of floating-point numbers and 1) either we deal with it or 2) use a different data type (in this case either a <c>BigFloat</c> or <c>Rational</c> would be better).
+		</p>
+
+		<p>
+			Unless you know you have some reason to choose otherwise, choose <c>Float64</c> for most floating-point numbers.  There are still underflow and overflow errors associated with it, but as we will see in <xref ref="ch-rootfinding"/>, generally round-off error associated with floating-point number is more detrimental to calculations.
+		</p>
+	</section>
+
+	<section>
+		<title>Extending integers, the <c>BigInt</c> type</title>
+
+		<p>
+			In <xref ref="ch-number-theory"/>, we will explore prime numbers and it is common for them to exceed the maximum allowable <c>Int64</c> or even <c>Int128</c>. If this is needed, there is a type called <c>BigInt</c> with no maximum or minimum. Here's the number <url href="https://www.imdb.com/name/nm0000478/?ref_=tt_ov_st_sm" visual="imdb.com">one google</url>
+			<cd>
+			<cline>big(10)^100</cline>
+			</cd>
+			which returns
+			<cd>
+			<cline>10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000</cline>
+			</cd>
+		</p>
+
+		<p>
+			This integer is 1 followed by 100 zeros is too big to fit on one line of this page.  Note: the command <c>big</c> create a <c>BigInt</c> and generally normal operations with integers result in <c>BigInt</c>s as well.
+		</p>
+
+		<p>
+			It's very important to understand how <c>big(10)^100</c> works.  First a number of type <c>BigInt</c> is made with a value of 10.  Then that is raised to the 100th power.  As noted earlier, a <c>BigInt</c> doesn't have a upper or lower limit on the number. It can grow as needed.
+		</p>
+
+		<p>
+			If instead, we enter <c>big(10^100)</c>, the result is <c>0</c>, a surprising result, however note that because of order of operations, first <c>10^100</c> is calculated in standard <c>Int64</c> and then turned into a <c>BigInt</c>. Again, for details on what happens here, look at <xref ref="ch-num-rep"/>, in short this continually multiplies the number ten, 100 times which results in overflow and as such results in 0.
+		</p>
+
+		<p>
+			It is recommended only to use a <c>BigInt</c> if needed.  Operations with them are significantly slower than <c>Int64</c> or even <c>Int128</c>.  Under few cases do you need to do this, however, we will point out in <xref ref="ch-number-theory"/> with prime numbers when we might need to use them.
+		</p>
+	</section>
+
+	<section>
+		<title>Extending Floating Point Numbers with <c>BigFloat</c></title>
+
+		<introduction>
+			<p>
+				As we discussed above, a floating point number has two limitations 1) the number of digits stored and 2) the maximum exponent used.  If we need numbers when the limit of either of these is in the way, we can turn to <c>BigFloat</c>. For example,  what if you want to calculate <m>\pi</m> to 100 or more digits. See <xref ref="ch-calc-pi"/> for details on how to do this.
+			</p>
+
+			<p>
+				To get a floating point number of type <c>BigFloat</c>, wrap the <c>big</c> function around a float.  For example <c>x=big(0.25)</c> returns <c>0.25</c> and we can verify it's type with <c>typeof(x)</c> which returns <c>BigFloat</c>.
+			</p>
+
+			<p>
+				Let's revisit an example from earlier and sum 1/9 nine times.  If we try to turn this into a <c>BigFloat</c> with <c>a=big(1/9)</c>, then the result is
+				<cd>
+				<cline>0.111111111111111104943205418749130330979824066162109375</cline>
+				</cd>
+			</p>
+
+			<p>
+				This seems to have an accuracy of only 17 digits, which is typical for a 64-bit floating point, so it doesn't appear to have improved anything.  This, like above, is a case of being careful in constructing a <c>BigFloat</c>. What happens with <c>big(1/9)</c>? Put on order-of-operations hat and let's take a look.  The <c>1/9</c> is done first and since both 1 and 9 are regular integers (<c>Int64</c>), the result is a <c>Float64</c>.  Then the <c>big</c> function turns the <c>Float64</c> into a <c>BigFloat</c>, but not we the accuracy expected.
+			</p>
+
+			<p>
+				Instead, if we define <c>a=big(1)/big(9)</c>, then we get
+				<cd>
+				<cline>0.1111111111111111111111111111111111111111111111111111111111111111111111111111109</cline>
+				</cd>
+			</p>
+
+			<p>
+				which looks more like an expected result. To determine the number of digits of accuracy, you can count (painfully) or try <c>length(string(a))</c> which will return <c>81</c>, which is about 5 times the accuracy of <c>Float64</c>. Technically if you type <c>precision(a)</c> and this returns 256, which is the number of bits and it has 4 times the binary precision of <c>Float64</c> but about 5 times the decimal precision.
+			</p>
+
+			<p>
+				Note: looking again at order of operations, the command <c>length(string(a))</c> first takes the number <c>a</c> and returns it as a <c>String</c>.  Then working inside to outside, find the length of the string.
+			</p>
+
+			<p>
+				As noted at the beginning of this section, though, if we want to compute <m>\pi</m> to 1 million decimal digits<fn>Don't peek yet, but, really, we will do this in <xref ref="ch-calc-pi"/>.</fn>, what we've seen so far only has about 80 digits of accuracy.  However, the <c>BigFloat</c> type is quite flexible. The above example used it in its default precision. We can change this with the <c>setprecision</c> function. For example:
+				<cd>
+				<cline>setprecision(2^10)</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns 1024, showing that now <c>BigFloat</c>s will be stored in this many bits.  Such a number will using 16 times the number of binary digits as a <c>Float64</c>. Entering <c>a2=big(1)/big(9)</c> returns
+				<cd>
+				<cline>0.111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</cline>
+				</cd>
+			</p>
+
+			<p>
+				a number that, at a glance, looks to store about 4 times the number of digits as the default <c>BigFloat</c> size. To determine the total number of decimal digits, if we enter
+				<cd> length(string(big(a2))) </cd>
+			</p>
+
+			<p>
+				returns <c>311</c> as the number of decimal digits. This is about 20 times the precision of <c>Float64</c>.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Limitations of <c>BigFloats</c></title>
+
+			<p>
+				Although a <c>BigFloat</c> stores more digits and allows a wider range of possible numbers, it still has a limitation.  Once you create a <c>BigFloat</c>, it uses the given precision from <c>setprecision</c> and cannot be changed. So typically, thought needs to be put in before using <c>setprecision</c> on what the desired level of precision that is needed.
+			</p>
+
+			<p>
+				Additionally, operations with <c>BigFloat</c>s are significantly slower that the <c>Float64</c> type and unless you need the extra precision, stay with the base type.
+			</p>
+		</subsection>
+	</section>
+
+	<section xml:id="sect-rational-numbers">
+		<title>Rational numbers</title>
+
+		<introduction>
+			<p>
+				A rational number is the ratio of integers and more commonly called a fraction. Julia (unlike many other general computing languages) has rational numbers built-in. To put in a ratio, enter a <c>//</c> to separate the numerator and denominator. For example:
+				<cd>
+				<cline>2//3</cline>
+				<cline>4//7</cline>
+				<cline>178//11</cline>
+				<cline>-1//2</cline>
+				</cd>
+			</p>
+
+			<p>
+				are examples of rational numbers. One advantage that they have is that the numerator and denominator are stored as integers (64-bit by default) and are not subject to round-off errors that floating points are. The standard operations <m>+,-,\cdot,\div</m> between rationals results in a rational and as we will see in this course, there are advantages to using rationals instead of floating points.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Exercise</title>
+
+			<exercise>
+				<introduction>
+					<p>
+						Perform the following operations involving rationals in Julia:
+					</p>
+				</introduction>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>\dfrac{1}{2} + \dfrac{2}{3}</m>
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>\dfrac{1}{2} - \dfrac{2}{3}</m>
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>\dfrac{2}{3} \cdot \dfrac{3}{5}</m>
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>\dfrac{2}{3} \div \dfrac{3}{5}</m>
+						</p>
+					</statement>
+				</task>
+			</exercise>
+		</subsection>
+
+
+		<subsection xml:id="sect-rational-type">
+			<title>The Rational Type</title>
+
+			<p>
+				If you enter <c>typeof(1//2)</c>, note that julia returns <c>Rational{Int64}</c> and this is called a <url href="https://docs.julialang.org/en/stable/manual/types/\#Parametric-Composite-Types-1" visual="docs.julialang.org"> Parametric Composite Type</url>, which will be talked about later. In this particular case, this is a rational type, but inside it (the numerator and denominator), they are type <c>Int64</c>. For example, to make a different type of rational you need to declare a different integer type inside, enter
+				<cd>
+				<cline>Int16(1)//Int16(2)</cline>
+				</cd>
+			</p>
+
+			<p>
+				and if you check the type of this, you will see it is of type <c>Rational{Int16}</c>.
+			</p>
+
+			<p>
+				Since operations with rational do not round off, like with floating-point numbers, you may want to consider using them.  For example, if we
+				<cd>
+				<cline>1//9+1//9+1//9+1//9+1//9+1//9+1//9+1//9+1//9</cline>
+				</cd>
+			</p>
+
+			<p>
+				results in <c>1//1</c>, which is actually the number 1 (written as a rational number).
+			</p>
+
+			<exercise>
+				<p>
+					Build the rational <m>\frac{1}{2}</m> with BigInts within it. Check that in fact it is stored as you expect.
+				</p>
+			</exercise>
+		</subsection>
+
+
+		<subsection xml:id="sect-other-operations-with-rationals">
+			<title>Other Operations with Rationals</title>
+
+			<p>
+				As long as you stay in the basic operations, <m>+,-,\cdot, \div</m>, the result will be a rational. However, many other operations are not. For example <c>sin(1//2)</c> will return a floating-point number. <c>(2//3)^3</c> will return a rational, since this is ultimately multiplication, but <c>(2//3)^(1//2)</c> will return a floating-point since raising a number to the <m>1/2</m> is the same as square root.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Limitations of Rational Numbers</title>
+
+			<p>
+				It seems like any time that you have fractions that you should simply use rational data types.  For example, let's say we want to add the following:
+				<cd>
+				<cline>1//1 + 1//2 + 1//3 + 1//4 + 1//5 + 1//6 + 1//7 + 1//8 + 1//9 + 1//10</cline>
+				</cd>
+				which we can write with the <c>sum</c> function that we will see in <xref ref="ch-functional-programming"/> as
+				<cd>
+				<cline>sum(i-&gt;1//i,1:10)</cline>
+				</cd>
+				and the result is <c>7381//2520</c>. This seems great, but if we sum the first 50 reciprocals with <c>sum(i-&gt;1//i,1:50)</c>, then the result is an overflow error. Note that rationals check for overflow and underflow, which is different than integers and floats which do not check.
+			</p>
+		</subsection>
+	</section>
+
+	<section xml:id="sect-complex-numbers">
+		<title>Complex Numbers</title>
+
+		<p>
+			Recall that the imaginary number <m>i</m> is defined as <m>\sqrt{-1}</m>. A complex number is a number of the form <m>a+bi</m> for <m>a</m> and <m>b</m> in general real numbers.  In julia, there is a built-in constant <c>im</c>, which can be used to create complex numbers. For example <c>z=1+2im</c> has type <c>Complex{Int64}</c>, which is a composite type with the values of the numbers <m>a</m> and <m>b</m> are <c>Int64</c>.
+		</p>
+
+		<p>
+			Complex numbers play a huge role in many aspects of scientific computing and in some cases, formulating a problem using complex numbers can make calculations faster and easier to program.  This includes the very important algorithm, fast-fourier transforms or better known as FFTs.  This and other examples are explained in <xref ref="ch-complex"/>.
+		</p>
+	</section>
+
+	<section xml:id="sect-abstract-type">
+		<title>Abstract and Concrete Number Types</title>
+
+		<introduction>
+			<p>
+				The numerical data types we have seen in this chapter are examples of <term>concrete data types</term> in that we can create data (usually numbers) with those types.  These include the integer types <c>Int8, Int16, Int32, Int64, Int128, BigInt</c> and floating-point versions <c>Float16, Float32, Float64, BigFloat</c>. The rational and complex types are composite, however the internal part is one of these types.
+			</p>
+
+			<p>
+				Julia is a bit different than other languages in that there are also <term>abstract data types</term> that 1) you can't make data in the type and 2) are collections of other types.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Abstract Number types</title>
+
+			<p>
+				For example, <c>Integer</c> is the abstract type (also called a supertype) of all integer types.  The other abstract number types are:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							<c>Signed</c>: supertype of all signed integers like <c>Int32, BigInt</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Unsigned</c>: supertype of all unsigned integers like <c>UInt32,UInt128</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Integer</c>: supertype of all signed and unsigned integers.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>AbstractFloat</c>: supertype of all floating-point numbers.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>AbstractIrrational</c>: supertype of irrational numbers.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Real</c>: supertype of all floating-point, rational, irrational and integer numbers.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Number</c>: supertype of all numbers.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				See a bare-bones description of all of <url href="https://docs.julialang.org/en/v1/base/numbers/" visual="docs.julialang.org"> Julia's standard number types</url>.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Concrete Number Types</title>
+
+			<p>
+				The numbers shown above are concrete number types like:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							<c>Float16</c>, <c>Float32</c>, <c>Float64</c>, <c>BigFloat</c> which are all subtypes of <c>AbstractFloat</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>UInt8</c>, <c>UInt16</c>,<c>UInt32</c>,<c>UInt64</c>,<c>UInt128</c>: which are all subtypes of <c>Unsigned</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Int8</c>, <c>Int16</c>, <c>Int32</c>, <c>Int64</c>, <c>Int128</c>, <c>BigInt</c>: which are all subtypes of <c>Signed</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Rational</c> types are subtypes of <c>Real</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Complex</c> types of subtypes of <c>Number</c>.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				To test if something is a subtype of another use the <c>&lt;:</c> operation. For example
+			</p>
+
+			<p>
+				<cd>
+				<cline>UInt8 &lt;: Integer</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>true</c>, but
+				<cd>
+				<cline>Float16 &lt;: Signed</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>false</c>.
+			</p>
+		</subsection>
+	</section>
+
+	<section xml:id="sect-convert-numbers">
+		<title>Converting numbers</title>
+
+		<introduction>
+			<p>
+				<c>float(x)</c> converts any type of number to a floating point, like
+			</p>
+
+			<p>
+				<cd> float(1//3) </cd>
+			</p>
+
+			<p>
+				returns <c>0.3333333333333333</c>
+			</p>
+
+			<p>
+				More generally is the <c>convert</c> method which has a template of <c>convert(TYPE,value)</c> which attempts to convert <c>value</c> to type <c>TYPE</c>.  We can also convert the rational <c>1//3</c> to a float with
+			</p>
+
+			<p>
+				<cd>
+				<cline>convert(Float64,1//3)</cline>
+				</cd>
+			</p>
+
+			<p>
+				and we can use this to convert say a 64-bit floating point to a 16-bit floating point with:
+			</p>
+
+			<p>
+				<cd>
+				<cline>convert(Float16,1/3)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which returns <c>Float16(0.3333)</c> Similarly, we can parse strings to different number types.  <c>parse(TYPE,str)</c> parses <c>str</c> of type <c>String</c> into a number of type <c>TYPE</c>.
+			</p>
+
+			<p>
+				<cd>
+				<cline>parse(Int,"1234")</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns the integer <c>1234</c> and
+				<cd>
+				<cline>parse(Float64,"1234")</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns the floating point <c>1234.0</c>.
+			</p>
+
+			<p>
+				If you have a number in another base, you can still parse it.  For example, consider the binary number 10011,
+				<cd>
+				<cline>parse(Int,"10011",base=2)</cline>
+				</cd>
+				results in <c>19</c>.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Converting to Integers</title>
+
+			<p>
+				If you have a floating point number or rational and you want to convert to an integer, typically use the <c>ceil</c>, <c>floor</c>, <c>round</c> functions. For example
+			</p>
+
+			<p>
+				<cd>
+				<cline>ceil(Int,3.2)</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns the integer <c>4</c>, since ceiling rounds up to the next integer.
+			</p>
+		</subsection>
+	</section>
+
+	<section xml:id="sect-tuples">
+		<title>Tuples</title>
+
+		<introduction>
+			<p>
+				Another type that allows one to combine two or more elements of data is called a tuple.  For example, if we want two floating points that are connected, we can make:
+				<cd>
+				<cline>(1,2)</cline>
+				</cd>
+			</p>
+
+			<p>
+				For example, this could be a way to store a geometric point.  Determining the data type with <c>typeof((1,2))</c> returns <c>Tuple{Int64, Int64}</c>, which is another example of a composite type.  The type is a <c>Tuple</c> but there are <c>Int64</c> types for the components of the tuple.
+			</p>
+
+			<p>
+				You can access the elements of the tuple using bracket notation.  If
+				<cd>
+				<cline>tup = (4,3,2,1)</cline>
+				</cd>
+			</p>
+
+			<p>
+				we can get the first element of <c>tup</c> with <c>tup[1]</c>.  Note, this is similar to array notation, which we will see in <xref ref="ch-arrays"/>.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Named Tuples</title>
+
+			<p>
+				Sometimes it's easier to associated the individual elements of a tuple with a name instead of an index.  We can generate a <em>named tuple</em> as
+			</p>
+
+			<p>
+				<cd>
+				<cline>pt=(x=1,y=3.2,z=9)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which would be like a point in three dimensions.  We can access the elements using dot notation, such as
+			</p>
+
+			<p>
+				<cd>
+				<cline>pt.x</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>1</c>.
+			</p>
+
+			<p>
+				Named tuples can be helpful to build complex datatypes, where there are multiple fields are associated with the same piece of data.  Another example might be if you have data associated with a person, such as
+			</p>
+
+			<p>
+				<cd>
+				<cline>p = (first_name = "Homer", last_name = "Simpson", age=45) </cline>
+				</cd>
+			</p>
+
+			<p>
+				where there are a mix of strings and integers in the same tuple.  This may be all that you need for an example like this, however, we will see more complex data types in <xref ref="ch-comp-types"/>, which creates a new data type.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Tuples are Immutable</title>
+
+			<p>
+				However, if we try to change one of the elements of a tuple, then an error will occur.
+				<cd>
+				<cline>p.age=46</cline>
+				</cd>
+				results in
+				<cd>
+				<cline>setfield!: immutable struct of type NamedTuple cannot be changed</cline>
+				</cd>
+			</p>
+
+			<p>
+				This is because tuples are immutable, meaning once created, any part of the tuple cannot be changed.
+			</p>
+		</subsection>
+	</section>
+</chapter>

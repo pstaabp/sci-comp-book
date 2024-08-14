@@ -1,0 +1,875 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-regexp">
+  <title>Regular Expressions</title>
+
+  <introduction>
+    <p>
+      Regular Expressions are useful for parsing strings.  From a scientific computing standpoint, we will use them to take a string and typically pull out numbers and other syntax. There will be two places that we will use regular expression. 1) to determine if a string matches some pattern and 2) extract information out of a string.  Often the first step will need to be done for the latter step.
+    </p>
+
+    <p>
+      As with much of this text, although the examples here will be done using Julia, regular expressions are ubiquitous and every language has support for them. In general they all use the same syntax for the regular expressions.
+    </p>
+  </introduction>
+
+  <section>
+    <title>Simple Pattern Matching</title>
+
+    <introduction>
+      <p>
+        Let's start with some examples of pattern matching.  If we want to determine if a string matches a pattern, we can use the exact string.  For example, let's see if a string matches <c>"cat"</c>.  We can do this with the <c>occursin</c> function like:
+      </p>
+
+      <p>
+        <cd>
+        <cline>occursin("cat","cat")</cline>
+        </cd>
+      </p>
+
+      <p>
+        which will return <c>true</c>. Of course, we don't need to use <c>occursin</c> to test that two strings are equal,
+      </p>
+
+      <p>
+        <cd>
+        <cline>"cat"=="cat"</cline>
+        </cd>
+      </p>
+
+      <p>
+        will do this. The <c>occursin</c> command will just determine if there is the first string somewhere inside the second string.  So <c>occursin("cat", "scatter")</c> will return <c>true</c>, but <c>occursin("cat", "cottage")</c> will return <c>false</c>.
+      </p>
+
+      <p>
+        We haven't used a regular expression yet.  In julia, we can make a regular expression by prepending a string with an <c>r</c>. For example, let's say that we want to a string to start with the string <c>"cat"</c>.  We can do this with
+      </p>
+
+      <p>
+        <cd>
+        <cline>occursin(r"^cat", "catalog")</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns <c>true</c>, however <c>occursin(r"^cat", "scatter")</c> will return <c>false</c>.  The <c>^</c> at the beginning of the regular expression indicates that the following characters must start the string.   Before going on, note that regular expressions are strings that are interpreted in a particular way.  With this example, we have seen that there are two types of characters, <term> special characters</term> like <c>^</c> and <term>regular characters</term>, like the letters of the latin alphabet.   The special characters have a meaning associated with them and regular characters do not have anything special.
+      </p>
+
+      <p>
+        Another special character is the <c>$</c> which means to match the end of the string.  So <c>occursin(r"cat$", "tigercat")</c> will return true, whereas <c>occursin(r"cat$", "catalog")</c> will return <c>false</c>.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Optional matches</title>
+
+      <p>
+        Typically we want more flexibility with regular expressions.  For example, instead of matching <c>"cat"</c>, what if we want to match <c>"cat"</c>, <c>"cot"</c> or <c>"cut"</c>?  We can do this with a option group which is a set of <c>[]</c>.  For example a regular expression <c>r"c[aou]t"</c> will match <c>"cat"</c>, <c>"cot"</c> or <c>"cut"</c> such as
+      </p>
+
+      <p>
+        <cd>
+        <cline>map(s -&gt; occursin(r"c[auo]t", s), ["cat", "cot", "cut"])</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns true (as a boolean vector) for all three matches.  Note: this will also match <c>"scatter"</c>, <c>"cotangent"</c> and <c>"cutlery"</c>.
+      </p>
+
+      <p>
+        If we want a range of values, we can use a <c>-</c> within the <c>[]</c>, which is known as a <em>character class</em> in the world of regular expressions.  For example, finding words that start with the lower case letters <c>a</c> through <c>f</c>, we can use the regular expression <c>r"^[a-f]"</c>.  A test for this would be
+      </p>
+
+      <p>
+        <cd>
+        <cline>occursin(r"^[a-f]","apple")</cline>
+        <cline>occursin(r"^[a-f]","catalog")</cline>
+        </cd>
+      </p>
+
+      <p>
+        both return <c>true</c>.  Now to confuse things, <c>^</c> can be used within the <c>[]</c> for a <em>not</em> in.  Let's say we don't what a string to start with <c>a</c> through <c>f</c>. Entering
+      </p>
+
+      <p>
+        <cd>
+        <cline>occursin(r"^[^a-f]","apple")</cline>
+        <cline>occursin(r"^[^a-f]","zebra")</cline>
+        </cd>
+      </p>
+
+      <p>
+        the first returns <c>false</c> while the second returns <c>true</c>.
+      </p>
+
+      <p>
+        If we want any character matched, we use a <c>.</c>.  For example, if the the regular expression <c>r"c.t"</c> can be used
+      </p>
+
+      <p>
+        <cd>
+        <cline>occursin(r"c.t","catalog")</cline>
+        <cline>occursin(r"c.t","yacht")</cline>
+        <cline>occursin(r"c.t","tact")</cline>
+        </cd>
+      </p>
+
+      <p>
+        the first 2 return true and the last is false.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Digits and alphabetic characters</title>
+
+      <p>
+        Using the technique in the previous section, we can match a digit with the regular expression <c>r"[0-9]"</c>.  For example,
+      </p>
+
+      <p>
+        <cd>
+        <cline>occursin(r"^[0-9]","1234")</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns <c>true</c>. However since matching digits is a common occurrence, <c>\d</c> can be used to match digits.  Therefore,
+      </p>
+
+      <p>
+        <cd>
+        <cline>occursin(r"^\d","1234")</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns <c>true</c> as well. To match alphabetic characters, there are a couple of options.  If you are looking for precisely the 26 latin characters then <c>[a-z]</c> is the best way to do this.  However, there are many characters (such as letters with accents) or unicode characters that are alphabetic and there is a <c>[[:alpha:]]</c>.  Some examples are:
+      </p>
+
+      <p>
+        <cd>
+        <cline>occursin(r"^[a-z],["apple", "zebra", "1234"])</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns true for the first two and false for the third. To use the broader <c>[:alpha:]</c> class of characters, as an example
+      </p>
+
+      <p>
+        <cd>
+        <cline>map(s -&gt; occursin(r"^[[:alpha:]]",s) , ["apple", "ωγ", "1234"])</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns true for the first two and false for the third one. Note that typically it is used within a <c>[]</c> block as well since it is a set of optional characters.
+      </p>
+
+      <p>
+        Lastly, another helpful special character is that of a <em>word</em> character, <c>\w</c>.  This will match an alphabetic character, a digit or an underscore <c>_</c>.  An example is
+      </p>
+
+      <p>
+        <cd>
+        <cline>map(s -&gt; occursin(r"\w\w\w", s), ["r2c", "ww_c", "i a"])</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns true, true and false.  The last one because the 2nd character is a space.
+      </p>
+
+      <p>
+        White space is also something to detect. Although, it can be used with <c>occursin</c>, a more practical way to use this is with <c>split</c>, which takes a string and splits it.   For example,
+      </p>
+
+      <p>
+        <cd>
+        <cline>split( "The dog jumps over the log", r"\s")</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns the array
+      </p>
+
+      <p>
+        <cd>
+        <cline>["The", "dog", "jumps", "over", "the", "log"]</cline>
+        </cd>
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Quantifiers</title>
+
+      <p>
+        We often want to know if a character is repeated some number of times.  For example, if we want to check that <c>c</c> is repeated three times, we can use <c>r"ccc"</c>, however, we can also write this as <c>r"c{3}"</c>, which is actually longer, but sometimes easier to read.  If we want to test if there are between 2 and 4 consecutive <c>c</c>s, then we can use <c>r"c{2,4}"</c>.  As an example, consider:
+      </p>
+
+      <p>
+        <cd>
+        <cline>map(s -&gt; occursin(r"^c{2,4}$",s),["c","cc","ccc","cccc","ccccc"])</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns <c>[false, true, true, true, false]</c> and note that the regular expression includes a <c>^</c> and <c>$</c> indicating that it needs to match at the beginning and end. If we want to say it matches 3 or more times, we can use <c>r"c{3,}"</c> as in
+      </p>
+
+      <p>
+        <cd>
+        <cline>map(s -&gt; occursin(r"^c{3,}$",s),["c","cc","ccc","cccc","ccccc"])</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns <c>[false, false, true, true, true]</c> and if we want a maximum of 3, use <c>r"c{,3}</c> as in
+      </p>
+
+      <p>
+        <cd>
+        <cline>map(s -&gt; occursin(r"^c{0,3}$",s),["c","cc","ccc","cccc","ccccc"])</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns <c>[true, true, true, false, false]</c>. There are two quantifiers that are used more than any other: matching 0 or more times and 1 or more times.  Because of this, these have special characters <c>*</c> and <c>+</c>.  For example to match 0 or more <c>c</c>, then we use <c>r"c*"</c>.  For example,
+      </p>
+
+      <p>
+        <cd>
+        <cline>map(s -&gt; occursin(r"^c*a",s),["a","ca","cca","ccca","cccca"])</cline>
+        </cd>
+      </p>
+
+      <p>
+        will match zero or more <c>c</c> at the beginning of the string.  All five of the above match.  In contrast if we use <c>r"^c+a"</c>, then
+      </p>
+
+      <p>
+        <cd>
+        <cline>map(s -&gt; occursin(r"^c+a",s),["a","ca","cca","ccca","cccca"])</cline>
+        </cd>
+      </p>
+
+      <p>
+        then the first one does not match, but the others do.  The last example of this is the regular expression <c>.*</c>, which matches any character 0 or more times.  At first glance this doesn't seem useful
+      </p>
+    </subsection>
+  </section>
+
+  <section>
+    <title>Matching integers and decimals</title>
+
+    <p>
+      Examples below will parse integers and decimals from a string and we'll use regular expressions to do this work.  As we saw above, to match a digit, we will use <c>\d</c> and if we want more than one decimal, we can follow that with the <c>+</c>.  For a positive integer, the regular expression can match with <c>r"\d+"</c>.   For example,
+    </p>
+
+    <p>
+      <cd>
+      <cline>occursin(r"\d+","1234")</cline>
+      </cd>
+    </p>
+
+    <p>
+      returns <c>true</c>. If we want to include a + or - sign with the integer, we can use a <c>[+-]?</c> in front of the number.  Therefore,
+    </p>
+
+    <p>
+      <cd>
+      <cline>int_re = r"^[+-]?\d+$"</cline>
+      <cline>map(s-&gt; occursin(int_re,s),["1234", "+1234", "-1234"])</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns true for all three (as a boolean vector).   Note: below, we'll do a better job with testing these.
+    </p>
+
+    <p>
+      To match a decimal, we can start with the integer match and tack on a decimal point (<c>\.</c>, where it needs to be escaped) as well as additional decimals.  A reasonably robust decimal regular expression is:
+    </p>
+
+    <p>
+      <cd>
+      <cline>dec_re = r"^[-+]?\d+\.\d*$"</cline>
+      </cd>
+    </p>
+
+    <p>
+      There's a few things to note here:
+    </p>
+
+    <p>
+      <ul>
+        <li>
+          <p>
+            The front of this regular expression is the same as the integer version: <c>[+-]?\d+</c>.
+          </p>
+        </li>
+
+        <li>
+          <p>
+            The remaining part of the regular expression (<c>\.\d*</c>) is for the decimal point and any trailing digits.  The decimal point is escaped because <c>.</c> matches any character.  The result matches any number (0 or more) of digits.
+          </p>
+        </li>
+      </ul>
+    </p>
+
+    <p>
+      Here's a small number of tests for this:
+    </p>
+
+    <p>
+      <cd>
+      <cline>map(s -&gt; occursin(dec_re, s),["-1.3", "-1.", "14.0343", "14", "-15"])</cline>
+      </cd>
+    </p>
+
+    <p>
+      and the first three return true. The last two do not since they are missing decimal points. Lastly, if we want this to match either of the integer or decimal number (which we will do below), we'll take the decimal point and training digits as a group and make it optional.  That is,
+    </p>
+
+    <p>
+      <cd>
+      <cline>int_or_dec_re = r"^[-+]?\d+(\.\d*)?"$"</cline>
+      </cd>
+    </p>
+
+    <p>
+      and we'll test it with the previous test or
+    </p>
+
+    <p>
+      <cd>
+      <cline>map(s -&gt; occursin(int_or_dec_re, s),["-1.3", "-1.", "14.0343", "14", "-15"])</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns all true.
+    </p>
+  </section>
+
+  <section>
+    <title>Matching and Capture Groups</title>
+
+    <p>
+      Generally, it is desirable to pull out a substring from a string and regular expression are good at this.  For example, we may want to pass along a string and pull out an integer or decimal for parsing to a <c>Int</c> or <c>Float</c>.
+    </p>
+
+    <p>
+      Let's say that we have a string <c>"(14,-34)"</c> that we wish to parse as a point in the plane.  We will start with a pair of integers.  Since we want to capture both numbers, we will surround these by <c>( )</c>.   Define
+    </p>
+
+    <p>
+      <cd>
+      <cline>pt_re = r"^\(([+-]?\d+),([+-]?\d+)\)$"</cline>
+      </cd>
+    </p>
+
+    <p>
+      where the parentheses at the beginning and end need to be escaped at <c>\(</c> and <c>\)</c>.  If we then test for matching with
+    </p>
+
+    <p>
+      <cd>
+      <cline>occursin(pt_re,"(14,-17)")</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns <c>true</c>. This is nice that if say it matches, but we would like to determine the substrings for the two points.  We can do this with the <c>match</c> function like
+    </p>
+
+    <p>
+      <cd>
+      <cline>m = match(pt_re, "(14,-17)")</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>RegexMatch("(14,-17)", 1="14", 2="-17")</cline>
+      </cd>
+    </p>
+
+    <p>
+      which is an object (struct) that captures information about the match.  The first argument is the string that matches the regular expression, which is the full string.  The next two are the two capture groups.  We can access these with <c>m1[1]</c> and <c>m1[2]</c>.
+    </p>
+
+    <exercise>
+      <p>
+        Update the regular expression above to handle a point of two integers or floating point numbers.  Test your regular expression with the <c>match</c> command.
+      </p>
+    </exercise>
+  </section>
+
+  <section>
+    <title>Replacing substrings with regular expressions. </title>
+
+    <p>
+      Above, we used regular expressions in three ways.  <c>occursin</c>, which returns true or false if there is a substring within or regular expression that matches a larger string.  Secondly, we used the <c>match</c> function to extract parts of a string.  Lastly, we used a regular expression to split a string into an array of other strings.  In this section, we will see a couple of other ways regular expressions can be used.
+    </p>
+
+    <p>
+      Replacing strings with another string is quite helpful.  A simple non-regex versions is the following:
+    </p>
+
+    <p>
+      <cd>
+      <cline>replace("Alice like cookies.  Also, Alice doesn't like carrots.", "Alice" =&gt; "Ben")</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>"Ben like cookies.  Also, Ben doesn't like carrots."</cline>
+      </cd>
+    </p>
+
+    <p>
+      Replace is more powerful that just simple string.  We can use a regular expression as well.  Consider
+    </p>
+
+    <p>
+      <cd>
+      <cline>replace("Is there a doctor in the house?  There is.", r"[Ii]s" =&gt; "are")</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>"are there a doctor in the house?  There are."</cline>
+      </cd>
+    </p>
+
+    <p>
+      And lastly, we can use capture groups as well.  Consider the following:
+    </p>
+
+    <p>
+      <cd>
+      <cline>replace("Are the kids still in the pond?  Are the adults sitting on the beach?", "Are" =&gt; "Is", r"\s(\w+)s\s" =&gt; s" \1 ")</cline>
+      </cd>
+    </p>
+
+    <p>
+      returns <c>"Is the kid still in the pond?  Is the adult sitting on the beach?"</c>.  First, notice that we have multiple replacements. Also, on the replacements, we have a regular expression with a capture group (with parentheses) and we have a substitution string <c>s" \1 "</c> which starts with an <c>s</c>.  Note that the substitution string has a <c>\1</c>, which will be the matched capture group.  This allow us to replace both <c>adults</c> and <c>kids</c>.
+    </p>
+  </section>
+
+  <section>
+    <title>Parsing a Polynomial</title>
+
+    <introduction>
+      <p>
+        We now turn to an example of parsing a string to interpret as a polynomial.  A goal will be to add a contructor to our <c>Polynomial</c> module that will take a string and if it can be written as a polynomial, to parse it and store it as a polynomial.  For example, here are some examples
+      </p>
+
+      <p>
+        <cd>
+        <cline>5x-10</cline>
+        <cline>3x^2-7x+11</cline>
+        <cline>-5.6x^11+7.349x^5+x</cline>
+        </cd>
+      </p>
+
+      <p>
+        Although we hope to eventually do general polynomials, let's start with a linear function, like the top one above. Also for simplicity, we'll assume that the coefficients are integers and that the variable is <c>x</c>.  To start, let's build a regular expression that will start with an integer (to be captured) followed by an <c>x</c> followed by another integer (to be captured). The following will do this
+      </p>
+
+      <p>
+        <cd>
+        <cline>lin = r"([+-]?\d+)x([+-]\d+)"</cline>
+        </cd>
+      </p>
+
+      <p>
+        A few things to note about this
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <p>
+              Although we typically don't append a <c>+</c> to a positive integer, but it is a valid way to write one, so so the <c>[+-]</c> handles this.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              The <c>[+-]</c> doesn't need to be there (we assume it is positive if missing), so we append a <c>?</c> on this.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              The <c>\d+</c> matches any length sequence of digits, so this is the integer without the sign.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              The sign and the digits are surrouned by <c>()</c>, so this is our first capture group.  This will be parsed as our first coefficient.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              The second capture group is the same as the first except that the sign is not optional.
+            </p>
+          </li>
+        </ul>
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Testing the regular expression</title>
+
+      <p>
+        Clearly the regular expression should be tested.  We will use the tools from the <c>Test</c> package that was explained in  <xref ref="ch-modules"/>.  To start with we'll make a <c>testset</c> for linear functions using
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+@testset "Linear Functions" begin
+  @test match(lin, "5x-10") !== nothing
+  @test match(lin, "-5x-10") !== nothing
+  @test match(lin, "5x+10") !== nothing
+  @test match(lin, "-5x+10") !== nothing
+end
+        </input>
+      </program>
+
+      <p>
+        Right now, we just want to make sure that four strings above match the regular expression for linear relationships.  Note that this seems to take care of all linear functions (with integer coefficients) in that either of the coefficients can be positive or negative.   Running this you will see that all test pass.  However, did we capture all linear relationships?  A couple stand out to me after thinking a bit.  <c>"5x"</c> itself is a linear function as is <c>5*x+10</c> and if we add these to the tests, they will fail.
+      </p>
+
+      <p>
+        Since we want to include the <c>*</c> character as optional between the coefficient and the <c>x</c> and also the constant coefficient, we will append a <c>?</c> to each of these as
+      </p>
+
+      <p>
+        <cd>
+        <cline>lin = r"([-+]?\d+)\*?x([-+]?\d+)?"</cline>
+        </cd>
+      </p>
+
+      <p>
+        noting that <c>*</c> is a special character so needs to be esacped as <c>\*</c>. Now the test set:
+      </p>
+
+      <p>
+        <cd>
+        <cline>@testset "Linear Functions" begin</cline>
+        <cline>  @test match(lin, "5x-10") !== nothing</cline>
+        <cline>  @test match(lin, "-5x-10") !== nothing</cline>
+        <cline>  @test match(lin, "5x+10") !== nothing</cline>
+        <cline>  @test match(lin, "-5x+10") !== nothing</cline>
+        <cline>  @test match(lin, "5x") !== nothing</cline>
+        <cline>  @test match(lin, "5*x-10") !== nothing</cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        will pass for all the tests.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Linear Functions with decimal coefficients</title>
+
+      <p>
+        As we saw above, we have a regular expression to handle decimal coefficients. This is
+      </p>
+
+      <p>
+        <cd>
+        <cline>dec = r"^([-+]?\d+(\.\d*)?)$"</cline>
+        </cd>
+      </p>
+
+      <p>
+        We can update our linear function to include decimals for the coefficents by replacing the integer coefficent regular expression with that of the one above.
+      </p>
+
+      <p>
+        <cd>
+        <cline>lin_dec = r"([-+]?\d+(\.\d*)?)\*?x([-+]?\d+(\.\d*)?)?"</cline>
+        </cd>
+      </p>
+
+      <p>
+        the above set of sets can be updated to use this instead. (Try it!) and also include a new set of tests with decimal coefficients:
+      </p>
+
+      <p>
+        <cd>
+        <cline>@testset "Linear Functions with decimal coefficents" begin</cline>
+        <cline>  @test match(lin_dec, "5.0x-10.5") !== nothing</cline>
+        <cline>  @test match(lin_dec, "-5.9x-10.2") !== nothing</cline>
+        <cline>  @test match(lin_dec, "5.3x+10.4") !== nothing</cline>
+        <cline>  @test match(lin_dec, "-5.25x+10.8") !== nothing</cline>
+        <cline>  @test match(lin_dec, "5.x") !== nothing</cline>
+        <cline>  @test match(lin_dec, "5.3*x-10.55") !== nothing</cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Splitting a Polynomial into terms</title>
+
+      <p>
+        With the success of parsing a linear function, we could next generate a quadratic polynomial, however, we would like to parse a general polynomial and since a term could have any power (that is, the degree of the polynomial could be any positive integer), this isn't practical to generate this way.
+      </p>
+
+      <p>
+        Instead, we will split up the polynomial into terms.  For an example, let's start with <m>4x^3-2x^2+6</m> which we will write as the string <c>4x^3-2x^2+6</c>.  To split the polynomial, there is a <c>split</c> function that we can split on either a <c>+</c> or <c>-</c>, however that sign is not saved. Instead, the following will do what we want:
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+          function splitPoly(p::String)
+          local terms = String[]
+          # if the first character is a +/-, start the index at 2
+          local ind1 = occursin(r"^[+-]",p) ? 2 : 1
+          while true
+            ind2 = findnext(r"[+-]", p, ind1)
+            if ind2 == nothing
+              # Push the last term onto the term stack.
+              push!(terms, string(SubString(p, ind1-1)))
+              break
+            end
+            # The first time through the loop, the substring calculation is different.
+            push!(terms, string(SubString(p,(ind1 == 1 ? 1 : ind1 -1):first(ind2)-1)))
+            ind1 = first(ind2)+1
+          end
+          terms
+        end
+        </input>
+      </program>
+
+      <p>
+        And since this is relatively large, let's walk through the steps:
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <p>
+              Line 2: <c>terms</c> stores the terms as an array of strings.  This will act like a stack.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Line 4: the variable <c>ind1</c> will be the first index of the array substring.  Later in the function, we will pull out from the polynomial string between <c>ind1</c> and <c>ind2</c> (or adjusted a bit).  If the polynomial string has a sign, then we start the index at 2, otherwise at 1.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Line 6: in general, <c>while true</c> is a surefire way to get an infinite loop since there is no stopping condition.  However, the <c>if</c> statement starting on line 8 will check if we're done and break out of the loop.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Line 7: this determines the second index which will extract the substring from the polynomial string.  Note that result of this is a <c>UnitRange</c>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Line 8: if there is no match for a +/-, the result of <c>ind2</c> is <c>nothing</c>
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Line 10: As the comment says, we are at the end of the string, and push the last terms onto the <c>terms</c> array.  When <c>SubString</c> is called with only one index, it takes the end of the string.   Also, we covert the <c>SubString</c> to a <c>String</c> with the <c>string</c> command.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Line 14: For a match on a +/-, we push the proper substring onto the <c>terms</c> array.  If <c>ind1</c> is 1, we need to adjust the string (beginning of the string).  Also, note that since <c>ind2</c> is a <c>UnitRange</c>, we take the first value of the range.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Line 15: take <c>ind1</c> to be the next character after <c>ind2</c> before repeating the loop.
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Let's check with the string <c>4x^3-2x+6</c> that this works.  Calling
+      </p>
+
+      <p>
+        <cd>
+        <cline>splitPoly("4x^3-2+6")</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>3-element Vector{String}:</cline>
+        <cline> "4x^3"</cline>
+        <cline> "-2x"</cline>
+        <cline> "+6"</cline>
+        </cd>
+      </p>
+
+      <p>
+        which appears to work well.  (Note: later, we will do some testing after converting to <c>Polynomial</c> objects.)
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Parsing Polynomial Terms</title>
+
+      <p>
+        The next step is to parse the individual terms of the polynomial.  For this, we will use a a regular expression to handle this.  For first step, let's assume that the constant out front is an integer.   The following will parse these terms:
+      </p>
+
+      <p>
+        <cd>
+        <cline>poly_re = r"^([+-]?\d+)(x(\^(\d+))?)?$"</cline>
+        </cd>
+      </p>
+
+      <p>
+        And let's test this on the <c>4x^3</c> term with
+      </p>
+
+      <p>
+        <cd>
+        <cline>m1 = match(poly_re, "4x^3")</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>RegexMatch("4x^3", 1="4", 2="x^3", 3="^3", 4="3")</cline>
+        </cd>
+      </p>
+
+      <p>
+        and you should notice that <c>m[1]</c> will be the coeficient and <c>m[4]</c> will be the power. If we test the next term with
+      </p>
+
+      <p>
+        <cd>
+        <cline>m2 = match(poly_re, "-2x")</cline>
+        </cd>
+      </p>
+
+      <p>
+        this returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>RegexMatch("-2x", 1="-2", 2="x", 3=nothing, 4=nothing)</cline>
+        </cd>
+      </p>
+
+      <p>
+        and you should notice that again <c>m2[1]</c> is the coefficient and since <c>m2[4]</c> is <c>nothing</c> that this is a linear term. And finally,
+      </p>
+
+      <p>
+        <cd>
+        <cline>m3 = match(poly_re, "+6")</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>RegexMatch("+6", 1="+6", 2=nothing, 3=nothing, 4=nothing)</cline>
+        </cd>
+      </p>
+
+      <p>
+        and there is no match for the last 3 capture groups, so this is just a constant term.
+      </p>
+
+      <p>
+        Although this looks good, thinking a bit ahead, if we have a polynomial term like <c>-x^2</c>, this will not parse this. Try
+      </p>
+
+      <p>
+        <cd>
+        <cline>match(poly_re, "-x^2")</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns nothing.  We will tweat the regular expression above to allow a + or - with no number in front of the <c>x</c> term.
+      </p>
+
+      <p>
+        <cd>
+        <cline>poly_re = r"^([+-]?)(\d+)?(x(\^(\d+))?)?$"</cline>
+        </cd>
+      </p>
+
+      <p>
+        and now rerunning the line above results in
+      </p>
+
+      <p>
+        <cd>
+        <cline>RegexMatch("-x^2", 1="-", 2=nothing, 3="x^2", 4="^2", 5="2")</cline>
+        </cd>
+      </p>
+
+      <p>
+        which shows that it matches.  Note that these are different than the matches above--there are 5 capture groups now.  It is noted that the 2nd group matched nothing because there was no numerical coefficient before the <c>x^2</c> term.
+      </p>
+    </subsection>
+  </section>
+</chapter>

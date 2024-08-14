@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pretext xml:lang="en-US" xmlns:xi="http://www.w3.org/2001/XInclude">
+	<!-- we first include a file which contains the docinfo element: -->
+	<xi:include href="./docinfo.ptx" />
+	<book xml:id="my-great-book">
+		<title>Scientific Computing and Visualization</title>
+		<subtitle>Coding mathematics using Julia</subtitle>
+		<!-- Include frontmatter -->
+		<xi:include href="./frontmatter.ptx" />
+		<!-- Include parts -->
+		<xi:include href="./part-introduction.ptx" />
+		<xi:include href="./part-sci-comp-basics.ptx" />
+		<xi:include href="./part-plotting.ptx" />
+		<xi:include href="./part-simulation.ptx" />
+		<xi:include href="./part-adv-features.ptx" />
+		<xi:include href="./part-data-analysis.ptx" />
+		<xi:include href="./part-linear-algebra.ptx" />
+		<xi:include href="./part-calc-diff-eqns.ptx" />
+		<xi:include href="./part-projects.ptx" />
+		<!-- Include backmatter -->
+		<xi:include href="./backmatter.ptx" />
+	</book>
+</pretext>

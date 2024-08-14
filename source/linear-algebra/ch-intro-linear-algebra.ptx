@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-lin-alg-intro">
+  <title>Introduction to Linear Algebra</title>
+
+  <introduction>
+    <p>
+      Linear Algebra is probably the most important mathematical field for Scientific Computation<fn>And if you ask someone in the field, they will say most important field PERIOD!</fn>.  This chapter covers the basics of Linear Algebra in Julia and how it can be used to solve scientific problems.
+    </p>
+
+    <p>
+      Also, a lot of these functions described here are standard functions (that is, part of the <c>Base</c> package which is automatically loaded), however many are also part of the <c>LinearAlgebra</c> package, which should be downloaded, but you will need to perform <c>using LinearAlgebra</c>.  It is pointed out when you need this package.
+    </p>
+  </introduction>
+
+  <section>
+    <title>Vectors and Matrices</title>
+
+    <introduction>
+      <p>
+        Vector and matrices are the building blocks of linear algebra.  In short a Vector is simply a 1D array and in julia the type <c>Vector&lt;T&gt;</c> is shorthand for <c>Array{T,1}</c>.  We can make a vector just like we did with an array.  For example, <c>x = [1,2,3]</c> makes an array of length three and the output:
+      </p>
+
+      <p>
+        <cd>
+        <cline>3-element Vector{Int64}:</cline>
+        <cline>  1</cline>
+        <cline>  2</cline>
+        <cline>  3</cline>
+        </cd>
+      </p>
+
+      <p>
+        shows that it is a 1D integer array of length 3.
+      </p>
+
+      <p>
+        Similarly, there is a <c>Matrix</c> type which is an alias for a 2D array.  If
+      </p>
+
+      <p>
+        <cd>
+        <cline> A = [i+j for i=1:3,j=1:3] </cline>
+        </cd>
+      </p>
+
+      <p>
+        then we get the results
+      </p>
+
+      <p>
+        <cd>
+        <cline>3×3 Matrix{Int64}:</cline>
+        <cline>  2  3  4</cline>
+        <cline>  3  4  5</cline>
+        <cline>  4  5  6</cline>
+        </cd>
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Addition and Subtraction of Vectors and Matrices</title>
+
+      <p>
+        All of the construction methods for arrays of both 1D and 2D as seen in Chapter \ref{ch:arrays} can be used.   If we have
+      </p>
+
+      <p>
+        <cd>
+        <cline>B = [ 3 2 1; 0 2 0; 1 2 3] </cline>
+        </cd>
+        then <c>A+B</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>3×3 Matrix{Int64}:</cline>
+        <cline>  5  5  5</cline>
+        <cline>  3  6  5</cline>
+        <cline>  5  7  9</cline>
+        </cd>
+      </p>
+
+      <p>
+        and <c>A-B</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>3×3 Matrix{Int64}:</cline>
+        <cline> -1  1  3</cline>
+        <cline>  3  2  5</cline>
+        <cline>  3  3  3</cline>
+        </cd>
+      </p>
+
+      <p>
+        Similarly if <c>x=collect(1:5)</c> and <c>y=collect(1:2:9)</c> then <c>x+y</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>5-element Vector{Int64}:</cline>
+        <cline>  2</cline>
+        <cline>  5</cline>
+        <cline>  8</cline>
+        <cline> 11</cline>
+        <cline> 14</cline>
+        </cd>
+      </p>
+
+      <p>
+        and <c>x-y</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>5-element Vector{Int64}:</cline>
+        <cline>  0</cline>
+        <cline> -1</cline>
+        <cline> -2</cline>
+        <cline> -3</cline>
+        <cline> -4</cline>
+        </cd>
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>scalar multiplication</title>
+
+      <p>
+        Scalar multiplication of vectors and matrix work as expected using the <c>*</c> operator, which is implied if multiplying on the left by a number. Using <c>A</c> and <c>x</c> above, <c>3x</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>5-element Vector{Int64}:</cline>
+        <cline>  3</cline>
+        <cline>  6</cline>
+        <cline>  9</cline>
+        <cline> 12</cline>
+        <cline> 15</cline>
+        </cd>
+      </p>
+
+      <p>
+        and <c>-4A</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>3×3 Matrix{Int64}:</cline>
+        <cline>  -8  -12  -16</cline>
+        <cline> -12  -16  -20</cline>
+        <cline> -16  -20  -24</cline>
+        </cd>
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Matrix-vector products</title>
+
+      <p>
+        Let <c>x=[1, 4, 5]</c>, and <c>A</c> and <c>B</c> as defined above.  The vector-matrix product <c>A*x</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>3-element Vector{Int64}:</cline>
+        <cline>  34</cline>
+        <cline>  44</cline>
+        <cline>  54</cline>
+        </cd>
+      </p>
+
+      <p>
+        and the matrix-matrix products <c>A*B</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>3×3 Matrix{Int64}:</cline>
+        <cline>  10  18  14</cline>
+        <cline>  14  24  18</cline>
+        <cline>  18  30  22</cline>
+        </cd>
+      </p>
+
+      <p>
+        Note that if either scalar or matrix multiplication involves variables, then you will need to explicitly put in a <c>*</c>, since Julia can have variables of any length, if for example, you entered <c>AB</c> expecting the product, you will get <c>UndefVarError: `AB` not defined in `Main`</c>.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Matrix Transpose</title>
+
+      <p>
+        Recall that the tranpose of a matrix <m>A</m> is a matrix where the <m>i</m>th row and <m>j</m> column of A becomes the <m>i</m>th column and <m>j</m>th row of the transpose.  In julia, the <c>transpose</c> function performs like.  For example,
+      </p>
+
+      <p>
+        <cd>
+        <cline>transpose(B)</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>3×3 transpose(::Matrix{Int64}) with eltype Int64:</cline>
+        <cline>  3  0  1</cline>
+        <cline>  2  2  2</cline>
+        <cline>  1  0  3</cline>
+        </cd>
+      </p>
+
+      <p>
+        Notice that the type of a transpose is not a simple <c>Matrix</c>.  It has <c>transpose</c> in the type.  This is mainly for efficiency. For large matrices (say ones that take up a Gb of memory or more), simply a copy of a matrix is more efficient than doing the transpose operation.  Julia will then known if it is a transpose then perform the correct operation using the transpose when needed.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Trace and Determinant of a Matrix</title>
+
+      <p>
+        The trace of a matrix <m>A</m> is the sum of the elements along the diagonal.  In julia, you can use the <c>tr</c> function in the <c>LinearAlgebra</c> package. The function
+        <cd>
+        <cline>tr(A)</cline>
+        </cd>
+        returns <c>12</c>
+      </p>
+
+      <p>
+        Also, the determinant of a matrix can be easily found in julia with the <c>det</c> function in the <c>LinearAlgebra</c> package.
+      </p>
+
+      <p>
+        <cd>
+        <cline>det(A)</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>0.0</cline>
+        </cd>
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Identity Matrix</title>
+
+      <p>
+        Recall that the identity matrix, <m>I</m>, is the matrix that satisfies <m>AI=A</m> for any matrix <m>A</m>.  It is matrix with ones along the diagonal and zeros elsewhere.  If needed in julia, you can use
+      </p>
+
+      <p>
+        <cd> Matrix(I,3,3) </cd>
+      </p>
+
+      <p>
+        which returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>3×3 Matrix{Bool}:</cline>
+        <cline>  1  0  0</cline>
+        <cline>  0  1  0</cline>
+        <cline>  0  0  1</cline>
+        </cd>
+      </p>
+
+      <p>
+        Note: the <c>I</c> is part of the <c>LinearAlgebra</c> package and can be used without the size often. For example, <c>I*B</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>3×3 Matrix{Int64}:</cline>
+        <cline>  3  2  1</cline>
+        <cline>  0  2  0</cline>
+        <cline>  1  2  3</cline>
+        </cd>
+      </p>
+
+      <p>
+        which is just <c>B</c>, but note that we didn't say that <c>I</c> was a <c>3×3</c> matrix.
+      </p>
+    </subsection>
+  </section>
+
+  <section>
+    <title>Matrix Inverse</title>
+
+    <p>
+      If you have a matrix <m>A</m>, then if it exists, the inverse of <m>A</m>, denoted <m>A^{-1}</m> satisfies <m>AA^{-1}=I</m> and <m>A^{-1}A=I</m>.
+    </p>
+
+    <p>
+      In julia, we can find the inverse with the <c>inv</c> function.  For example, <c>inv(B)</c> returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>3×3 Matrix{Float64}:</cline>
+      <cline>  0.375  -0.25  -0.125</cline>
+      <cline>  0.0     0.5   -0.0</cline>
+      <cline> -0.125  -0.25   0.375</cline>
+      </cd>
+    </p>
+
+    <p>
+      If we try to find the inverse of <m>A</m>, above, <c>inv(A)</c> we get <c>SingularException(3)</c> which occurs because the matrix <m>A</m> is singular, that is, it doesn't have a matrix inverse.
+    </p>
+  </section>
+
+  <section>
+    <title>Solving Linear Systems</title>
+
+    <p>
+      One of the most important aspects of linear algebra is that of solving a linear system.  In general, this is solving the linear system:
+    </p>
+
+    <p>
+      <me>
+        A \mathbf{x} = \mathbf{b}
+      </me>
+    </p>
+
+    <p>
+      for known matrix <m>A</m> and vector <m>\mathbf{b}</m>.  If
+    </p>
+
+    <p>
+      <cd>
+      <cline>A = [0 1 1; 1 2 1; 1 1 -1]</cline>
+      <cline>b = [1,2,3]</cline>
+      </cd>
+    </p>
+
+    <p>
+      then the solution can be found with
+    </p>
+
+    <p>
+      <cd>
+      <cline> x = A \ b </cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>3-element Vector{Float64}:</cline>
+      <cline> -2.0</cline>
+      <cline>  3.0</cline>
+      <cline> -2.0</cline>
+      </cd>
+    </p>
+
+    <p>
+      which is the same as <m>A^{-1} \mathbf{b}</m>, but is more efficient.
+    </p>
+  </section>
+
+  <section>
+    <title>Eigenvalues and Eigenvectors</title>
+
+    <p>
+      Recall that a scalar <m>\lambda</m> and corresponding vector <m>\mathbf{v}</m> form an eigenvalue-eigenvector pair if
+    </p>
+
+    <p>
+      <me>
+        A \mathbf{v} = \lambda \mathbf{v}
+      </me>
+    </p>
+
+    <p>
+      To find the eigenvalues of a matrix <m>A</m> in julia,
+    </p>
+
+    <p>
+      <cd>
+      <cline>eigvals(A)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>3-element Vector{Float64}:</cline>
+      <cline>  -1.6554423815498303</cline>
+      <cline>  -0.21075588095919165</cline>
+      <cline>   2.8661982625090223</cline>
+      </cd>
+    </p>
+
+    <p>
+      The eigenvectors can be found with
+    </p>
+
+    <p>
+      <cd>
+      <cline>eigvecs(A)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>3×3 Matrix{Float64}:</cline>
+      <cline>  -0.462272   0.785797  -0.410888</cline>
+      <cline>  -0.114102  -0.51223   -0.851235</cline>
+      <cline>   0.879367   0.346619  -0.326451</cline>
+      </cd>
+    </p>
+
+    <p>
+      where the eigenvectors are the columns of the resulting matrix.  The eigenvectors are in the same order as the eigenvalues, which is important in that they form pairs.
+    </p>
+
+    <p>
+      To get a particular eigenvector, you can use the standard array notation to pull out a particular column.  For example, <c>eigvecs(A)[:,2]</c> will return the 2nd eigenvector.
+    </p>
+  </section>
+
+  <section>
+    <title>Special Matrices</title>
+
+    <introduction>
+      <p>
+        Special matrices arise throughout Linear Algebra.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Diagonal Matrices</title>
+
+      <p>
+        For example, the identity matrix, can be thought of as a diagonal matrix and in julia there is a matrix type called <c>Diagonal</c>.  For example,
+      </p>
+
+      <p>
+        <cd>
+        <cline> D=Diagonal([1,2,3,4])</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>4×4 Diagonal{Int64, Vector{Int64}}:</cline>
+        <cline>  1  ⋅  ⋅  ⋅</cline>
+        <cline>  ⋅  2  ⋅  ⋅</cline>
+        <cline>  ⋅  ⋅  3  ⋅</cline>
+        <cline>  ⋅  ⋅  ⋅  4</cline>
+        </cd>
+      </p>
+
+      <p>
+        and you'll notice that it doesn't just create a matrix where there are zeros on the off-diagonal.  It will print out like a regular matrix, but it will only store the diagonal elements. This is precisely for saving on storage. However, you can still do operations with this matrix.  For example, finding the eigenvalues of this with
+      </p>
+
+      <p>
+        <cd> eigvals(D) </cd>
+      </p>
+
+      <p>
+        and this returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>4-element Vector{Int64}:</cline>
+        <cline>  1</cline>
+        <cline>  2</cline>
+        <cline>  3</cline>
+        <cline>  4</cline>
+        </cd>
+      </p>
+
+      <p>
+        which is what we expect as the eigenvalues of a diagonal matrix are the diagonal elements.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Tridiagonal Matrices</title>
+
+      <p>
+        Another matrix that shows up often are tridiagonal matrices.  For example, the following arises from discretizes a differential equation:
+        <cd>
+        <cline>T = Tridiagonal([1 for i=1:9],[-2 for i=1:10],[1 for i=1:9])</cline>
+        </cd>
+      </p>
+
+      <p>
+        <cd>
+        <cline>10×10 Tridiagonal{Int64, Vector{Int64}}:</cline>
+        <cline>  -2   1   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅</cline>
+        <cline>   1  -2   1   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅</cline>
+        <cline>   ⋅   1  -2   1   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅</cline>
+        <cline>   ⋅   ⋅   1  -2   1   ⋅   ⋅   ⋅   ⋅   ⋅</cline>
+        <cline>   ⋅   ⋅   ⋅   1  -2   1   ⋅   ⋅   ⋅   ⋅</cline>
+        <cline>   ⋅   ⋅   ⋅   ⋅   1  -2   1   ⋅   ⋅   ⋅</cline>
+        <cline>   ⋅   ⋅   ⋅   ⋅   ⋅   1  -2   1   ⋅   ⋅</cline>
+        <cline>   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅   1  -2   1   ⋅</cline>
+        <cline>   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅   1  -2   1</cline>
+        <cline>   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅   ⋅   1  -2</cline>
+        </cd>
+      </p>
+    </subsection>
+  </section>
+
+  <section>
+    <title>Abstract Matrices</title>
+
+    <introduction>
+      <p>
+        As with number types that we discussed in <xref ref="sect-abstract-type"/>, matrices in julia are subtypes of the abstract type <c>AbstractMatrix</c>.  There are a few functions that are common to all matrices and understanding this is helpful in working with different types of special matrices.
+      </p>
+
+      <p>
+        In short, an <c>AbstractMatrix</c> is the supertype of all matrices in julia.  For example the multiplication of two matrices with <c>*</c>. If
+      </p>
+
+      <p>
+        <cd>
+        <cline>T = Tridiagonal([-1 for i=1:4],[2 for j=1:5],[-1 for j=1:4])</cline>
+        <cline>D = Diagonal([1,2,3,4,5]) </cline>
+        </cd>
+      </p>
+
+      <p>
+        then <c>D*T</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>5×5 Tridiagonal{Int64, Vector{Int64}}:</cline>
+        <cline>  2  -2   ⋅   ⋅   ⋅</cline>
+        <cline> -1   4  -3   ⋅   ⋅</cline>
+        <cline>  ⋅  -2   6  -4   ⋅</cline>
+        <cline>  ⋅   ⋅  -3   8  -5</cline>
+        <cline>  ⋅   ⋅   ⋅  -4  10</cline>
+        </cd>
+      </p>
+
+      <p>
+        and notice that the type is a <c>Tridiagonal</c>.  Depending on the types of the two input matrices, the multiplication will result in the appropriate output type.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Solving with Matrices/Division</title>
+
+      <p>
+        Another common
+      </p>
+    </subsection>
+  </section>
+</chapter>

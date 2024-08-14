@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-plotting-basics">
+	<title>Plotting Basics</title>
+
+	<introduction>
+		<p>
+			Plotting is an important aspect of anything scientific or mathematical. The ability to visualize a complex model or data set is often key to understanding it. In Julia, there are two different systems currently that are both used.  These are called <em>Makie</em> and the <em>Plots</em> package.
+		</p>
+
+		<p>
+			Also, as is common with open systems, like Julia, both Makie and Plots are user grown systems that are evolving separate from each other.  Both have advantages and philosophies associated with them.  We will cover them each in depth in the next two chapters.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Introduction to Makie</title>
+
+		<p>
+			On the official <url href="https://docs.makie.org" visual="makie.org">Makie Home Page</url>: <em>Makie is a data visualization ecosystem for the Julia programming language, with high performance and extensibility. </em>
+		</p>
+
+		<p>
+			There is definitely a philosophy of making attractive plots in Makie.  In fact, there is another website called <url href="https://beautiful.makie.org/dev/" visual="beautiful.makie.org">Beautiful Makie</url> whose purpose is to show off the amazing plots. The following is an example of a combination surface and vector field plot
+		</p>
+
+		<figure xml:id="fig-makie-example">
+			<caption>Example of a Makie Plot </caption>
+			<image source="plots/plots/makie-example.png">
+				<shortdescription>
+					(for accessibility)
+				</shortdescription>
+			</image>
+		</figure>
+
+		<p>
+			I won't post the code here, but it is available at the Beautiful Makie website. However, it is about 20 lines of code, which is quite compact for such a plot.
+		</p>
+	</section>
+
+	<section>
+		<title>Introduction to the <em>Plots</em> package</title>
+
+		<p>
+			<em>Plots</em> is a packaging system that has some similar ideas to that of Makie. According to the <url href="https://docs.juliaplots.org" visual="juliaplots.org">Plots website</url>, the goals with the package are:
+		</p>
+
+		<p>
+			<ul>
+				<li>
+					<p>
+						<em>Powerful.</em> Do more with less. Complex visualizations become easy.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Intuitive.</em> Start generating plots without reading volumes of documentation. Commands should "just work."
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Concise.</em> Less code means fewer mistakes and more efficient development and analysis.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Flexible.</em> Produce your favorite plots from your favorite package, only quicker and simpler.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Consistent.</em> Don't commit to one graphics package. Use the same code and access the strengths of all backends.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Lightweight.</em> Very few dependencies, since backends are loaded and initialized dynamically.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Smart.</em> It's not quite AGI, but Plots should figure out what you want it to do... not just what you tell it.
+					</p>
+				</li>
+			</ul>
+		</p>
+
+		<p>
+			An example of using Plots is the following Lorenz attractor as an animator.  If you return to the Makie Homepage, you'll see a similar example.
+		</p>
+
+		<figure xml:id="fig-plots-example">
+			<caption>Example Animated plot using the Plots package</caption>
+			<image source="plots/plots/plots-example.gif">
+				<shortdescription>
+					(for accessibility)
+				</shortdescription>
+			</image>
+		</figure>
+	</section>
+
+	<section>
+		<title>Plotting is Hard</title>
+
+		<p>
+			As the title says "Plotting is hard".  For scientific computing software, often plotting is what takes the most CPU/GPU cycles. In fact, the team of developers that have been working on Julia have given this issue the acronym TTFP (time to first plot), which is the amount of time from starting julia to getting a plot rendered.  Recently a lot of work has been done to reduce this.
+		</p>
+
+		<p>
+			When people usually think of plots or visualization, we think of high-level ideas, like function plots, scatter plots, vector field plots, etc.  We'd like to give functions or data and some attributes to some plotting routine and then just wait for the results.  These routine need to handle a lot of the details, including drawing lines and points on the screen with various fonts and make sure that all of the spacing is correct.
+		</p>
+	</section>
+
+	<section>
+		<title>Presenting Results with Visualization, an overview</title>
+
+		<introduction>
+			<p>
+				Before starting with code to create plots, let's remind ourselves of the types of plots that can occur and what they mean.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Scatter Plots</title>
+
+			<p>
+				A <term>scatter plot</term> is a plot of points in 2D or 3D in which each point represents a piece of data.  Although we will usually think of them in terms of x, y and z axes, the two or three axes can represent anything. The following is the graph of carbon dioxide levels in Hawaii from 1959  to 2023.
+			</p>
+
+			<figure xml:id="fig-co2-scatter">
+				<caption></caption>
+				<image source="plots/intro-plots/co2-scatter.png" width="90%">
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
+				</image>
+			</figure>
+		</subsection>
+
+
+		<subsection>
+			<title>Function Plots</title>
+
+			<p>
+				Mathematically, the graph of a function <m>f(x)</m> is the set of all points that satisfy the points <m>(x,f(x))</m> or if it is a function of two variables <m>(x,y,f(x,y))</m>.  This is generally what is thought of as a function graph that is often first seen in a Precalculus class, but extends throughout a science fields. The following is a sine curve.
+			</p>
+
+			<figure xml:id="fig-sine-curve">
+				<caption></caption>
+				<image source="plots/plots/sine-curve.png" width="90%">
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
+				</image>
+			</figure>
+		</subsection>
+
+
+		<subsection>
+			<title>Parametric Plots</title>
+
+			<p>
+				Additionally, a function plot can be created for a parametric curve defined as <m>\langle x(t), y(t) </m> for functions <m>x</m> and <m>y</m>. For example the spiral:
+			</p>
+
+			<figure xml:id="fig-spiral-curve">
+				<caption></caption>
+				<image source="plots/plots/makie-spiral.png" width="90%">
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
+				</image>
+			</figure>
+		</subsection>
+
+
+		<subsection>
+			<title>Parametric Plots in 3D</title>
+
+			<p>
+				Vector Functions in 3D are often represented as parametric functions of the form:
+				<me>
+					\langle x(t), y(t), z(t) \rangle
+				</me>
+				where each function gives the <m>x</m>, <m>y</m> or <m>z</m> coordinate at a time <m>t</m>.  Examples of this are in
+			</p>
+
+			<figure xml:id="fig-parametric-3d">
+				<caption></caption>
+				<image source="plots/plots/parametric3d.png" width="90%">
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
+				</image>
+			</figure>
+		</subsection>
+
+
+		<subsection>
+			<title>Surface Plots</title>
+
+			<p>
+				Functions of two variables in the form <m> z = f(x,y)</m> and that the two independent variables are <m>x</m> and <m>y</m> and the third variable is the height of the function.  The set of points that satisfy this equation generally form surfaces in 3D.  An example of this is the function <m>f(x,y)=\sin x \cos y</m> which has the surface plot
+			</p>
+
+			<figure xml:id="fig-surface">
+				<caption></caption>
+				<image source="plots/plots/surface.png" width="90%">
+					<shortdescription>(for accessibility)</shortdescription>
+				</image>
+			</figure>
+		</subsection>
+
+
+		<subsection>
+			<title>Implicit Curves</title>
+
+			<p>
+				An implcit curve is the set of points <m>(x,y)</m> in which <m>f(x,y)=C</m> for some constant <m>C</m>.  The classic example is the circle
+				<me>
+					x^2 + y^2 = 1
+				</me>
+				The following is the circle above plotted implicitly:
+			</p>
+
+			<figure xml:id="fig-implicit-circle">
+				<caption></caption>
+				<image source="plots/plots/implicit-circle.png" width="90%">
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
+				</image>
+			</figure>
+
+			</subsection>
+
+			<subsection>
+				<title>Contour Plots</title>
+
+			<p>
+				Related to plots of an implicit curve is that of a contour plot.  Recall from above that a function of two variables <m>z=f(x,y)</m> can be plotted in 3D, however another way to view these is as a series of implicit curves in the form <m>f(x,y)=C</m> for some number of constants <m>C</m>.  For example, the contour plot of
+			</p>
+
+			<p>
+				<me>
+					f(x,y) = \sin\biggl(\frac{1}{2}x^2-\frac{1}{4}y^2+2\biggr)\cos(x+y)
+				</me>
+			</p>
+
+			<p>
+				has the contour plot:
+			</p>
+
+			<figure xml:id="fig-contour-ex">
+				<caption></caption>
+				<image source="plots/plots/contour.png" width="90%">
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
+				</image>
+			</figure>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Plotting Backends</title>
+
+		<p>
+			Each of the two plotting environments that we are discussing in this chapter rely on other software to do the plotting.  These are known as <em>backends</em>, which are the actual routines to draw the lines, place the glyphs in a font and handling spacing.  There is different technology that is used for each backend and you don't need to know the specifics, but you should know that there are different backends and there are strengths and weaknesses of each.
+		</p>
+
+		<p>
+			Makie and the Plots package are each high-level wrappers with a consistent interface. That is, say, to perform a function plot, each takes a function, the limits and various attributes of the plot and the backends handle the details. Although we haven't discussed which plotting environment to use, one way to decide is which style of wrappers do you like better.
+		</p>
+
+		<p>
+			As this text is agnostic for the plotting environment, once that is chosen, some reading should be done on the backend.  Each of the next two chapters covers the backends for Makie and Plots respectively.
+		</p>
+	</section>
+</chapter>

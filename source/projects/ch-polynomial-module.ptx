@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-polynomial">
+  <title>Creating a Polynomial Module</title>
+
+  <introduction>
+    <p>
+      This chapter aims to walk through the steps of creating a reasonably complex module for polynomials.  This builds on the parametric data type first introduced using polynomials in <xref ref="sect-poly-parametric"/>, the modules and test suite in <xref ref="ch-modules"/> and the ability to parse strings found in <xref ref="ch-regexp"/>.  The goal is to use all of these pieces to build up to a module that has quite a bit of functionality of polynomials.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-poly-module">
+    <title>Polynomial Module</title>
+
+    <p>
+      We first start by placing a lot of the code that we developed in <xref ref="sect-poly-parametric"/> into a module.  This will look like
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+module Poly
+export Polynomial
+struct Polynomial{T &lt;: Number}
+  coeffs::Vector{T}
+end
+function Base.show(io::IO, p::Polynomial)
+  print(io, strip(reduce((str, n) -&gt; "$str $(n==1 ? "" : "+") $(p.coeffs[n]) x^$(n-1)", 1:length(p.coeffs), init="")))
+end
+end # of the module Poly
+      </input>
+    </program>
+
+    <p>
+      Note we have called the module <c>Poly</c> to not get ourselves confused over the struct <c>Polynomial</c>.  Place this code into a file called <c>Poly.jl</c>.  Recall that we also developed code for addition/subtraction and scalar multiplication.   We will add this later.  Also, we have adapted the <c>Base.show</c> command to trim the ends of the string of any whitespace.  We will load the <c>Revise</c> package and then load this file as
+    </p>
+
+    <p>
+      <cd>
+      <cline>using Revise</cline>
+      <cline>includet("Poly.jl")</cline>
+      <cline>using .Poly</cline>
+      </cd>
+    </p>
+
+    <p>
+      where it is important that we use the <c>includet</c> function from the <c>Revise</c> package.  Recall that this allows us to update the package and then reuse structs and functions in the package without restarting the kernel.  Test that this is working with
+    </p>
+
+    <p>
+      <cd>
+      <cline>p1 = Polynomial([1,2,3])</cline>
+      </cd>
+    </p>
+
+    <p>
+      and you shouldn't get any errors and see the output <c>1 x^0 + 2 x^1 + 3 x^2</c>.
+    </p>
+  </section>
+
+  <section xml:id="sec-test-poly">
+    <title>Testing the Polynomial Module</title>
+
+    <p>
+      We are going to start testing the module immediately.   Here's a fair straightfoward test suite that just creates the polynomial and tests each are the correct type:
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+using .Poly
+using Test
+function isequal(x::Polynomial,y::Polynomial)
+    return x.coeffs == y.coeffs
+end
+## test the creation of polynomials
+poly1 = Polynomial([1,2,3])
+poly2 = Polynomial([1.0,2.0,3.0])
+poly3 = Polynomial([2//3,3//4,5//8])
+poly4 = Polynomial([im,2+0im,3-2im,-im])
+poly5 = Polynomial([n for n=1:6])
+poly6 = Polynomial([1,1.5,2//3])
+@testset "Creating a Polynomial as a Vector of Coefficients" begin
+  @test isa(poly1, Polynomial)
+  @test typeof(poly1) == Polynomial{Int64}
+  @test isa(poly2, Polynomial)
+  @test typeof(poly2) == Polynomial{Float64}
+  @test isa(poly3, Polynomial)
+  @test typeof(poly3) == Polynomial{Rational{Int64}}
+  @test isa(poly4, Polynomial)
+  @test typeof(poly4) == Polynomial{Complex{Int64}}
+  @test isa(poly5, Polynomial)
+  @test typeof(poly5) == Polynomial{Int64}
+  @test isa(poly6, Polynomial)
+  @test typeof(poly6) == Polynomial{Float64}
+end
+      </input>
+    </program>
+
+    <p>
+      Save these lines to a file called <c>test-polynomial.jl</c> and then run the code with
+    </p>
+
+    <p>
+      <cd>
+      <cline>include("test-polynomial.jl")</cline>
+      </cd>
+    </p>
+
+    <p>
+      where this time we use the <c>include</c> comamnd.  We don't need the <c>includet</c> since this is not a module that needs to be tracked.  Upon running this, you should see:
+    </p>
+
+    <p>
+      <cd>
+      <cline>Test Summary:                                     | Pass  Total  Time</cline>
+      <cline>Creating a Polynomial as a Vector of Coefficients |   12     12  0.2s</cline>
+      </cd>
+    </p>
+
+    <p>
+      This test code creates 6 polynomials of different types and then tests that each is the correct type.  Note that for <c>poly6</c>, the array of coefficients is a mix of integers, floats and rationals, but Julia automatically changes it to an array of Floats.
+    </p>
+  </section>
+
+  <section xml:id="sect-test-poly-string">
+    <title>Testing the Stringification</title>
+
+    <p>
+      The other part of the code that we have included in the module is that of the <c>Base.show</c> command. Recall that this is usually called when producing output, however it is also called when a polynomial is wrapped with the <c>string</c> method. For example,
+    </p>
+
+    <p>
+      <cd>
+      <cline>p1 = Polynomial([1,2,3])</cline>
+      <cline>string(p1)</cline>
+      </cd>
+    </p>
+
+    <p>
+      returns <c>"1 x^0 + 2 x^1 + 3 x^2"</c>.  So we can set up a testset and a few tests for the first few polynomials in the test suite with
+    </p>
+
+    <p>
+      <cd>
+      <cline>@testset "Base.show" begin</cline>
+      <cline>  @test string(poly1) == "1 x^0 + 2 x^1 + 3 x^2"</cline>
+      <cline>  @test string(poly2) == "1.0 x^0 + 2.0 x^1 + 3.0 x^2"</cline>
+      <cline>  @test string(poly3) == "2//3 x^0 + 3//4 x^1 + 5//8 x^2"</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      and running the test code results in a all passing.  The stringificaiton of <c>poly4</c> is a bit of a problem because the complex numbers should be wrapped in parentheses.
+    </p>
+
+    <exercise>
+      <task>
+        <statement>
+          <p>
+            Update the <c>Base.show</c> command to  handle complex numbers by wrapping each coefficient in parentheses.
+          </p>
+        </statement>
+
+        <hint>
+          <p>
+            Test the type of the coefficient using the <c>typeof</c> command.  If it is of type <c>Complex</c> surround the coefficient with <c>()</c>.
+          </p>
+        </hint>
+      </task>
+
+
+      <task>
+        <statement>
+          <p>
+            Add a test to the test suite for the complex polynomial <c>poly4</c>.
+          </p>
+        </statement>
+      </task>
+    </exercise>
+  </section>
+
+  <section>
+    <title>Test Driven Development</title>
+
+    <p>
+      The standard for developing code today falls into what is called <term>Test Driven Development</term> or <term>TDD</term>.  In short, this means that before any code is written, the test suites are created.  For developers that have never done this before, it is very difficult way to develop because developers typically just want to write code--why test?  We'll show how this is done for the rest of the chapter and show how it can be beneficial.
+    </p>
+
+    <p>
+      Although we have already written a little code, we will switch to writing tests before writing code.
+    </p>
+  </section>
+
+  <section>
+    <title>Tests for Addition, Subtraction and Multiplication</title>
+
+    <p>
+      We first start with tests for Addition, subtraction, scalar multiplicaiton and polynomial multiplication.  We have already written this code earlier, but we'll write the tests before including the code. We'll start with handling polynomials with integer coefficients.  If we start with the following polynomials
+    </p>
+
+    <p>
+      <cd>
+      <cline>poly10 = Polynomial([1, 2, 3])</cline>
+      <cline>poly11 = Polynomial([-2,1,0,1])</cline>
+      </cd>
+    </p>
+
+    <p>
+      then we can run tests on these with
+    </p>
+
+    <p>
+      <cd>
+      <cline>@testset "Addition, Subtraction, Multiplication and Constant Multiplication" begin</cline>
+      <cline>  @test poly10+poly11 == Polynomial([-1,3,3,1])</cline>
+      <cline>  @test poly11-poly10 == Polynomial([-3,-1,-3,1])</cline>
+      <cline>  @test 4*poly10 == Polynomial([4,8,12])</cline>
+      <cline>  @test poly10*poly11 == Polynomial([-2,-3,-4,4,3])</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      and recall that the polynomial multiplication is performed using distribution (extended FOIL).
+    </p>
+  </section>
+
+  <section>
+    <title>Creating tests for string contructors</title>
+
+    <p>
+      Although we have a constructor for creating a polynomial from the coefficients, it's also nice to have a constructor that parses a string.  For example, if we have
+    </p>
+
+    <p>
+      <cd>
+      <cline>poly21 = Polynomial("-3+10x-5x^4")</cline>
+      <cline>poly22 = Polynomial("x^2+2x+3")</cline>
+      <cline>poly23 = Polynomial("2x-1")</cline>
+      </cd>
+    </p>
+
+    <p>
+      and then include the following tests at the bottom of the test file:
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+@testset "Creating a Polynomial from a string with integer coefficients" begin
+  @test isa(poly21, Polynomial)
+  @test typeof(poly21) == Polynomial{Int64}
+  @test isequal(poly21, Polynomial([-3,10,0,0,-5]))
+  @test isa(poly22, Polynomial)
+  @test typeof(poly22) == Polynomial{Int64}
+  @test isequal(poly22, Polynomial([3,2,1]))
+  @test isa(poly23, Polynomial)
+  @test typeof(poly23) == Polynomial{Int64}
+  @test isequal(poly23, Polynomial([-1,2]))
+end
+      </input>
+    </program>
+
+    <p>
+      We would like to handle polynomials with coefficients of other types: floats, rational and complex numbers. We construct the following polynomails:
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+poly31 = Polynomial([1.0, 2.0, 3.0])
+poly32 = Polynomial([0,4.0,0,-1.0])
+poly33 = Polynomial([1/2,1/4,1/8,1/10])
+poly34 = Polynomial("3.0x^2+2.0x+1.0")
+poly35 = Polynomial("-1.0x^3+4.0")
+poly36 = Polynomial("0.5+0.25x+0.125x^2+0.1x^3")
+poly41 = Polynomial([1//2, 1//3, 1//4])
+poly42 = Polynomial([1,0,0,1//6])
+poly43 = Polynomial([-1//8,0,0,0,1])
+poly44 = Polynomial("1//4x^2+1//3x+1//2")
+poly45 = Polynomial("1//6x^3+1")
+poly46 = Polynomial("x^4-1//8")
+poly51 = Polynomial([im, 2+im, 3-2im])
+poly52 = Polynomial([im,0,1])
+poly53 = Polynomial([im,2,3im,4])
+poly54 = Polynomial("(3-2im)x^2+(2+im)x+im")
+poly55 = Polynomial("im+x^2")
+poly56 = Polynomial("4x^3+3imx^2+2x+im")
+      </input>
+    </program>
+
+    <p>
+      After defining these, each of these should then be tested for constructions and other operations (stringification, addition, subtraction and multiplicaiton).  All of these can be found <em>here</em>.
+    </p>
+  </section>
+
+  <section>
+    <title>Testing polynomial evalution</title>
+
+    <p>
+      The last set of tests that we are going to develop are those of polynomial evaluation.
+    </p>
+
+
+  </section>
+</chapter>

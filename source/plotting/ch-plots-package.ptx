@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="ch-plots-package">
+	<title>The Plots Package</title>
+	<introduction>
+		<p>
+			There is a relatively simple, but powerful plotting package called
+			<c>Plots</c> and don't forget to download it as in <xref ref="ch-packages"/>.
+			The full documentation is at <url href="http://docs.juliaplots.org/latest/" visual="">the Plots.jl website</url>.
+			Recall that once the package is added, enter <fn>This function often takes a while to load due
+			to some precompiling.  Also, the first time a plot is created, it'll take a while.  The julia
+			team knows this is a problem and calls is the TTFP or time to first plot problem.</fn>
+		</p>
+
+		<p>
+			The Plots package tries to unify the syntax for plotting anything. The
+			basic command for plotting data or functions in 2D is the <c>plot</c>
+			command. The idea call <c>plot</c> on any type of object that can be plotted.
+			The next few examples shows this.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Plotting Functions</title>
+		<p>
+			For plotting a function, simply call plot on the function:
+		</p>
+
+		<p>
+			<cd>
+			plot(x->x^2)
+			</cd>
+		</p>
+
+		<p>
+			produces the following plot:
+			\begin{center}
+			\pgfplotsset{scale=0.7}
+			\plot{plots/plots/plot01.tex}{plots}
+			\end{center}
+		</p>
+
+		<p>
+			Note: your plot may look a bit different than this one with different fonts.
+			This is mainly due to using a different backend, which is explained below.
+		</p>
+
+		<p>
+			If you want to specify the <m>x</m>-range, try: <c>plot(x->x^2,-2,2)</c>
+			which generates:
+		</p>
+
+		<p>
+			\begin{center}
+			\pgfplotsset{scale=0.7}
+			\plot{plots/plots/plot01a.tex}{plots}
+			\end{center}
+		</p>
+
+		<p>
+			If we want to plot 2 or more functions on the same axes, pass in an array of
+			functions like:
+		</p>
+
+		<p>
+			<cd>
+			plot([x->x^2,x->sin(x)],-2,2)
+			</cd>
+		</p>
+
+		<p>
+			produces the following:
+			\begin{center}
+			\pgfplotsset{scale=0.7}
+			\plot{plots/plots/plot02.tex}{plots}
+			\end{center}
+		</p>
+
+		<p>
+			We will also see below how to change other aspects of the plot including the legend,
+			title, labels on the axes, etc.
+		</p>
+	</section>
+
+
+
+	<section>
+		<title>Other Function Plots</title>
+		<subsection xml:id="sect-para-plot"><title>Parametric Plots</title>
+			<p>
+				To do a parametric plot, like the circle defined by <m>x(t)=\cos t, y(t)=\sin t</m>, then
+			</p>
+
+			<p>
+				<cd>
+				plot(t->cos(t),t->sin(t),0,2*pi,legend=false)
+				</cd>
+			</p>
+
+			<p>
+				where the legend is turned off, since with one curve, it doesn't make much sense. The result is
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\plot{plots/plots/parametric01.tex}{plots}
+				\end{center}
+			</p>
+
+			<p>
+				but notice that this should be a circle, but it looks like an ellipse
+				due to the aspect ratio. If one instead adds the
+				\verb!aspect_ratio=:equal! option, as in
+			</p>
+
+			<p>
+				<cd>
+				plot(t->cos(t),t->sin(t),0,2*pi,aspect_ratio=:equal, legend=false)
+				</cd>
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\plot{plots/plots/parametric02.tex}{plots}
+				\end{center}
+			</p>
+		</subsection>
+
+		<subsection xml:id="sect-implicit-curve"><title>Implicit Curves</title>
+			<p>
+				An implicit curve is the set of points such that <m>f(x,y)=0</m> (or any constant)
+				and a circle is the classic example.  The curve below is the set of all points
+				such that <m>x^2+y^2=1</m>.  It can be plotted in Julia with the following command.
+			</p>
+
+			<p>
+				<cd>
+				contour(-1.1:0.01:1.1, -1.1:0.01:1.1, (x,y) -> x^2+y^2, levels=[1], aspect_ratio = :equal, legend = false)
+				</cd>
+			</p>
+
+			<p>
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\IfFileExists{./plots/plots/impcurve_preamble.tex}{\input{plots/plots/impcurve_preamble.tex}}{NO IMPLICIT CURVE PREAMBLE}
+				\plot{plots/plots/implcurve.tex}{plots}
+				\end{center}
+			</p>
+
+			<p>
+				Note that again, we have used the \verb!aspect_ratio = :equal! to ensure that
+				the circle looks like a circle.  The resulting plot is exactly the same as the
+				circle above.
+			</p>
+
+			<p>
+				Here's a more interesting contour plot of the function <m>f(x,y) = \sin (x+y) -\cos(xy) +1</m>
+				and following is the implicit curve when <m>c=0</m>.
+			</p>
+
+			<p>
+				<cd>
+				contour(-10.1:0.1:10.1, -10.1:0.1:10.1, (x,y) -> sin(x+y)-cos(x*y)+1, levels=[0], aspect_ratio = :equal, colorbar_entry = false)
+				</cd>
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\plot{plots/plots/implcurve2.tex}{plots}
+				\end{center}
+			</p>
+		</subsection>
+
+		<subsection xml:id="sect-contour-plot"><title>Contour Plots</title>
+			<p>
+				We can extend this notion to any function of two variables, say <m>f(x,y)</m>
+				and plot many implicit curves together for different constants.
+				That is plots of the form <m>f(x,y)=c</m> for multiple <m>c</m> values and this
+				is called a contour plot.  The following is <m>x^2+y^2=c</m> for <m>c=1,4,9,16</m>
+				which creates 4 concentric circles.
+			</p>
+
+			<p>
+				<cd>
+				contour(-5.1:0.1:5.1, -5.1:0.1:5.1, (x,y) -> x^2+y^2, levels=[1,4,9,16], aspect_ratio = :equal, colorbar_entry = false)
+				</cd>
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\plot{plots/plots/contour1.tex}{plots}
+				\end{center}
+			</p>
+		</subsection>
+
+		<subsection xml:id="sect-surf-plot"><title>Surface Plots</title>
+			<p>
+				If we have a function of 2 variables, a surface plot is nice to use. For
+				example, if we have the function <m>f(x,y)=e^{-(x^2+y^2)/10}</m> and we want
+				to plot it from -3 to 3 in both directions, if we define
+			</p>
+
+			<p>
+				<cd>
+				f(x,y)=exp(-0.1*(x^2+y^2))
+				x = y = range(-5, stop = 5, length = 40)
+				</cd>
+			</p>
+
+			<p>
+				and then plot with
+				<cd>
+				surface(x,y, f, legend = false)
+				</cd>
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\IfFileExists{./plots/plots/surf_preamble.tex}{\input{plots/plots/surf_preamble.tex}}{}
+				\plot{plots/plots/surf.tex}{plots}
+				\end{center}
+			</p>
+		</subsection>
+
+		<subsection xml:id="sect-heat-map"><title>Heat maps</title>
+			<p>
+				Similar to above, we can make a heat map with
+			</p>
+
+			<p>
+				<cd>
+				pl = heatmap(x,y, f, st=:heatmap)
+				</cd>
+			</p>
+
+			<p>
+				which produces
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\IfFileExists{./plots/plots/heat_preamble.tex}{\input{plots/plots/heat_preamble.tex}}{}
+				%\plot{plots/plots/heat.tex}{plots}
+				{\color{red} This plot isn't working.}
+				\end{center}
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Plotting Data</title>
+		<introduction>
+			<p>
+				First, let's start with some random data. Let
+			</p>
+
+			<p>
+				<cd>
+				x=1:10
+				y=rand(1:10,10)
+				</cd>
+			</p>
+
+			<p>
+				then <c>plot(x,y)</c> will produce a scatter plot of the data, like
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\plot{plots/plots/plot03.tex}{plots}
+				\end{center}
+			</p>
+
+			<p>
+				and note that since these are just random points, your plot will look
+				different, but the style should be the same.
+			</p>
+
+			<p>
+				If we want to connect all of the points with points instead, type
+			</p>
+
+			<p>
+				<cd>
+				plot(x,y,seriestype=:scatter)
+				</cd>
+			</p>
+
+			<p>
+				and the plot will look like:
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\plot{plots/plots/plot04.tex}{plots}
+				\end{center}
+			</p>
+
+			<p>
+				There is a shorthand or different version of this: \jlv[plots]{scatter(x,y)}, which produces the same plot.
+				If you want both, then type
+			</p>
+
+			<p>
+				<cd>
+				plot(x,y,seriestype=[:scatter,:line])
+				</cd>
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\plot{plots/plots/plot05.tex}{plots}
+				\end{center}
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>Bar plots</title>
+			<p>
+				A bar plot can be made with the <c>bar</c> command. For example:
+			</p>
+
+			<p>
+				<cd>
+				bar(x,y)
+				</cd>
+			</p>
+
+			<p>
+				where x and y were defined above for the scatter plot.  The result is
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\plot{plots/plots/bar01.tex}{plots}
+				\end{center}
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Animation</title>
+			<p>
+				Another nice type of plot under Plots.jl is that of an animation,
+				however you will need to have <c>ffmpeg</c> installed on your machine.
+				If you then do
+			</p>
+
+			<p>
+				<cd>
+				@gif for a in range(0.5,stop=2,length=16)
+				plot(t->cos(2t),t->sin(a*t),0,2pi,legend=false)
+				end
+				</cd>
+			</p>
+
+			<p>
+				which saves to a gif that the output will describe this results in:
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Other Plots and subplots</title>
+		<p>
+			This just is the tip of the iceberg for plotting. Take a look at the
+			<url href="http://docs.juliaplots.org/latest/" visual="juliaplots.org">Plots.jl
+			documentation</url> or do
+			some google-foo with the phrase `Plots.jl' and what you're looking for
+			and good spot for Q &amp; A is
+			<url href="https://discourse.julialang.org/c/domain/viz" visual="julialang.org">a
+			julialang.org discourse site</url>
+		</p>
+
+		<exercise>
+			<introduction>
+				<p>
+					Use the plotting techniques in this section to plot the following.  For each, hide the legend when ther e is only one curve/set of data and label appropriate if more than one curve/set of data.  Include a title as well.
+				</p>
+			</introduction>
+
+
+			<task>
+				<statement>
+					<p>
+						The function <m>y=e^{-x^2}</m> from <m>x=-3</m> to <m>x=3</m>
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						The functions <m>y=\sin x, y=\sin 2x, y=\sin 3</m> from <m>x=-\pi</m> to <m>x=\pi</m>.
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						A scatter plot of the following:
+					</p>
+
+					<table>
+						<title>Data for the scatter plot exercise</title>
+						<tabular>
+							<row>
+							<cell>0</cell><cell>2</cell><cell>3</cell><cell>4</cell><cell>6</cell><cell>9</cell><cell>10</cell>
+							<cell>11</cell><cell>13</cell><cell>15</cell><cell>16</cell><cell>18</cell><cell>20</cell>
+							</row>
+							<row>
+							<cell>-1</cell><cell>4</cell><cell>3</cell><cell>6</cell><cell>2</cell><cell>0</cell>
+							<cell>2</cell><cell>9</cell><cell>5</cell><cell>-2</cell><cell>4</cell><cell>4</cell>
+							<cell>6</cell><cell>3</cell>
+							</row>
+						</tabular>
+					</table>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						A surface plot of <m>z=\sin(x-y)</m> with <m>0 \leq x \leq \pi, 0 \leq y \leq \pi</m>.
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						A heat map of <m>z=\sin(x-y)</m> with <m>0 \leq x \leq \pi, 0 \leq y \leq \pi</m>.
+					</p>
+				</statement>
+			</task>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Backends of the Plots package</title>
+		<introduction>
+			<p>
+				The <c>Plots.jl</c> package actually doesn't do the plotting. It
+				leaves the details to other packages. By default, <c>Plots</c> uses the <c>GR</c>
+				backend although in this text I have used the <c>PGFPlotsX</c> backend which tends to print nicer. There
+				are a number of backends that you may want to try. The standard ones are:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							PyPlot (matplotlib): Slow but dependable
+						</p>
+					</li>
+
+					<li>
+						<p>
+							GR: Feature-rich and fast, but new
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Plotly/PlotlyJS: Interactive and good for web
+						</p>
+					</li>
+
+					<li>
+						<p>
+							PGFPlotsX: Native LaTeX rendering
+						</p>
+					</li>
+
+					<li>
+						<p>
+							UnicodePlots: Plots to unicode for situations without graphics capabilities.
+						</p>
+					</li>
+
+				</ul>
+			</p>
+
+			<p>
+				To switch the backend, you type the backend name in all lowercase with a set of (). Note:
+				you will need to add and load the package. Here is the plot of <m>x^2</m> on various backends.
+			</p>
+
+			<p>
+				<cd>
+				gr()
+				plot(x->x^2,-2,2)
+				</cd>
+			</p>
+
+			<p>
+				gives:
+				\begin{center}
+				\includegraphics[width=4in]{plots/plots/plot08.png}
+				\end{center}
+			</p>
+
+			<p>
+				<cd>
+				using PlotlyJS
+				plotlyjs()
+				plot(x->x^2,-2,2)
+				</cd>
+			</p>
+
+			<p>
+				results in:
+				\begin{center}
+				\includegraphics[width=4in]{plots/plots/plot09.png}
+				\end{center}
+			</p>
+
+			<p>
+				and then
+				<cd>
+				using PGFPlotsX
+				pgfplotsx()
+				plot(x->x^2,-2,2)
+				</cd>
+			</p>
+
+			<p>
+				results in:
+				\begin{center}
+				\pgfplotsset{scale=0.6}
+				\plot{plots/plots/pgfplotsx.tex}{plots}
+				\end{center}
+				and finally
+			</p>
+
+			<p>
+				<cd>
+				using PyPlot
+				pyplot()
+				plot(x->x^2,-2,2)
+				</cd>
+			</p>
+
+			<p>
+				results in:
+				\begin{center}
+				\includegraphics[width=4in]{plots/plots/plot11.png}
+				\end{center}
+			</p>
+
+			<p>
+				For additional information on the supported backends, visit
+				<url href="http://docs.juliaplots.org/latest/backends/" visual="juliaplots.org">
+				the Plots.jl backend documentation</url>
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>Changing the attributes of the plot</title>
+			<p>
+				Let's return back to the function plots above (although this works for
+				point/line plots as well) and change many attributes of the curve. As an
+				example:
+			</p>
+
+			<p>
+				<cd>
+				plot([x->x^2,sin],-2,2,title="Two Curves",label=["x squared" "sin(x)"],xlabel="x",ylabel="y",lw=3)
+				</cd>
+			</p>
+
+			<p>
+				results in
+				\begin{center}
+				\pgfplotsset{scale=0.7}
+				\plot{plots/plots/attrs.tex}{plots}
+				\end{center}
+			</p>
+
+			<p>
+				The format is fairly clear for the changing of the attributes. Note: in
+				this example:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							the <c>title</c> changes the title of the plot
+						</p>
+					</li>
+
+					<li>
+						<p>
+							the <c>label</c> changes the legend.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							the <c>xlabel</c> and <c>ylabel</c> changes the axes labels.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							the <c>lw</c> is the line weight.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				To avoid duplicating tons of documentation, visit
+				<url href="http://docs.juliaplots.org/latest/attributes/" visual="juliaplots.org">
+				the Plots.jl page on attributes</url> to find all of the information to get the
+				plot the way you want.
+			</p>
+
+			<exercise>
+				<introduction>
+					<p>
+						Answer the following questions:
+					</p>
+				</introduction>
+
+
+				<task>
+					<statement>
+						<p>
+							Take the scatterplot above (with the random dots) and change the color
+							of the dots to darkgreen, change the markers to diamonds and the size of the points
+							to about twice the default size.
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							On the function plot, make the line thicker and style to dashed.
+						</p>
+					</statement>
+				</task>
+			</exercise>
+		</subsection>
+	</section>
+</chapter>

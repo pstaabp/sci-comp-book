@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<part xml:id="part-advanced" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Advanced Features of Julia</title>
+
+  <!-- include sections -->
+  <xi:include href="advanced/ch-adv-functions.ptx" />
+  <xi:include href="advanced/ch-modules.ptx" />
+  <xi:include href="advanced/ch-parallel.ptx" />
+  <xi:include href="advanced/ch-regular-expr.ptx" />
+
+
+</part>

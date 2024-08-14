@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-complex">
+  <title>Complex Numbers and Analysis</title>
+
+  <introduction>
+    <p>
+      Julia handles complex numbers in a natural manner.  The type <c>Complex</c> is part of the <c>Base</c> package and is a subtype of the abstract data type <c>Number</c>.  In this chapter, we go through basics of complex numbers in julia and see linear algebra and fourier transforms.  You should have some basic knowledge of complex numbers before proceeding.
+    </p>
+  </introduction>
+
+  <section>
+    <title>Complex Numbers</title>
+
+    <introduction>
+      <p>
+        Entering
+      </p>
+
+      <p>
+        <cd>
+        <cline>z1 = 1+2im</cline>
+        </cd>
+      </p>
+
+      <p>
+        and checking the type with <c>typeof(z1)</c> returns <c>Complex{Int64}</c> which indicates that it is parametric type where the individual elements are integers.  Notice that <c>im</c> is the imaginary constant.    Naturally, there is a lot of basic arithmetic operations available, so if
+      </p>
+
+      <p>
+        <cd> z2 = 5-2im </cd>
+      </p>
+
+      <p>
+        Then
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <p>
+              <c>z1+z2</c> returns <c>6+0im</c>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>z1-z2</c> returns <c>-4+4im</c>
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>z1*z2</c> returns <c>9 + 8im</c>
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>z1/z2</c> returns <c>0.03448275862068965 + 0.41379310344827586im</c>
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>z1//z2</c> returns <c>1//29 + 12//29*im</c>
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>3z1-9z2</c> returns <c>-42 + 24im</c>.
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Note the difference between the 3rd and 4th operation.  The 3rd one does floating-point division, so the result is a Complex number of floats.  The 4th does division resulting in Rational numbers.  Test with <c>typeof</c> on both of these results.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Functions of Complex Numbers</title>
+
+      <p>
+        Most functions ``just work'' in that they return the function evaluated at the complex number, however you need some basic understanding about what this means.
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <p>
+              <c>sqrt(z1)</c> returns <c>1.272019649514069 + 0.7861513777574233im</c>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>atan(z1)</c> returns <c>1.3389725222944935 + 0.40235947810852507im</c>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>log(-1+0im)</c> returns <c>0.0 + 3.141592653589793im</c>
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>exp(pi*im)</c> returns <c>-1.0 + 1.2246467991473532e-16im</c>.
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        Although we won't go into how these are calculated<fn>A firm understanding of what the sine of a complex number requires some complex analysis</fn>, note that you get answers.  For <c>log(-1+0im)</c>, this shows that if you are considering imaginary numbers, you can take the logarithm of a negative number, which is not allowed in the reals.
+      </p>
+
+      <p>
+        Also, the last one is the famous equation <m>e^{i\pi}+1=0</m> however since it using floating-point to do this, you get round-off error due to the limited precision.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Functions with Special Meaning for Complex Numbers</title>
+
+      <p>
+        There are some functions that have special means for complex numbers.  The functions <c>real</c> and <c>imag</c> return the real and imaginary part of the number (the result of each is a <c>Real</c>, generally an <c>Int</c>, <c>Float</c> or <c>Rational</c>.
+      </p>
+
+      <p>
+        The absolute value of a complex number is defined as the distance in the complex plane from the origin or if <m>z=a+bi</m>, then
+      </p>
+
+      <p>
+        <me>
+          z  = \sqrt{a^2+b^2}
+        </me>
+      </p>
+
+      <p>
+        Also, the complex conjugate, generally denoted <m>\bar{z}</m>, is
+        <me>
+          \bar{z} = a-bi
+        </me>
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <p>
+              <c>real(z1)</c> returns <c>1</c>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>imag(z1)</c> returns <c>2</c>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>abs(z1)</c> returns <c>2.23606797749979</c>
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>abs2(z1)</c> returns <c>5</c>, which is the square of the absolute value.  This is generally used for speed in that a square root is not needed.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>conj(z1)</c> returns <c>1 - 2im</c>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              <c>angle(z1)</c> returns <c>1.1071487177940904</c> is the argument of <m>z</m>, which is the angle in radians of the point plotted in the complex plane.
+            </p>
+          </li>
+        </ul>
+      </p>
+    </subsection>
+  </section>
+
+  <section>
+    <title>Linear Algebra with Complex Numbers</title>
+
+    <p>
+      There are many applications (including Fourier Transforms that we will see in the next section) involving matrices of complex numbers and the corresponding functions.
+    </p>
+
+    <p>
+      The functions discussed in <xref ref="ch-lin-alg-intro"/> work with matrices involving complex numbers in a seamless manner including sums, differences, scalar and non-scalar multiplication and solving.
+    </p>
+
+    <p>
+      However there are many functions that have different meaning with complex numbers.  Take for example, the matrix
+    </p>
+
+    <p>
+      <cd>
+      <cline> C = [1 -im;2+im 3]</cline>
+      </cd>
+    </p>
+
+    <p>
+      and if we take the transpose using
+    </p>
+
+    <p>
+      <cd> C' </cd>
+    </p>
+
+    <p>
+      the result is
+    </p>
+
+    <p>
+      <cd>
+      <cline>2×2 adjoint(::Matrix{Complex{Int64}}) with eltype Complex{Int64}:</cline>
+      <cline>  1+0im  2-1im</cline>
+      <cline>  0+1im  3+0im</cline>
+      </cd>
+    </p>
+
+    <p>
+      Unless you know how the transpose works with complex matrices, this may be surprising in that as the two non-diagonal element actually both switch as well as have the conjugate applied.
+    </p>
+
+    <p>
+      Notice also that the type of the result gives a hint at what the <c>'</c> operator actually does.  Thus this is the adjoint of the matrix.
+    </p>
+  </section>
+
+  <section>
+    <title>Discrete Fourier Transforms</title>
+
+    <introduction>
+      <p>
+        The <term>Discrete Fourier Transform</term> or DFT is a function that takes a vector in <m>\mathbb{R}^n</m> or (<m>\mathbb{C}^n</m>) to <m>\mathbb{C}^n</m>.  In particular it is
+      </p>
+
+      <p>
+        <men xml:id="eq-dft">
+          \hat{x}_k = \sum_{j=1}^N x_j e^{(-2\pi i kj)/N}
+        </men>
+      </p>
+
+      <p>
+        where <m>\mathbf{x}</m> is the input vector, <m>i</m> is the imaginary constant and <m>N</m> is the length of the vector.
+      </p>
+
+      <p>
+        The DFT has multiple applications including transforming a time-series to a set of frequencies (and this is often used in filter), solving partial differential equations and data compression. We will see some of these later.
+      </p>
+
+      <p>
+        From a mathematical point of view the DFT in <xref ref="eq-dft"/> can be thought of as the matrix product:
+      </p>
+
+      <p>
+        <me>
+          \hat{\mathbf{x}} = F \mathbf{x}
+        </me>
+      </p>
+
+      <p>
+        where
+      </p>
+
+      <p>
+        <me>
+          F = \begin{bmatrix} \omega^{0\cdot 0} \amp \omega^{0 \cdot 1} \amp \cdots \amp \omega^{0 \cdot (N-1)} \\ \omega^{1\cdot 0} \amp \omega^{1 \cdot 1} \amp \cdots \amp \omega^{1 \cdot (N-1)} \\ \vdots \amp \amp \amp \vdots \\ \omega^{(N-1)\cdot 0} \amp \omega^{(N-1)\cdot 1} \amp \cdots \amp \omega^{(N-1)(N-1)}\\ \end{bmatrix}
+        </me>
+      </p>
+
+      <p>
+        where
+      </p>
+
+      <p>
+        <me>
+          \omega = e^{-2\pi i/N}
+        </me>
+      </p>
+
+      <p>
+        is the primitive <m>N</m>th root of unity.
+      </p>
+
+      <p>
+        As an example, let <c>x=[1,0,2,0]</c> and then we will define
+      </p>
+
+      <p>
+        <cd> F = [exp(j*k*2*pi*im/4) for j=0:3,k=0:3] </cd>
+      </p>
+
+      <p>
+        which returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>4×4 Matrix{ComplexF64}:</cline>
+        <cline>  1.0+0.0im           1.0+0.0im          …           1.0+0.0im</cline>
+        <cline>  1.0+0.0im   6.12323e-17+1.0im             -1.83697e-16-1.0im</cline>
+        <cline>  1.0+0.0im          -1.0+1.22465e-16im             -1.0+3.67394e-16im</cline>
+        <cline>  1.0+0.0im  -1.83697e-16-1.0im              5.51091e-16+1.0im</cline>
+        </cd>
+      </p>
+
+      <p>
+        And if we want the DFT of the vector <c>x</c>, then
+      </p>
+
+      <p>
+        <cd> xt = F*x </cd>
+      </p>
+
+      <p>
+        which returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>4-element Vector{ComplexF64}:</cline>
+        <cline>  3.0 + 0.0im</cline>
+        <cline> -1.0 + 2.4492935982947064e-16im</cline>
+        <cline>  3.0 - 4.898587196589413e-16im</cline>
+        <cline> -1.0 + 7.347880794884119e-16im</cline>
+        </cd>
+      </p>
+
+      <p>
+        Note that this is virtually a real vector in that the imaginary parts are due to round off errors and near the precision of <c>Float64</c> types.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Fast Fourier Transform</title>
+
+      <p>
+        You can probably tell from the matrix <m>F</m> above that there is a lot of symmetry to the matrix.  Not only is it symmetric in the sense that <m>F = F^{T}</m>, but due the fact that exponentials with imaginary powers are actually periodic functions, there are additional
+      </p>
+
+      <p>
+        (Find a good reference for how the FFT works)
+      </p>
+
+      <p>
+        There are a number of packages that perform the fast fourier transform, however, the FFTW (which stands for the Fastest Fourier Transform in the West) claims to be the fastest.  To use this, first add <c>FFTW</c> and
+      </p>
+
+      <p>
+        <cd>
+        <cline>using FFTW</cline>
+        </cd>
+      </p>
+
+      <p>
+        and then use the <c>fft</c> function.
+      </p>
+
+      <p>
+        <cd> fft(x) </cd>
+      </p>
+
+      <p>
+        which returns nearly nthe same as above or
+      </p>
+
+      <p>
+        <cd>
+        <cline>4-element Vector{ComplexF64}:</cline>
+        <cline>  3.0 + 0.0im</cline>
+        <cline> -1.0 + 0.0im</cline>
+        <cline>  3.0 + 0.0im</cline>
+        <cline> -1.0 + 0.0im</cline>
+        </cd>
+      </p>
+
+      <p>
+        where the difference is in round-off errors.
+      </p>
+    </subsection>
+  </section>
+</chapter>

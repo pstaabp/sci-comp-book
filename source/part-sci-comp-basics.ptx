@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<part xml:id="part-julia-basics" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Scientific Computation and Julia Basics</title>
+
+  <!-- include sections -->
+  <xi:include href="basics/ch-variables.ptx" />
+  <xi:include href="basics/ch-data-types.ptx" />
+  <xi:include href="basics/ch-intro-functions.ptx" />
+  <xi:include href="basics/ch-boolean-loops.ptx" />
+  <xi:include href="basics/ch-arrays.ptx" />
+  <xi:include href="basics/ch-functional-programming.ptx" />
+  <xi:include href="basics/ch-number-theory.ptx" />
+  <xi:include href="basics/ch-algo-anal.ptx" />
+  <xi:include href="basics/ch-rootfinding.ptx" />
+  <xi:include href="basics/ch-comp-types.ptx" />
+
+</part>

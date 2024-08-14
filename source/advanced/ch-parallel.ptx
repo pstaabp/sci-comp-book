@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="ch-parallel">
+	<title>Parallel Computing</title>
+	<introduction>
+		<p>
+			Briefly, parallel computing is a method of running code on multiple
+			processors (or multiple cores of the same processor) at the same time.
+			In general, this is a difficult task depending on where data is stored
+			and retrieved. The
+			<url href="https://docs.julialang.org/en/v1/manual/parallel-computing/" visual="julialang.org">
+			Julia Documentation on parallel computing</url> is a good place to start.
+		</p>
+
+		<p>
+			Let's start with something relatively simple. Consider the following
+			code:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+function countHeads(n::Int)
+  c::Int = 0
+  for i=1:n
+    c += rand(Bool)
+  end
+  c
+end
+			</input>
+		</program>
+
+		<p>
+			which mimics flipping a coin <c>n</c> times. We can simulate flipping
+			2 billion coins and finding the fraction that is heads by the
+			following:
+		</p>
+
+		<p>
+			<cd>
+			<cline>@time countHeads(2*10^9)/(2*10^9)</cline>
+			</cd>
+		</p>
+
+		<p>
+			which returns <c>0.5000087195</c> in <c>2.548122 seconds</c>.<fn>And remember that since we are using
+			random numbers that if you run this code you will get different results, but
+			the number should be close to the expected value of 0.5.</fn>
+		</p>
+	</introduction>
+
+	<section>
+		<title>Running parallel code</title>
+		<introduction>
+			<p>
+				We now wish to take advantage of the fact that today's processors often
+				have multiple cores and multiple threading. There are some helpful
+				things in the <c>Distributed</c> package:
+			</p>
+
+			<p>
+				<cd>
+				<cline>using Distributed</cline>
+				</cd>
+			</p>
+
+			<p>
+				Unless you specify otherwise, Julia will startup only using 1 core.  You can see this
+				with <c>nprocs()</c>, which will return <c>1</c> as the number of cores used.
+				Let's say that we wish to run it simultaneously on 2 cores (even if we
+				know we have more) If we type
+			</p>
+
+			<p>
+				<cd>
+				<cline>addproc(1)</cline>
+				</cd>
+			</p>
+
+			<p>
+				this would then allow julia up to 2 ``processors''. There are a couple of ways to now run
+				code. The first gives us more control, while the second allows for some easy code writing.
+				Checking with <c>nprocs()</c> now shows that there are 2 cores available.
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>Assigning code to workers</title>
+			<p>
+				First, we need to make sure that the function <c>countHeads</c> is available to each
+				core of the machine. To do this, we will start the function with the <c>@everywhere</c> macro:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+@everywhere function countHeads(n::Int)
+  c::Int = 0
+  for i=1:n
+    c += rand(Bool)
+  end
+  c
+end
+				</input>
+			</program>
+
+			<p>
+				Any function that you will need on multiple cores will need to be
+				prefaced with the macro <c>@everywhere</c>. After this, we can now send code to different cores. Type:
+			</p>
+
+			<p>
+				<cd>
+				<cline>a= @spawn countHeads(10^9)</cline>
+				<cline>b= @spawn countHeads(10^9)</cline>
+				</cd>
+			</p>
+
+			<p>
+				and you should notice that it doesn't return the number of heads as
+				expected and it goes almost instanteously. Don't worry right now about
+				the type of object that is returned.
+			</p>
+
+			<p>
+				Even though it returns quickly, code is already running and you can see
+				this with your machine's process manager (Activity Monitor on MacOS). To get the results, we type
+			</p>
+
+			<p>
+				<cd>
+				<cline>fetch(a)+fetch(b)</cline>
+				</cd>
+			</p>
+
+			<p>
+				and it will return the number of heads flipped. To test the timing, put all three of these in a block:
+			</p>
+
+			<p>
+				<cd>
+				<cline>a= @spawn countHeads(10^9)</cline>
+				<cline>b= @spawn countHeads(10^9)</cline>
+				<cline>@time fetch(a)+fetch(b)</cline>
+				</cd>
+			</p>
+
+			<p>
+				and the results show that it took <c>2.469003 seconds</c>.
+			</p>
+
+			<p>
+				This is perhaps a bit disappointing in that if we use two cores, then might
+				expect half of the time.  It's not quite that simple in that there is some overhead
+				for using multiple cores.  However, if you use more cores like the exercise below,
+				you'll probably get better results and for longer processes, it will pay off.
+			</p>
+
+			<exercise>
+				<p>
+					Perform the following tasks:
+				</p>
+
+				<p>
+					<ol>
+						<li>
+							<p>
+								Add two more cores to julia with the <c>addprocs</c> command.
+							</p>
+						</li>
+
+						<li>
+							<p>
+								Rerun the block of code  <c>@everywhere function countHeads</c> code above.
+							</p>
+						</li>
+
+						<li>
+							<p>
+								Create 4 spawning lines. Call them <c>a, b, c</c> and <c>d</c> and use <c>5*10^8</c> for each.
+							</p>
+						</li>
+
+						<li>
+							<p>
+								Time the sum of the four.
+							</p>
+						</li>
+
+						<li>
+							<p>
+								Note: if you truly have 4 cores, then you will see a further halving of the time.
+								If not, you will probably only see the same results.
+							</p>
+						</li>
+					</ol>
+				</p>
+			</exercise>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Managing Processes</title>
+		<introduction>
+			<p>
+				Julia has a few commands that allow us to manage how many processes are used.
+				These include <c>addprocs</c> seen above, but also <c>procs</c> and <c>rmprocs</c>.
+				We will see these in action in this section.
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>The <c>procs</c> command</title>
+			<p>
+				Entering <c>procs()</c> shows all of the current processes running in the
+				kernel.  If you did the exercise above, you should see 4 and may look like:
+			</p>
+
+			<p>
+				<cd>
+				<cline>4-element Vector{Int64}:</cline>
+				<cline>  1</cline>
+				<cline>  2</cline>
+				<cline>  3</cline>
+				<cline>  4</cline>
+				</cd>
+			</p>
+
+			<p>
+				which shows that there are 4 cores available and the have the numbers 1
+				through 4.
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Adding all of the cores</title>
+			<p>
+				Since most computers have multiple cores, this is helpful, but what
+				about adding all of the cores? If we just call
+			</p>
+
+			<p>
+				<cd>
+				<cline>addprocs()</cline>
+				</cd>
+			</p>
+
+			<p>
+				then it adds everything available. You will get an array of the workers.
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Removing cores</title>
+			<p>
+				Although if you are trying to run code as quickly as possible you probably want
+				as many cores as possible, you may need to reduce the number of cores used.  We
+				can do this with the <c>rmprocs</c> command.   Pass in the number of the
+				process that you want to remove.
+			</p>
+
+			<p>
+				If you have 4 processes numbered 1 through 4 currently, and want to return
+				to just 1 process, then <c>rmprocs(2,3,4)</c> will return to the single core.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Parallel for loops</title>
+		<p>
+			First, use the <c>rmprocs</c> command as shown above to return to a
+			single core.
+		</p>
+
+		<p>
+			One issue with what we did above is that we have to think about spawning
+			to individual processors or cores. That is fairly annoying. Fortunately,
+			another helpful feature of julia is that of a parallel for loop. Try the
+			following code:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+@time let
+  nheads = @distributed (+) for i = 1:2*10^10
+    Int(rand(Bool))
+  end
+end
+			</input>
+		</program>
+
+		<p>
+			and the results took <c>24.830175 seconds</c>. Note that we are doing 10 times
+			as many coin flips as the beginning of the chapter, so you should see this taking
+			about 10 times longer.
+		</p>
+
+		<p>
+			Add 3 cores with <c>addprocs(3)</c> and rerun the code above.  When running,
+			I got the results in <c>9.434582 seconds</c>.  This is about twice as fast.  If you were
+			expecting (or hoping) for 4 times as fast, recall that there is overhead for
+			handling parallel code.  This machine has 8 core, so doing <c>addprocs()</c> added
+			another 4 cores and rerunning, I got the results in <c>5.423481 seconds</c>
+			which is about 5 times faster than running without parallel code.
+		</p>
+
+		<p>
+			So what is going on with this?  The <c>@distributed</c> macro runs a for
+			loop on all available cores, splitting the range across the cores.  The
+			<c>(+)</c> says to add the results.  Any reducer function (see <xref ref="sect-reduce-array"/>
+			for general <c>reduce</c> function) can be used.
+		</p>
+	</section>
+
+	<section>
+		<title>Writing a parallel card simulator</title>
+		<introduction>
+			<p>
+				For this, we need to reload the PlayingCard module:
+			</p>
+
+			<p>
+				<cd>
+				<cline>include("PlayingCards.jl")</cline>
+				<cline>using .PlayingCards, Random</cline>
+				</cd>
+			</p>
+
+			<p>
+				(or you may need to put in a different path to your module)
+			</p>
+
+			<p>
+				If we have the following code to simulate a large number of hands:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function countHands(trials::Int,f::Function)
+    local deck=map(Card,1:52)
+    local num_hands=0
+    for i=1:trials
+        shuffle!(deck)
+        h = Hand(deck[1:5])
+        if(f(h))
+            num_hands+=1
+        end
+    end
+    num_hands
+end
+				</input>
+			</program>
+
+			<p>
+				And let's just check to make sure it works:
+			</p>
+
+			<p>
+				<cd>
+          <cline>@time countHands(10_000_000,isFullHouse)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which returns the result in <c>4.305718 seconds</c>.
+			</p>
+
+			<p>
+				We now wish to write a distributed version of this in which we will
+				replace the for loop with a distributed for loop.  First, the module needs to be loaded for all cores by
+        the core below, but first restart the kernel to avoid errors that occur when
+        rerunning the same code.
+			</p>
+
+			<p>
+				<cd>
+          <cline>using Distributed</cline>
+          <cline>@everywhere include("PlayingCards.jl")</cline>
+          <cline>@everywhere using .PlayingCards, Random</cline>
+				</cd>
+			</p>
+
+			<p>
+				and then the following will be the parallel version of the hand count function:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+@everywhere function paraCountHands(trials::Integer,f::Function)
+  local deck=map(Card,1:52)
+  function checkHand(f::Function) ## shuffle the deck then check the hand.
+    shuffle!(deck)
+    f(Hand(deck[1:5]))
+  end
+  @distributed (+) for i = 1:trials
+    Int(checkHand(f))
+  end
+end
+				</input>
+			</program>
+
+			<p>
+				Add 3 cores with the command <c>addprocs(3)</c> and then rerun the code above with
+			</p>
+
+			<p>
+				<cd>
+				@time fh = paraCountHands(10_000_000,isFullHouse)
+				</cd>
+			</p>
+
+			<p>
+				returns \printpythontex[verbatim] which cuts the time by about quarter.
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>parallelizing the ....</title>
+			<p>
+				What goes here?
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>A Parallel Map Function</title>
+		<introduction>
+			<program language="julia" line-numbers="yes">
+				<input>
+@everywhere function countHeads(n::Int)
+   c::Int = 0
+   for i=1:n
+       c += rand(Bool)
+   end
+   c
+end
+				</input>
+			</program>
+
+			<p>
+				In <xref ref="ch-functional-programming"/>, we saw the <c>map</c> function,
+				which is the standard way if you have an array and need to do the same thing
+				to each element of the array, returning the result. If the function that is applied
+				to each element of the array is costly and you have multiple processors/cores to work with,
+				doing this in parallel can be helpful.
+			</p>
+
+			<p>
+				We demonstrate how to do this with just the coin flip right now using the <c>pmap</c> function.
+				We first make an array of length 12 (although this isn't an important number):
+			</p>
+
+			<p>
+				<cd>
+				num_coins = 1_000_000_000*ones(Int64,12)
+				</cd>
+			</p>
+
+			<p>
+				so each element is 1 billion. We wish to run the coin flipper on each element of the array.
+				Don't forget that the <c>countHeads</c> function must be declared everywhere. The following runs the function:
+			</p>
+
+			<p>
+				<cd>
+				@time pmap(countHeads,num_coins)
+				</cd>
+			</p>
+
+			<p>
+				and the resulting time is: \printpythontex[verbatim]
+			</p>
+
+			<p>
+				In comparison, if we run the regular map function:
+			</p>
+
+			<p>
+				<cd>
+				@time map(countHeads,num_coins)
+				</cd>
+			</p>
+
+			<p>
+				the result is \printpythontex[verb]. Again, this is about 4 times slower.
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>When to use <c>pmap</c></title>
+			<p>
+				It seems like the <c>pmap</c> function should always be used if it speeds up calculations.
+				However, note that in this example, the size of the array was small but the function on each
+				element took a relatively long time.  If we have an array with millions of elements,
+				though, the <c>pmap</c> function may actually be slower.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Shared arrays</title>
+		<p>
+			The last example shows that we may have to do something on an array. For
+			simplicity, let's say we have a fairly large array:
+		</p>
+
+		<p>
+			<cd>
+			arr = rand(1:100,100_000_000);
+			</cd>
+		</p>
+
+		<p>
+			A common thing to do is to smooth an array (and is often done to images)
+			by a windowed mean, which means that every element is replaced by a mean
+			of the points around it in some window. We first define a windowed mean
+			by the following function:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+function windowMean(arr::Vector{T},i::Integer,width::Integer) where T &lt;: Real
+  window = max(1,i-width):min(i+width,length(arr))
+  sum(arr[window])/(last(window)-first(window)+1)
+end
+			</input>
+		</program>
+
+		<p>
+			which first determine a window (being careful with the first and end of
+			the array) and then just calculating the mean.
+		</p>
+
+		<p>
+			Then if we have a new array of zeros:
+		</p>
+
+		<p>
+			<cd>
+			smoothed_array = zeros(Float64,length(arr))
+			</cd>
+		</p>
+
+		<p>
+			we fill the new array with the windowed mean:
+		</p>
+
+		<p>
+			<cd>
+			@time let
+			for i=1:length(arr)
+			smoothed_array[i]=windowMean(arr,i,100)
+			end
+			end
+			</cd>
+		</p>
+
+		<p>
+			will fill the array with the smoothed version in about 43 seconds.
+		</p>
+
+		<p>
+			Note: the astute reader is probably thinking that using <c>map</c> to
+			do this is the right way to go, however, we can't use map in this
+			instance because the <c>window\_mean</c> function doesn't just use a
+			single number (from an array), it uses the entire array.
+		</p>
+
+		<p>
+			A natural way to speed this is is to send this to individual
+			processor/cores and work on this in pieces. One problem with this is
+			that we would have to send the entire array to each worker and that is
+			expensive. Since a 64-bit integer is 8 bytes, the array of 100 million
+			is about 800 Mb of memory and that is reasonable expensive to pass
+			around. Instead, we are going to use a shared array in the package
+			<c>SharedArrays</c> and you will need to add this.
+		</p>
+
+		<p>
+			<cd>
+			using SharedArrays
+			</cd>
+		</p>
+	</section>
+</chapter>

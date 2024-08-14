@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<part xml:id="part-intro" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Introduction to Scientific Computing</title>
+  <xi:include href="./ch-introduction.ptx" />
+</part>

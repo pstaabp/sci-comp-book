@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter xml:id="ch-algorithm-analysis">
+	<title>Algorithm Analysis</title>
+	<introduction>
+		<p>
+			This chapter will be a brief introduction to the analysis of algorithms.  As we have already
+			seen in the past couple of chapters, timing algorithms is a decent way to determining
+			how well they run, however sometimes a more in-depth analysis is needed.
+			We will cover what is called big-O notation and analysis a few algorithms here.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Big-O Notation</title>
+		<definition xml:id="def-big-o">
+			<statement>
+				<p>
+					Consider two functions <m>f</m> and <m>g</m>, We say that <m>f(n)</m>
+					is <m>O(g(n))</m> or ``big-O'' of <m>g(n)</m> if
+					<me>
+						\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = C
+					</me>
+					for some <m>0 &gt; C &gt; \infty</m>.
+				</p>
+			</statement>
+		</definition>
+
+		<p>
+			For example, let <m>f(n) = 3n^2-2n+6</m>.  This function is <m>O(n^2)</m> because
+		</p>
+
+		<p>
+			<me>
+				\lim_{n\rightarrow \infty} \frac{3n^2-2n+6}{n^2} = 3
+			</me>
+		</p>
+
+		<p>
+			Generally, if a function is polynomial, the function is <m>O(n^p)</m> where <m>p</m>
+			is the degree of polynomial.
+		</p>
+
+		<exercise>
+			<introduction>
+				<p>
+					For each of the following functions find <m>O(g(n))</m>, that is find <m>g(n)</m>:
+				</p>
+			</introduction>
+
+
+			<task>
+				<statement>
+					<p>
+						<m>f(n) = n^2+e^n</m>
+					</p>
+				</statement>
+
+				<hint>
+					<p>
+						Hint: recall L'Hopital's rule for derivatives and try to find the <em>largest</em>
+						term of the given function.
+					</p>
+				</hint>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						<m>f(n) = 3n^2+e^{-n}</m>
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						<m>f(n) = n + n \ln(n)</m>
+					</p>
+				</statement>
+			</task>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Polynomial Evaluation</title>
+		<introduction>
+			<p>
+				An example that we will see again in <xref ref="ch-comp-types"/>, it that of
+				evaluating a polynomial. If
+			</p>
+
+			<p>
+				<men xml:id="eq-poly">
+					p(x) = a_0 + a_1 x + a_2 x^2 + \cdots + a_n x^n
+				</men>
+			</p>
+
+			<p>
+				If we evaluate the polynomial as is counting powers as repeated multiplication,
+				then the number of additions is <m>n</m> and the number of multiplication is
+			</p>
+
+			<p>
+				<me>
+					M(n) = 1 + 2 + 3 + \cdots + n = \frac{n(n+1)}{2}
+				</me>
+			</p>
+
+			<p>
+				This shows that polynomial evaluation is <m>O(n^2)</m> since
+				<m>\lim_{n \rightarrow \infty} M(n)/n^2 = 1/2</m>.
+			</p>
+		</introduction>
+
+		<subsection xml:id="sect-horner">
+			<title>Horner's Form</title>
+			<p>
+				We can rewrite <xref ref="eq-poly"/> as
+			</p>
+
+			<p>
+				<men xml:id="eq-horner">
+					p(x) = a_0 + x(a_1 + x(a_2 + x(a_3 \cdots + a_n x)))
+				</men>
+			</p>
+
+			<p>
+				In this case, there are <m>n</m> additions and <m>n</m> multiplications.
+				So you could say that the total number of operations are <m>c_1 n + c_2n</m>
+				where <m>c_1</m> and <m>c_2</m> are constants related to addition and multiplication.
+				Overall, this means that the order of polynomial evaluation using Horner's
+				method is <m>O(n)</m>.
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Benchmarking Polynomial Evaluation</title>
+			<introduction>
+				<p>
+					Let's actually see some actual data in this.  First, the polynomial evaluation can be written as
+				</p>
+
+
+				<program language="julia" line-numbers="yes">
+					<input>
+function poly1(coeffs::Vector{T}, x::S) where {T &lt;: Number, S &lt;: Number}
+  local sum = zero(T)
+  function pow(x::T,n::Int) where T &lt;: Number
+    local prod = one(T)
+    for j=1:n
+      prod *=x
+    end
+    prod
+  end
+  for n=1:length(coeffs)
+    sum += coeffs[n]*pow(x,n-1)
+  end
+  sum
+end
+					</input>
+				</program>
+
+				<p>
+					where the <c>where {T &lt;: Number, S &lt;: Number}</c> will be explained in <xref ref="ch-adv-functions"/>,
+					but this allows any subtype of Number to be taken.  Also, we have defined the power
+					to be repeated multiplication using a for loop, since Julia's power function is
+					quite efficient--we want to show the results from above.
+				</p>
+
+				<p>
+					To test this, first we will use <c>BigFloat</c>s as the coefficients to slow down the
+					operations a bit, otherwise it is hard to measure the time.
+				</p>
+
+				<p>
+					Let's do some testing and we'll need the <c>BenchmarkTools</c> and <c>CairoMakie</c>
+					(for plotting). We also
+					need <c>Random</c> to set the seed and <c>LsqFit</c> to fit the data we'll generate
+					to a curve.
+					<cd>
+					<cline>using BenchmarkTools, CairoMakie, Random, LsqFit</cline>
+					<cline>CairoMakie.activate!()</cline>
+					<cline>Random.seed!(132)</cline>
+					</cd>
+				</p>
+
+				<remark>
+					<p>
+						There are a few plots in this section and we will be using a package called
+						<c>Makie</c> to do the plots.  We will explore this in detail in
+						<xref ref="ch-plotting-makie"/>, however, copying the code to produce
+						the plots is sufficient for this chapter.
+					</p>
+				</remark>
+
+				<p>
+					The following will time using the <c>@belasped</c> macro which returns the amount of
+					time a function takes given in seconds. This is needed because we need to store the result.
+					Note that in the previous chapters we've used the <c>@btime</c> macro which times the
+					function and gives additional information as well as the return value.  We are only
+					interested in the amount of time in this section.
+				</p>
+
+				<p>
+					<cd>
+					<cline>time = zeros(351)</cline>
+					<cline>r = 1:50:351</cline>
+					<cline>for i=r</cline>
+					<cline>  coeffs = rand(i+1)</cline>
+					<cline>  time[i] = @belapsed poly1($coeffs,1/3)</cline>
+					<cline>end</cline>
+					</cd>
+				</p>
+
+				<p>
+					and let's do a scatter plot with
+				</p>
+
+				<p>
+					<cd>
+					<cline>fig, ax = scatter(r,time[r])</cline>
+					</cd>
+				</p>
+
+				<figure xml:id="fig-poly-eval">
+					<caption></caption>
+					<image width="75%" source="plots/algorithm-analysis/plot01.png">
+						<shortdescription>(for accessibility)</shortdescription>
+					</image>
+				</figure>
+
+				<p>
+					Hopefully visually you can see that it appears to be nonlinear and perhaps you
+					can see that it is may be quadratic.  We will fit a quadratic to these points by
+					first defining the model as a quadratic:
+				</p>
+
+				<p>
+					<cd>
+					<cline>model(t, p) = p[1].+p[2].*t.+p[3].*t.^2</cline>
+					</cd>
+				</p>
+
+				<p>
+					where broadcasting that was explained in <xref ref="sect-broadcasting"/>
+					and then fit the data to the model with:
+				</p>
+
+				<p>
+					<cd>
+					<cline>fit = curve_fit(model, r, time[r], [1e-8,1e-8,1e-8])</cline>
+					</cd>
+				</p>
+
+				<p>
+					and note that the output will not be particularlly helpful.  What we are
+					looking for are the best-fit parameters and these can be found with <c>fit.param</c>
+					and the results are
+				</p>
+
+				<p>
+					<cd>
+					<cline>3-element Vector{Float64}:</cline>
+					<cline>  6.636565666123923e-7</cline>
+					<cline> -3.7652064597589e-8</cline>
+					<cline>  6.108561075647983e-10</cline>
+					</cd>
+				</p>
+
+				<p>
+					These are all small, however, the important thing to determine is if they are
+					possibly zero.  We can use the confidence interval of each is found with
+					<c>confidence_interval(fit, 0.05)</c> which returns
+				</p>
+
+				<p>
+					<cd>
+					<cline>3-element Vector{Tuple{Float64, Float64}}:</cline>
+					<cline>  (-8.762753517690063e-7, 2.203588484993791e-6)</cline>
+					<cline>  (-5.8097027280678223e-8, -1.7207101914499782e-8)</cline>
+					<cline>  (5.549847084532201e-10, 6.667275066763765e-10)</cline>
+					</cd>
+				</p>
+
+				<p>
+					These show the 95\%-confidence intervals for the three parameters.
+					We are looking for the largest non-zero term, which is the third one.  Since the above
+					fits all three terms, we will redo the fit with only the third term as
+				</p>
+
+				<p>
+					<cd>
+					<cline>model2(t,p) = p[1].*t.^2</cline>
+					</cd>
+				</p>
+
+				<p>
+					and then fit the data with
+					<cd>
+					<cline>fit2 = curve_fit(model2, r, time[r], [1.0])</cline>
+					</cd>
+				</p>
+
+				<p>
+					We can add the curve to the plot above with:
+					<cd>
+					<cline>lines!(ax, 0:225,t-&gt;fit2.param[1]*t^2)</cline>
+					</cd>
+				</p>
+
+				<p>
+					which is the following plot
+				</p>
+
+				<figure xml:id="fig-poly-fit2">
+					<caption></caption>
+					<image source="plots/algorithm-analysis/plot02.png">
+						<shortdescription>(for accessibility)</shortdescription>
+					</image>
+				</figure>
+
+				<p>
+					and although it doesn't look like a perfect fit, it does appear to be quadratic.
+				</p>
+			</introduction>
+
+			<subsubsection>
+				<title>Horner's Form</title>
+				<p>
+					We will compare this to horner's form, which we can write in julia as:
+				</p>
+
+
+				<program language="julia" line-numbers="yes">
+					<input>
+function horner(coeffs::Vector{T},x::S) where {T &lt;: Number, S &lt;: Number}
+  local result = coeffs[end]
+  for i=length(coeffs)-1:-1:1
+    result = x*result+coeffs[i]
+  end
+  result
+end
+					</input>
+				</program>
+
+				<p>
+					and then similar to above, we will time this method for different lengths:
+				</p>
+
+
+				<program language="julia" line-numbers="yes">
+					<input>
+htime = zeros(351)
+r = 1:50:351
+for i=r
+  coeffs = rand(i)
+  htime[i] = @belapsed horner($coeffs,10/3)
+end
+					</input>
+				</program>
+
+				<p>
+					and plot the results:
+				</p>
+
+				<p>
+					<cd>
+					<cline>fig, ax = scatter(r,htime[r])</cline>
+					</cd>
+				</p>
+
+				<p>
+					which results in
+				</p>
+
+				<figure xml:id="fig-poly-fit3">
+					<caption></caption>
+					<image source="plots/algorithm-analysis/plot03.png">
+						<shortdescription>(for accessibility)</shortdescription>
+					</image>
+				</figure>
+
+				<p>
+					and this look much more linear than the previous one.  For this model, we'll
+					fit a linear function.
+				</p>
+
+				<p>
+					<cd>
+					<cline>fit3 = curve_fit((t,p) -&gt; p[1].*t, r, htime[r], [1e-8])</cline>
+					</cd>
+				</p>
+
+				<p>
+					and if you're interested in the value of the parameter (slope of the line),
+					<c>fit3.param</c> returns <c>1.8253874361922209e-9</c>.  Looking at it
+					visually, let's add the plot of the line to the scatter plot above with
+				</p>
+
+				<p>
+					<cd>
+					<cline>lines!(ax, 1:360, t-&gt;fit3.params[1]*t)</cline>
+					</cd>
+				</p>
+
+				<p>
+					and this results in the following plot:
+				</p>
+
+				<figure xml:id="fig-poly-fit4">
+					<caption></caption>
+					<image source="plots/algorithm-analysis/plot04.png">
+						<shortdescription>(for accessibility)</shortdescription>
+					</image>
+				</figure>
+
+				<p>
+					Overall, these results show that the time taken to evaluate a polynomial
+					using Horner's form, is <m>O(n)</m>.  This evidence shows that horner's
+					form of the polynomial is much faster and putting these two scatter plots
+					together with:
+				</p>
+
+				<p>
+					<cd>
+					<cline>fig, ax =  scatter(r, time[r])</cline>
+					<cline>scatter!(ax, r, htime[r])</cline>
+					<cline>fig</cline>
+					</cd>
+				</p>
+
+				<p>
+					and the results are
+				</p>
+			</subsubsection>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Interpreting big-O results</title>
+		<p>
+			Typically algorithms grows as some function of  <m>n</m>, which is a measure of the
+			size of the problem.  Determining the order of the algorithm can be tricky
+			although we can use numerics like above to find the timing of algorithms for
+			various sizes of the problem.  Then doing some datafitting, we can often find
+			the order of the algorithm.  We'll see another example of this in the next section.
+		</p>
+
+		<p>
+			Understanding different orders is helpful and this means understanding how
+			functions grow.  Here are a bunch of standard algorithm functions and their plots:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+fig = Figure()
+ax = Axis(fig[1,1])
+pl1 = lines!(ax, 1:0.05:10, x-&gt;log(x))
+pl2 = lines!(ax, 1:0.05:10, x-&gt;x)
+pl3 = lines!(ax, 1:0.05:10, x-&gt;x*log(x))
+pl4 = lines!(ax, 1:0.05:10, x-&gt;x^2)
+pl5 = lines!(ax, 1:0.05:10, x-&gt;x^2*log(x))
+axislegend(ax,
+  [pl1,pl2,pl3,pl4,pl5],
+  ["ln(n)","n","n ln(n)","n^2","n^2 ln(n)"],
+  position = :lt
+)
+fig
+			</input>
+		</program>
+
+		<p>
+			And the result is
+		</p>
+
+		<figure xml:id="fig-o-of-n-compare">
+			<caption></caption>
+			<image source="plots/algorithm-analysis/plot06.png">
+				<shortdescription>(for accessibility)</shortdescription>
+			</image>
+		</figure>
+
+		<p>
+			This would basically show that if there are choices of algorithms, to use an
+			algorithm with a lower order in that for large values of problem size will run faster.
+		</p>
+	</section>
+
+	<section>
+		<title>Using Data to determine Algorithm order</title>
+		<p>
+			Typically, the best way to analyze an algorithm is to determine the number of operations as a function of <m>n</m>, however, let's look at this as a data analysis problem.  As an example, we'll look at this as the Fast Fourier Transform, discussed in Chapter \ref{ch:complex}.  This is a classic example of improving an algorithm to change the order.  For this we need the <c>FFTW</c> package, which you probably need to add and
+		</p>
+
+		<p>
+			<cd>
+			using FFTW
+			</cd>
+		</p>
+
+		<p>
+			Let's first build up a set of times similar to above with
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+times3 = Float64[]
+sizes3 = [2^n for n=10:18]
+for size in sizes3
+  x=rand(size)
+  t = @belapsed fft($x)
+  push!(times3,t)
+end
+			</input>
+		</program>
+
+		<p>
+			which calculates the FFT for sizes <c>2^10</c> to <c>2^18</c>
+			and stores the results in the variable <c>times</c>. Then, let's plot the results with
+		</p>
+
+		<p>
+			<cd>
+			<cline>scatter(sizes3,times3, legend = false)</cline>
+			</cd>
+		</p>
+
+		<p>
+			which results in the plot
+		</p>
+
+		<figure xml:id="fig-fft">
+			<caption></caption>
+			<image source="plots/algorithm-analysis/fftw.png">
+				<shortdescription>(for accessibility)</shortdescription>
+			</image>
+		</figure>
+
+		<p>
+			Since it appears to be growing more that linearly, let's try the functions
+			<c>t*log(t)</c> and <c>t^2</c>.  Fitting a curve to both of these is
+		</p>
+
+		<p>
+			<cd>
+			<cline>fit_fft = curve_fit((t,p) -&gt; p[1].*t.*log.(t)+p[2].*t.^2,sizes3, times3, [1e-4,1e-4])</cline>
+			</cd>
+		</p>
+
+		<p>
+			and a confidence interval of the parameters are found with <c>confidence_interval(fit_fft)</c>
+			resulting in
+		</p>
+
+		<p>
+			<cd>
+			<cline>2-element Vector{Tuple{Float64, Float64}}:</cline>
+			<cline>  (6.879894218252294e-10, 7.990430330357398e-10)</cline>
+			<cline>  (2.557195884568105e-15, 8.361319348915151e-15)</cline>
+			</cd>
+		</p>
+
+		<p>
+			Although both are exclusively positive, the second interval is nearly zero--values near <m>10^{-15}</m>
+			are often actually 0 and just due to roundoff error.  Therefore, we will only use the first
+			term in the model or <m>t*log(t)</m>.  Trying a new function fit with
+		</p>
+
+		<p>
+			<cd>
+			<cline>fit_fft2 = curve_fit((t,p) -&gt; p[1]*t.*log.(t), sizes3, times3, [1e-4])
+			</cline>
+			</cd>
+		</p>
+
+		<p>
+			The confidence interval of the parameters is found with <c>confidence_interval(fit3)</c> and
+			the results are
+		</p>
+
+		<p>
+			<cd>
+			<cline>1-element Vector{Tuple{Float64, Float64}}:
+			(8.197426904649365e-10, 8.695061786080083e-10)</cline>
+			</cd>
+		</p>
+
+		<p>
+			Lastly, we plot the data and the best fit function found above with
+		</p>
+
+		<p>
+			<cd>
+			<cline>fig, ax = scatter(sizes3, times3)</cline>
+			<cline>lines!(ax, 0:10^4:3*10^5, x-&gt;fit_fft2.param[1]*x*log(x))</cline>
+			<cline>fig</cline>
+			</cd>
+		</p>
+
+		<p>
+			<cd>
+			<cline>plot!(t-&gt;fit3.param[1]*t*log(t),first(sizes3),last(sizes3))</cline>
+			</cd>
+		</p>
+
+		<p>
+			And the resulting plot is:
+		</p>
+
+		<figure>
+			<caption>
+			Find a point on a line that minimizes distance
+			</caption>
+
+			<image width="90%" source="plots/algorithm-analysis/best-fit-fft.png">
+			</image>
+		</figure>
+
+		<p>
+			This shows using some data analysis that matrix-vector product is <m>O(n \ln n)</m>,
+			which can also be shown use analysis of the algorithm, but requires knowledge
+			of how the algorithm works.
+		</p>
+	</section>
+</chapter>

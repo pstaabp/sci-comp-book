@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<part xml:id="part-simulation" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Simulation</title>
+
+  <!-- include sections -->
+  <xi:include href="simulation/ch-probability-random.ptx" />
+  <xi:include href="simulation/ch-prob-models.ptx" />
+  <xi:include href="simulation/ch-poker.ptx" />
+
+  </part>

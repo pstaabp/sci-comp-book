@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<part xml:id="part-plotting" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Plotting in Julia</title>
+
+  <!-- include sections -->
+  <xi:include href="plotting/ch-plotting-basics.ptx" />
+  <xi:include href="plotting/ch-makie.ptx" />
+  <xi:include href="plotting/ch-plots-package.ptx" />
+
+</part>

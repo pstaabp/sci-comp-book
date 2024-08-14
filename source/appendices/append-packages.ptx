@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appendix xml:id="ch-packages">
+	<title>Managing Packages</title>
+	<introduction>
+		<p>
+			As with many software packages, additional functionality is available in
+			other libraries or packages. If you take a look at
+			<url href="Julia's\%20Package\%20Listing" visual="juliaobserver.com">https://juliaobserver.com</url> there
+			are about 2000 packages (as of Fall 2018). Clicking on any of the
+			package names will give additional information about the package
+			including documentation (hopefully).
+		</p>
+
+		<p>
+			If you don't have a package installed and try to use it, like:
+		</p>
+
+		<p>
+			<cd>
+			using Primes
+			</cd>
+		</p>
+
+		<p>
+			you will get an error that it isn't installed--unless you actually installed it previously. You can add the package by
+		</p>
+
+		<p>
+			<cd>
+			using Pkg
+			Pkg.add("Primes")
+			</cd>
+		</p>
+
+		<p>
+			and after fetching the package, rerunning
+		</p>
+
+		<p>
+			<cd>
+			using Primes
+			</cd>
+		</p>
+
+		<p>
+			should no longer give an error. Then, for example, try
+		</p>
+
+		<p>
+			<cd>
+			isprime(17)
+			</cd>
+		</p>
+
+		<p>
+			which returns \verb!true! because 17 is a prime number. This is a
+			nondeterministic function that determines if a number is true. The
+			documentation for the Primes package is at
+			\url{https://github.com/JuliaMath/Primes.jl} and demonstrates 4 commands
+			including <c>isprime</c> and <c>factor</c> which returns all prime
+			factors (and the order).
+		</p>
+
+		<p>
+			A few other packages that we have seen or will see:
+			<ul>
+				<li>
+					<p>
+						IJulia -- provides the browser interface to Julia. You are probably
+						already using this.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						ForwardDiff -- does Automatic Differentiation (see Chapter 8)
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Plots -- A plotting packages (See Chapter 11)
+					</p>
+				</li>
+
+				<li>
+					<p>
+						GR -- A backend to the Plots package.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						PlotlyJS -- Another nice backend to the Plots package.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						DataFrames -- a way to nicely handle datasets generally loaded from
+						external files.
+					</p>
+				</li>
+			</ul>
+			<xref ref="ch-packages"/> will show how to create our own packages
+			also called a module.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Managing Packages in Julia</title>
+		<introduction>
+			<p>
+				Although we can use the <c>Pkg</c> package to handle packages, this
+				section will use the terminal REPL to handle any non-standard packages.
+				Additional documentation on this is given in
+				<url href="Julia's\%20package\%20manager\%20help\%20pages" visual="julialang.org">
+				https://docs.julialang.org/en/latest/stdlib/Pkg/</url>
+				First, open up a terminal version of julia (generally by opening the
+				application that you downloaded). You will get:
+			</p>
+
+			<p>
+				<cd>
+				<cline>               _</cline>
+				<cline>   _       _ _(_)_     |  Documentation: https://docs.julialang.org</cline>
+				<cline>  (_)     | (_) (_)    |</cline>
+				<cline>   _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.</cline>
+				<cline>  | | | | | | |/ _` |  |</cline>
+				<cline>  | | |_| | | | (_| |  |  Version 1.4.1 (2020-04-14)</cline>
+				<cline> _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release</cline>
+				<cline>|__/                   |</cline>
+				</cd>
+			</p>
+
+			<p>
+				or similar and then
+			</p>
+
+			<p>
+				<cd>
+				julia&gt;
+				</cd>
+			</p>
+
+			<p>
+				which means we're ready to handle julia commands. If we type
+				<c>{]</c>}, then the prompt turns into:
+			</p>
+
+			<p>
+				<cd>
+				(v1.4) pkg&gt;
+				</cd>
+			</p>
+
+			<p>
+				where the 1.4 will be the version of julia that you are running. There are a number of commands that we will cover here:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							add
+						</p>
+					</li>
+
+					<li>
+						<p>
+							remove (rm)
+						</p>
+					</li>
+
+					<li>
+						<p>
+							develop (dev)
+						</p>
+					</li>
+
+					<li>
+						<p>
+							status
+						</p>
+					</li>
+
+					<li>
+						<p>
+							update (up)
+						</p>
+					</li>
+
+					<li>
+						<p>
+							test
+						</p>
+					</li>
+
+					<li>
+						<p>
+							build
+						</p>
+					</li>
+
+					<li>
+						<p>
+							precompile
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				and the commands in parentheses are the shortcut.
+			</p>
+		</introduction>
+
+		<subsection>
+			<title>Adding a package</title>
+			<p>
+				In the package command line, type <c>add</c> \emph{package\_name} to
+				add the package. For example, to add the <c>ForwardDff</c> package:
+			</p>
+
+			<p>
+				<cd>
+				add ForwardDiff
+				</cd>
+			</p>
+
+			<p>
+				and it is not installed, you will get something like:
+			</p>
+
+			<p>
+				<cd>
+				Updating registry at `~/.julia/registries/General`
+				Updating git-repo `https://github.com/JuliaRegistries/General.git`
+				Updating `~/.julia/environments/v1.0/Project.toml`
+				[f6369f11] + ForwardDiff v0.9.0
+				Updating `~/.julia/environments/v1.0/Manifest.toml`
+				[9e28174c] + BinDeps v0.8.10
+				[bbf7d656] + CommonSubexpressions v0.2.0
+				[163ba53b] + DiffResults v0.0.3
+				[b552c78f] + DiffRules v0.0.7
+				[f6369f11] + ForwardDiff v0.9.0
+				[77ba4419] + NaNMath v0.3.2
+				[276daf66] + SpecialFunctions v0.7.0
+				[90137ffa] + StaticArrays v0.8.3
+				</cd>
+			</p>
+
+			<p>
+				A few things to note:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							You results will vary depending on version numbers avaiable and what subpackages (like \verb!DiffRules! or \verb!StaticArrays! are needed for the current version of the package you want to load.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							The line after the 2nd <c>Updating</c> line is the package (and version) that you are installing.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							All of the lines after the 3rd <c>Updating</c> line is all of the  packages that this depends on.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							The + sign means that the package is being added.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				If you want to add multiple packages at the same time, say packages A, B
+				and C, type <c>add\ A\ B\ C</c>. You can also add particular versions
+				of a package (often for testing or to avoid a bug). For example, if you
+				want version 0.3.0 of <c>ForwardDiff</c> type:
+			</p>
+
+			<p>
+				<cd>
+				add ForwardDiff@0.3.0
+				</cd>
+			</p>
+
+			<p>
+				You will then get info on the dependencies on that version.
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Package Status</title>
+			<p>
+				The <c>status</c> command (or <c>st</c>) will just list all of the
+				main packages installed. For example,
+			</p>
+
+			<p>
+				<cd>
+				Status `~/.julia/environments/v1.0/Project.toml`
+				[c52e3926] Atom v0.7.6
+				[336ed68f] CSV v0.3.1
+				[a93c6f00] DataFrames v0.13.1
+				[f6369f11] ForwardDiff v0.9.0
+				[7073ff75] IJulia v1.12.0
+				[e5e0dc1b] Juno v0.5.3
+				[1a8c2f83] Query v0.10.0
+				</cd>
+			</p>
+
+			<p>
+				and note that these are just the packages added by the <c>add</c>
+				command, not all of the dependencies. If you want all of the
+				dependencies as well, type <c>st\ -\/-manifest</c> and I get a huge
+				list of packages.
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Removing a Package</title>
+			<p>
+				You can remove a package by typing <c>remove</c> or <c>rm</c> then
+				the package name. If I want to remove the <c>ForwardDiff</c> package,
+				then
+			</p>
+
+			<p>
+				<cd>
+				<cline>remove ForwardDiff</cline>
+				</cd>
+			</p>
+
+			<p>
+				we get the following:
+			</p>
+
+			<p>
+				<cd>
+				Updating `~/.julia/environments/v1.0/Project.toml`
+				[f6369f11] - ForwardDiff v0.3.0
+				Updating `~/.julia/environments/v1.0/Manifest.toml`
+				[49dc2e85] - Calculus v0.4.1
+				[c5cfe0b6] - DiffBase v0.2.0
+				[f6369f11] - ForwardDiff v0.3.0
+				[77ba4419] - NaNMath v0.3.2
+				</cd>
+			</p>
+
+			<p>
+				Note:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							The <c>rm</c> command removes the package from the list of available
+							packages, but doesn't remove them from your harddrive.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							If you want to see everything installed, navigate to the
+							<c>\textasciitilde{</c>/.julia/packages} directory, which is where
+							they are stored.
+						</p>
+					</li>
+				</ul>
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Updating packages</title>
+			<p>
+				If you type <c>update</c> or <c>up</c> you will update all of the
+				installed packages (and dependencies). For example:
+			</p>
+
+			<p>
+				<cd>
+				Updating `~/.julia/environments/v1.0/Project.toml`
+				[7073ff75] ↑ IJulia v1.11.1 ⇒ v1.12.0
+				Updating `~/.julia/environments/v1.0/Manifest.toml`
+				[7073ff75] ↑ IJulia v1.11.1 ⇒ v1.12.0
+				[b85f4697] ↑ SoftGlobalScope v1.0.5 ⇒ v1.0.7
+				[5e66a065] ↑ TableShowUtils v0.1.1 ⇒ v0.2.0
+				</cd>
+			</p>
+
+			<p>
+				and all updates will be with an ↑. If you only want to update a single
+				package, type the name after <c>update</c>.
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Building Packages</title>
+			<p>
+				Generally a package is built after it is installed. Building a package
+				might include running code (or unpacking files) after it is installed.
+				Sometimes if things get wonky, rebuilding is a good thing to do.
+			</p>
+
+			<p>
+				<cd>
+				<cline>build</cline>
+				</cd>
+			</p>
+
+			<p>
+				or if you only want say <c>IJulia</c> built,
+			</p>
+
+			<p>
+				<cd>
+				build IJulia
+				</cd>
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Precompiling packages</title>
+			<p>
+				When a package is used, often it requests to be compiled. For example,
+				when <c>using\ Primes</c>, then following is shown:
+			</p>
+
+			<p>
+				<cd>
+				[ Info: Precompiling Primes [27ebfcd6-29c5-5fa9-bf4b-fb8fc14df3ae]
+				</cd>
+			</p>
+
+			<p>
+				and basically some code is compiled beforehand, generally to speed up
+				code. You can precompile all code with
+			</p>
+
+			<p>
+				<cd>
+				precompile
+				</cd>
+			</p>
+
+			<p>
+				and it may take a while, but you won't have to wait, when you load the
+				package with the <c>using</c> command.
+			</p>
+		</subsection>
+
+		<subsection>
+			<title>Testing a Packages</title>
+			<p>
+				To test a packge, say the <c>ForwardDiff</c> package, then
+			</p>
+
+			<p>
+				<cd>
+				<cline>test ForwardDiff</cline>
+				</cd>
+			</p>
+
+			<p>
+				It list all of the dependencies first, and then runs a number of tests
+				(and we will show how to write tests soon) and timing information. After
+				a while, it finishes sucessfully.
+			</p>
+		</subsection>
+	</section>
+</appendix>

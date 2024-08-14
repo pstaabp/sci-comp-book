@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-boolean-loops">
+	<title>Boolean Statements, Loops and Branching</title>
+
+	<introduction>
+		<p>
+			The basic computer science structures of if statements, while and for loops are crucial in scientific computing. In this chapter, we cover the basics of these structures in Julia. We will see all of these in more context in later chapters, but here's the syntax and basics.
+		</p>
+
+		<p>
+			Lastly, because of the syntax of a <c>for</c> loop, we show details about ranges in julia, which is a compact way to write a set of numbers that are either sequential or sequential with skips in it.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Boolean values and if statements</title>
+
+		<introduction>
+			<p>
+				A boolean value is something that is either <c>true</c> or <c>false</c>. These are built-in constants in Julia. Sometimes we will want to know if a statement is true or false, but generally, we will use them in other structures.
+			</p>
+
+			<p>
+				We often use boolean to test various conditions. For each, testing equality using <c>==</c>, or comparison of numbers we use <c>&lt;,  &lt;=, &gt;, &gt;=</c> for less than, less than or equal, greater than and greater than or equal respectively.
+			</p>
+
+			<p>
+				If we set <c>x=3</c> and then can just type <c>x==3</c>, <c>x &lt; 3 </c>, <c>x &gt; 3</c> to test a variety of comparisons.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Compounds boolean statements</title>
+
+			<p>
+				We often want to test multiple boolean statements and can build up compound ones with either the <em>and</em> (using the code <c>&amp;&amp;</c>) or <em>or</em> (using the code <c>||</c>) operators. Recall the following table for <c>&amp;&amp;</c> and <c>||</c>
+			</p>
+
+			<table>
+				<title>Truth Table</title>
+
+				<tabular>
+					<row>
+						<cell>AND</cell>
+						<cell>T</cell>
+						<cell>F</cell>
+						<cell></cell>
+						<cell>OR</cell>
+						<cell>T</cell>
+						<cell>F</cell>
+					</row>
+
+					<row>
+						<cell>T</cell>
+						<cell>T</cell>
+						<cell>F</cell>
+						<cell></cell>
+						<cell>T</cell>
+						<cell>T</cell>
+						<cell>T</cell>
+					</row>
+
+					<row>
+						<cell>F</cell>
+						<cell>F</cell>
+						<cell>F</cell>
+						<cell></cell>
+						<cell>F</cell>
+						<cell>T</cell>
+						<cell>F</cell>
+					</row>
+				</tabular>
+			</table>
+
+			<p>
+				If we have <c>x=3</c> and <c>y=10</c>, if we want to test that <c>x</c> is greater than 0 and <c>y</c> is 5, by
+			</p>
+
+			<p>
+				<cd>
+				<cline>x &gt;= 0 &amp;&amp; y==5</cline>
+				</cd>
+			</p>
+
+			<p>
+				which will return <c>false</c>, since only the first is true and both must be true for this compound statement to be true. However,
+			</p>
+
+			<p>
+				<cd>
+				<cline>x &gt;= 0 || y==5</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>true</c>, because the first is true.
+			</p>
+
+			<p>
+				In both of these examples, it is important to note the order of operations or operator precedence.  This was mentioned in <xref ref="sect-oper-precedence"/>, however as the number of operators grows, it's important to know the precedence. In these cases the tests <c>==,&lt;=,&lt;,&gt;=,&gt;</c> have precedence over <c>&amp;&amp;</c> and <c>||</c>.
+			</p>
+
+			<p>
+				Also, <c>&amp;&amp;</c> has precedence over <c>||</c> in that if we evaluate
+			</p>
+
+			<p>
+				<cd>
+				<cline>x &gt;=0 &amp;&amp; y &gt; 7 || y == 5</cline>
+				</cd>
+			</p>
+
+			<p>
+				results in <c>true</c>.  You can think of this resulting in <c> true &amp;&amp; true || false</c> and because of precedence the first pair is tested (to be <c>true</c>) then the result <c>true || false</c> results in <c>true</c>.
+			</p>
+
+			<p>
+				Often when precedence is unclear, adding parentheses can be helpful.  Instead, perhaps write the above as:
+			</p>
+
+			<p>
+				<cd>
+				<cline>(x &gt;=0 &amp;&amp; y &gt; 7) || y == 5</cline>
+				</cd>
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>If Statements</title>
+
+		<introduction>
+			<p>
+				An <c>if</c> statement is used to do different things depending on the value of a variable. A standard example of this is the piecewise version of the absolute value. Mathematically, we write:
+			</p>
+
+			<p>
+				<me>
+					|x|=\begin{cases} x &amp; x \geq 0 \\ -x &amp; x &lt; 0 \end{cases}
+				</me>
+			</p>
+
+			<p>
+				We could write this as a function as
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function absValue(x::Real)
+  if x &gt;= 0
+     return x
+  end
+  return -1*x
+end
+				</input>
+			</program>
+
+			<p>
+				Evaluate <c>absValue(3)</c> and <c>absValue(-7)</c> to ensure this is returning expected results.
+			</p>
+
+			<p>
+				Notice that we basically had two situations here, either <m>x</m> was greater than or equal to 0 or else not. We can rewrite this use an <c>if-else</c> statement.
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function absValue(x::Real)
+  if x &gt;= 0
+    return x
+  else
+    return -1*x
+  end
+end
+				</input>
+			</program>
+
+			<p>
+				Try entering this and seeing if the results are the same.
+			</p>
+
+			<p>
+				The absolute value function is quite important in mathematics and thus is built-in to julia as <c>abs</c>.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Further choices with if statements</title>
+
+			<p>
+				You may need more than 2 choices on an if statement. Recall the <url href="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)" visual="wikipedia">quadrants</url> of the <m>xy</m>-plane start at I for the upper right and increase as you traverse counterclockwise.  A function could be written:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function quadrant(x::Real,y::Real)
+  if x &gt; 0 &amp;&amp; y &gt; 0
+    return "I"
+  elseif x &lt; 0 &amp;&amp; y &gt; 0
+    return "II"
+  elseif x &lt; 0 &amp;&amp; y &lt; 0
+    return "III"
+  elseif x &gt; 0 &amp;&amp; y &lt; 0
+    return "IV"
+  else
+    return "NONE"
+  end
+end
+				</input>
+			</program>
+
+			<p>
+				and technically if you are on an axis, then you are not in a quadrant, so that is the reason for the last option.
+			</p>
+
+			<exercise>
+				<introduction>
+					<p>
+						Evaluate the function <c>quadrant</c> at the following points and see if the results are as expected.
+					</p>
+				</introduction>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>(2,1)</m>
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>(-4,-2)</m>
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							<m>(0,5)</m>
+						</p>
+					</statement>
+				</task>
+			</exercise>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Ternary <c>if-then-else</c></title>
+
+		<p>
+			A common use of an <c>if-then-else</c> statement is to assign a value to a varible (or return from a function) depending on some condition.  There is a compact way to do this with a ternary <c>if-then-else</c> statement that has the form:
+		</p>
+
+		<p>
+			<cd>
+			<cline>condition ? value_if_condition_is_true : value_if_condition_is_false</cline>
+			</cd>
+		</p>
+
+		<p>
+			which returns <c>value_if_condition_is_true</c> if condition is true otherwise <c>value_if_condition_is_false</c> is returned. The absolute value example above can be written as a single line:
+		</p>
+
+		<p>
+			<cd>
+			<cline>absVal2(x::Real) = x &gt;= 0 ? x : -1*x</cline>
+			</cd>
+		</p>
+
+		<p>
+			and once you practice with this, it will be easy to read and much shorter (1 line versus 7). Be careful with the syntax of this.  It is required that the expressions around the ? be padded with spaces to parse correctly.  The error is reasonably clear if you don't write it correctly.
+		</p>
+
+		<p>
+			Alternatively, you can write this as
+		</p>
+
+		<p>
+			<cd>
+			<cline>absVal3(x::Real)=ifelse(x &gt;=0, x, -1*x)</cline>
+			</cd>
+		</p>
+
+		<p>
+			We will see else syntax of this operator often throughout this course.
+		</p>
+
+		<exercise>
+			<p>
+				Write the recursive factorial function above using the ternary if-then-else.
+			</p>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Loops</title>
+
+		<introduction>
+			<p>
+				A <em>loop</em> is a series of statements that are repeated either a fixed number of times or until a condition occurs. They can be very helpful if a large number of operations need to be done in a predictable manner.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>While Loops</title>
+
+			<p>
+				Another very common construction for programming is called a while loop. Basically, we want to run a few statements while some boolean statement is true. Here's a simple, but uninteresting example:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+let
+  local n=1
+  while n &lt; 10
+    println(n)
+    n+=1
+  end
+end
+				</input>
+			</program>
+
+			<p>
+				and note that the expression <c>n+=1</c> is shorthand for <c>n=n+1</c>.
+			</p>
+
+			<p>
+				A more practical example of a for loop will be the <url href="https://en.wikipedia.org/wiki/Bisection_method" visual="wikipedia">Bisection Method</url> for finding a root.
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function bisection(f::Function, a::Real, b::Real)
+	local c
+	while (b-a) &gt; 1e-6
+		c = 0.5*(a+b)  # find the midpoint
+		# test if f(a) and f(c) have opposite signs to determine the new interval
+		(a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
+	end
+	c
+end
+				</input>
+			</program>
+
+			<p>
+				In short, this method takes a function <m>f</m> and an interval <m>[a,b]</m> and continually bisects it ensuring there is a root in the resulting interval.  It continues while the length of the interval is greater than <c>1e-6</c> or <m>10^{-6}</m>. To test it, consider
+			</p>
+
+			<p>
+				<cd>
+				<cline>f(x) = x^2-2</cline>
+				</cd>
+			</p>
+
+			<p>
+				which has a root of <m>\sqrt{2}</m>.  The function call
+			</p>
+
+			<p>
+				<cd>
+				<cline>bisection(f,1,2)</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>1.4142141342163086</c>, which is approximately <m>\sqrt{2}</m>.
+			</p>
+
+			<p>
+				Note that we used a ternary if-then-else in the <c>bisection</c> function in conjunction with a tuple to update both points in the interval.  This makes the function reasonably simple.  A standard <c>if-then-else</c> statement can be used instead if desired.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Infinite Loops</title>
+
+			<p>
+				It is common in a <c>while</c> loop to keep running it forever. This occurs if there is some bug or you haven't considered all cases.  For example, in the bisection method above, if the function doesn't have a root (like <m>f(x)=x^2+2</m>), then this will never stop.
+			</p>
+
+			<p>
+				Here's a few things that can help prevent or debug the code:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							Make sure something is changing in your loop. If you intend to stop the loop on an index, make sure the index is updating.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Look at your code and see if you have something that you think will stop the loop. What ever is in the boolean statement needs to eventually switch.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Consider an additional stopping condition.  You may need to add a variable to count the number of times you've gone through the loop and stop if it hits some maximum, which is greater than what you would expect.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Stop the code if you need to. You may need to interrupt the kernel.  In the REPL, CTRL-C will stop and in Jupyter, selecting the <em>Kernel</em> menu then <em>Interrupt</em> should stop it.  The square in the toolbar should work too.  See section \ref{sect:kernel} for more information.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							If you can't figure out why it is in an infinite loop, use <c>@show</c> to print out values of variables.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				<term>MAYBE CITE A DEBUG SECTION?</term>
+			</p>
+		</subsection>
+</section>
+
+		<section>
+			<title>For loops</title>
+
+			<introduction>
+			<p>
+				A for loop executes some code a fixed number of times and has a variable (called an index) that updates.  The next few examples are not practical, but are designed to illustrate the syntax and what is possible. The following is a simple for loop that prints out the numbers 1 to 10
+			</p>
+
+			<p>
+				<cd>
+				<cline>for i=1:10</cline>
+				<cline>  println(i)</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				If you want to skip numbers or count backwards, a range in the form <em>start</em>:<em>skip</em>:<em>stop</em> is used.  The following starts at 1 and skips by 2 up to 21:
+			</p>
+
+			<p>
+				<cd>
+				<cline>for i=1:2:21</cline>
+				<cline>  println(i)</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				and the following starts at 10, counting down to 1:
+			</p>
+
+			<p>
+				<cd>
+				<cline>for i=10:-1:0</cline>
+				<cline>  println(i)</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				We can use the <c>for var in list</c> form to go through elements in a list or array (or tuple).  The following adds all numbers in the list (array) <c>[1,5,7,11,20]</c>:
+			</p>
+
+			<p>
+				<cd>
+				<cline>let</cline>
+				<cline>  local sum=0</cline>
+				<cline>  for i in [1,5,7,11,20]</cline>
+				<cline>    sum += i</cline>
+				<cline>  end</cline>
+				<cline>  sum</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				Recall that in <xref ref="sect-varargs"/> we used this in the formation to find the mean:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function theMean(x::Number...) local sum=0
+  for val in x
+    sum += val
+  end
+  sum/length(x)
+end
+				</input>
+			</program>
+		</introduction>
+
+
+		<subsection>
+			<title>While Loops Versus For Loops</title>
+
+			<p>
+				No this, isn't a smackdown between these while and for loops. A big question often is when I have a problem that I want to solve and I know a loop is needed, when should I use a <c>while</c> loop and when should I use a <c>for</c> loop. The general rule of thumb is:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							If you know that you need to run code for a fixed number of times, use a for loop
+						</p>
+					</li>
+
+					<li>
+						<p>
+							If you don't use a while loop. Generally, the <em>doing</em> something in the loop will affect how many times the loop is run.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				Notice in the examples above, the bisection method used a <c>while</c> loop because it is unclear when you start how many times you want to go through the loop. Instead we stopped in while the interval was small enough.
+			</p>
+
+			<p>
+				In the summing of the terms for the mean, a for loop was used because of the fixed number of values in the tuple <c>x</c>.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Ranges</title>
+
+		<introduction>
+			<p>
+				In a for loop with the syntax <c>var=x:y:z</c>, such as
+			</p>
+
+			<p>
+				<cd>
+				<cline>for i=1:4</cline>
+				<cline>  println(i)</cline>
+				<cline>end</cline>
+				</cd>
+			</p>
+
+			<p>
+				The syntax <c>1:4</c> is called a <c>Range</c> and is shorthand for all integer between 1 and 4 inclusively. Technically, this is called a <c>UnitRange</c> because the skip size between numbers is 1.
+			</p>
+
+			<p>
+				If you type <c>typeof(1:4)</c>, it will return <c>UnitRange{Int64}</c>, a composite type which is a <c>UnitRange</c> with integers. Note the difference using <c>1.0:4.0</c>.  This is of type <c>StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}</c>, and the details of this are skipped for now.  In short, it is Floating Point version of a <c>UnitRange</c>.
+			</p>
+
+			<p>
+				The other ranges we say included <c>1:2:11</c> and entering <c>typeof(1:2:11)</c> results in <c>StepRange{Int64, Int64}</c>.
+			</p>
+
+			<p>
+				We will see in <xref ref="ch-arrays"/> that there is a handy way of expanding this shorthand way of writing these sets of numbers to that of an entire list (or technically array) of numbers.
+			</p>
+		</introduction>
+
+
+		<subsection xml:id="sect-lin-range">
+			<title>Linear Ranges</title>
+
+			<p>
+				As we see above, it easy to make ranges if we know the step between each pair. Another use would be to know the starting and ending value and the number of values. For example, if we want to start at 3 and end at 11 with 5 values, it's not too hard to compute this, but julia has a built-in way to do it with the <c>range</c> command. For example,
+			</p>
+
+			<p>
+				<cd>
+				<cline>range(3,11,length=5)</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>3.0:2.0:11.0</c> and note that even though all of the arguments were integers that the result is a floating point range.
+			</p>
+
+			<p>
+				Another nice function that does a similar thing is the <c>LinRange</c> function.
+			</p>
+
+			<p>
+				<cd>
+				<cline>LinRange(3,11,5)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which returns <c>3.0, 5.0, 7.0, 9.0, 11.0</c> and this is an expanded version from above.
+			</p>
+		</subsection>
+	</section>
+</chapter>

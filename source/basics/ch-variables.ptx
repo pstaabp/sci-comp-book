@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-variables">
+	<title>Storing number and strings and using Julia syntax</title>
+
+	<introduction>
+		<p>
+			Although Scientific Computing problems generally involved developing models, at the lowest level, one is manipulating data generally strings and numbers.  We begin with understanding these data types and how to store values in them.
+		</p>
+
+		<p>
+			We also show some of julia syntax, which looks like other languages (like python). If you have some basic knowledge of computing, it is helpful, but no particular language is needed.  We will see many standard programming structures in this book with a emphasis on those relevant to solving scientific computing problems.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Numbers</title>
+
+		<p>
+			Not surprisingly, the most important data type in scientific computing--at least at the most atomic level is numbers.  Numbers in computation mimic those in mathematics with some important differences.  Julia, like most computing languages, have two main number types: integers and floating points.  Julia's integers and much like mathematical integers in that they store numbers like <m>0, 10, -400</m>.  Floating-point numbers generally are approximations to real or decimal numbers, such as <c>3.14159</c> or <c>1.23e+08</c> and more details will be covered in <xref ref="ch-data-types"/>.
+		</p>
+
+		<p>
+			Julia also has a rational data type for numbers commonly though of as fractions like <m>-\frac{2}{3}</m>or <m>\frac{22}{7}</m>.  Recall that typically <m>i</m> represents <m>\sqrt{-1}</m>, the base imaginary number. Complex numbers like <m>2+3i</m> are also native to julia, however instead of <m>i</m>, julia uses <c>im</c>.  We will explore both rational and complex numbers in greater depth in <xref ref="ch-data-types"/> and have an entire chapter on complex numbers in <xref ref="ch-complex"/>.
+		</p>
+	</section>
+
+	<section>
+		<title>Assignment Statement and Variables</title>
+
+		<introduction>
+			<p>
+				Anything can be stored as a variable using the single equal sign like <c>x=6</c>. This is an assignment operator, which creates the number 6 and stores it under the name <c>x</c>.
+			</p>
+
+			<p>
+				And now that the variable <c>x</c> is stored, we can use it in calculations. For example
+			</p>
+
+			<p>
+				<cd>
+				<cline>x+3</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>9</c>.
+			</p>
+
+			<p>
+				Variables in julia, much like other languages are primarily sequences of alphanumeric characters as well as an underscore <c>_</c>.  Primarily, a variable needs to start with a alphabetic character or <c>_</c> and after the first character can contain numbers.  A variable cannot have a space in the name.
+			</p>
+
+			<p>
+				Julia also allows many unicode symbols in variable names, however not everything. For example, all of the greek letters are allowed, so <c>α=45</c> is valid.
+			</p>
+
+			<p>
+				To get a greek letter in Jupyter or the REPL, type <c>\alpha</c>, hit the TAB key and it will be turned into an <c>α</c>.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Storing Variable in a Virtual Whiteboard</title>
+
+			<p>
+				The details of storing variables in computer hardware isn't necessary, however, thinking of storing as writing variables and values on a whiteboard is a helpful paradigm.  Imagine a whiteboard with a column of variable names and a column of values.  For example, if we have
+			</p>
+
+			<p>
+				<cd>
+				<cline>x=6</cline>
+				<cline>y=-1</cline>
+				<cline>z=8.5</cline>
+				</cd>
+			</p>
+
+			<p>
+				then you can think of the whiteboard looking like:
+			</p>
+
+			<table>
+				<title>Whiteboard analogy of the storage of variables</title>
+
+				<tabular>
+					<row>
+						<cell bottom="medium">Variable</cell>
+						<cell bottom="medium">Value</cell>
+					</row>
+
+					<row>
+						<cell>x</cell>
+						<cell>6</cell>
+					</row>
+
+					<row>
+						<cell>y</cell>
+						<cell>-1</cell>
+					</row>
+
+					<row>
+						<cell>z</cell>
+						<cell>8.5</cell>
+					</row>
+				</tabular>
+			</table>
+
+			<p>
+				If we evaluate the expression <c>x+3</c>, then the value of <c>x</c> is looked up and the value 6 is substituted into the expression or <c>6+3</c>.
+			</p>
+
+			<p>
+				If we change one of the values, like <c>y=y+5</c>, this means that to the right of the equals sign is evaluated first.  <c>y</c> is looked up as <c>-1</c>, then 5 is added to it to get 4, then the 4 is placed into the whiteboard, which will now look like:
+			</p>
+
+			<table>
+				<title>Updated whiteboard of variables</title>
+
+				<tabular>
+					<row>
+						<cell bottom="medium">Variable</cell>
+						<cell bottom="medium">Value</cell>
+					</row>
+
+					<row>
+						<cell>x</cell>
+						<cell>6</cell>
+					</row>
+
+					<row>
+						<cell>y</cell>
+						<cell>4</cell>
+					</row>
+
+					<row>
+						<cell>z</cell>
+						<cell>8.5</cell>
+					</row>
+				</tabular>
+			</table>
+
+			<p>
+				If you are thinking of how a piece of code works, often you will need to get to the point of writing down a version of the whiteboard.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Strings</title>
+
+		<introduction>
+			<p>
+				In many Scientific Computing fields, such as Data Science, strings arise often and it is important to understand some of the basics of them. In Julia, a string is a sequence of characters surrounded by <c>""</c> (double quotes). For example:
+			</p>
+
+			<p>
+				<cd>
+				<cline>str = "This is a string"</cline>
+				</cd>
+			</p>
+
+			<p>
+				and if you enter <c>typeof(str)</c> then you should see <c>String</c>. The individual parts of the string are called characters, which have type <c>Char</c> and are by default Unicode Characters (which will we see are super helpful). We will see other data types in <xref ref="ch-data-types"/>, but note that types in Julia are capitalized. A few other helpful things about strings are
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							The length of a string is found using the <c>length</c> command. <c>length(str)</c> returns <c>16</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							To access the first element of the string, type <c>first(str)</c>, the last is found by <c>last(str)</c> and the 3rd character for example is <c>str[3]</c>.  In julia, string indexing starts at 1.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							To turn other data types into string, use <c>string</c>. For example <c>string(3.0)</c> returns the string <c>"3.0"</c>.
+						</p>
+					</li>
+				</ul>
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>String Operations</title>
+
+			<p>
+				We saw how to access elements of a string.  Another helpful operation is that of concatentation, or the merging of two strings. If
+			</p>
+
+			<p>
+				<cd>
+				<cline>str1 = "The tide is high "</cline>
+				<cline>str2 = "and I'm having fun."</cline>
+				</cd>
+			</p>
+
+			<p>
+				we can concatenate in multiple ways.  First, the <c>*</c> operator symbol with strings as both operands or the <c>string()</c> function.  Both
+			</p>
+
+			<p>
+				<cd>
+				<cline>str1 * str2</cline>
+				<cline>string(str1,str2)</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>The tide is high and I'm having fun.</c> I find that the <c>*</c> is an odd choice for string concatenation.  Many languages including java and ecmascript (javascript) use <c>+</c> instead for string concatenation.  Another way of performing concatenation is shown below using string interpolation.
+			</p>
+
+			<p>
+				Another cute operation for strings is the caret <c>^</c> operation. This could be helpful and a (not so helpful) example is
+			</p>
+
+			<p>
+				<cd>
+				<cline>"Hip, hip, hooray! "^3</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns
+			</p>
+
+			<p>
+				<cd>
+				<cline>Hip, hip, hooray! Hip, hip, hooray! Hip, hip, hooray!</cline>
+				</cd>
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>String Interpolation</title>
+
+			<p>
+				Mixing strings and other variables together is often needed. If you have a variable <c>x</c> and would like to insert it at the end of <c>"The value of x is "</c>
+			</p>
+
+			<p>
+				we can use concatenation as above to do this, but instead we will use string interpolation by putting a <c>$</c> in front of a variable.
+			</p>
+
+			<p>
+				<cd>
+				<cline>result = "The value of x is $x"</cline>
+				</cd>
+			</p>
+
+			<p>
+				and the result will be <c>"The value of x is 6"</c>.
+			</p>
+
+			<p>
+				There is actually one other way to do string concatenation if you use this method. If we have the variables stored in <c>str1</c> and <c>str2</c>, then <c>"$str1$str2"</c> also will concatenate the strings.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Other String Functions</title>
+
+			<p>
+				There are many other string functions, which are generally used for manipulating a string.  The <url href="https://docs.julialang.org/en/v1/base/strings/" visual="julialang.org">string chapter</url> of the julia documentation is a good place to look.
+			</p>
+
+			<p>
+				To effectively use strings, a knowledge of regular expressions are needed.  Regular expressions are ways to parse a string and extract key information.  <xref ref="ch-regexp"/> goes through details on how to develop and use regular expressions.  We also use these to parse points written in string form and in <xref ref="ch-polynomial"/> we develop the parsing of a polynomial written as a string.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>Expressions</title>
+
+		<p>
+			An expression is a combination of variables, data elements (like numbers and strings), operations (like + or *) and functions (like <c>length</c>). We've seen a number of expressions throughout this chapter so far like
+		</p>
+
+		<p>
+			<cd>
+			<cline>x = 6 </cline>
+			<cline>x+3 </cline>
+			<cline>str1 * str2 </cline>
+			<cline>length(str) </cline>
+			</cd>
+		</p>
+
+		<p>
+			In short, writing things in julia will consist of writing expressions (and slightly more complicated structures).
+		</p>
+	</section>
+
+	<section xml:id="sect-oper-precedence">
+		<title>Operator Precendence</title>
+
+		<p>
+			When we type out an expression like <c>11+2*(4+3)^3</c>, it is important to understand the order in which operators are performed. For mathematics, the PEMDAS pnemonic is helpful to rememember in that the order is:
+		</p>
+
+		<p>
+			<ul>
+				<li>
+					<p>
+						<em>Parentheses</em>: The expression inside the ( ) are done first. For the example above, the <c>4+3</c> is the first operation done.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Exponentials</em>: The <c>^</c> is done next.  Raise the 7 from above to the power of 3.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Multiplication and Division</em>: In this example, the <c>2*(343)</c> is done next
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<em>Addition and Subtraction</em>: Lastly add 11 to the result.
+					</p>
+				</li>
+			</ul>
+		</p>
+
+		<p>
+			In any computing language, there are other operators as well and there is order to that precedence, so we will see that there are other things to think about. For example, the assignment operator, <c>=</c> has the lowest precedence. That is when assigning something to a variable, all calculations are done on the right side of the = before the assignment.
+		</p>
+
+		<p>
+			Details on all this can be found on the <url href="https://docs.julialang.org/en/v1/manual/mathematical-operations/index.html#Operator-Precedence-and-Associativity-1" visual="docs.julialang.org">Julia documentation page on operator precedence</url>.
+		</p>
+	</section>
+
+	<section>
+		<title>Comments</title>
+
+		<p>
+			A comment in computer code is sequences of characters which are ignored. The purpose of a comment is to alert a human on what is going on.  You may have been told to write comments so that someone else who reads your code understands what you are doing. However, I have found that the person mostly like to read your code is you at a later date.  You should add comments for yourself.
+		</p>
+
+		<p>
+			In julia, a comment is anything to the right of a <c>#</c>, pound sign or hash tag. For example:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+# This calculates the area of a circle
+r = 3
+pi*r^2 # this is the actual formula for the area
+			</input>
+		</program>
+
+		<p>
+			Both lines 1 and 3 have comments.  On line 1, the entire line is ignore since the line starts with <c>#</c>.  On line 3, everything after the 2 (the power) is ignored.  Also, notice that there are two hash tags on line 1 and 1 on line 3.  This is simply different style.  Since anything after a single <c>#</c> is a comment, everything after the first one is ignored.
+		</p>
+	</section>
+</chapter>

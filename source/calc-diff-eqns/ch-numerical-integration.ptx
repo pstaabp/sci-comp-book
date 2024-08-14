@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-num-int">
+  <title>Numerical Integration</title>
+
+  <introduction>
+    <p>
+      Numerical integration is a very important component of scientific computation.  In tradition calculus classes, the integrals presented were ones that had antidervatives that could be found relatively easily.  However, this is generally not true.  For example, if trying to determine
+    </p>
+
+    <p>
+      <me>
+        \int_0^{2} e^{-x^2} \, dx
+      </me>
+    </p>
+
+    <p>
+      the function <m>f(x)=e^{-x^2}</m> does not have an antidervative in terms of standard functions.  This however it a very important antidervative in that it is related to the normal probability distribution.  Because of its importance, we define
+    </p>
+
+    <p>
+      <me>
+        \text{erf}(x) = \frac{2}{\sqrt{\pi}} \int_0^x e^{-t^2} \, dt
+      </me>
+    </p>
+
+    <p>
+      as the <url href="https://en.wikipedia.org/wiki/Error_function" visual="wikipedia.org">error function</url> it is important to calculate values for it for any value of <m>x</m>.
+    </p>
+  </introduction>
+
+  <section>
+    <title>Trapezoid Rule</title>
+
+    <p>
+      introduction to the trapezoid rule
+    </p>
+
+    <p>
+      Instead of approximating the area with rectangles, we can use trapezoids to do this.  A plot of the approximate integral of <m>e^{-x^2}</m> on the interval <m>[0,2]</m> is given by
+    </p>
+
+    <figure xml:id="fig-trap-rule">
+      <caption></caption>
+      <image>
+        <shortdescription>
+        </shortdescription>
+        <latex-image>
+      <![CDATA[
+      \begin{tikzpicture}[scale=2.5]
+      \draw[red,thick] (0,1) -- (0.5,{exp(-0.5*0.5)}) -- (0.5,0) -- (0,0) -- cycle;
+      \fill[pink] (0,1) -- (0.5,{exp(-0.5*0.5)}) -- (0.5,0) -- (0,0) -- cycle;
+      \draw[red,thick] (0.5,0) -- (0.5,{exp(-0.5*0.5)}) -- (1,{exp(-1)}) -- (1,0) -- cycle;
+      \fill[pink] (0.5,0) -- (0.5,{exp(-0.5*0.5)}) -- (1,{exp(-1)}) -- (1,0) -- cycle;
+      \draw[red,thick] (1,0) -- (1,{exp(-1)}) -- (1.5,{exp(-1.5*1.5)}) -- (1.5,0) -- cycle;
+      \fill[pink] (1,0) -- (1,{exp(-1)}) -- (1.5,{exp(-1.5*1.5)}) -- (1.5,0) -- cycle;
+      \draw[red,thick] (1.5,0) -- (1.5,{exp(-1.5*1.5)}) -- (2,{exp(-4)}) -- (2,0) -- cycle;
+      \fill[pink] (1.5,0) -- (1.5,{exp(-1.5*1.5)}) -- (2,{exp(-4)}) -- (2,0) -- cycle;
+      \draw[<->,thick] plot[samples=150, domain=-0.5:2.5] (\x,{exp(-1*\x*\x)});
+      \draw[->] (-1.5,0) -- (2.5,0) node [above right] {$x$};
+      \foreach \x in {-1,1,2} \draw (\x,0.02) -- (\x,-0.02) node [below] {\x};
+      \draw[->] (0,-0.5) -- (0,1.5) node [above right] {$y$};
+      \foreach \y in {1} \draw (0.02,\y) -- (-0.02,\y) node [above left] {\y};
+      \end{tikzpicture} ]]>
+        </latex-image>
+      </image>
+    </figure>
+
+    <p>
+      where 4 trapezoids have been used.  The area of the a trapezoid like:
+    </p>
+
+    <figure xml:id="fig-trap-rule2">
+      <caption></caption>
+      <image>
+        <shortdescription>
+        </shortdescription>
+        <latex-image>
+    <![CDATA[
+    \begin{tikzpicture}
+\draw[thick] (0,0) -- (5,0) -- (4,2) -- (2,2) -- cycle;
+\draw (2.5,0) node [below] {$w_1$};
+\draw (3,2) node [above] {$w_2$};
+\draw[|<-] (-0.25,0) -- (-0.25,0.8);
+\draw (-0.25,1) node {$h$};
+\draw[->|] (-0.25,1.2) -- (-0.25,2);
+\end{tikzpicture}
+]]>
+        </latex-image>
+      </image>
+    </figure>
+
+    <p>
+      is
+    </p>
+
+    <p>
+      <me>
+        A  = \frac{1}{2} h (w_1+w_2)
+      </me>
+    </p>
+
+    <p>
+      In the trapezoids in the function plot above, the trapezoid are oriented sideways to this one, so the value of <m>h</m> is the horizontal distance or 0.5 for each one and the <m>w_1</m> and <m>w_2</m> are the function values, so the area of the four trapezoids above are:
+    </p>
+
+    <p>
+      <md>
+        <mrow>A \amp = \frac{0.5}{2} \bigl(e^0 + e^{-0.5^2} \bigr) + \frac{0.5}{2} \bigl(e^{-0.5^2} + e^{-1} \bigr) + \frac{0.5}{2} \bigl(e^{-1} + e^{-1.5^2} \bigr) + \frac{0.5}{2} \bigl(e^{-1.5^2}+ e^{-2^2} \bigr) </mrow>
+        <mrow>\amp \approx  0.8806186341245393</mrow>
+      </md>
+    </p>
+
+    <p>
+      The basic part of the trapezoid method is to use the area of a trapezoid on an interval with width <m>h</m>.  The area of one of the trapezoids is
+    </p>
+
+    <p>
+      <me>
+        A_i = \frac{h}{2}(f(x_i)+f(x_{i+1}))
+      </me>
+    </p>
+
+    <p>
+      and then a full approximation will be the sum of these:
+    </p>
+
+    <p>
+      <md>
+        <mrow>A\amp ={\sum_{i=1}^{n-1}} \frac{h}{2}(f(x_i)+f(x_{i+1})) \notag </mrow>
+        <mrow number="yes" xml:id="eq-trap-rule-1">\amp =\frac{h}{2}\left(f(x_0)+f(x_1)+f(x_1)+f(x_2)+ \cdots + f(x_{n-1})+f(x_n)\right)</mrow>
+        <mrow number="yes" xml:id="eq-trap-rule">\amp =\frac{h}{2}\left( f(x_0) + \biggl(2\sum_{i=1}^{n-1} f(x_i) \biggr) + f(x_n)\right) </mrow>
+      </md>
+    </p>
+
+    <p>
+      Let's take a look at doing this in julia.  To calculate the value we need a few things: 1) a function, 2) the interval we're doing the approximation on and 3) the number of trapezoids or subintervals.  We presented the following in <xref ref="ch-adv-functions"/> as
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+function trapRule(f::Function, a::Real, b::Real; num=10)
+  local h = (b-a)/num
+  0.5*h*sum(map(f, a:dx:b-dx)+map(f, a+dx:dx:b))
+end
+      </input>
+    </program>
+
+    <p>
+      <ol>
+        <li>
+          <p>
+            The parameter <m>h</m> is <m>(b-a)/n</m>.
+          </p>
+        </li>
+
+        <li>
+          <p>
+            Line <xref ref="eq-trap-rule-1"/> can be written as the map of two arrays. And then summed.
+          </p>
+        </li>
+      </ol>
+    </p>
+
+    <p>
+      This is short and (maybe) sweet, but note that there are two separate arrays created.  We have learned throughout this text, that the creation of arrays is often the most expensive part of a calculation.  So instead, we will do the following:
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+      function trapRule(f::Function, a::Real, b::Real; num = 10)
+        num &gt; 0 || throw(ArgumentError("The number of trapezoids, num, must positive."))
+        a &lt; b || throw(ArgumentError("The left endpoint must be less than the right endpoint."))
+        local h = (b-a)/num
+        (h/2)*(f(a)+f(b)+2*sum(f,LinRange(a+h,b-h,num-1)))
+      end
+      </input>
+    </program>
+
+    <p>
+      Although this looks to be nearly the same, we haven't created arrays.  The <c>LinRange</c> function creates a range, but julia is savvy enough to not create the array to sum over it. See the exercise below. Let's first redo the example above:
+    </p>
+
+    <p>
+      <cd>
+      <cline>trapRule(x -&gt; exp(-x^2), 0, 2; num=4)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns <c>0.8806186341245393</c>
+    </p>
+
+    <exercise>
+      <task>
+        <statement>
+          <p>
+            Find <m>\int_0^{1} \sin(x^2)\,dx</m> using the trapezoid method for <m>4, 10</m> and <m>20</m> points.
+          </p>
+        </statement>
+      </task>
+
+
+      <task>
+        <statement>
+          <p>
+            Use the <c>BenchmarkTools</c> and the <c>@btime</c> macro to compare the time of the trapezoid rule using the two functions shown here. Try integrating <m>\sin(x^2)</m> on <m>[0,1]</m> for <m>N=10,000</m> subintervals.
+          </p>
+        </statement>
+      </task>
+    </exercise>
+  </section>
+
+  <section>
+    <title>Simpson's Rule</title>
+
+    <introduction>
+      <p>
+        The trapezoid rule uses straight lines to approximate the function and then integrates the line (or finds the area of the trapezoid).  To find a better approximation if we use a quadratic function (parabola) to estimate the function.  If we do this, then integrate the resulting parabola, this is called Simpson's Rule.  There are numerous places to find the derivation of this, but the result is
+      </p>
+
+      <p>
+        <md>
+          <mrow>I \amp = \frac{h}{3} \bigl( f(x_0) + 4 f(x_1) + 2 f(x_2) + 4 f(x_3) + 2 f(x_4) + \cdots + 2 f(x_{n-1}) + f(x_n) \bigr)</mrow>
+          <mrow>\amp  = \frac{h}{3} \left(f(x_0)+ f(x_{2n}) + 4 \sum_{k=1}^{n} f(x_{2k-1}) + 2\sum_{k=1}^{n+1} x_{2k} \right)</mrow>
+        </md>
+      </p>
+
+      <p>
+        where <m>h=(b-a)/n</m>, <m>x_k = a + kh</m> and it is important that <m>n</m> is an even number. Similar to the trapezoid rule, we can write Simpson's rule in julia as
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+function simpsonsRule(f::Function, a::Real, b::Real, n::Integer)
+  n &gt; 0 || throw(ArgumentError("The number of subintervals, n, must be positive."))
+  n % 2 == 0 || throw(ArgumentError("The number of subintervals, n, must be even."))
+  a &lt; b || throw(ArgumentError("The left endpoint must be less than the right endpoint."))
+  local h = (b-a)/n
+  xpts = LinRange(a,b,n+1)
+  (h/3)*(f(a)+f(b) + 4*sum(f,xpts[2:2:end-1]) + 2*sum(f,xpts[3:2:end-2]))
+end
+        </input>
+      </program>
+
+      <p>
+        Applying Simpson's Rule to <m>\int_0^3 x^2 \, dx</m> as
+      </p>
+
+      <p>
+        <cd>
+        <cline>simpsonsRule(x-&gt;x^2,0,3,10)</cline>
+        </cd>
+      </p>
+
+      <p>
+        results in <c>9.0</c>
+      </p>
+
+      <p>
+        It's interesting to note that this reports the exact value.  In fact, Simpson's rule will numerically integrate any cubic (and lines and quadratics) exactly. If we return to trying to find <m>\int_0^2 e^{-x^2} \, dx</m> and use Simpson's Rule, then
+      </p>
+
+      <p>
+        <cd>
+        <cline>simpsonsRule(x -&gt; exp(-x^2), 0, 2, 10)</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns <c>0.882074876854494</c>.
+      </p>
+
+      <p>
+        which is within 5 digits of the true answer.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Plotting the Error Function</title>
+
+      <p>
+        We can use numerical integration to evaluate the error function at any value, so let's go ahead and plot it. First, let's make a function that defines the error function.
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+      function erf(x::Real)
+        local area = simpsonsRule(t -&gt; exp(-t^2),0,abs(x),100)
+        x &gt; 0 ? area : -1*area
+      end
+        </input>
+      </program>
+
+      <p>
+        where we have used the symmetry of the error function to evaluate it if <c>x</c> is positive or negative.  If we don't check for this, we will get an error because <c>simpsonsRule</c> has a check that the interval needs to be put in as <m>a &lt; b</m>. Now, we can plot it with:
+      </p>
+
+      <p>
+        <cd>
+        <cline>plot(x -&gt; erf(x), -3, 3, label=false, title="Plot of the error function")</cline>
+        </cd>
+      </p>
+
+      <p>
+        which results in
+      </p>
+
+      <figure xml:id="fig-erf">
+        <caption></caption>
+        <image width="75%" source="plots/num-int/erf.png">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+    </subsection>
+  </section>
+
+  <section>
+    <title>Using the <c>NumericalIntegration package</c></title>
+
+    <p>
+      This package does some basic integration using both Trapezoid and Simpson's rule discussed above.
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+      using NumericalIntegration
+      x = LinRange(0,2,101)
+      y = map(x -&gt; exp(-x^2),x) ## compute an array of y based on each x
+      v = integrate(x,y)
+      </input>
+    </program>
+
+    <p>
+      and the result is <c>0.8820789488400429</c>.
+    </p>
+  </section>
+</chapter>

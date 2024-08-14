@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-plotting-makie">
+  <title>Using Makie for Plots</title>
+
+  <introduction>
+    <p>
+      As discussed in <xref ref="ch-plotting-basics"/>, one of the main plotting environments for Julia is Makie, a relatively new plotting environment that had a goal to develop a completely Julia-based environment that was designed to "create publication-quality vector graphics, animated movies and interactive data exploration tools. Most options that are available today lack one or more of the following attributes:" (cite Makie paper).
+    </p>
+  </introduction>
+
+  <section>
+    <title>Basic Plotting</title>
+
+    <p>
+      Before plotting, make sure that you have the packages <c>Makie</c> and <c>CairoMakie</c> installed.  The package <c>CairoMakie</c> is the backend package that does the plotting using the common interface (API) in the <c>Makie</c> package.  To get started enter
+    </p>
+
+    <p>
+      <cd>
+      <cline>using Makie, CairoMakie</cline>
+      <cline>CairoMakie.activate!()</cline>
+      <cline>Makie.inline!(true)</cline>
+      </cd>
+    </p>
+
+    <p>
+      and to get a plot, we can use the <c>scatter</c> command and let's first define the arrays:
+    </p>
+
+    <p>
+      <cd>
+      <cline>x=1:10</cline>
+      <cline>y=[3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9]</cline>
+      <cline>scatter(x,y)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which results in the plot
+    </p>
+
+    <figure xml:id="fig-makie-scatter">
+      <caption>Scatter plot of some sample data</caption>
+      <image source="plots/plots/makie-scatter.png" width="90%">
+        <shortdescription>
+          Scatter plot of points with x between 1 and 10 and y between -5 and 8.
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      If instead we wish to make a line plot (connect the points by lines), simply use the <c>lines</c> function as in
+    </p>
+
+    <p>
+      <cd>
+      <cline>lines(x,y)</cline>
+      </cd>
+    </p>
+
+    <p>
+      resulting in
+    </p>
+
+    <figure xml:id="fig-makie-lines">
+      <caption>Line plot of some sample data</caption>
+      <image source="plots/plots/makie-lines.png" width="90%">
+        <shortdescription>
+          Line plot of points with x between 1 and 10 and y between -5 and 8.
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      to create a function plot, we can use either <c>scatter</c> or <c>lines</c> but typically use a line plot.  For example
+    </p>
+
+    <p>
+      <cd>
+      <cline>lines(0..2pi, sin)</cline>
+      </cd>
+    </p>
+
+    <p>
+      and if the prescence of <c>sin</c> by itself in the function, one can use <c>lines(0..2pi, x -&gt; sin(x))</c> instead.  The result is
+    </p>
+
+    <figure xml:id="fig-makie-function">
+      <caption>Plot of <m>\sin(x)</m> from 0 to 2<m>\pi</m>.</caption>
+      <image source="plots/plots/makie-function.png" width="90%">
+        <shortdescription>
+          Plot of sin(x) from 0 to 2pi.
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      Typically it would be nice to use units of <m>\pi</m> for the x-axis labels, and we will be able to do that later.
+    </p>
+
+    <p>
+      You may have noticed that for the function plot above, the first argument is <c>0..2pi</c>.  We haven't seen this structure before.  Entering <c>typeof(0..2pi)</c> results in
+    </p>
+
+    <p>
+      <cd>
+      <cline>ClosedInterval{Float64} (alias for IntervalSets.Interval{:closed, :closed, Float64})</cline>
+      </cd>
+    </p>
+
+    <p>
+      indicating that this structure is part of the <c>IntervalsSets</c> package (that is a dependency of <c>Makie</c>).  This makes plotting functions quite nice.
+    </p>
+  </section>
+
+  <section xml:id="sect-layout-makie">
+    <title>Figures and Grid Layout in Makie</title>
+
+    <p>
+      Before delving into more of the plotting types in Makie, we will first look at layout and axes, a strength of this package and also shows how to build a plot step by step.  First, a plot need a <c>Figure</c> container and this can be created with:
+    </p>
+
+    <p>
+      <cd>
+      <cline>fig = Figure()</cline>
+      </cd>
+    </p>
+
+    <p>
+      And upon running this, you will get a blank/empty Figure.  This is not so interesting, but important.  There are many things that happen when creating a figure, but most importantly, there is a grid layout that is created.  To place items in the grid, typically plots need to occur on axes, so we will place axes in a layout with row/column indexing.  For example
+    </p>
+
+    <p>
+      <cd>
+      <cline>fig = Figure()</cline>
+      <cline>ax1 = Axis(fig[1,1], title = "Axis 1")</cline>
+      <cline>ax2 = Axis(fig[2,1], title = "Axis 2")</cline>
+      <cline>ax3 = Axis(fig[1,2], title = "Axis 3")</cline>
+      <cline>ax4 = Axis(fig[2,2], title = "Axis 4")</cline>
+      <cline>fig</cline>
+      </cd>
+    </p>
+
+    <p>
+      and the output of this is
+    </p>
+
+    <figure xml:id="fig-makie-layout">
+      <caption>2 by 2 grid layout of a figure with 4 axes. </caption>
+      <image source="plots/makie/layout.png" width="90%">
+        <shortdescription>
+          A figure with four axes in a 2 by 2 grid, labelled "Axis 1", "Axis 3", "Axis 4" and "Axis 2" clockwise from the upper left.
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      and you should notice many things.  We can add a Axis to a plot (or four of them) without any plot within them.  We will learn how to add a plot to an axis below.  Above, the axes were placed by adding a row and column to the <c>fig</c> (Figure) above.  For example, the Axis labeled as <c>Axis 2</c> is placed in the second row and first column.  Also, the default plotting window (limits) for an Axis is between 0 and 10.
+    </p>
+
+    <p>
+      If you have multiple plots in the same figure, then generally a simple grid layout will work, however, Makie has the ability to nest axes as well.  For example:
+    </p>
+
+    <p>
+      <cd>
+      <cline>fig = Figure()</cline>
+      <cline>ax1 = Axis(fig[1,1], title = "Axis 1")</cline>
+      <cline>ax2 = Axis(fig[2,1][1,1], title = "Axis 2")</cline>
+      <cline>ax3 = Axis(fig[2,1][1,2], title = "Axis 3")</cline>
+      <cline>ax4 = Axis(fig[2,1][1,3], title = "Axis 4")</cline>
+      <cline>fig</cline>
+      </cd>
+    </p>
+
+    <p>
+      will produce the following layout where the 2nd row has nested axes.
+    </p>
+
+    <figure xml:id="fig-layout-nested">
+      <caption>A grid layout with one axis on the first row and 3 in the second row.</caption>
+      <image source="plots/makie/layout-nested.png" width="90%">
+        <shortdescription>
+          A grid layout with one axis on the first row and 3 in the second row. The top row axis is labelled "Axis 1" and the bottom three are labelled "Axis 2", "Axis 3" and "Axis 4" from left to right.
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      Notice that to nest axes, we add an additional row/column specification.  For example, <c>fig[2,1][1,2]</c> means first place this in the 2nd row and 1st column of the overall layout and then within that cell, place in the first row, second column.
+    </p>
+  </section>
+
+  <section xml:id="sec-makie-axis">
+    <title>Axis Options</title>
+
+    <p>
+      We saw above how to place an <c>Axis</c> object inside a <c>Figure</c>.  Upon creating the <c>Axis</c>, we can give other options.  We will cover some of the important ones here, and then refer to the documentation.  The first option to an <c>Axis</c> is a <c>title</c> that we saw above. Just pass the title in as a string.  Other basic options are the <c>xlabel</c> and <c>ylabel</c>.  The following code
+    </p>
+
+    <p>
+      <cd>
+      <cline>fig = Figure()</cline>
+      <cline>ax = Axis(fig[1,1], title = "My Plot", xlabel = "x label", ylabel = "ylabel")</cline>
+      <cline>fig</cline>
+      </cd>
+    </p>
+
+    <p>
+      results in
+    </p>
+
+    <figure xml:id="fig-xylabels">
+      <caption>An empty plot with values for the title, xlable and ylabel.</caption>
+      <image source="plots/makie/xylabels.png" width="90%">
+        <shortdescription>
+          An empty plot with title "My Plot", xlabel of "x label" and ylable as "y label".
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      Setting the limits on the axes is done with the <c>limits</c> option.  For example:
+    </p>
+
+    <p>
+      <cd>
+      <cline>fig = Figure() ax = Axis(fig[1,1], limits = (-5,5,0,20)) fig</cline>
+      </cd>
+    </p>
+
+    <p>
+      produces the following
+    </p>
+
+    <figure xml:id="fig-limits">
+      <caption>An empty plot with updated limits.</caption>
+      <image source="plots/makie/limits.png" width="90%">
+        <shortdescription>
+          An empty plot with limits in the x-direction from -5 to 5 and in the y-direction from 0 to 20.
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      where the specification is <c>limits = (xmin, xmax, ymin, ymax)</c>.
+    </p>
+
+    <p>
+      There are plenty of other options available for an <c>Axis</c>.  See the <url href="https://docs.makie.org/stable/reference/blocks/axis">documentation on Axis</url> for more information.  One big this to note is the separation of axis options (anything that isn't a plot) should be done to the <c>Axis</c> option, whereas as we will see below, changes to the plot will go on the individual plotting function.
+    </p>
+  </section>
+
+  <section>
+    <title>Adding Plots to Axes</title>
+
+    <p>
+      Even though we can do some elaborate layout of axes, we haven't done any plotting on them.  In fact, there are two ways to plot via Makie.  First, as we saw above, we can use plotting functions like <c>lines</c> or <c>scatter</c> to make plots.  This is fine for relatively simple plots or just for a quick plot using defaults.  Secondly, we will create <c>Figure</c>s and <c>Axis</c> objects and the add plots to them with commands like <c>lines!</c> or <c>scatter!</c> (note the !).  Recall that convention in Julia is if an argument is being modified that the name should end in a <c>!</c>.
+    </p>
+
+    <p>
+      Let's repeat the scatter plot at the top of this chapter.  If we do:
+    </p>
+
+    <p>
+      <cd>
+      <cline>y = [3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9]</cline>
+      <cline>fig = Figure()</cline>
+      <cline>ax = Axis(fig[1,1], limits = (0,11,-10,10))</cline>
+      <cline>scatter!(ax, x, y)</cline>
+      <cline>fig</cline>
+      </cd>
+    </p>
+
+    <p>
+      where we have set the limits to make them symmetric above and below the <m>x</m>-axis.
+    </p>
+
+    <figure xml:id="fig-scatter2">
+      <caption>A scatter plot with sample data in which the limits have been updated. </caption>
+      <image source="plots/makie/scatter2.png" width="90%">
+        <shortdescription>
+          A scatter plot with sample data in which the limits are from 0 to 11 in the x-direction and from -10 to 10 in the y-direction.
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      This is the way to include either multiple function plot or a scatter and function plot on the same axes.  Consider the scatter plot from <xref ref="ch-plotting-basics"/> which is the data from CO₂ levels.  We can add an exponential function to them as well in the following way.<fn>The data is available <url href="https://gml.noaa.gov/aftp/products/trends/co2/co2_annmean_mlo.csv">at this NOAA webpage</url> and should be downloaded and saved in the same directory as your julia notebook. </fn>.
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+          fig = Figure()
+          ax = Axis(fig[1,1])
+          scatter!(ax, co2.year, co2.mean)
+          lines!(ax, 1959..2023,t -&gt; exp(5.735 + 0.00454*(t-1959)), color = :green)
+          fig
+      </input>
+    </program>
+
+    <p>
+      resulting in the following.
+    </p>
+
+    <figure xml:id="fig-co2-fit">
+      <caption>A scatter plot of CO₂ data and an exponential fit. </caption>
+      <image source="plots/makie/co2-scatter-fit.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      The exponential was found in a way similar to that of fitting curves in <xref ref="ch-algorithm-analysis"/>.
+    </p>
+  </section>
+</chapter>

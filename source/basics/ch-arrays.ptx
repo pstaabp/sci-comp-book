@@ -1,0 +1,876 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-arrays">
+	<title>Arrays</title>
+
+	<introduction>
+		<p>
+			Arrays are a fundamental data structure for nearly every computer language and it is a crucial for scientific computing as that it is an efficient way of handling large amount of the same datatype.  Additionally, arrays are the computing version of mathematical vectors and matrices.
+		</p>
+
+		<p>
+			In short an array is a collection of data of (typically) the same type under the same name. We have seen arrays before. For example, if we say
+		</p>
+
+		<p>
+			<cd>
+			<cline>arr = [1,2,3]</cline>
+			</cd>
+		</p>
+
+		<p>
+			then we get a 1-dimensional array of length 3. Note that when returned, julia says <c>3-element Vector{Int64}:</c> which means
+		</p>
+
+		<p>
+			<ul>
+				<li>
+					<p>
+						it is length 3 (since it is a 3-element)
+					</p>
+				</li>
+
+				<li>
+					<p>
+						The internal type is <c>Int64</c>.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						The <c>Vector</c> indicates it is 1-dimensional.
+					</p>
+				</li>
+			</ul>
+		</p>
+
+		<p>
+			There are some basic functions that tell us some information:
+		</p>
+
+		<p>
+			<ul>
+				<li>
+					<p>
+						<c>length(arr)</c> returns 3, the length.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<c>eltype(arr)</c> returns <c>Int64</c>, the type of the elements in the array.
+					</p>
+				</li>
+			</ul>
+		</p>
+	</introduction>
+
+	<section xml:id="sect-contructing-arrays">
+		<title>Constructing arrays</title>
+
+		<p>
+			We can create arrays in many ways. As seen above, the line
+		</p>
+
+		<p>
+			<cd>
+			<cline>arr=[1,2,3]</cline>
+			</cd>
+		</p>
+
+		<p>
+			creates a vector (1-D array) of length 3. A 2D array can be made like:
+		</p>
+
+		<p>
+			<cd>
+			<cline>arr2=[1 2 3; 4 5 6]</cline>
+			</cd>
+		</p>
+
+		<p>
+			Note that each row of the array is separated by a semicolon and the individual elements in a row are separated by spaces. The result of this is
+		</p>
+
+		<p>
+			<cd>
+			<cline>2×3 Matrix{Int64}:</cline>
+			<cline>1  2  3</cline>
+			<cline>4  5  6</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the size is 2 by 3 (2 rows and 3 columns).  A <c>Matrix</c> is a 2 dimensional array.  One can make an array of more than 2 dimensions.
+		</p>
+
+		<p>
+			The following are useful for creating arrays of 1 or more dimensions.
+		</p>
+
+		<p>
+			<ul>
+				<li>
+					<p>
+						<c>zeros(type,dims...)</c> makes an array of all zeros with datatype <c>type</c> and given dimensions. For example,
+					</p>
+
+					<p>
+						<cd>
+						<cline>zeros(Int, 4, 6)</cline>
+						</cd>
+					</p>
+
+					<p>
+						returns an array filled with zeros (of integer type) with 4 rows and 6 columns.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<c>ones(type,dims...)</c> is similar to <c>zeros</c> except it is filled with 1s.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<c>rand(dims...)</c> makes a random array of floating points (uniformly distributed between 0 and 1).
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<c>collect(range)</c> takes a <c>Range</c> object (the pair or triples of numbers separated by columns) and creates an 1D array with the numbers from the range. For example, <c>collect(1:10)</c> returns
+					</p>
+
+					<p>
+						<cd>
+						<cline>10-element Vector{Int64}:</cline>
+						<cline>1</cline>
+						<cline>2</cline>
+						<cline>3</cline>
+						<cline>4</cline>
+						<cline>5</cline>
+						<cline>6</cline>
+						<cline>7</cline>
+						<cline>8</cline>
+						<cline>9</cline>
+						<cline>10</cline>
+						</cd>
+					</p>
+				</li>
+			</ul>
+		</p>
+	</section>
+
+	<section xml:id="sect-comprehensions">
+		<title>Comprehensions</title>
+
+		<p>
+			If the elements of an array form a functional pattern, we can use what is called a <term>comprehension</term> to construct it in a compact manner. For example, a 1D array with the elements 1,-1,1,-1,1,-1 can be made:
+		</p>
+
+		<p>
+			<cd> [(-1)^n for n=0:7] </cd>
+		</p>
+
+		<p>
+			and the following:
+		</p>
+
+		<p>
+			<cd> [m+n for n=1:8,m=1:8] </cd>
+		</p>
+
+		<p>
+			makes an 8 by 8 matrix where each element is the sum of the row and column number or
+		</p>
+
+		<p>
+			<cd>
+			<cline>8×8 Matrix{Int64}:</cline>
+			<cline>2   3   4   5   6   7   8   9</cline>
+			<cline>3   4   5   6   7   8   9  10</cline>
+			<cline>4   5   6   7   8   9  10  11</cline>
+			<cline>5   6   7   8   9  10  11  12</cline>
+			<cline>6   7   8   9  10  11  12  13</cline>
+			<cline>7   8   9  10  11  12  13  14</cline>
+			<cline>8   9  10  11  12  13  14  15</cline>
+			<cline>9  10  11  12  13  14  15  16</cline>
+			</cd>
+		</p>
+
+		<exercise>
+			<statement>
+				<p>
+					Using the techniques in this section, create the following arrays in julia:
+				</p>
+
+				<p>
+					<ol>
+						<li>
+							<p>
+								<me>
+									\begin{bmatrix} 3 \\ 6 \\ 9 \\ 12 \\ 15 \\ 18 \\ 21 \\ 24 \end{bmatrix}
+								</me>
+							</p>
+						</li>
+
+						<li>
+							<p>
+								<me>
+									\begin{bmatrix} 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ \end{bmatrix}
+								</me>
+							</p>
+						</li>
+
+						<li>
+							<p>
+								<me>
+									\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 1 \\ 1 &amp; 1 \\ 1 &amp; 1 \end{bmatrix}
+								</me>
+							</p>
+						</li>
+
+						<li>
+							<p>
+								<me>
+									\begin{bmatrix} 1 &amp; -3 &amp; 4 &amp; 5 \\ 3 &amp; 2 &amp; 11 &amp; -13 \\ 17 &amp; 0 &amp; 4 &amp; 2 \end{bmatrix}
+								</me>
+							</p>
+						</li>
+
+						<li>
+							<p>
+								<me>
+									\begin{bmatrix} 4 &amp; 3 &amp; 2 &amp; 1 &amp; 0 \\ 3 &amp; 2 &amp; 1 &amp; 0 &amp; 1 \\ 2 &amp; 1 &amp; 0 &amp; 1 &amp; 2 \\ 1 &amp; 0 &amp; 1 &amp; 2 &amp; 3 \\ 0 &amp; 1 &amp; 2 &amp; 3 &amp; 4 \end{bmatrix}
+								</me>
+							</p>
+						</li>
+					</ol>
+				</p>
+			</statement>
+
+			<hint>
+				<p>
+					Hint: there is no pattern for the array in #4, so just enter the numbers.
+				</p>
+			</hint>
+		</exercise>
+	</section>
+
+	<section xml:id="sect-accessing-arrays">
+		<title> Accessing elements of an array</title>
+
+		<p>
+			Let <c>x=collect(1:2:13)</c> which generates:
+		</p>
+
+		<p>
+			<cd>
+			<cline>7-element Vector{Int64}:</cline>
+			<cline> 1</cline>
+			<cline> 3</cline>
+			<cline> 5</cline>
+			<cline> 7</cline>
+			<cline> 9</cline>
+			<cline>11</cline>
+			<cline>13</cline>
+			</cd>
+		</p>
+
+		<p>
+			To access the 2nd element, type <c>x[2]</c>. To get an array the elements 3, 4 and 5, type
+		</p>
+
+		<p>
+			<cd> x[3:5] </cd>
+		</p>
+
+		<p>
+			or if we want the last 3 elements, we can use:
+		</p>
+
+		<p>
+			<cd> x[end-2:end] </cd>
+		</p>
+
+		<p>
+			where <c>end</c> is an alias for the last element, so this returns an array of the last 3 elements of <c>x</c>.
+		</p>
+
+		<p>
+			Let
+		</p>
+
+		<p>
+			<cd> A=[i+j for i=1:4,j=1:5] </cd>
+		</p>
+
+		<p>
+			to access the 1st row, 3rd column, type <c>A[1,3]</c>. If you want the subarray of the first and 3rd and 5th columns and all rows type:
+		</p>
+
+		<p>
+			<cd> A[:,1:2:5] </cd>
+		</p>
+
+		<p>
+			returns the matrix
+		</p>
+
+		<p>
+			<cd>
+			<cline>4×3 Matrix{Int64}:</cline>
+			<cline>2  4  6</cline>
+			<cline>3  5  7</cline>
+			<cline>4  6  8</cline>
+			<cline>5  7  9</cline>
+			</cd>
+		</p>
+
+		<p>
+			where the : in the first slot means all rows and <c>1:2:5</c> are the columns 1, 3 and 5.
+		</p>
+
+		<p>
+			If we want the first 2 rows and then shuffle the 2,3 and 5th columns in the order 5,3,2 type
+		</p>
+
+		<p>
+			<cd>
+			<cline>A[1:2,[5,3,2]]</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>2×3 Matrix{Int64}:</cline>
+			<cline>6  4  3</cline>
+			<cline>7  5  4</cline>
+			</cd>
+		</p>
+
+		<p>
+			There are a number of different ways to return subarrays. See <url href="https://docs.julialang.org/en/latest/manual/arrays/#man-array-indexing-1" visual="julialang.org"> the Julia matrices documentation</url> for more information.
+		</p>
+	</section>
+
+	<section>
+		<title>Common Operations on Arrays</title>
+
+		<p>
+			There are a number of operations on array. For each <c>+</c> and <c>-</c> adds and subtracts two arrays of the same size in an element by element manner. For example if
+		</p>
+
+		<p>
+			<cd> A=[1 2 3; 4 5 6] </cd>
+		</p>
+
+		<p>
+			and
+		</p>
+
+		<p>
+			<cd> B=[1 3 5; 2 4 6] </cd>
+		</p>
+
+		<p>
+			then <c>A+B</c> returns the array:
+		</p>
+
+		<p>
+			<cd>
+			<cline>2×3 Matrix{Int64}:</cline>
+			<cline>2  5   8</cline>
+			<cline>6  9  12</cline>
+			</cd>
+		</p>
+
+		<p>
+			and <c>B-A</c> returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>2×3 Matrix{Int64}:</cline>
+			<cline> 0   1   2</cline>
+			<cline>-2  -1  0</cline>
+			</cd>
+		</p>
+	</section>
+
+	<section xml:id="sect-broadcasting">
+		<title>Element by Element Operations</title>
+
+		<p>
+			Many methods exist to simplify a <em>vectorized</em> method that returns the operation applied element by element to the matrix. To do this, most operations have a <c>.</c> variety.  For example, if we want multiply <c>A</c> and <c>B</c> in an element by element manner then
+		</p>
+
+		<p>
+			<cd> A.*B </cd>
+		</p>
+
+		<p>
+			returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>2×3 Matrix{Int64}:</cline>
+			<cline>  1   6  15</cline>
+			<cline>  8  20  36</cline>
+			</cd>
+		</p>
+
+		<p>
+			Note that <c>A*B</c> performs matrix multiplication and we will discuss this in <xref ref="ch-lin-alg-intro"/>.  Many other operations can be done in similar way. For example, to take the square root of every number in the matrix <c>A</c>, we can enter <c>sqrt.(A)</c> which returns:
+		</p>
+
+		<p>
+			<cd>
+			<cline>2×3 Matrix{Float64}:</cline>
+			<cline>  1.0  1.41421  1.73205</cline>
+			<cline>  2.0  2.23607  2.44949</cline>
+			</cd>
+		</p>
+
+		<exercise>
+			<p>
+				Let <c>A=[1 2; 3 4]</c> and <c>B=[1 -1;1 -1]</c>.
+			</p>
+
+			<p>
+				<ol>
+					<li>
+						<p>
+							Find and explain the results of
+						</p>
+
+						<p>
+							<ul>
+								<li>
+									<p>
+										<c>A.^2</c>
+									</p>
+								</li>
+
+								<li>
+									<p>
+										<c>A.*B</c>
+									</p>
+								</li>
+
+								<li>
+									<p>
+										<c>1 ./ A</c>
+									</p>
+								</li>
+							</ul>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Find the sin of every number in <c>A</c>.
+						</p>
+					</li>
+				</ol>
+			</p>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Other Operations on Arrays</title>
+
+		<p>
+			There are also other operations on arrays. For example, summing all elements in an array is just the <c>sum</c> functions. For example:
+		</p>
+
+		<p>
+			<cd>
+			<cline>sum([1 2 3 4 5 6 7 8 9 10])</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns 55. There are also the <c>min</c>, <c>max</c> and <c>prod</c> functions, with the last one, the product of elements.
+		</p>
+
+		<p>
+			<cd>
+			<cline>prod([1,3,5,7])</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns <c>105</c>.
+		</p>
+	</section>
+
+	<section>
+		<title>Sorting Vectors and matrices</title>
+
+		<p>
+			Julia can sort an array using the <c>sort</c> function. If <c>A=[3,2,1,4,8,6,5]</c>, then
+		</p>
+
+		<p>
+			<cd>
+			<cline>sort(A)</cline>
+			</cd>
+		</p>
+
+		<p>
+			results in <c>[1 2 3 4 5 6 8]</c>.  The <c>sort</c> function returns a sorted array. If you want a sorted version of <c>A</c> in place, use the <c>sort!</c> function instead.
+		</p>
+
+		<p>
+			Also, you may want to sort in a descending manner.  If this is true use the keyword argument <c>rev=true</c> in the <c>sort</c> or <c>sort!</c> function.  For example:
+		</p>
+
+		<p>
+			<cd>
+			<cline>sort(A,rev=true)</cline>
+			</cd>
+		</p>
+
+		<p>
+			results in <c>[8 6 5 4 3 2 1]</c>.
+		</p>
+
+		<p>
+			Check out the <url href="https://docs.julialang.org/en/v1/base/sort" visual="julialang.org">Julia docs on sorting and sorting algorithms</url> for more details on how Julia does sorting.
+		</p>
+	</section>
+
+	<section>
+		<title>Push and Pop; Array as a Stack</title>
+
+		<p>
+			There is a computer science data structure called a <url href="https://en.wikipedia.org/wiki/Stack\_(abstract\_data\_type)" visual="julialang.org">stack</url> which acts like a stack of things (paper, dishes, pokemon cards) and there are two operations on it: 1) put something on top of the stack or 2) take something off the top of the stack.  Many languages including julia don't have a separate data structure but use an array like one with two operations, <c>push</c> and <c>pop</c>. In julia these have ! at the end to indicate that the operations change the array. If <c>A=collect(1:5)</c> then
+		</p>
+
+		<p>
+			<cd>
+			<cline>push!(A,7)</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns the array <c>[1 2 3 4 5 7]</c>.  And multiple values can be pushed.
+		</p>
+
+		<p>
+			<cd>
+			<cline>push!(A,8,9,10,100)</cline>
+			</cd>
+		</p>
+
+		<p>
+			results in the array <c>[1 2 3 4 5 7 8 9 10 100]</c>. To get an element off of the end of the array, we can use <c>pop!</c>. If <c>A=collect(1:5)</c>, then
+		</p>
+
+		<p>
+			<cd>
+			<cline>pop!(A)</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns 5 and now the array <c>A</c> is <c>[1 2 3 4]</c>.
+		</p>
+	</section>
+
+	<section>
+		<title>Other Nice Array Functions</title>
+
+		<introduction>
+			<p>
+				Julia has a ton of other nice functions that act on arrays.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Append</title>
+
+			<p>
+				If we want to concatenate two arrays, we should use the <c>append!</c> command. For example:
+			</p>
+
+			<p>
+				<cd>
+				<cline>A=[1,2,3]</cline>
+				<cline>append!(A,[4,5,6])</cline>
+				</cd>
+			</p>
+
+			<p>
+				and now the array stored in <c>A</c> is \jlc{print(A)} \printpythontex[verb].
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Adding and Removing Elements in the Middle of an Array</title>
+
+			<p>
+				The functions <c>push!</c> and <c>pop!</c> add and remove an element from the end of a <c>Vector</c> or 1D array.  If we want to add or remove elements in the middle there is are the functions <c>insert!</c> and <c>deleteat!</c>. They both act on a position in the array and you can see how they work with the following examples.  If <c>A=collect(1:2:11)</c>, then
+			</p>
+
+			<p>
+				<cd>
+				<cline>insert!(A,3,15)</cline>
+				</cd>
+			</p>
+
+			<p>
+				results in the array <c>A</c> being <c>[1 3 15 5 7 9 11]</c> and then resetting the array with <c>A=collect(1:2:11)</c> then
+			</p>
+
+			<p>
+				<cd>
+				<cline>deleteat!(A,2)</cline>
+				</cd>
+			</p>
+
+			<p>
+				results in the array <c>A</c> being <c>[1 5 7 9 11]</c>.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>It Splices, It Dices!! --- okay, it doesn't dice</title>
+
+			<p>
+				Although you can get a long ways with <c>push, pop, insert</c> and <c>deleteat</c>, the <c>splice!</c> function is a <url href="https://en.wikipedia.org/wiki/Swiss_Army_knife" visual="wikipedia.org">Swiss Army knife</url> for arrays. It can take an array, pull elements out and put elements in. We will walk through the options:
+			</p>
+
+			<p>
+				<dl>
+				<li>
+					<title>Removing elements from an array</title>
+
+					<p>
+						We saw using the <c>deleteat!</c> function above how to remove a single element, but if
+					</p>
+
+					<p>
+						<cd> A=collect(1:2:13) </cd>
+						then
+					</p>
+
+					<p>
+						<cd> splice!(A, 3:4) </cd>
+					</p>
+
+					<p>
+						removes and returns the 3rd and 4th elements which are <c>A=collect(1:2:13);print(splice!(A,3:4))</c>\printpythontex[verb]. Also, the array <c>A</c> is the original array without these elements or <c>print(A)</c> \printpythontex[verb]. If we let <c>A=collect(1:2:11)</c>, then
+					</p>
+
+					<p>
+						<cd> x = splice!(A,2) </cd>
+					</p>
+
+					<p>
+						returns the element in the 2nd position vector or <c>print(x)</c> \printpythontex[verbatim] The array <c>A</c> is now <c>print(A)</c> \printpythontex[verbatim]  This is the same as <c>deleteat!(A,2)</c> we saw above.
+					</p>
+				</li>
+
+				<li>
+					<title>Inserting elements from an array</title>
+
+					<p>
+						We saw the function <c>insert!</c> above, which will insert a single element in a 1D array. The <c>splice!</c> function will insert multiple elements.  For example, if we have
+					</p>
+
+					<p>
+						<cd> A = collect(1:2:11) </cd>
+					</p>
+
+					<p>
+						then to insert elements in the 3rd position (and shifting everything else to the right), we can enter
+					</p>
+
+					<p>
+						<cd> B=splice!(A,3:2,[11,12,13,14]) </cd>
+					</p>
+
+					<p>
+						then the function returns <c>print(B)</c> \printpythontex[verb].  This is an empty array of type <c>Int64</c>.  The result is empty because nothing was removed in the process.  The array <c>A</c> is <c>print(A)</c>\printpythontex[verbatim] A few things to note about this.  The second argument is a bit strange in that you insert <c>3:2</c> which is a range in which the last element is smaller than the first. This will let julia know that you don't want to remove any elements, unlike either a single number or a range with the first element smaller than the last.
+					</p>
+				</li>
+
+				<li>
+					<title>Replacing elements from an array</title>
+
+					<p>
+						We say <c>splice!</c> is the swiss army knife, because it does even more!! (Now, how much would you pay?).  This last section shows that we can both remove and insert elements into an array at the same time.
+					</p>
+
+					<p>
+						If <c>A=collect(1:2:11)</c>, then
+					</p>
+
+					<p>
+						<cd> x = splice!(A,3,4) </cd>
+					</p>
+
+					<p>
+						returns <c>print(x)</c> \printpythontex[verb]~and replaces the 3rd position with the number 4. The result is <c>print(A)</c>\printpythontex[verbatim] If <c>A=collect(1:2:11)</c>, then replacing the 3rd element with <c>[-1,-2,-3]</c> by
+					</p>
+
+					<p>
+						<cd> splice!(A,3,[-1,-2,-3]) </cd>
+					</p>
+
+					<p>
+						returns 5 (the element in position 3) and now the array <c>A</c> is <c>print(A)</c> \printpythontex[verbatim].
+					</p>
+				</li>
+				</dl>
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Filtering Arrays</title>
+
+			<p>
+				A very handle array method, is <url href="https://docs.julialang.org/en/v1/base/collections/#Base.filter" visual="julialang.org"> <c>filter</c></url> which takes an array and returns only the elements that satisfy some condition.
+			</p>
+
+			<p>
+				If <c>A=collect(1:20)</c>, then
+			</p>
+
+			<p>
+				<cd> filter(n-&gt;n%2==0,A) </cd>
+			</p>
+
+			<p>
+				returns all elements that satisfy that the mod 2 is 0 (or even numbers) or <c>print(filter(n-&gt; n%2==0, A))</c> \printpythontex[verbatim]
+			</p>
+
+			<p>
+				In general, the <c>filter</c> command has the form:
+				<cd> filter(cond,array) </cd>
+			</p>
+
+			<p>
+				where the result is the array consisting of elements in <c>array</c> in which the function <c>cond</c> is true.
+			</p>
+
+			<p>
+				In addition, if you want to filter on an array with the results in the place of the original array use <c>filter!</c> instead.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Removing Duplicate Elements</title>
+
+			<p>
+				Another handy function is the <c>unique</c> function that takes an array and returns only the unique elements.
+			</p>
+
+			<p>
+				If <c>A=[1,2,3,2,3,4,3,4,5,4,3,2,1]</c> then
+			</p>
+
+			<p>
+				<cd> unique(A) </cd>
+			</p>
+
+			<p>
+				returns <c>print(unique(A))</c>\printpythontex[verb]. And if you want to update the original array, use the <c>unique!</c> function instead.
+			</p>
+		</subsection>
+	</section>
+
+	<section xml:id="sect-join-split">
+		<title>Joining Arrays and Spliting Strings</title>
+
+		<p>
+			There are a couple of related functions that involve arrays, that of joining an array to get a string and splitting a string to get an array.  We show a few examples here.
+		</p>
+
+		<p>
+			Let's say that we have the vector formed by <c>x=collect(1:6)</c>.  If we want to create a string in which all of the elements are joined, consider
+		</p>
+
+		<p>
+			<cd>
+			<cline>join(x, ", ")</cline>
+			</cd>
+		</p>
+
+		<p>
+			which outputs <c>"1, 2, 3, 4, 5, 6"</c>, which is the 6 elements of the vector stringified and concatenated separated by <c>", "</c>.  The <c>join</c> function has another option to separate the last one differently.  For example if
+		</p>
+
+		<p>
+			<cd>
+			<cline>days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]</cline>
+			</cd>
+		</p>
+
+		<p>
+			then <c>join(days, ", ", " and ")</c> returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>"Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday"</cline>
+			</cd>
+		</p>
+
+		<p>
+			notice that the first 6 elements are separated by <c>", "</c> and the last one with <c>" and "</c>.
+		</p>
+
+		<p>
+			Additionally, julia has the ability to split a string into an array of substrings.  For example if
+		</p>
+
+		<p>
+			<cd>
+			<cline>str = "1; 2; 3; 4; 5; 6"</cline>
+			</cd>
+		</p>
+
+		<p>
+			then <c>split(str, "; ")</c> returns the array
+		</p>
+
+		<p>
+			<cd>
+			<cline>6-element Vector{SubString{String}}:</cline>
+			<cline>	"1"</cline>
+			<cline>	"2"</cline>
+			<cline>	"3"</cline>
+			<cline>	"4"</cline>
+			<cline>	"5"</cline>
+			<cline>	"6"</cline>
+			</cd>
+		</p>
+
+		<p>
+			and notice that this is an array elements of type <c>Substring{String}</c>.  This type is used as an efficiency to show where in the original string the substring occurs.  If it is desirable to extract the integer representations of the strings, then use the <c>parse</c> function explained in <xref ref="sect-convert-numbers"/>.  The integers can be extracted with
+		</p>
+<p>
+	<cd>
+		<cline>map(s-&gt; parse(Int,s), split(str, "; "))</cline>
+	</cd>
+</p>
+<p>
+	where the <c>map</c> function from <xref ref="ch-functional-programming"/> is used.  This returns the integer array <c>[1, 2, 3, 4, 5, 6]</c>. See the <url href="https://docs.julialang.org/en/v1/base/strings/#Base.split" visual="julialang.org">Julia documentation on <c>split</c></url> for more information and options.
+</p>
+	</section>
+</chapter>

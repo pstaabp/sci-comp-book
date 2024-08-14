@@ -1,0 +1,567 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-diffeq">
+  <title>Differential Equations</title>
+
+  <introduction>
+    <p>
+      Another extremely important topic in Scientific Computation is that of differential equations.  These arise obviously in mathematics, but also in most other scientific fields including biology, chemistry, engineering, and economics.  Also, it is rare that a differential equation has a nice closed form solution, so often numerical methods must be used to get a solution.
+    </p>
+
+    <p>
+      We will discuss two often-used methods for solving differential equations, Euler's method and Runge-Kutta methods and then delve into a very nice robust julia package.
+    </p>
+
+    <p>
+      A <term>differential equation</term> is simply an equation that has derivatively in it.  For example
+    </p>
+
+    <p>
+      <me>
+        y'' + 4 y = 0
+      </me>
+    </p>
+
+    <p>
+      It is important to note that the <term>order</term> of a differential equation is the degree of the highest derivative, so in the example above, it is two.  The following procedure can covert non order-1 differential equation to one that is a first-order system.
+    </p>
+
+    <p>
+      Let <m>y_1 = y</m>, then <m>y_2 = y' = y_1'</m>.  Lastly <m>y'' = y_1'' = y_2'</m> and using the differential equation <m>y''=-4y</m>, this can be written:
+    </p>
+
+    <p>
+      <md>
+        <mrow>y_1' \amp = y_2  </mrow>
+        <mrow>y_2' \amp = -4y_1</mrow>
+      </md>
+    </p>
+
+    <p>
+      or in matrix form:
+    </p>
+
+    <p>
+      <me>
+        \begin{bmatrix} y_1 \\ y_2 \end{bmatrix}' = \begin{bmatrix} y_2 \\ -4y_1 \end{bmatrix}
+      </me>
+    </p>
+
+    <p>
+      and as long as <m>y^{(n)}</m>, the highest-order term, can be isolated algebraically, one can write the differential equation as
+    </p>
+
+    <p>
+      <me>
+        \mathbf{y}' = F(\mathbf{y})
+      </me>
+    </p>
+  </introduction>
+
+  <section>
+    <title>Euler's Method</title>
+
+    <introduction>
+      <p>
+        We start with one of the simplest methods to solve a differential equation.  If we have are solving
+      </p>
+
+      <p>
+
+      </p>
+
+      <p>
+        <men xml:id="eq-diff-eqn-simple"> y' = f(y,t), \qquad y(0) = y_0 </men>
+      </p>
+
+      <p>
+        with the understanding that we will solve this at a discrete set of points, so we let <m>y_n = y(t_n)</m> and <m>t_k = t_0 + k\Delta t</m>, where <m>\Delta t</m> is a small time step.  We can then replace <m>y'</m> with the approximation:
+      </p>
+
+      <p>
+        <me>
+          y' \approx \frac{y_{n+1}-y_n}{t_{n_1}-t_n}
+        </me>
+      </p>
+
+      <p>
+        and the differential equation in <xref ref="eq-diff-eqn-simple"/> is
+      </p>
+
+      <p>
+        <me>
+          \frac{y_{n+1}-y_n}{t_{n_1}-t_n} = \frac{y_{n+1}-y_n}{\Delta t} = f(y_n,t_n)
+        </me>
+      </p>
+
+      <p>
+        and solving for <m>y_{n+1}</m>, we get:
+      </p>
+
+      <p>
+        <me>
+          y_{n+1} = y_n + \Delta t f(y_n,t_n)
+        </me>
+      </p>
+
+      <p>
+        and this iterative (or difference equation) is known as <term>Euler's Method</term>.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Implementing Euler's method in Julia</title>
+
+      <p>
+        Let's take a look at Euler's method in Julia. Of course, we'll write a function to evaluate this and there are a few things that we need for the function:
+      </p>
+
+      <p>
+        <ul>
+          <li>
+            <p>
+              The function <m>f</m>, which is the right-hand side.  Note that it takes in two variables.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              An initial point, <m>(t_0,y_0)</m>.  There will be two real arguments for this.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              A step size <m>\Delta t</m>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Either a final <m>t</m> value or a number of steps to run Euler's method.  We'll use the number of steps, a positive integer.
+            </p>
+          </li>
+        </ul>
+      </p>
+
+      <p>
+        We'll return two arrays for the <c>t</c> and <c>y</c> values.
+      </p>
+
+      <p>
+        We'll also implement this as a for loop.  Although there are some
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+function euler(f::Function, t0:: Real, y0::Real, dt::Real, num_steps::Integer)
+  num_steps &gt; 0 || throw(ArgumentError("The number of steps must be positive."))
+  dt &gt; 0 || throw(ArgumentError("The step size dt must be positive."))
+  t = LinRange(t0,t0+num_steps*dt,num_steps+1)
+  y = zeros(Float64,num_steps+1)
+  y[1] = y0
+  for i=1:num_steps
+    y[i+1] = y[i] + dt*f(t[i],y[i])
+  end
+  (t,y)
+end
+        </input>
+      </program>
+
+      <example>
+        <p>
+          We'll solve <m>y'=y</m>, <m>y(0)=1</m> for <c>dt=0.1</c> and <m>10</m> steps.
+          <cd>
+          <cline>t,y = euler( (t,y) -&gt; y, 0, 1, 0.1, 10)</cline>
+          </cd>
+        </p>
+
+        <p>
+          and this returns
+        </p>
+
+        <p>
+          <cd>
+            <cline>([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], [1.0, 1.1, 1.2100000000000002, 1.3310000000000002, 1.4641000000000002, 1.61051, 1.7715610000000002, 1.9487171, 2.1435888100000002, 2.357947691, 2.5937424601])</cline>
+          </cd>
+        </p>
+        <p>
+          which is a tuple of two arrays.  This results the <m>t</m> and <m>y</m> values based on Euler's method.  However, perhaps it's more interesting to see a plot.  Also, note that the analytic solution to this is <m>y=e^x</m>, so the plot of the approximate solution using Euler's method as well as the analytic solution is
+        </p>
+
+        <p>
+          <cd>
+          <cline>plot(t,y,label="Euler's solution")</cline>
+          <cline>plot!(t->exp(t),0,1,label="Analytic solution")</cline>
+          </cd>
+        </p>
+        <figure xml:id="fig-euler">
+          <caption></caption>
+          <image source="plots/diffeqn/euler.png">
+            <shortdescription>(for accessibility)</shortdescription>
+          </image>
+        </figure>
+      </example>
+    </subsection>
+  </section>
+
+  <section>
+    <title>Runge Kutta methods</title>
+
+    <introduction>
+      <p>
+        There is a family of other methods called the <url href="https://en.wikipedia.org/wiki/Runge–Kutta_methods" visual="wikipedia.org">Runge Kutta methods</url> that are relatively simple with a high order of accuracy.  One version that was often a standard version is what is called the 4th-order Runge-Kutta or RK4 method is
+      </p>
+
+      <p>
+        <me>
+          y_{n+1} = y_n + \frac{h}{6} \bigl(k_1+2k_2+2k_3+k_4 \bigr)
+        </me>
+      </p>
+
+      <p>
+        where
+      </p>
+
+      <p>
+        <md>
+          <mrow>k_1 \amp = f(t_n,y_n) </mrow>
+          <mrow>k_2 \amp = f\biggl(t_n + \frac{h}{2}, y_n + \frac{h}{2} k_1 \biggr) </mrow>
+          <mrow>k_3 \amp = f\biggl(t_n + \frac{h}{2}, y_n + \frac{h}{2} k_2 \biggr) </mrow>
+          <mrow>k_4 \amp = f(t_n + h, y_n + h k_3 \biggr) </mrow>
+        </md>
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>RK4 in julia</title>
+
+      <p>
+        The following is the <c>rk4</c> method in julia.  It is very similar to euler's method...
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+function rk4(f::Function, t0:: Real, y0::Real, dt::Real, num_steps::Integer)
+  num_steps > 0 || throw(ArgumentError("The number of steps must be positive."))
+  dt > 0 || throw(ArgumentError("The step size dt must be positive."))
+  t=LinRange(t0,t0+num_steps*dt,num_steps+1)
+  y=zeros(Float64,num_steps+1)
+  y[1] = y0
+  for i=1:num_steps
+    k1 = f(t[i],y[i])
+    k2 = f(t[i]+dt/2,y[i]+dt/2*k1)
+    k3 = f(t[i]+dt/2,y[i]+dt/2*k2)
+    k4 = f(t[i]+dt,y[i]+dt*k3)
+    y[i+1] = y[i] + dt/6*(k1+2k2+2k3+k4)
+  end
+  (t,y)
+end
+        </input>
+      </program>
+
+      <p>
+        and we can use this to solve <m>y'=y</m>, <m>y(0)=1</m> by
+      </p>
+
+      <p>
+        <cd>
+        <cline>t,y = rk4((t,y) -> y, 0, 1, 0.1, 10)</cline>
+        </cd>
+      </p>
+
+      <p>
+        and the results are  <c></c>.
+      </p>
+    </subsection>
+  </section>
+
+  <section>
+    <title>Using the <c>DifferentialEquations package</c></title>
+
+    <introduction>
+      <p>
+        There is a very mature and robust package for solving differential equations aptly called <c>DifferentialEquations</c>.  We will show a few examples to get a feeling for how to use the package, but as you can tell from <url href="https://docs.sciml.ai/dev/index.html" visual="docs.sciml.ai">the documentation</url>, that there are a lot of possibilities with the package so we'll show a couple of examples.
+      </p>
+
+      <p>
+        In short, you'll need to include the equation, an initial condition and a range of values on which you want it solved.  Don't forget to add the package and evaluate
+      </p>
+
+      <p>
+        <cd>
+        <cline>using DifferentialEquations</cline>
+        </cd>
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>A Simple Example</title>
+
+      <p>
+        We will solve
+      </p>
+
+      <p>
+        <me>
+          \frac{dy}{dt} = y \qquad y(0)=1
+        </me>
+      </p>
+
+      <p>
+        the same equation as above using the <c>DifferentialEquations</c> package.
+      </p>
+
+      <p>
+        First, the equation needs to fit in the form:
+      </p>
+
+      <p>
+        <me>
+          \frac{du}{dt} = f(u,p,t)
+        </me>
+      </p>
+
+      <p>
+        where <m>f</m> is a function of <m>u</m>, the dependent variable, <m>p</m> the parameter in the problem (if any) and <m>t</m>, the independent variable. We will also defined the initial condition and the range of values for which to solve:
+      </p>
+
+      <p>
+        <cd>
+        <cline>f(u,p,t) = u</cline>
+        <cline>u0 = 1.0</cline>
+        <cline>tspan = (0.0,1.0)</cline>
+        </cd>
+      </p>
+
+      <p>
+        And then we create a differential equation problem with:
+        <cd>
+        <cline>prob = ODEProblem(f,u0,tspan)</cline>
+        </cd>
+      </p>
+
+      <p>
+        and note that this returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>ODEProblem with uType Float64 and tType Float64. In-place: false</cline>
+        <cline>timespan: (0.0, 1.0)</cline>
+        <cline>u0: 1.0</cline>
+        </cd>
+      </p>
+
+      <p>
+        This gives information about the datatypes of the function and initial condition because some solvers will use this information differently. to solve this problem,
+      </p>
+
+      <p>
+        <cd> sol = solve(prob) </cd>
+      </p>
+
+      <p>
+        which returns \jlc[diffeq]{display(sol)} \printpythontex[verbatim]
+      </p>
+
+      <p>
+        Note that the solution appears to be an array of time (that isn't equally-spaced) and function values at those <m>t</m> values.  If you want to access one of them, you can do:
+      </p>
+
+      <p>
+        <cd> sol[3] </cd>
+      </p>
+
+      <p>
+        which returns \jlc[diffeq]{print(sol[3])}\printpythontex[verb], the third element in the array.  However, this structure is much more than just an array. If you want the function value at 0.75, for example, you can access it like a function evaluation:
+      </p>
+
+      <p>
+        <cd> sol(0.75) </cd>
+      </p>
+
+      <p>
+        which returns \jlc[diffeq]{print(sol(0.75))} \printpythontex[verb]~ and this is interpolated from the generated points.  The result guarantees accuracy to within a default tolerance of <c>1e-3</c> or you can set a different tolerance with the keyword <c>reltol</c> such as <c>reltol=1e-6</c>.
+      </p>
+
+      <p>
+        So for example, you can generate an array of tuples with
+      </p>
+
+      <p>
+        <cd> [(t,sol(t)) for t=0:0.1:1] </cd>
+      </p>
+
+      <p>
+        which returns \jlc[diffeq]{display([(t,sol(t)) for t=0:0.1:1])}\printpythontex[verbatim]
+      </p>
+
+      <p>
+        One can also generate a plot of the solution with
+        <cd> plot(sol) </cd>
+      </p>
+
+      <p>
+        or if you want to plot the numerical solution with the analytic solution <m>y=e^t</m>, then
+      </p>
+
+      <p>
+        <cd> plot(sol,label="numerical",legend=:topleft,lw=3) plot!(0:0.01:1,map(exp,0:0.01:1),label="analytic",lw=3,ls=:dash) </cd>
+      </p>
+
+      <p>
+        which shows that they appear to the resolution of the plot that the two solutions are identical, however if we plot the error associated with the numerical method by
+      </p>
+
+      <p>
+        <cd> plot(0:0.01:1,map(t->sol(t)-exp(t),0:0.01:1)) </cd>
+      </p>
+
+      <p>
+        this shows that error is within <m>10^{-6}</m>.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Example of a system of differential equations</title>
+
+      <p>
+        Let's solve
+      </p>
+
+      <p>
+        <md>
+          y'' + y = 0
+        </md>
+      </p>
+
+      <p>
+        which is an example of a harmonic oscillator.  We first need to put this in a system form by letting <m>y_1=y</m> and <m>y_2=y'</m>.  Then from the differential equation <m>y'' = - y</m> or <m>y_2' = -y_1</m>.  We can then write this as
+      </p>
+
+      <p>
+        <md>
+          <mrow>y_1' \amp = y_2 </mrow>
+          <mrow>y_2' \amp = -y_1</mrow>
+        </md>
+      </p>
+
+      <p>
+        We will write this in julia using
+      </p>
+
+      <p>
+        <cd> function F(du,u,p,t) du[1] = u[2] du[2] = - u[1] end </cd>
+      </p>
+
+      <p>
+        and then create the differential problem with
+      </p>
+
+      <p>
+        <cd> prob2 = ODEProblem(F,[1;0],(0,6pi)) </cd>
+      </p>
+
+      <p>
+        where <c>[1;0]</c> is the initial condition which would be <m>y(0)=1, y'(0)=0</m> and the solution is
+      </p>
+
+      <p>
+        <cd> sol2 = solve(prob2) </cd>
+      </p>
+
+      <p>
+        If you just plot the results:
+      </p>
+
+      <p>
+        <cd> plot(sol2) </cd>
+      </p>
+
+      <p>
+        you'll see the two elements of the vector plotted as functions of <m>t</m> or:
+      </p>
+
+      <p>
+        If instead, you want the results plotted like a parametric equation, then we use the <c>vars</c> keyword and the <c>(1,2)</c> refers to the two elements of the solution if you use 0 for vars, that represents the independent variable--generally <m>t</m>.
+      </p>
+
+      <p>
+        <cd> plot(sol2,vars=(1,2),aspect_ratio=:equal) </cd>
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>The Lorenz System</title>
+
+      <p>
+        The Lorenz system is relatively famous system of differential equations for many reasons.  It is a system of ODEs, it is nonlinear and for many parameters the solution exhibits sensitivity on initial conditions, an important property for differential equation that exhibit chaotic behavior.  The Lorenz system is
+      </p>
+
+      <p>
+        <md>
+          <mrow>\frac{dx}{dt} \amp = \sigma (y-x) </mrow>
+          <mrow>\frac{dy}{dt} \amp = x (\rho -z) - y </mrow>
+          <mrow>\frac{dz}{dt} \amp = xy - \beta z</mrow>
+        </md>
+      </p>
+
+      <p>
+        and we will look for solution with <m>\sigma=10, \rho = 28</m> and <m>\beta=8/3</m> so we define
+      </p>
+
+      <p>
+        <cd> function lorenz!(du,u,p,t) du[1] = 10.0*(u[2]-u[1]) du[2] = u[1]*(28.0-u[3]) - u[2] du[3] = u[1]*u[2] - (8/3)*u[3] end </cd>
+      </p>
+
+      <p>
+        and if the following timespan and initial conditions are used to solve the differential equation as in:
+      </p>
+
+      <p>
+        <cd> u0 = [1.0;0.0;0.0] tspan = (0.0,100.0) prob3 = ODEProblem(lorenz!,u0,tspan) sol3 = solve(prob3) </cd>
+      </p>
+
+      <p>
+        then the standard plot of the solution is
+      </p>
+
+      <p>
+        <cd> plot(sol3) </cd>
+      </p>
+
+      <p>
+        which shows each of the variables as a plot with respect to <m>t</m>.  Instead, the classic plot of this solution is as a 3D parametric plot, which you can see with:
+      </p>
+
+      <p>
+        <cd> plot(sol3,vars=(1,2,3)) </cd>
+      </p>
+
+      <p>
+        and this results in
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Other Aspects of the <c>DifferentialEquations</c></title>
+
+      <p>
+        If you take a look at the  <url href="https://docs.sciml.ai/dev/index.html" visual="docs.sciml.ai">the documentation of the package</url>, we have only touched the surface of this package and it can do a lot with many different differential equations including initial value problems (that all three examples fit into), boundary value problems, stiff equations (aka they are hard to solve numerically) and stocastic differential equations.
+      </p>
+
+      <p>
+        Also, the actual solvers are not discussed here, however if you want to know the details, the documentation explains them.  I have found that the default solvers are generally good enough and unless there is an issue, probably work for most problems.
+      </p>
+    </subsection>
+  </section>
+</chapter>
