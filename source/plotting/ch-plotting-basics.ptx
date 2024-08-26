@@ -269,7 +269,7 @@
 		</subsection>
 	</section>
 
-	<section>
+	<section xml:id="sect-plotting-backends">
 		<title>Plotting Backends</title>
 
 		<p>

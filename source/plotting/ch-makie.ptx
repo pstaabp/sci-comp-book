@@ -318,4 +318,337 @@
       The exponential was found in a way similar to that of fitting curves in <xref ref="ch-algorithm-analysis"/>.
     </p>
   </section>
+
+  <section>
+    <title>Plotting Data</title>
+
+    <introduction>
+      <p>
+        Many of the examples above have involved plotting functions.  This section gives some overview of how to think about data.  In particular, recall that data is generally either discrete (that is there are either a finite or countable number of possibilities) like categories or numerical data that can be counted or continuous like data that is measured with real numbers (inches of rain, heights of people, etc.)  It's important to understand the difference to understand plots.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Plotting Continuous Data</title>
+
+      <p>
+        We have already seen examples of plotting continuous data with the CO₂ data above.  This data is the mean CO₂ level over each year and although the year seems like a discrete variable, time is actually continuous.  Because of this, a scatter plot is a good way to present this data.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Plotting Discrete Data</title>
+
+      <p>
+        In contrast, let's look at discrete data.  I have done a lot of research recently using sports data and one project involved scoring in the National Basketball Association (NBA).  Consider a season and looking at the number of points every team has scored.   For the 2023-2024 season, if we consider the home and visiting teams, then here is the first few games:
+      </p>
+
+      <p>
+        To plot every score (which is discrete), let's consider a bar plot in which the height of a bar at a given score is the number of games with that score.  To generate this, we load in the <c>nba2024.csv</c> file.  Note you will need to download/install <c>CSV</c> and <c>DataFrames</c>.
+      </p>
+
+      <p>
+        <cd>
+        <cline>using CSV, DataFrames</cline>
+        <cline>nba_scores = CSV.read("nba.csv", DataFrame)</cline>
+        </cd>
+      </p>
+
+      <p>
+        and this lists about 15 rows of the file.  The top of the file looks like:
+      </p>
+
+      <p>
+        <cd>
+        <cline>1319×5 DataFrame     1294 rows omitted</cline>
+        <cline>  Row   DATE        HOME_TEAM              HOME_SCORE  VISITOR_NAME        VISITOR_SCORE</cline>
+        <cline>        Date        String31               Int64       String31            Int64</cline>
+        <cline>  1     2023-10-24  Denver Nuggets         119         Los Angeles Lakers  107</cline>
+        <cline>  2     2023-10-24  Golden State Warriors  104         Phoenix Suns        108</cline>
+        <cline>  3     2023-10-25  Orlando Magic          116         Houston Rockets     86</cline>
+        </cd>
+      </p>
+
+      <p>
+        We won't go into what a DataFrame is, but in short it is a common data structure for working with data that comes in columns with common types.  These work well with spreadsheets.  The details of a <c>DataFrame</c> is presented starting in <xref ref="ch-data"/>. To plot the number of home games with a given score (also called the score distribution), we use the <c>counts</c> function in the <c>StatsBase</c> package (so install it) and perform <c>using StatsBase</c>.
+      </p>
+
+      <p>
+        <cd>
+        <cline>home_dist = counts(nba_scores.HOME_SCORE,70:160)</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns a vector of the number of games with the score 70, 71, ..., 160.  We can then plot the results with <c>barplot</c> using
+      </p>
+
+      <p>
+        <cd>
+        <cline>barplot(70:160,home_dist)</cline>
+        </cd>
+      </p>
+
+      <p>
+        which results in the plot
+      </p>
+
+      <figure xml:id="fig-nba-home">
+        <caption></caption>
+        <image source="plots/makie/nba_home.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>
+        Another interesting plot is to place bars side by side for the home and visitor scores.  This is a little but possible with the <c>barplot</c> command.  We just need to include all of the data together and then including a vector of grouping.  The following is the code to do this:
+      </p>
+
+      <p>
+        <cd>
+        <cline>colors = Makie.wong_colors()</cline>
+        <cline>barplot(</cline>
+        <cline>  repeat(70:160,2), </cline>
+        <cline>  vcat(home_dist,visitor_dist), </cline>
+        <cline>  dodge = repeat(1:2,inner=91), </cline>
+        <cline>  color = repeat([:orange, :darkgreen],inner=91)</cline>
+        <cline>)</cline>
+        </cd>
+      </p>
+
+      <p>
+        where this is one command but split onto lines for readibility.  The 2nd line is the horizontal axis which is just the same as the plot above except that we need to repeat it twice.  The third line concatenates vertically (<c>vcat</c>) the two distributions.  The fourth line explain how to group the data (<c>dodge</c> is used to include it side by side or <c>stack</c> is to stack it vertically). The color attribute (line 5) sets the color for each bar--again, this is needed to be a repeated vector.  The result of this is
+      </p>
+
+      <figure xml:id="fig-nba-compare">
+        <caption></caption>
+        <image source="plots/makie/nba-compare.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>
+        An easier example of this is with the following code:
+      </p>
+
+      <p>
+        <cd>
+        <cline>colors =Makie.wong_colors()</cline>
+        <cline></cline>
+        <cline>h = [2, 3, 6, 8, 3, 5, 7, 9]</cline>
+        <cline>x = [1, 1, 2, 2, 3, 3, 4, 4]</cline>
+        <cline>v = repeat([1,2],4)</cline>
+        <cline></cline>
+        <cline>barplot(x, h, dodge = v, color = colors[v] )</cline>
+        </cd>
+      </p>
+
+      <p>
+        which results in
+      </p>
+
+      <figure xml:id="fig-simple-barplot">
+        <caption></caption>
+        <image source="plots/makie/simple-barplot.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>
+        More examples of plotting data can be found in <xref ref="ch-data"/> and other chapters in <xref ref="part-data-analysis"/>, which uses larger datasets and investigates how to gain insights into data from visualization.
+      </p>
+    </subsection>
+  </section>
+
+  <section>
+    <title>Contour Plots</title>
+
+    <p>
+      As mentioned in <xref ref="ch-plotting-basics"/>, a contour plot is generally used for functions of two variable, like <m>f(x,y)</m> and the plot is curves of constant function value or <m>f(x,y)=C</m> for various values of <m>C</m>.  As in the previous chapter, we will plot
+    </p>
+
+    <p>
+      <me>
+        f(x,y) = \sin\biggl(\frac{1}{2}x^2-\frac{1}{4}y^2+2\biggr)\cos(x+y)
+      </me>
+    </p>
+
+    <p>
+      and can do this with the following code:
+    </p>
+
+    <p>
+      <cd>
+      <cline>x = y = LinRange(0,pi,101)</cline>
+      <cline>fig = contour(x, y, (x, y) -&gt; sin(0.5x^2-0.25y^2+2)*cos(x+y))</cline>
+      </cd>
+    </p>
+
+    <p>
+      which results in the plot:
+    </p>
+
+    <figure xml:id="fig-contour-1">
+      <caption></caption>
+      <image source="plots/makie/contour1.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      And recall that a contour plot is basically like a topographical map if you have ever used one of those.  The concentric circles are either a hill (maximum) or a depression (minimum) and unless we know what function values, we're not sure which is why.  To help with this we will add labels to the contours and increase the number of contours used with the <c>levels</c> attribute.
+    </p>
+
+    <p>
+      <cd>
+      <cline>x = y = LinRange(0,pi,101)</cline>
+      <cline>contour( x, y, (x, y) -&gt; sin(0.5x^2-0.25y^2+2)*cos(x+y), labels = true, levels = 11)</cline>
+      </cd>
+    </p>
+
+    <p>
+      and this results in
+    </p>
+
+    <figure xml:id="fig-contour-2">
+      <caption></caption>
+      <image source="plots/makie/contour2.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      and you can see from the values of the contours that there is a minimum near <m>(1,2)</m> and a maximum near <m>(2.5,0.8)</m>
+    </p>
+
+    <p>
+      Another related plot is that of a filled contour plot in which the regions between contours are filled with colors.  This is more of a visually nice feature rather than an important distinction over the previous contour plot.  A filled contour plot can be created with the <c>contourf</c> plotting command as in this example:
+    </p>
+
+    <p>
+      <cd>
+      <cline>x = y = LinRange(0,pi,101)</cline>
+      <cline>contourf( x, y, (x, y) -&gt; sin(0.5x^2-0.25y^2+2)*cos(x+y), labels = true, levels = 11)</cline>
+      </cd>
+    </p>
+
+    <p>
+      resulting in
+    </p>
+
+    <figure xml:id="fig-contourf-1">
+      <caption></caption>
+      <image source="plots/makie/contourf.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      And since the colors play an important role in a filled contour plot, it is helpful to know the function values for a give color and using a colorbar is a way to do this.  We can add a colorbar with the following code:
+    </p>
+
+    <p>
+      <cd>
+      <cline>x = y = LinRange(0,pi,101)</cline>
+      <cline>fig = Figure()</cline>
+      <cline>ax = Axis(fig[1,1])</cline>
+      <cline>contourf!(ax, x, y, (x, y) -&gt; sin(0.5x^2-0.25y^2+2)*cos(x+y), levels = 11)</cline>
+      <cline>Colorbar(fig[1,2])</cline>
+      <cline>fig</cline>
+      </cd>
+    </p>
+
+    <p>
+      where we have used the layout methods described in <xref ref="sect-layout-makie"/> because we need to specify where the colorbar goes. The result of this is
+    </p>
+
+    <figure xml:id="fig-contourf-2">
+      <caption></caption>
+      <image source="plots/makie/contourf1.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+  </section>
+
+  <section>
+    <title>Backends for Makie</title>
+
+    <p>
+      As described in <xref ref="sect-plotting-backends"/>, Makie is a set of high level plotting commands.  The hard work of drawing lines, circles and regions on the screen is done with a backend and the idea is to be able to switch backends easily without changing the high-level code to produce a plot.  Makie has four such options currently: <c>CairoMakie</c>, <c>GLMakie</c>, <c>WGLMakie</c> and <c>RPRMakie</c> and you should have seen the first two appear above in the plotting code.
+    </p>
+
+    <p>
+      <dl>
+      <li>
+        <title>CairoMakie</title>
+
+        <p>
+          <c>CairoMakie</c> uses the <c>Cairo</c> drawing engine underneath and excels at high-quality 2D drawings that are non-interactive. The output in generally either an SVG or PDF and since these are vector-based drawing formats, these will produce high-quality graphs for print (and the screen).
+        </p>
+      </li>
+
+      <li>
+        <title>GLMakie</title>
+
+        <p>
+          According to the <url href="https://docs.makie.org/stable/explanations/backends/glmakie" visual="docs.makie.org">GLMakie documentation page</url>,
+        </p>
+
+        <blockquote>
+          <p>
+            GLMakie is the native, desktop-based backend, and is the most feature-complete. It requires an OpenGL enabled graphics card with OpenGL version 3.3 or higher.
+          </p>
+        </blockquote>
+
+        <p>
+          It appears that almost all graphics cards support OpenGL and thus GLMakie should work for nearly all computers.
+        </p>
+      </li>
+
+      <li>
+        <title>RPRMakie</title>
+
+        <p>
+          According to the <url href="https://docs.makie.org/stable/explanations/backends/rprmakie" visual="docs.makie.org">RPRMakie page</url>:
+        </p>
+
+        <blockquote>
+          <p>
+            Experimental ray tracing backend using AMDs RadeonProRender. While it's created by AMD and tailored to Radeon GPUs, it still works just as well for NVidia and Intel GPUs using OpenCL. It also works on the CPU and even has a hybrid modus to use GPUs and CPUs in tandem to render images.
+          </p>
+        </blockquote>
+      </li>
+
+      <li>
+        <title>WGLMakie</title>
+
+        <p>
+          According to the <url href="https://docs.makie.org/stable/explanations/backends/wglmakie" visual="docs.makie.org">WGLMakie page</url>:
+        </p>
+
+        <blockquote>
+          <p>
+            WGLMakie is the web-based backend, which is mostly implemented in Julia right now. WGLMakie uses Bonito to generate the HTML and JavaScript for displaying the plots. On the JavaScript side, we use ThreeJS and WebGL to render the plots. Moving more of the implementation to JavaScript is currently the goal and will give us a better JavaScript API, and more interaction without a running Julia server.
+          </p>
+        </blockquote>
+      </li>
+      </dl>
+    </p>
+  </section>
 </chapter>

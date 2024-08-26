@@ -5,7 +5,19 @@
 
 	<introduction>
 		<p>
-			A <term>root</term> of an equation is a number <m>x^{\star}</m>, such that <m>f(x^{\star})=0</m>.  For example, if <m>f(x)=x^2-4</m>, then both <m>x=2</m> and <m>x=-2</m> are roots of the equation.  Finding roots of functions is often impossible algebraically, but finding roots is crucial in many cases.  In this chapter, we discuss how to find roots of both quadratic functions and general functions, but also use this to discuss both errors in a algorithm as well as round off error, which occurs often when solving problems.
+			Solving an equation is something that is needed throughout scientific computing and is difficult to do in general.  For example, if we have an equation like <m>x^2-1=0</m>, this can be solved exactly using the quadratic formula, however the relatively simple equation <m>x=\sin(x)</m> has no analytic solution.  In this chapter, we discuss how to find roots of both quadratic functions and general functions, but also use this to discuss both errors in a algorithm as well as round off error, which occurs often when solving problems.
+		</p>
+
+		<definition xml:id="def-root">
+			<statement>
+				<p>
+					A <term>root</term> of an equation is a number <m>x^{\star}</m>, such that <m>f(x^{\star})=0</m>.  For example, if <m>f(x)=x^2-4</m>, then both <m>x=2</m> and <m>x=-2</m> are roots of the equation.
+				</p>
+			</statement>
+		</definition>
+
+		<p>
+			The definition about saying that a root is a value where <m>f(x)=0</m> and an equation like <m>x=\sin(x)</m> doesn't fit this form, but recall that the equation can be algebraically manipulated to get to be a root as <m>f(x) = x-\sin(x)</m> or <m>f(x)=\sin(x) -x</m>.
 		</p>
 	</introduction>
 
@@ -13,7 +25,7 @@
 		<title>Absolute and Relative Errors</title>
 
 		<p>
-			Consider an algorithm that tries to find the value of <m>x^{\star}</m>. If the algorithm actually returns the value <m>x</m>, then there will be some error. The <term>absolute error</term> is <m>|x - x^{\star}|</m> and the <term>relative error</term> is
+			Consider an algorithm that tries to find the value of <m>x^{\star}</m>.  In general, an algorithm won't return the value <m>x^{\star}</m> but a value <m>x</m> that is close, therefore there will be some error. The <term>absolute error</term> is <m>|x - x^{\star}|</m> and the <term>relative error</term> is
 			<me>
 				\left|\frac{x-x^{\star}}{x^{\star}}\right|.
 			</me>
@@ -71,8 +83,8 @@
 
 		<p>
 			<cd>
-			<cline>absErr(x::Real,xstar::Real) = abs(x-xstar)</cline>
-			<cline>relErr(x::Real,xstar::Real) = abs((x-xstar)/xstar)</cline>
+			<cline>absErr(x::Real, xstar::Real) = abs(x-xstar)</cline>
+			<cline>relErr(x::Real, xstar::Real) = abs((x-xstar)/xstar)</cline>
 			</cd>
 		</p>
 
@@ -107,7 +119,7 @@
 			</p>
 
 			<p>
-				We are going to solve this using the quadratic equation in julia.  To study rounding effects we're going to solve these using both 16-bit and 64-bit floating point numbers.  We'll assume that the 64-numbers are the actual answers in determining errors.
+				We are going to solve this using the quadratic formula in julia.  To study rounding effects we're going to solve these using both 16-bit and 64-bit floating point numbers.  We'll assume that the 64-numbers are the actual answers in determining errors.
 			</p>
 		</introduction>
 
@@ -121,15 +133,15 @@
 
 			<p>
 				<cd>
-				<cline>function qSol(a::Real,b::Real,c::Real)</cline>
+				<cline>function qSol(a::Real, b::Real, c::Real)</cline>
 				<cline>  d=sqrt(b^2-4*a*c)</cline>
-				<cline>  (-b+d)/(2*a),(-b-d)/(2*a)</cline>
+				<cline>  (-b+d)/(2*a), (-b-d)/(2*a)</cline>
 				<cline>end</cline>
 				</cd>
 			</p>
 
 			<p>
-				We can solve the quadratic in <xref ref="eq-quad"/> with
+				where we have two values returned as a tuple (note the comman between the values).  We can solve the quadratic in <xref ref="eq-quad"/> with
 			</p>
 
 			<p>
@@ -216,20 +228,20 @@
 			<title>Can we ever be confident of answers?</title>
 
 			<p>
-				It's crucial to have a good sense of the problem (whether it be mathematical or a scientific question). Additionally, testing is an important part of the solution process. In Chapter <xref ref="ch-modules"/>, we will spend some time discussing testing of code.
+				It's crucial to have a good sense of the problem (whether it be mathematical or a scientific question). Additionally, testing is an important part of the solution process. In <xref ref="ch-modules"/>, we will spend some time discussing testing of code.
 			</p>
 		</subsection>
 	</section>
 
 	<section>
-		<title>Are We Sunk?  Examining the Quadratic Formula</title>
+		<title>Are We Sunk?  Reexamining the Quadratic Formula</title>
 
 		<p>
-			The above example shows that we had quite a large error.  From what we've seen so far, we could try to use other data types, like <c>BigFloat</c> to solve this problem, but as we've seen they are slow and we should only use that type when needed.  So what can we do.
+			The above example shows that even with a well-known formula, there is the potential of generating a large error.  From what we've seen so far, we could try to use other data types, like <c>BigFloat</c> to solve this problem, but as we've seen they are slow and we should only use that type when needed.
 		</p>
 
 		<p>
-			If we're careful about things, we can often rewrite algorithms to do a better job with roundoff.  The problem that occurred for the general quadratic equation
+			If we're careful about things, we can rewrite algorithms in certain situations to minimize roundoff.  The problem that occurred for the general quadratic equation
 		</p>
 
 		<p>
@@ -243,7 +255,7 @@
 		</p>
 
 		<p>
-			Let's assume that <m>b &gt; 0</m> and let <m>d=\sqrt{b^{2}-4ac}</m>. The roundoff occurs when the value of <m>b</m> and <m>d</m> are close to each other. (Note: if <m>b</m> is negative, you can multiply the entire equation through by <m>-1</m> to get <m>b &gt; 0</m> without changing the answer.) To change the quadratic formula we are going to exchange the addition with a subtraction (however we will not have the catastrophic subtraction error we saw above). ``How can you do that you ask?'' Here we go...
+			Let's assume that <m>b &gt; 0</m> and let <m>d=\sqrt{b^{2}-4ac}</m>. The roundoff occurs when the value of <m>b</m> and <m>d</m> are close to each other. (Note: if <m>b</m> is negative, you can multiply the entire equation through by <m>-1</m> to get <m>b &gt; 0</m> without changing the answer.) To change the quadratic formula we are going to exchange the addition with a subtraction (however we will not have the catastrophic subtraction error we saw above). "How can you do that?" you ask? Here we go...
 		</p>
 
 		<p>
@@ -252,11 +264,12 @@
 
 		<p>
 			<md>
-				<mrow>x&amp; =\frac{-b + \sqrt{b^{2}-4ac}} {2a} &amp;&amp;\text{Multiply by a convenient form of 1} </mrow>
-				<mrow>&amp; =\frac{-b + \sqrt{b^{2}-4ac}} {2a} \cdot \frac{-b-\sqrt{b^{2}-4ac}}{-b-\sqrt{b^{2}-4ac}} </mrow>
-				<mrow>&amp; = \frac{b^{2}-(b^{2}-4ac)}{2a(-b-\sqrt{b^{2}-4ac})} </mrow>
-				<mrow>&amp; = \frac{4ac}{2a(-b-\sqrt{b^{2}-4ac})} </mrow>
-				<mrow>&amp; = -\frac{2c}{b+\sqrt{b^{2}-4ac}}</mrow>
+				<mrow>x&amp; =\frac{-b + d} {2a} \qquad \text{Multiply by a convenient form of 1} </mrow>
+				<mrow>&amp; =\frac{-b + d} {2a} \cdot \frac{-b-d}{-b-d} </mrow>
+				<mrow>&amp; = \frac{b^{2}-d^2}{2a(-b-d)} \qquad \text{use $d=\sqrt{b^2-4ac}$} </mrow>
+				<mrow>&amp; = \frac{b^2-(b^2-4ac)}{2a(-b-d)}</mrow>
+				<mrow>&amp; = \frac{4ac}{2a(-b-d)} </mrow>
+				<mrow>&amp; = -\frac{2c}{b+d}</mrow>
 			</md>
 		</p>
 
@@ -308,12 +321,12 @@ end
 
 			<p>
 				<me>
-					15{x}^{3}-143{x}^2+226x+280=0
+					15x^3-143x^2+226x+280=0
 				</me>
 			</p>
 
 			<p>
-				This cubic actually factors, but finding those factors is quite difficult to do in general. We then look at using <url href="https://en.wikipedia.org/wiki/Newton%27s_method" visual="">Newton's method</url> to solve this. Note the plot below:
+				This cubic actually factors, but finding those factors is quite difficult to do in general. We then look at using <url href="https://en.wikipedia.org/wiki/Newton%27s_method" visual="wikipedia.org">Newton's method</url> to solve this. Note the plot below:
 			</p>
 
 			<figure xml:id="fig-rootfinding-cubic">
@@ -330,7 +343,7 @@ end
 			</p>
 
 			<p>
-				Newton's method starts with a ``guess'' at the root and then refines it. Let <m>x_0</m> be the guess, then
+				Newton's method starts with a "guess" at the root and then refines it. Let <m>x_0</m> be the guess, then
 			</p>
 
 			<p>
@@ -458,8 +471,8 @@ end
 			<program language="julia" line-numbers="yes">
 				<input>
 function newton(f::Function, df::Function, x0::Number)
-  local dx = 1
-  local x1 = x0
+  local dx = f(x0)/df(x0)
+  local x1 = x0 - dx
   while abs(dx) &gt; 1e-6
     dx = f(x1)/df(x1)
     x1 -= dx
@@ -471,6 +484,10 @@ end
 
 			<p>
 				First, we need to define <c>dx</c> first to determine if we need to go into the loop.  We just set it to some value to get it started. We have also used the operator <c>-=</c>. The line <c>x0 -= dx</c> is shorthand for <c>x0 = x0 - dx</c>
+			</p>
+
+			<p>
+				Lastly, note that we have defined a variable <c>x1</c>, which then is updated within the while loop.  You may ask yourself why not just update the value <c>x0</c>.  It is generally good practice to not update the arguments of a function unless you tip off the programmer that you might do this.  In Julia, recall that we add a ! to the end of a function name that changes the arguments.  If not, there may be unintended consequences resulting in bugs that are hard to track down.  We will show examples of this in <xref ref="ch-adv-functions"/>.
 			</p>
 		</subsection>
 
@@ -535,10 +552,11 @@ end
 			<program language="julia" line-numbers="yes">
 				<input>
 function newton(f::Function, x0::Number)
-  local dx = 1
+  local dx = f(x0)/ForwardDiff.derivative(f,x0)
+  local x1 = x0 - dx
   while abs(dx) &gt; 1e-6
-    dx = f(x0)/ForwardDiff.derivative(f,x0)
-    x0 -= dx
+    dx = f(x1)/ForwardDiff.derivative(f,x1)
+    x1 -= dx
   end
   x0
 end
@@ -595,8 +613,8 @@ end
 			<program language="julia" line-numbers="yes">
 				<input>
 function newton(f::Function, x0::Number)
-  local dx = 1
-  local x1 = x0
+  local dx = f(x0)/ForwardDiff.derivative(f,x0)
+  local x1 = x0 - dx
   local steps = 0
   while abs(dx) &gt; 1e-6 &amp;&amp; steps &lt; 10
     dx = f(x1)/ForwardDiff.derivative(f,x1)

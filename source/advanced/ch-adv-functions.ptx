@@ -689,4 +689,19 @@ end
 			</task>
 		</exercise>
 	</section>
+
+	<section>
+		<title>Updating Function arguments</title>
+
+		<p>It is important to handle arguments with care.  The scope of the arguments is where the function is called (often in the global space). For example  </p>
+
+		<p>
+			<cd>
+				<cline>function g(x)</cline>
+				<cline>	2*x</cline>
+				<cline>end</cline>
+			</cd>
+		</p>
+		<p>and if we make a function call like <c>g(4)</c>, then the result is <c>8</c>. </p>
+	</section>
 </chapter>
