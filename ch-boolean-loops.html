@@ -659,7 +659,7 @@ window.MathJax = {
 <ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-6-3" class="internal"><span class="codenumber">19.4.1</span> <span class="title">Keyword Arguments for complex functions</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#sect-parametric-methods" class="internal"><span class="codenumber">19.5</span> <span class="title">Parametric Methods</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-8" class="internal"><span class="codenumber">19.6</span> <span class="title">Updating Function arguments</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-8" class="internal"><span class="codenumber">19.6</span> <span class="title">Function Arguments</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
@@ -980,10 +980,7 @@ window.MathJax = {
 <div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-3" class="internal"><span class="codenumber">A.1</span> <span class="title">using the <code class="code-inline tex2jax_ignore">Repl.it</code> website</span></a></div>
 <ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-3-3" class="internal"><span class="codenumber">A.1.1</span> <span class="title">Limitations of <code class="code-inline tex2jax_ignore">Repl.it</code></span></a></div></li></ul>
 </li>
-<li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-4" class="internal"><span class="codenumber">A.2</span> <span class="title">Downloading and Installing Julia</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-4-3" class="internal"><span class="codenumber">A.2.1</span> <span class="title">The julia REPL and windows</span></a></div></li></ul>
-</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-4" class="internal"><span class="codenumber">A.2</span> <span class="title">Downloading and Installing Julia</span></a></div></li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-5" class="internal"><span class="codenumber">A.3</span> <span class="title">Downloading and running Jupyter</span></a></div>
 <ul class="structural toc-item-list"><li class="toc-item toc-subsection">
@@ -1003,17 +1000,13 @@ window.MathJax = {
 </li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-getting-started.html#sect-kernel" class="internal"><span class="codenumber">A.7</span> <span class="title">The kernel</span></a></div>
-<ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#sect-kernel-3" class="internal"><span class="codenumber">A.7.1</span> <span class="title">The REPL</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#sect-kernel-4" class="internal"><span class="codenumber">A.7.2</span> <span class="title">Juno and the Atom Editor</span></a></div></li>
-</ul>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#sect-kernel-3" class="internal"><span class="codenumber">A.7.1</span> <span class="title">The REPL</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10" class="internal"><span class="codenumber">A.8</span> <span class="title">Restarting the Kernel</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10-3" class="internal"><span class="codenumber">A.8.1</span> <span class="title">Restarting the Kernel in the julia REPL</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10-4" class="internal"><span class="codenumber">A.8.2</span> <span class="title">Restarting the Kernel in Jupyter</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-getting-started.html#ch-getting-started-10-5" class="internal"><span class="codenumber">A.8.3</span> <span class="title">Restarting the Kernel in Atom/Juno</span></a></div></li>
 </ul>
 </li>
 </ul>
@@ -1170,7 +1163,7 @@ end
 <div class="para" id="ch-boolean-loops-5-7">Alternatively, you can write this as</div>
 <div class="para logical" id="ch-boolean-loops-5-8"><pre class="code-display tex2jax_ignore">absVal3(x::Real)=ifelse(x &gt;=0, x, -1*x)
 </pre></div>
-<div class="para" id="ch-boolean-loops-5-9">We will see else syntax of this operator often throughout this course.</div>
+<div class="para" id="ch-boolean-loops-5-9">The <code class="code-inline tex2jax_ignore">ifelse</code> is not used in this book, preference goes to the <code class="code-inline tex2jax_ignore"> ? : </code> format instead--which is available in almost all modern languages as well.</div>
 <details id="ch-boolean-loops-5-10" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
 <span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">5.3</span><span class="period">.</span>
 </h4></summary><article class="exercise exercise-like knowl__content"><div class="para" id="ch-boolean-loops-5-10-1">Write the recursive factorial function above using the ternary if-then-else.</div></article></details></section><section class="section" id="ch-boolean-loops-6"><h3 class="heading hide-type">
@@ -1183,12 +1176,12 @@ end
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">let
   local n=1
   while n &lt; 10
-    println(n)
+    @show n
     n+=1
   end
 end
 </code></pre></div>
-<div class="para" id="ch-boolean-loops-6-3-4">and note that the expression <code class="code-inline tex2jax_ignore">n+=1</code> is shorthand for <code class="code-inline tex2jax_ignore">n=n+1</code>.</div>
+<div class="para" id="ch-boolean-loops-6-3-4">and note that the expression <code class="code-inline tex2jax_ignore">n+=1</code> is shorthand for <code class="code-inline tex2jax_ignore">n=n+1</code>.  We are using the <code class="code-inline tex2jax_ignore">@show</code> macro which dumps the expression and its value to the screen.</div>
 <div class="para" id="ch-boolean-loops-6-3-5">A more practical example of a for loop will be the <a class="external" href="https://en.wikipedia.org/wiki/Bisection_method" target="_blank">Bisection Method</a><details class="ptx-footnote" aria-live="polite" id="ch-boolean-loops-6-3-5-2"><summary class="ptx-footnote__number" title="Footnote 5.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-boolean-loops-6-3-5-2"><code class="code-inline tex2jax_ignore">wikipedia</code></div></details> for finding a root.</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function bisection(f::Function, a::Real, b::Real)
 	local c
@@ -1208,7 +1201,8 @@ end
 </pre></div>
 <div class="para" id="ch-boolean-loops-6-3-11">returns <code class="code-inline tex2jax_ignore">1.4142141342163086</code>, which is approximately <span class="process-math">\(\sqrt{2}\text{.}\)</span>
 </div>
-<div class="para" id="ch-boolean-loops-6-3-12">Note that we used a ternary if-then-else in the <code class="code-inline tex2jax_ignore">bisection</code> function in conjunction with a tuple to update both points in the interval.  This makes the function reasonably simple.  A standard <code class="code-inline tex2jax_ignore">if-then-else</code> statement can be used instead if desired.</div></section><section class="subsection" id="ch-boolean-loops-6-4"><h4 class="heading hide-type">
+<div class="para" id="ch-boolean-loops-6-3-12">Note that we used a ternary if-then-else in the <code class="code-inline tex2jax_ignore">bisection</code> function in conjunction with a tuple to update both points in the interval.  This makes the function reasonably simple.  A standard <code class="code-inline tex2jax_ignore">if-then-else</code> statement can be used instead if desired.</div>
+<div class="para" id="ch-boolean-loops-6-3-13">This was used as a practical example and we will explore this and other rootfinding techniques in <a href="ch-rootfinding.html" class="internal" title="Chapter 10: Solving Quadratics and Rootfinding">Chapter 10</a>.</div></section><section class="subsection" id="ch-boolean-loops-6-4"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">5.4.2</span><span class="space"> </span><span class="title">Infinite Loops</span>
 </h4>
 <div class="para" id="ch-boolean-loops-6-4-2">It is common in a <code class="code-inline tex2jax_ignore">while</code> loop to keep running it forever. This occurs if there is some bug or you haven’t considered all cases.  For example, in the bisection method above, if the function doesn’t have a root (like <span class="process-math">\(f(x)=x^2+2\)</span>), then this will never stop.</div>
