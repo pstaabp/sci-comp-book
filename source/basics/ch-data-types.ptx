@@ -31,7 +31,7 @@
 			</p>
 
 			<p>
-				<xref ref="ch-num-rep"/> covers many of the details of representation integers in binary and performing basic operations.  We will cover the a superficial level of integer represenation and operations here in this chapter, but for those with desire for more depth see <xref ref="ch-num-rep"/>.
+				<xref ref="ch-num-rep"/> covers many of the details of representation integers in binary and performing basic operations.  We will cover the a superficial level of integer representation and operations here in this chapter, but for those with desire for more depth see <xref ref="ch-num-rep"/>.
 			</p>
 
 			<p>
@@ -65,7 +65,7 @@
 			<title>Signed Integers</title>
 
 			<p>
-				In julia, the signed integers are <c>Int8, Int16, Iint32, Int64</c> and <c>Int128</c>. Also, there is a integer type <c>Int</c> which defaults to the sized integer of the typical integer size on your machine.  This is generally <c>Int64</c>.
+				In julia, the signed integers are <c>Int8, Int16, Int32, Int64</c> and <c>Int128</c>. Also, there is a integer type <c>Int</c> which defaults to the sized integer of the typical integer size on your machine.  This is generally <c>Int64</c>.
 			</p>
 
 			<p>
@@ -106,7 +106,7 @@
 		<title>Floating Point Numbers</title>
 
 		<p>
-			Many fields in scientific computing rely on using decimals and the standard way to store these in a computer is with <em>floating point numbers</em>. Details on floating-point numbers are in <xref ref="ch-num-rep"/>. Julia has 16-,32- and 64-bit floating point numbers called <c>Float16, Float32</c> and <c>Float64</c> and by default on most systems is the <c>Float64</c>.
+			Many fields in scientific computing rely on using decimals and the standard way to store these in a computer is with <em>floating point numbers</em>. Details on floating-point numbers are in <xref ref="ch-num-rep"/>. Julia has 16-,32- and 64-bit floating point numbers called <c>Float16, Float32</c> and <c>Float64</c> and the default on most systems is the <c>Float64</c>.
 		</p>
 
 		<p>
@@ -175,7 +175,7 @@
 		<title>Extending integers, the <c>BigInt</c> type</title>
 
 		<p>
-			In <xref ref="ch-number-theory"/>, we will explore prime numbers and it is common for them to exceed the maximum allowable <c>Int64</c> or even <c>Int128</c>. If this is needed, there is a type called <c>BigInt</c> with no maximum or minimum. Here's the number <url href="https://www.imdb.com/name/nm0000478/?ref_=tt_ov_st_sm" visual="imdb.com">one google</url>
+			In <xref ref="ch-number-theory"/>, we will explore prime numbers and it is common for them to exceed the maximum allowable <c>Int64</c> or even <c>Int128</c>. If this is needed, there is a type called <c>BigInt</c> with no maximum or minimum. Here's the number <url href="https://en.wikipedia.org/wiki/Googol" visual="wikipedi.org">one googol</url>
 			<cd>
 			<cline>big(10)^100</cline>
 			</cd>
@@ -186,7 +186,7 @@
 		</p>
 
 		<p>
-			This integer is 1 followed by 100 zeros is too big to fit on one line of this page.  Note: the command <c>big</c> create a <c>BigInt</c> and generally normal operations with integers result in <c>BigInt</c>s as well.
+			This integer is 1 followed by 100 zeros.  Note: the command <c>big</c> creates a <c>BigInt</c> and generally normal operations with integers result in <c>BigInt</c>s as well.
 		</p>
 
 		<p>
@@ -207,7 +207,7 @@
 
 		<introduction>
 			<p>
-				As we discussed above, a floating point number has two limitations 1) the number of digits stored and 2) the maximum exponent used.  If we need numbers when the limit of either of these is in the way, we can turn to <c>BigFloat</c>. For example,  what if you want to calculate <m>\pi</m> to 100 or more digits. See <xref ref="ch-calc-pi"/> for details on how to do this.
+				As we discussed above, a floating point number has two limitations 1) the number of digits stored and 2) the maximum exponent used.  If we run into numbers that exceed either of these, we can turn to <c>BigFloat</c>. For example,  what if you want to calculate <m>\pi</m> to 100 or more digits. See <xref ref="ch-calc-pi"/> for details on how to do this.
 			</p>
 
 			<p>
@@ -423,7 +423,7 @@
 
 		<introduction>
 			<p>
-				The numerical data types we have seen in this chapter are examples of <term>concrete data types</term> in that we can create data (usually numbers) with those types.  These include the integer types <c>Int8, Int16, Int32, Int64, Int128, BigInt</c> and floating-point versions <c>Float16, Float32, Float64, BigFloat</c>. The rational and complex types are composite, however the internal part is one of these types.
+				The numerical data types we have seen in this chapter are examples of <term>concrete data types</term> in that we can create data (usually numbers) with those types.  These include the integer types <c>Int8, Int16, Int32, Int64, Int128, BigInt</c> and floating-point versions <c>Float16, Float32, Float64, BigFloat</c>. The rational and complex types are composite, however the internal part is a concrete type.
 			</p>
 
 			<p>
@@ -646,25 +646,23 @@
 
 		<introduction>
 			<p>
-				Another type that allows one to combine two or more elements of data is called a tuple.  For example, if we want two floating points that are connected, we can make:
+				Another type that allows one to combine two or more elements of data is called a tuple.  For example, if we want two integers that are combined, we can make:
 				<cd>
 				<cline>(1,2)</cline>
 				</cd>
 			</p>
 
 			<p>
-				For example, this could be a way to store a geometric point.  Determining the data type with <c>typeof((1,2))</c> returns <c>Tuple{Int64, Int64}</c>, which is another example of a composite type.  The type is a <c>Tuple</c> but there are <c>Int64</c> types for the components of the tuple.
+				For example, this could be a way to store a geometric point in the plane.  Determining the data type with <c>typeof((1,2))</c> returns <c>Tuple{Int64, Int64}</c>, which is another example of a composite type.  The type is a <c>Tuple</c> but there are <c>Int64</c> types for the components of the tuple.
 			</p>
 
 			<p>
-				You can access the elements of the tuple using bracket notation.  If
-				<cd>
-				<cline>tup = (4,3,2,1)</cline>
-				</cd>
+				Tuples can consists of different types for different parts.  For example, <c>t = (5,7.8, "Hello")</c> is a valid tuple and its type is <c>Tuple{Int64, Float64, String}</c>.
 			</p>
 
 			<p>
-				we can get the first element of <c>tup</c> with <c>tup[1]</c>.  Note, this is similar to array notation, which we will see in <xref ref="ch-arrays"/>.
+				You can access the elements of the tuple using bracket notation.  Using the value of <c>t</c> above,
+				we can get the first element of <c>t</c> with <c>t[1]</c>.  Note, this is similar to array notation, which we will see in <xref ref="ch-arrays"/>. Note: the first element of things like tuples and array is 1, not 0.
 			</p>
 		</introduction>
 
@@ -707,7 +705,7 @@
 			</p>
 
 			<p>
-				where there are a mix of strings and integers in the same tuple.  This may be all that you need for an example like this, however, we will see more complex data types in <xref ref="ch-comp-types"/>, which creates a new data type.
+				where there are a mix of strings and integers in the same tuple.  This may be all that you need for an example like this, however, we will see more complex data types in <xref ref="ch-comp-types"/>, which creates a new data type or <c>struct</c>.  Such a type will allow more flexibility.  For example if we define a point using a tuple, it is difficult to do operations on the point.
 			</p>
 		</subsection>
 

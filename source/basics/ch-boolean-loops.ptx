@@ -294,7 +294,7 @@ end
 		</p>
 
 		<p>
-			We will see else syntax of this operator often throughout this course.
+			The <c>ifelse</c> is not used in this book, preference goes to the <c> ? : </c> format instead--which is available in almost all modern languages as well.
 		</p>
 
 		<exercise>
@@ -327,7 +327,7 @@ end
 let
   local n=1
   while n &lt; 10
-    println(n)
+    @show n
     n+=1
   end
 end
@@ -335,7 +335,7 @@ end
 			</program>
 
 			<p>
-				and note that the expression <c>n+=1</c> is shorthand for <c>n=n+1</c>.
+				and note that the expression <c>n+=1</c> is shorthand for <c>n=n+1</c>.  We are using the <c>@show</c> macro which dumps the expression and its value to the screen.
 			</p>
 
 			<p>
@@ -383,6 +383,10 @@ end
 
 			<p>
 				Note that we used a ternary if-then-else in the <c>bisection</c> function in conjunction with a tuple to update both points in the interval.  This makes the function reasonably simple.  A standard <c>if-then-else</c> statement can be used instead if desired.
+			</p>
+
+			<p>
+				This was used as a practical example and we will explore this and other rootfinding techniques in <xref ref="ch-rootfinding"/>.
 			</p>
 		</subsection>
 

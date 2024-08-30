@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <chapter xml:id="ch-adv-functions">
 	<title>Advanced Function Features of Julia</title>
+
 	<introduction>
 		<p>
-			This chapter covers a bit more on functions in julia.  These feature allow the ability to
-			write code that easier to use, read and debug.  We will perform error checking for arguments
-			to ensure that only valid arguments are considered.  Additionally, to make functions more robust,
-			we'll use option arguments and keyword arguments.
+			This chapter covers a bit more on functions in julia.  These feature allow the ability to write code that easier to use, read and debug.  We will perform error checking for arguments to ensure that only valid arguments are considered.  Additionally, to make functions more robust, we'll use option arguments and keyword arguments.
 		</p>
 	</introduction>
 
 	<section>
 		<title>Testing Arguments</title>
+
 		<p>
 			Let's return to the factorial function that we saw in <xref ref="sect-factorial"/>:
 		</p>
@@ -23,9 +23,7 @@
 		</p>
 
 		<p>
-			We saw before that if we call this with a non-integer number like 3.2 that we will
-			get an error, but what if we include a negative number?
-			If you run <c>fact(-5)</c> you will see ??????.
+			We saw before that if we call this with a non-integer number like 3.2 that we will get an error, but what if we include a negative number? If you run <c>fact(-5)</c> you will see ??????.
 		</p>
 
 		<p>
@@ -39,12 +37,7 @@
 		</p>
 
 		<p>
-			This occurs because when a negative number is put into the <c>fact</c> function that
-			since <m>n</m> is not 0, it computes <c>n*fact(n-1)</c> which will evaluate <c>fact</c> again at a more negative number.
-			Subsequent calls to <c>fact</c> with more negative numbers would never end except that
-			recursive functions are evaluated on what is called the stack and there is a maximum number
-			of items that can be put on the stack and thus this error occurs.  We can alert the user to an
-			invalid argument with the following:
+			This occurs because when a negative number is put into the <c>fact</c> function that since <m>n</m> is not 0, it computes <c>n*fact(n-1)</c> which will evaluate <c>fact</c> again at a more negative number. Subsequent calls to <c>fact</c> with more negative numbers would never end except that recursive functions are evaluated on what is called the stack and there is a maximum number of items that can be put on the stack and thus this error occurs.  We can alert the user to an invalid argument with the following:
 		</p>
 
 
@@ -58,11 +51,7 @@ end
 		</program>
 
 		<p>
-			The first line of this evaluates <c>n &gt;= 0</c>.  If that is false, the statement after
-			the <c>||</c> is evaluated and an error is thrown.  Alternatively, if you enter a
-			positive number for <c>n</c>, then the first line <c>n&gt;=0</c> evaluates as <c>true</c> and then
-			shortcircuits, which means as soon as the first part of the compound or statement hits true,
-			it stops evaluating.
+			The first line of this evaluates <c>n &gt;= 0</c>.  If that is false, the statement after the <c>||</c> is evaluated and an error is thrown.  Alternatively, if you enter a positive number for <c>n</c>, then the first line <c>n&gt;=0</c> evaluates as <c>true</c> and then shortcircuits, which means as soon as the first part of the compound or statement hits true, it stops evaluating.
 		</p>
 
 		<p>
@@ -81,19 +70,16 @@ end
 
 		<exercise>
 			<p>
-				In <xref ref="ch-number-theory"/>, the <c>findAllFactors</c> function doesn't make any
-				sense if the number is less than 1.  Add a line to the function that throws an
-				appropriate error.
+				In <xref ref="ch-number-theory"/>, the <c>findAllFactors</c> function doesn't make any sense if the number is less than 1.  Add a line to the function that throws an appropriate error.
 			</p>
 		</exercise>
 	</section>
 
 	<section>
 		<title>Optional arguments</title>
+
 		<p>
-			Let's return to Newton's method, which we wrote<fn>for this section, we will consider the
-			code from <xref ref="ch-rootfinding"/>, not that from <xref ref="ch-comp-types"/>, which introduces
-			the <c>Root</c> struct.  We will comment on this later this chapter. </fn> before as
+			Let's return to Newton's method, which we wrote<fn>for this section, we will consider the code from <xref ref="ch-rootfinding"/>, not that from <xref ref="ch-comp-types"/>, which introduces the <c>Root</c> struct.  We will comment on this later this chapter. </fn> before as
 		</p>
 
 
@@ -115,13 +101,11 @@ end
 		</program>
 
 		<p>
-			Notice that we hard-coded the stopping criteria and the max number of
-			steps.  This is not good practice and will use a default value as an <em>optional argument</em>.
+			Notice that we hard-coded the stopping criteria and the max number of steps.  This is not good practice and will use a default value as an <em>optional argument</em>.
 		</p>
 
 		<p>
-			Let's define the tolerance (<c>tol</c>) and the maximum number of
-			steps (<c>max_steps</c>) in the following way:
+			Let's define the tolerance (<c>tol</c>) and the maximum number of steps (<c>max_steps</c>) in the following way:
 		</p>
 
 
@@ -142,22 +126,15 @@ end
 		</program>
 
 		<p>
-			You may notice that we didn't give the new arguments types.  This wasn't an error, but julia
-			will interpret the type from the default value.  In this case, <c>tol</c> will be a <c>Float64</c>
-			and <c>max_steps</c> will be an <c>Int64</c>.
+			You may notice that we didn't give the new arguments types.  This wasn't an error, but julia will interpret the type from the default value.  In this case, <c>tol</c> will be a <c>Float64</c> and <c>max_steps</c> will be an <c>Int64</c>.
 		</p>
 
 		<p>
-			Note that when entering this, it says there are 3 methods with the name <c>newton</c>.  This is
-			because julia will build three different function signatures.  One with 2 arguments (and both <c>tol</c>
-			and <c>max_steps</c> use the default values), one with 3 arguments (and <c>max_steps</c> using it's
-			default value) and one with all 4 arguments. Also remember that <c>1e-6</c> means <m>10^{-6}</m>, which
-			is the default tolerance.
+			Note that when entering this, it says there are 3 methods with the name <c>newton</c>.  This is because julia will build three different function signatures.  One with 2 arguments (and both <c>tol</c> and <c>max_steps</c> use the default values), one with 3 arguments (and <c>max_steps</c> using it's default value) and one with all 4 arguments. Also remember that <c>1e-6</c> means <m>10^{-6}</m>, which is the default tolerance.
 		</p>
 
 		<p>
-			This seems more robust in that we can now call Newton's method with
-			different values of tolerance and steps. So:
+			This seems more robust in that we can now call Newton's method with different values of tolerance and steps. So:
 		</p>
 
 		<p>
@@ -177,13 +154,11 @@ end
 		</p>
 
 		<p>
-			returns <c>2.236111111111111</c>, which is slightly different
-			than before.  Probably the number of steps of Newton was a bit different.
+			returns <c>2.236111111111111</c>, which is slightly different than before.  Probably the number of steps of Newton was a bit different.
 		</p>
 
 		<p>
-			If we want to change the number of steps, however, we need to include the
-			tolerance as well like:
+			If we want to change the number of steps, however, we need to include the tolerance as well like:
 		</p>
 
 		<p>
@@ -193,15 +168,11 @@ end
 		</p>
 
 		<p>
-			which results in <c>2.236111111111111</c>.  We will see
-			later an alternative way to handle these parameters, called <em>keyword parameters</em>
-			which requires names of parameters, not the order, which is helpful as the
-			number of arguments/parameters for a function gets large.
+			which results in <c>2.236111111111111</c>.  We will see later an alternative way to handle these parameters, called <em>keyword parameters</em> which requires names of parameters, not the order, which is helpful as the number of arguments/parameters for a function gets large.
 		</p>
 
 		<p>
-			This is quite an improvement, however, the arguments <c>tol</c> and <c>max_steps</c> optional
-			parameters should both be positive, so we will add checks on these as
+			This is quite an improvement, however, the arguments <c>tol</c> and <c>max_steps</c> optional parameters should both be positive, so we will add checks on these as
 		</p>
 
 
@@ -237,8 +208,7 @@ end
 			<task>
 				<statement>
 					<p>
-						Recall that a root of <m>f(x)=x^2-10</m> is the square root of 10.  Use the function above
-						to find <m>\sqrt{10}</m> with a tolerance of <m>10^{-10}</m>.
+						Recall that a root of <m>f(x)=x^2-10</m> is the square root of 10.  Use the function above to find <m>\sqrt{10}</m> with a tolerance of <m>10^{-10}</m>.
 					</p>
 				</statement>
 			</task>
@@ -247,8 +217,7 @@ end
 			<task>
 				<statement>
 					<p>
-						Find the absolute and relative error.  Use <c>sqrt(10)</c> as the actual value and
-						the result from the <c>newton</c> function as the Hint: recall this from <xref ref="ch-rootfinding"/>.
+						Find the absolute and relative error.  Use <c>sqrt(10)</c> as the actual value and the result from the <c>newton</c> function as the Hint: recall this from <xref ref="ch-rootfinding"/>.
 					</p>
 				</statement>
 			</task>
@@ -257,8 +226,7 @@ end
 			<task>
 				<statement>
 					<p>
-						Put in arguments for the tolerance and maximum number of steps that will throw an error.
-						Check that this actually occurs.
+						Put in arguments for the tolerance and maximum number of steps that will throw an error. Check that this actually occurs.
 					</p>
 				</statement>
 			</task>
@@ -267,6 +235,7 @@ end
 
 	<section>
 		<title>Handling Special Cases</title>
+
 		<p>
 			As we saw in <xref ref="ch-rootfinding"/>,
 		</p>
@@ -279,14 +248,7 @@ end
 		</p>
 
 		<p>
-			returns <c>2.4008803928468465</c>, but if we evaluate the function at the root,
-			with <c>f(root)</c> the result is <c>6.764226660756428</c>, which is definitely
-			not 0 (or very close), so this doesn't appear to be a root.  Recall this occurred because the
-			function <m>f(x)=x^2+1</m> doesn't have a root.  If we temporarily print out the values of <c>x1</c>
-			within the loop, we'll see that the x values bounce all around and then just stops.<fn>In the Newton method,
-			add the line <c>@show x1</c> just after the line with the <c>while</c> statement.  Rerun the function
-			then and try <c>root=newton(f,2)</c> again.</fn>  It's not clear, but what happens
-			here is that the max number of steps is reached, but you are not alerted.
+			returns <c>2.4008803928468465</c>, but if we evaluate the function at the root, with <c>f(root)</c> the result is <c>6.764226660756428</c>, which is definitely not 0 (or very close), so this doesn't appear to be a root.  Recall this occurred because the function <m>f(x)=x^2+1</m> doesn't have a root.  If we temporarily print out the values of <c>x1</c> within the loop, we'll see that the x values bounce all around and then just stops.<fn>In the Newton method, add the line <c>@show x1</c> just after the line with the <c>while</c> statement.  Rerun the function then and try <c>root=newton(f,2)</c> again.</fn>  It's not clear, but what happens here is that the max number of steps is reached, but you are not alerted.
 		</p>
 
 		<p>
@@ -300,21 +262,17 @@ end
 		</p>
 
 		<p>
-			and then rerunning  <c>newton(x -&gt; x^2+1,2)</c> gives the error
-			<c>The maximum number of steps: 10 was reached without convergence</c>
-			which explains to the user that a root was not reached.
+			and then rerunning  <c>newton(x -&gt; x^2+1,2)</c> gives the error <c>The maximum number of steps: 10 was reached without convergence</c> which explains to the user that a root was not reached.
 		</p>
 
 		<p>
-			You, the astute reader, probably noticed that we had an alternative way to handle this case in
-			<xref ref="ch-comp-types"/>, in which we created a struct called <c>Root</c> to handle all of the
-			information from Newton's method.  Either using the <c>Root</c> structure of the method of
-			throwing an exception like above is fine as you may need to know how you will use this code.
+			You, the astute reader, probably noticed that we had an alternative way to handle this case in <xref ref="ch-comp-types"/>, in which we created a struct called <c>Root</c> to handle all of the information from Newton's method.  Either using the <c>Root</c> structure of the method of throwing an exception like above is fine as you may need to know how you will use this code.
 		</p>
 	</section>
 
 	<section>
 		<title>Keyword Arguments</title>
+
 		<introduction>
 			<p>
 				Although optional arguments are quite helpful, there are two situations that they can be annoying.
@@ -324,25 +282,20 @@ end
 				<ol>
 					<li>
 						<p>
-							If you want to change one optional argument without the others, we may not be able to.  In the Newton's
-							method example, if we want to change <c>max_steps</c>, which is the 4th argument without changing the 3rd
-							argument, we can't just put in the value of <c>max_step</c>.
+							If you want to change one optional argument without the others, we may not be able to.  In the Newton's method example, if we want to change <c>max_steps</c>, which is the 4th argument without changing the 3rd argument, we can't just put in the value of <c>max_step</c>.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							For more complex functions, there may be a lot of possible parameters, most of which could be optional.
-							The order of the arguments are important, and if you mix them up, you may either get an error or get
-							unexpected results.
+							For more complex functions, there may be a lot of possible parameters, most of which could be optional. The order of the arguments are important, and if you mix them up, you may either get an error or get unexpected results.
 						</p>
 					</li>
 				</ol>
 			</p>
 
 			<p>
-				Using keyword arguments can solving both of these problems and
-				We can rewrite newton's method as
+				Using keyword arguments can solving both of these problems and We can rewrite newton's method as
 			</p>
 
 
@@ -367,8 +320,7 @@ end
 			</program>
 
 			<p>
-				and it is important to note that there is a semicolon separating the arguments from
-				the keyword arguments.
+				and it is important to note that there is a semicolon separating the arguments from the keyword arguments.
 			</p>
 
 			<p>
@@ -382,8 +334,7 @@ end
 			</p>
 
 			<p>
-				results in <c>1.4142156862745099</c> and
-				if we only want to change the number of <c>max_steps</c> is
+				results in <c>1.4142156862745099</c> and if we only want to change the number of <c>max_steps</c> is
 			</p>
 
 			<p>
@@ -397,28 +348,22 @@ end
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>Keyword Arguments for complex functions</title>
+
 			<p>
-				The main place that we have used keywords in this text is in the <c>Plots</c> package.
-				All of the ways to adjust a plot is with keywords.  There are perhaps about 100 keyword arguments
-				to adjust for a plot and since each one of them has a default value, you only need to enter the
-				ones that you want to change.
+				The main place that we have used keywords in this text is in the <c>Plots</c> package. All of the ways to adjust a plot is with keywords.  There are perhaps about 100 keyword arguments to adjust for a plot and since each one of them has a default value, you only need to enter the ones that you want to change.
 			</p>
 
 			<p>
-				This was just a quick introduction to this and for further information, look at the
-				<url href="https://docs.julialang.org/en/v1/manual/functions/#Keyword-Arguments-1" visual="">
-				julia documentation on keyword arguments</url>.
+				This was just a quick introduction to this and for further information, look at the <url href="https://docs.julialang.org/en/v1/manual/functions/#Keyword-Arguments-1" visual=""> julia documentation on keyword arguments</url>.
 			</p>
 
 			<exercise>
 				<introduction>
 					<p>
-						In <xref ref="ch-num-int"/>, we'll see the <url href="https://en.wikipedia.org/wiki/Trapezoidal_rule" visual="">
-						trapezoid rule</url>, which is used for numerical integration or area under a curve.
-						The technique subdivides the interval <m>[a,b]</m> into <m>n</m> equal pieces and approximates
-						the area under the curve with the area of a trapezoid.  In julia this is
+						In <xref ref="ch-num-int"/>, we'll see the <url href="https://en.wikipedia.org/wiki/Trapezoidal_rule" visual=""> trapezoid rule</url>, which is used for numerical integration or area under a curve. The technique subdivides the interval <m>[a,b]</m> into <m>n</m> equal pieces and approximates the area under the curve with the area of a trapezoid.  In julia this is
 					</p>
 
 
@@ -485,10 +430,11 @@ end
 		</subsection>
 	</section>
 
-	<section xml:id="sect-parametric-methods"><title>Parametric Methods</title>
+	<section xml:id="sect-parametric-methods">
+		<title>Parametric Methods</title>
+
 		<p>
-			Let's look at writing a function that finds the maximum of some number of real values.
-			There is a built-in function for this, but going through this will illustrate a point.
+			Let's look at writing a function that finds the maximum of some number of real values. There is a built-in function for this, but going through this will illustrate a point.
 		</p>
 
 		<p>
@@ -502,8 +448,7 @@ end
 		</p>
 
 		<p>
-			and if we want any number of reals then as we saw in <xref ref="sect-varargs"/>,
-			we can use variable arguments (varargs) like:
+			and if we want any number of reals then as we saw in <xref ref="sect-varargs"/>, we can use variable arguments (varargs) like:
 		</p>
 
 
@@ -522,9 +467,7 @@ end
 		</program>
 
 		<p>
-			Another <c>findMax</c> function that would be helpful is in an array of  <c>Real</c>s
-			(mainly because we will need to do something different for <c>Complex</c> arrays).
-			This will look a lot like the one above:
+			Another <c>findMax</c> function that would be helpful is in an array of  <c>Real</c>s (mainly because we will need to do something different for <c>Complex</c> arrays). This will look a lot like the one above:
 		</p>
 
 
@@ -543,37 +486,26 @@ end
 		</program>
 
 		<p>
-			Testing it with the array <c>x=collect(1:10)</c> using <c>findMax(x)</c>
-			we get the error:
+			Testing it with the array <c>x=collect(1:10)</c> using <c>findMax(x)</c> we get the error:
 		</p>
 
 		<p>
 			<cd>
-				<cline>MethodError: no method matching findMax(::Vector{Int64})</cline>
-				<cline>The function `findMax` exists, but no method is defined for this combination of argument types.</cline>
+			<cline>MethodError: no method matching findMax(::Vector{Int64})</cline>
+			<cline>The function `findMax` exists, but no method is defined for this combination of argument types.</cline>
 			</cd>
 		</p>
 
 		<p>
-			and this is because even though <c>x</c> is of type <c>Vector{Int64}</c> that doesn't
-			fit the signature <c>Vector{Real}</c>.
+			and this is because even though <c>x</c> is of type <c>Vector{Int64}</c> that doesn't fit the signature <c>Vector{Real}</c>.
 		</p>
 
 		<p>
-			One way to get around this is to write a function for each number type
-			we may want to find the max of (<c>Int128</c>, <c>Int64</c>, ...,
-			<c>BigInt</c>, <c>Float64</c>, <c>Float32</c>, <c>Float16</c>) and all of the
-			flavors of <c>Rational</c> but if you notice every function will be nearly
-			identical and this would be painful
-			and a lot of code copying.  Also, this is a nightmare for maintenance, in that
-			if there was a bug in one it would need to be tracked down in each one.
+			One way to get around this is to write a function for each number type we may want to find the max of (<c>Int128</c>, <c>Int64</c>, ..., <c>BigInt</c>, <c>Float64</c>, <c>Float32</c>, <c>Float16</c>) and all of the flavors of <c>Rational</c> but if you notice every function will be nearly identical and this would be painful and a lot of code copying.  Also, this is a nightmare for maintenance, in that if there was a bug in one it would need to be tracked down in each one.
 		</p>
 
 		<p>
-			Instead, we will use something in julia called a
-			<url href="https://docs.julialang.org/en/latest/manual/methods/\#Parametric-Methods-1" visual="julialang.org">parametric
-			function</url> which allows us to write a single function that works on a set of
-			different types. To do this with the <c>findMax</c> function, we will write:
+			Instead, we will use something in julia called a <url href="https://docs.julialang.org/en/latest/manual/methods/\#Parametric-Methods-1" visual="julialang.org">parametric function</url> which allows us to write a single function that works on a set of different types. To do this with the <c>findMax</c> function, we will write:
 		</p>
 
 
@@ -592,15 +524,11 @@ end
 		</program>
 
 		<p>
-			and the expression <c>where T &lt;: Real</c> is used as any
-			type <c>T</c> that is a subset of the <c>Real</c> numbers (including
-			integers, floats and rational) and then <c>findMax(x)</c> returns <c>10</c>. Also if we have
+			and the expression <c>where T &lt;: Real</c> is used as any type <c>T</c> that is a subset of the <c>Real</c> numbers (including integers, floats and rational) and then <c>findMax(x)</c> returns <c>10</c>. Also if we have
 		</p>
 
 		<p>
-			<cd>
-			findMax(collect(1.0:10.0))
-			</cd>
+			<cd> findMax(collect(1.0:10.0)) </cd>
 		</p>
 
 		<p>
@@ -608,9 +536,7 @@ end
 		</p>
 
 		<p>
-			<cd>
-			findMax(collect(big(1):big(10)))
-			</cd>
+			<cd> findMax(collect(big(1):big(10))) </cd>
 		</p>
 
 		<p>
@@ -620,8 +546,7 @@ end
 		<exercise>
 			<introduction>
 				<p>
-					Create a <c>findProduct</c> method that is parametric.
-					The template (signature) for this function should be
+					Create a <c>findProduct</c> method that is parametric. The template (signature) for this function should be
 				</p>
 
 				<p>
@@ -643,8 +568,7 @@ end
 				</p>
 
 				<p>
-					which creates the <c>sum</c> variable as the number 1 with type <c>T</c>, so depending on the
-					data type the array is, it will have the appropriate product data type.
+					which creates the <c>sum</c> variable as the number 1 with type <c>T</c>, so depending on the data type the array is, it will have the appropriate product data type.
 				</p>
 
 				<p>
@@ -691,17 +615,90 @@ end
 	</section>
 
 	<section>
-		<title>Updating Function arguments</title>
+		<title>Function Arguments</title>
 
-		<p>It is important to handle arguments with care.  The scope of the arguments is where the function is called (often in the global space). For example  </p>
+		<p>
+			As described in the <url href="https://docs.julialang.org/en/v1/manual/functions/#man-argument-passing">Julia documentation on functions</url>,  arguments follow what is called "pass-by-sharing", which means that values are not copied when they are passed to functions.  Instead, the argument is a local variable that is passed the value when the function is called.  Consider
+		</p>
 
 		<p>
 			<cd>
-				<cline>function g(x)</cline>
-				<cline>	2*x</cline>
-				<cline>end</cline>
+			<cline>function g(x::Number)</cline>
+			<cline>  2*x</cline>
+			<cline>end</cline>
 			</cd>
 		</p>
-		<p>and if we make a function call like <c>g(4)</c>, then the result is <c>8</c>. </p>
+
+		<p>
+			and if we make a function call like <c>g(4)</c>, then within the function <c>x</c> is a variable that is given the value <c>4</c>. We can update the variable.  For example.
+		</p>
+
+		<p>
+			<cd>
+			<cline>function g(x::Number)</cline>
+			<cline>  x *= 2</cline>
+			<cline>  x += 7</cline>
+			<cline>  x</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			where recall that the <c>*=</c> and <c>+=</c> updates the value on the left.  When called as
+		</p>
+
+		<p>
+			<cd>
+			<cline>x=4</cline>
+			<cline>g(4)</cline>
+			</cd>
+		</p>
+
+		<p>
+			it returns <c>15</c> and the value of <c>x</c> remains as <c>4</c>.  This is because the <c>x</c> within the function is now a local function that starts with the value 4.
+		</p>
+
+		<p>
+			You may recall some functions seem to update the value of its arguments.  For example,
+		</p>
+
+		<p>
+			<cd>
+			<cline>A = [4,5,2,3,1]</cline>
+			<cline>sort!(A)</cline>
+			<cline>A</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns the sorted array <c>[1,2,3,4,5]</c>.  So how does this work, you may ask?  Let's write our own function that may do this.
+		</p>
+
+		<p>
+			<cd>
+			<cline>function change3!(A::Vector{T}) where T &lt;: Number</cline>
+			<cline>	A[3] *= 2</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			which takes a vector of numbers and double the 3rd element of the vector.  We used the convention in julia that if the arguments are changed we append a <c>!</c> to the name.  If we enter
+		</p>
+
+		<p>
+			<cd>
+			<cline>A = [1,2,3,4]</cline>
+			<cline>change3!(A)</cline>
+			</cd>
+		</p>
+
+		<p>
+			which returns 6 (recall that since the last line of the function is the double of the 3rd element, we get 6).  And if we type <c>A</c> to view it again, we get the vector <c>[1,2,6,4]</c> indicating that indeed the vector <c>A</c> has been updated.
+		</p>
+
+		<p>
+			The reason that <c>A</c> is updated with this function whereas the <c>x</c> above is not is the way that array variables differ from scalar variables (like numbers and strings).  The assignment <c>A=[1,2,3,4]</c>, means that <c>A</c> is a reference to the array instead of the array itself.<fn>This is similar to other languages, although some (like C and C++) use the term <term>pointer</term> instead.</fn>  Thus, when you call <c>change3!(A)</c> the variable <c>A</c> within the function takes on the reference to the original function.  Thus, when values are updated within the function, then the array is actually updated.  When <c>x</c> is updated in the function above, one can think that this is a copy of the passed in value, which doesn't leave the function.
+		</p>
 	</section>
 </chapter>

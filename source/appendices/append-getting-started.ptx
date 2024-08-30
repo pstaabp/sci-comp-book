@@ -1,50 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <appendix xml:id="ch-getting-started">
 	<title>Getting Started with Julia</title>
+
 	<introduction>
 		<p>
-			This appendix shows how to get started with using Julia.  There are three
-			ways presented here.  First, there is a website <c>Repl.it</c>.
-			The other ways require downloading the software from the main julia website.
-			After installing the software it can be accessed with either the Atom Editor
-			with Juno package or secondly with a Jupyter notebook.
+			This appendix shows how to get started with using Julia.  There are three ways presented here.  First, there is a website <c>Repl.it</c>. The other ways require downloading the software from the main julia website. After installing the software it can be accessed with either the Atom Editor with Juno package or secondly with a Jupyter notebook.
 		</p>
 	</introduction>
 
 	<section>
 		<title>using the <c>Repl.it</c> website</title>
+
 		<introduction>
 			<p>
-				To get started immediately with julia, we can use the
-				<url href="https://repl.it" visual="repl.it">http://repl.it</url> website.  Navigate to that in a
-				browser and set yourself up with an account to get started.  You will answer a
-				number of questions including languages that you are interested in.  At the end,
-				you can click the big blue button in the top right corner <c>+ new repl</c> to get a
-				playground.  Select \text{julia} for the language. You should get something that looks like:
+				To get started immediately with julia, we can use the <url href="https://repl.it" visual="repl.it">http://repl.it</url> website.  Navigate to that in a browser and set yourself up with an account to get started.  You will answer a number of questions including languages that you are interested in.  At the end, you can click the big blue button in the top right corner <c>+ new repl</c> to get a playground.  Select \text{julia} for the language. You should get something that looks like:
 			</p>
 
 			<figure xml:id="fig-repl-it">
 				<caption>Screenshot of Repl.it</caption>
 				<image source="images/getting-started/repl.it.png">
-					<shortdescription>Screenshot of Repl.it</shortdescription>
+					<shortdescription>
+						Screenshot of Repl.it
+					</shortdescription>
 				</image>
 			</figure>
 
 			<p>
-				The idea with the website is that you can have files (for julia files, they end in
-				<c>.jl</c>) which are listed on the left side. The middle is the current file being
-				edited (and by default this is called <c>main.jl</c>) and then the REPL which has
-				either output from the run file or by entering commands is on the right side.
+				The idea with the website is that you can have files (for julia files, they end in <c>.jl</c>) which are listed on the left side. The middle is the current file being edited (and by default this is called <c>main.jl</c>) and then the REPL which has either output from the run file or by entering commands is on the right side.
 			</p>
 
 			<p>
-				Try entered <c>2+2</c> in the right side and hitting ENTER.  You'll see 4 and this
-				means that everything seems to be working.
+				Try entered <c>2+2</c> in the right side and hitting ENTER.  You'll see 4 and this means that everything seems to be working.
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>Limitations of <c>Repl.it</c></title>
+
 			<p>
 				Although <c>Repl.it</c> is nice when starting out, there's a number of limitations:
 			</p>
@@ -59,102 +53,179 @@
 
 					<li>
 						<p>
-							Also, since it is a website, there is latency, that is it may appear that
-							commands and actions don't happen right away.
+							Also, since it is a website, there is latency, that is it may appear that commands and actions don't happen right away.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							It doesn't appear to use the latest version of julia (or probably any language).
-							When you're starting out, this isn't that important, but you may be trying to find a
-							feature that was newly released that isn't on <c>Repl.it</c>.
+							It doesn't appear to use the latest version of julia (or probably any language). When you're starting out, this isn't that important, but you may be trying to find a feature that was newly released that isn't on <c>Repl.it</c>.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							Many of the advanced features of julia don't work quite including the parallel
-							processing and GPU features.
+							Many of the advanced features of julia don't work quite including the parallel processing and GPU features.
 						</p>
 					</li>
 				</ul>
 			</p>
 
 			<p>
-				In short, if you are just starting in julia or trying it out, it's a good way to
-				start, but I would download your own version of it as soon as you can.
+				In short, if you are just starting in julia or trying it out, it's a good way to start, but I would download your own version of it as soon as you can.
 			</p>
 		</subsection>
 	</section>
 
 	<section>
 		<title>Downloading and Installing Julia</title>
-		<introduction>
-			<p>
-				We will talk about getting julia installed on your local machine from the main
-				julia website.  First, go to the
-				<url href="https://www.julialang.org" visual="julialang.or">https://www.julialang.org</url>
-				and click the <em>Download v1.11.0</em> button (or whatever the current version is).
-				Select the platform under <em>Current Stable Release</em> and click the black button.
-			</p>
 
-			<p>
-				After downloading, open the Julia app and follow the instructions.  There is little intervention.  After downloading, open up the app <em>Julia</em> as you would normally do for other apps and you should see
-			</p>
+		<p>
+			At the top of ,  <url href="https://www.julialang.org">the main Julia website</url>, click the green Download button. At the top, you will get a single line to copy paste into Terminal (MacOS or Linux) or PowerShell in Windows. This will install both julia and a nice tool called <c>juliaup</c> which is a program that can update julia.  Note that all of the commands were run on a Mac (with a M1 chip) in August 2024.  If you run these commands on a different platform at a different time, your results will vary a bit.
+		</p>
 
-			<figure xml:id="fig-repl">
-				<caption>Julia running in a terminal window</caption>
-				<image source="images/getting-started/REPL.png">
-					<shortdescription>Julia running in a terminal window</shortdescription>
-				</image>
-			</figure>
+		<p>
+			Running the MacOS version results in
+		</p>
 
-			<p>
-				This should open in a shell (Terminal on Mac, Command shell on windows) and is
-				ready to accept commands.  Try <c>2+2</c> and hit ENTER.  You should see 4 and
-				you're off and running.  If you played with the <c>Repl.it</c> website, you'll
-				notice that it is much more responsive.
-			</p>
-		</introduction>
+		<figure xml:id="fig-juliaup-install">
+			<caption>Installing Juliaup</caption>
+			<image source="images/getting-started/juliaup-install.png">
+				<shortdescription>
+					(for accessibility)
+				</shortdescription>
+			</image>
+		</figure>
 
-		<subsection>
-			<title>The julia REPL and windows</title>
-			<p>
-				NEED TO ADD THIS
-			</p>
-		</subsection>
+		<p>
+			continuing with the default installation, hit yes and hopefully you see:
+		</p>
+
+		<p>
+			<cd>
+			<cline>Now installing Juliaup</cline>
+			<cline>Installing Julia 1.10.5+0.aarch64.apple.darwin14</cline>
+			<cline>Configured the default Julia version to be 'release'.</cline>
+			<cline>Julia was successfully installed on your system.</cline>
+			</cd>
+		</p>
+
+		<p>
+			although the default version might be different.  There may be instructions to ensure that your system path is set up correctly.  Follow the details at the end of the installation process before continuing.  Each environment may be a bit different and the install script should detect it correctly and give you the right answers.
+		</p>
+
+		<p>
+			<c>juliaup</c>, short for julia update is a script that helps you install and update julia.  We can check what version of julia is running with <c>juliaup status</c> and after the install as above, we get:
+		</p>
+
+		<p>
+			<cd>
+			<cline> Default  Channel  Version                          Update </cline>
+			<cline>-----------------------------------------------------------</cline>
+			<cline>   *    release  1.10.5+0.aarch64.apple.darwin14         </cline>
+			</cd>
+		</p>
+
+		<p>
+			This shows all of the versions that are installed and the * shows that the release channel (official current version). Let's add one more version to see how things work.  Since 1.11 is about to come out, it is in release candidate (rc) stage. We can add this version with
+		</p>
+
+		<p>
+			<cd>
+			<cline>juliaup add rc</cline>
+			</cd>
+		</p>
+
+		<p>
+			and you should see that 1.11 is being downloaded.  Once finished, checking the status with <c>juliaup status</c> results in
+		</p>
+
+		<p>
+			<cd>
+			<cline> Default  Channel  Version                              Update </cline>
+			<cline>---------------------------------------------------------------</cline>
+			<cline>          rc       1.11.0-rc3+0.aarch64.apple.darwin14         </cline>
+			<cline>   *      release  1.10.5+0.aarch64.apple.darwin14              </cline>
+			</cd>
+		</p>
+
+		<p>
+			and this shows that there is now a release candidate channel and the release channel is still default. Note that there is no update.  If there was, you would see what version was available.  There are many other versions and channels available.  For example, you can specify a version. If you enter <c>juliaup add 1.11</c> and check the status then
+		</p>
+
+		<p>
+			<cd>
+			<cline> Default  Channel  Version                              Update </cline>
+			<cline>---------------------------------------------------------------</cline>
+			<cline>         1.11     1.11.0-rc3+0.aarch64.apple.darwin14         </cline>
+			<cline>         rc       1.11.0-rc3+0.aarch64.apple.darwin14         </cline>
+			<cline>   *     release  1.10.5+0.aarch64.apple.darwin14            </cline>
+			</cd>
+		</p>
+
+		<p>
+			And noticed that both 1.11 and rc are both using the same version--this is common.
+		</p>
+
+		<p>
+			You can open the julia REPL (explain in detail below) by typing <c>julia</c> on the command line of Terminal or PowerShell.  You should see something like the following.
+		</p>
+
+		<figure xml:id="fig-repl">
+			<caption>Julia running in a terminal window</caption>
+			<image source="images/getting-started/REPL1.png">
+				<shortdescription>
+					Julia running in a terminal window
+				</shortdescription>
+			</image>
+		</figure>
+
+		<p>
+			Note that the version that we are running is at the startup of the REPL.  Quit this with CTRL-D. You should be returned to the prompt.  Let's say that we want to switch to the <c>rc</c> channel.  We do this with <c>juliaup default rc</c>.   Rerun <c>julia</c> on the command line. You should see:
+		</p>
+
+		<figure xml:id="fig-repl2">
+			<caption>Julia running in a terminal window</caption>
+			<image source="images/getting-started/REPL2.png">
+				<shortdescription>
+					Julia running in a terminal window
+				</shortdescription>
+			</image>
+		</figure>
+
+		<p>
+			Try <c>2+2</c> and hit ENTER.  You should see 4 and you're off and running.  If you played with the <c>Repl.it</c> website, you'll notice that it is much more responsive.  Although this is way to run julia, it generally isn't the way most people use it.
+		</p>
 	</section>
 
 	<section>
 		<title>Downloading and running Jupyter</title>
+
 		<introduction>
 			<p>
-				A Jupyter<fn>Jupyter stands for <em>Ju</em>lia, <em>Pyt</em>hon and <em>R</em>, three
-				languages that run inside these notebooks, although there are plenty of others.</fn>
-				notebook is a way to run julia within a webpage interface and is quite easy, but powerful to use.
+				A Jupyter<fn>Jupyter stands for <em>Ju</em>lia, <em>Pyt</em>hon and <em>R</em>, three languages that run inside these notebooks, although there are plenty of others.</fn> notebook is a way to run julia within a webpage interface and is quite easy, but powerful to use.
 			</p>
 
 			<p>
-				It's not trivial to install, but once there are a couple of hurdles, it should be smooth.
-				In short, you need to start with a python version on your machine.
+				It's not trivial to install, but once there are a couple of hurdles, it should be smooth. In short, you need to start with a python version on your machine.
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>Installing Jupyter on Mac</title>
+
 			<introduction>
 				<p>
-					There are a few things that you'll need to get a Jupyter browser: 1) a python
-					interpreter and some packages and 2) the <c>IJulia</c> package for julia.
+					There are a few things that you'll need to get a Jupyter browser: 1) a python interpreter and some packages and 2) the <c>IJulia</c> package for julia.
 				</p>
 			</introduction>
 
 			<subsubsection>
 				<title>Installing Python</title>
+
 				<p>
-					Although python is currently available on MacOS, it is an old version.  There are
-					a number of ways to get python, but I will use <c>homebrew</c> do to this.
+					Although python is currently available on MacOS, it is an old version.  There are a number of ways to get python, but I will use <c>homebrew</c> do to this.
 				</p>
 
 				<p>
@@ -183,8 +254,7 @@
 							</p>
 
 							<p>
-								There are a number of related packages needed as well, but after a few minutes
-								you should have python installed.
+								There are a number of related packages needed as well, but after a few minutes you should have python installed.
 							</p>
 						</li>
 
@@ -194,9 +264,7 @@
 							</p>
 
 							<p>
-								<cd>
-								pip3 install jupyterlab
-								</cd>
+								<cd> pip3 install jupyterlab </cd>
 							</p>
 						</li>
 					</ol>
@@ -205,9 +273,9 @@
 
 			<subsubsection>
 				<title>Installing IJulia</title>
+
 				<p>
-					<c>IJulia</c> is a julia package for interaction.  It is installed like all
-					other packages and details are in Appendix \ref{ch:packages}, however you can do
+					<c>IJulia</c> is a julia package for interaction.  It is installed like all other packages and details are in <xref ref="ch-packages"/>, however you can do
 					<cd>
 					<cline>using Pkg</cline>
 					<cline>Pkg.add("IJulia")</cline>
@@ -217,6 +285,7 @@
 
 			<subsubsection>
 				<title>Running Jupyter</title>
+
 				<p>
 					Lastly, to run <c>jupyter</c>, in a terminal, enter
 				</p>
@@ -234,7 +303,9 @@
 				<figure xml:id="fig-jupyter">
 					<caption>Jupyter</caption>
 					<image source="images/getting-started/jupyter.png">
-						<shortdescription>jupyter</shortdescription>
+						<shortdescription>
+							jupyter
+						</shortdescription>
 					</image>
 				</figure>
 			</subsubsection>
@@ -243,73 +314,77 @@
 
 	<section>
 		<title>Using Jupyter</title>
+
 		<p>
-			Jupyter looks and acts like a web app.  There is a menu bar at the top, a tool bar
-			on the left side, a sidebar on the left part of the page and the main screen
-			(which starts with a launcher).
+			Jupyter looks and acts like a web app.  There is a menu bar at the top, a tool bar on the left side, a sidebar on the left part of the page and the main screen (which starts with a launcher).
 		</p>
 	</section>
 
 	<section>
 		<title>Installing Visual Studio Code</title>
+
 		<p>
-			Fill this out
+			A nice environment that is similar to jupyter is Visual Studio Code, often shortened to vscode.  This is an open-source text editor/integrated development environment (IDE) that has capability of handling many different languages.  The download and install is quite simple in that you should visit <url href="https://code.visualstudio.com">the VScode website</url>, click the <em>Download</em> button and install the standard way for your platform.  Opening the app, you should see something that looks like
+		</p>
+
+		<figure xml:id="fig-vscode">
+			<caption></caption>
+			<image source="images/getting-started/vscode.png">
+				<shortdescription>
+					(for accessibility)
+				</shortdescription>
+			</image>
+		</figure>
+
+		<p>
+			and it wouldn't hurt to go through the <em>Learn the Fundamentals</em> tutorial off the welcome page.
 		</p>
 	</section>
 
 	<section>
 		<title>Running Julia code inside VSCode</title>
+
 		<introduction>
 			<p>
 				MORE HERE.
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>Running a Julia REPL</title>
+
 			<p>
-				The <em>Julia REPL</em> is where you enter single julia statements.
-				A <url href="https://en.wikipedia.org/wiki/Read–eval–print_loop" visual="wikipedia">REPL</url> is short
-				for Read-Eval-Print-Loop and is often a interpretative shell where you can enter
-				commands in some language.  To get started, click on the REPL part of Atom and hit ENTER. This starts up julia and you should see:
+				The <em>Julia REPL</em> is where you enter single julia statements. A <url href="https://en.wikipedia.org/wiki/Read–eval–print_loop" visual="wikipedia">REPL</url> is short for Read-Eval-Print-Loop and is often a interpretative shell where you can enter commands in some language.  To get started, click on the REPL part of Atom and hit ENTER. This starts up julia and you should see:
 			</p>
 
 			<figure xml:id="fig-repl-startup">
 				<caption>REPL inside of VScode</caption>
 				<image source="images/getting-started/REPL-startup.png">
-					<shortdescription>REPL inside of VScode</shortdescription>
+					<shortdescription>
+						REPL inside of VScode
+					</shortdescription>
 				</image>
 			</figure>
 
 			<p>
-				Notice that it's ready for you to enter something with the <c>julia&gt;</c>
-				prompt.
+				Notice that it's ready for you to enter something with the <c>julia&gt;</c> prompt.
 			</p>
 
 			<p>
-				We will enter a few commands to get started.  All julia commands throughout the book
-				will be written in a \verb|monospace font| and it is a good idea to type along at
-				the same time.
+				We will enter a few commands to get started.  All julia commands throughout the book will be written in a \verb|monospace font| and it is a good idea to type along at the same time.
 			</p>
 
 			<p>
-				Enter <c>a=2</c> at one prompt and <c>b=3</c> at another prompt. You will see the response
-				of 2 and 3 as well.  (Additionally, you may notice that the <em>Workspace</em> tab in
-				the upper right has changed.  We will discuss that later.). Now enter <c>a+b</c> in a
-				prompt and you should see the result 5.
+				Enter <c>a=2</c> at one prompt and <c>b=3</c> at another prompt. You will see the response of 2 and 3 as well.  (Additionally, you may notice that the <em>Workspace</em> tab in the upper right has changed.  We will discuss that later.). Now enter <c>a+b</c> in a prompt and you should see the result 5.
 			</p>
 
 			<p>
-				Later in this chapter we do a simple plot, but need to load a package first.  Type <c>]</c>
-				at a prompt and the julia prompt will turn into <c>(@1.4) pkg></c> which is the package
-				manager mode.  First, type <c>up</c> to update all packages.  You will need to authenticate first.  Your default browser will automatically open and you will need to login. After you authenticate, the browser will say that it was successful and you can close that tab.  Return to Atom and you should see that julia is updating some packages.  This may take a minute or so.
+				Later in this chapter we do a simple plot, but need to load a package first.  Type <c>]</c> at a prompt and the julia prompt will turn into <c>(@1.11) pkg&gt;</c> which is the package manager mode.  First, type <c>up</c> to update all packages.  You will need to authenticate first.  Your default browser will automatically open and you will need to login. After you authenticate, the browser will say that it was successful and you can close that tab.  Return to Atom and you should see that julia is updating some packages.  This may take a minute or so.
 			</p>
 
 			<p>
-				Next, we will install the <em>Plots</em> package.  At the <c>(@1.4) pkg></c> prompt,
-				type <c>add Plots</c>.  Julia will need to add a lot of other packages, but you won't
-				need to worry about this.  We will use this in the next section. We will also learn much
-				more about packages in <xref ref="ch-packages"/>.
+				Next, we will install the <em>Plots</em> package.  At the <c>(@1.11) pkg&gt;</c> prompt, type <c>add Plots</c>.  Julia will need to add a lot of other packages, but you won't need to worry about this.  We will use this in the next section. We will also learn much more about packages in <xref ref="ch-packages"/>.
 			</p>
 
 			<p>
@@ -318,24 +393,21 @@
 		</subsection>
 	</section>
 
-	<section xml:id="sect-kernel"><title>The kernel</title>
+	<section xml:id="sect-kernel">
+		<title>The kernel</title>
+
 		<introduction>
 			<p>
-				In many ways, julia is a program like any other that you run on your computer,
-				however because of the nature of it parsing statements and then giving output, you have
-				to think about it a bit differently. When you start julia, we often will say that
-				you are starting the kernel, which is a basic state which you can feed variables
-				and statements to julia and get output.  There are three different ways that this can occur:
+				In many ways, julia is a program like any other that you run on your computer, however because of the nature of it parsing statements and then giving output, you have to think about it a bit differently. When you start julia, we often will say that you are starting the kernel, which is a basic state which you can feed variables and statements to julia and get output.  There are three different ways that this can occur:
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>The REPL</title>
+
 			<p>
-				If you open julia directly from your computer (either clicking on an icon or using
-				some sort of application launcher), you'll set the REPL as explained above.  This
-				is a very simple, but often helpful, way to enter julia code.  When this starts up
-				you enter commands like:
+				If you open julia directly from your computer (either clicking on an icon or using some sort of application launcher), you'll set the REPL as explained above.  This is a very simple, but often helpful, way to enter julia code.  When this starts up you enter commands like:
 			</p>
 
 			<p>
@@ -350,61 +422,32 @@
 				This all goes to the julia kernel.
 			</p>
 		</subsection>
-
-		<subsection>
-			<title>Juno and the Atom Editor</title>
-			<p>
-				As we saw above, the Atom Editor and the embedded Juno packages allows you to have
-				much more control over julia code.
-			</p>
-		</subsection>
 	</section>
 
 	<section>
 		<title>Restarting the Kernel</title>
+
 		<introduction>
 			<p>
-				Julia doesn't have a way of removing variables, functions or modules, whereas
-				often we will need to do so.  The best way is to restart the kernel, which basically
-				means to shut down julia and restart.  It depends on how this you run julia.
+				Julia doesn't have a way of removing variables, functions or modules, whereas often we will need to do so.  The best way is to restart the kernel, which basically means to shut down julia and restart.  It depends on how this you run julia.
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>Restarting the Kernel in the julia REPL</title>
+
 			<p>
-				This is probably the simplest.  If you opened julia by launching the app by
-				double-clicking an icon, just close the window and you stop the program.
-				Note: you lose everything that you have done, which is another reason why I
-				don't use this often.  Then restart by reopening julia.
+				This is probably the simplest.  If you opened julia by launching the app by double-clicking an icon, just close the window and you stop the program. Note: you lose everything that you have done, which is another reason why I don't use this often.  Then restart by reopening julia.
 			</p>
 		</subsection>
+
 
 		<subsection>
 			<title>Restarting the Kernel in Jupyter</title>
-			<p>
-				To restart the kernel in Jupyter, click the <em>Kernel</em> menu, then select
-				<em>Restart Kernel\ldots</em>. To restart, just rerun a cell in Jupyter.
-				Note: you'll probably need to reload any packages in the notebook if you have any.
-			</p>
-		</subsection>
-
-		<subsection>
-			<title>Restarting the Kernel in Atom/Juno</title>
-			<p>
-				To restart the kernel in Atom/Juno, go to the <em>Packages</em> Menu, then select
-				<em>Juno</em>, then <em>Stop Julia</em>.  You should see in the REPL pane (at the bottom),
-				a message that
-			</p>
 
 			<p>
-				<cd>
-				Julia has exited.
-				</cd>
-			</p>
-
-			<p>
-				Hit enter in the REPL or re-evaluate a line in a julia file to restart the kernel.
+				To restart the kernel in Jupyter, click the <em>Kernel</em> menu, then select <em>Restart Kernel\ldots</em>. To restart, just rerun a cell in Jupyter. Note: you'll probably need to reload any packages in the notebook if you have any.
 			</p>
 		</subsection>
 	</section>
