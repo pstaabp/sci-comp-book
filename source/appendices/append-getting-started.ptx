@@ -5,83 +5,17 @@
 
 	<introduction>
 		<p>
-			This appendix shows how to get started with using Julia.  There are three ways presented here.  First, there is a website <c>Repl.it</c>. The other ways require downloading the software from the main julia website. After installing the software it can be accessed with either the Atom Editor with Juno package or secondly with a Jupyter notebook.
+			This appendix shows how to get started with using Julia.  The recommended way is first to install julia as described in <xref ref="sect-installing-julia"/>.  Then follow the steps in <xref ref="sect-installing-vscode"/> to install Visual Studio Code, an open-source text editor.  Some other methods include using a website <c>Repl.it</c> to run julia in a webpage on a remote server, which the instructions are not up to date. Lastly, there are some older instructions to install and run jupyter which creates a local web server which you can run julia notebooks in any browser.
 		</p>
 	</introduction>
 
-	<section>
-		<title>using the <c>Repl.it</c> website</title>
-
-		<introduction>
-			<p>
-				To get started immediately with julia, we can use the <url href="https://repl.it" visual="repl.it">http://repl.it</url> website.  Navigate to that in a browser and set yourself up with an account to get started.  You will answer a number of questions including languages that you are interested in.  At the end, you can click the big blue button in the top right corner <c>+ new repl</c> to get a playground.  Select \text{julia} for the language. You should get something that looks like:
-			</p>
-
-			<figure xml:id="fig-repl-it">
-				<caption>Screenshot of Repl.it</caption>
-				<image source="images/getting-started/repl.it.png">
-					<shortdescription>
-						Screenshot of Repl.it
-					</shortdescription>
-				</image>
-			</figure>
-
-			<p>
-				The idea with the website is that you can have files (for julia files, they end in <c>.jl</c>) which are listed on the left side. The middle is the current file being edited (and by default this is called <c>main.jl</c>) and then the REPL which has either output from the run file or by entering commands is on the right side.
-			</p>
-
-			<p>
-				Try entered <c>2+2</c> in the right side and hitting ENTER.  You'll see 4 and this means that everything seems to be working.
-			</p>
-		</introduction>
 
 
-		<subsection>
-			<title>Limitations of <c>Repl.it</c></title>
-
-			<p>
-				Although <c>Repl.it</c> is nice when starting out, there's a number of limitations:
-			</p>
-
-			<p>
-				<ul>
-					<li>
-						<p>
-							Since it is a website, you must have internet access.
-						</p>
-					</li>
-
-					<li>
-						<p>
-							Also, since it is a website, there is latency, that is it may appear that commands and actions don't happen right away.
-						</p>
-					</li>
-
-					<li>
-						<p>
-							It doesn't appear to use the latest version of julia (or probably any language). When you're starting out, this isn't that important, but you may be trying to find a feature that was newly released that isn't on <c>Repl.it</c>.
-						</p>
-					</li>
-
-					<li>
-						<p>
-							Many of the advanced features of julia don't work quite including the parallel processing and GPU features.
-						</p>
-					</li>
-				</ul>
-			</p>
-
-			<p>
-				In short, if you are just starting in julia or trying it out, it's a good way to start, but I would download your own version of it as soon as you can.
-			</p>
-		</subsection>
-	</section>
-
-	<section>
+	<section xml:id="sect-installing-julia">
 		<title>Downloading and Installing Julia</title>
 
 		<p>
-			At the top of ,  <url href="https://www.julialang.org">the main Julia website</url>, click the green Download button. At the top, you will get a single line to copy paste into Terminal (MacOS or Linux) or PowerShell in Windows. This will install both julia and a nice tool called <c>juliaup</c> which is a program that can update julia.  Note that all of the commands were run on a Mac (with a M1 chip) in August 2024.  If you run these commands on a different platform at a different time, your results will vary a bit.
+			At the top of <url href="https://www.julialang.org">the main Julia website</url>, click the green Download button, taking you to the downloads page.  At the top of this page, you will get a single line to copy paste into Terminal (MacOS or Linux) or PowerShell in Windows. This will install both julia and a nice tool called <c>juliaup</c> which is a program that can update julia.  Note that all of the commands were run on a Mac (with a M1 chip) in August 2024.  If you run these commands on a different platform at a different time, your results will vary a bit.
 		</p>
 
 		<p>
@@ -196,6 +130,191 @@
 		<p>
 			Try <c>2+2</c> and hit ENTER.  You should see 4 and you're off and running.  If you played with the <c>Repl.it</c> website, you'll notice that it is much more responsive.  Although this is way to run julia, it generally isn't the way most people use it.
 		</p>
+	</section>
+
+	<section xml:id="sect-installing-vscode">
+		<title>Installing Visual Studio Code</title>
+
+		<p>
+			A nice environment that is similar to jupyter is Visual Studio Code, often shortened to vscode.  This is an open-source text editor/integrated development environment (IDE) that has capability of handling many different languages.  The download and install is quite simple in that you should visit <url href="https://code.visualstudio.com">the VScode website</url>, click the <em>Download</em> button and install the standard way for your platform.  Opening the app, you should see something that looks like
+		</p>
+
+		<figure xml:id="fig-vscode">
+			<caption></caption>
+			<image source="images/getting-started/vscode.png">
+				<shortdescription>
+					(for accessibility)
+				</shortdescription>
+			</image>
+		</figure>
+
+		<p>
+			and it wouldn't hurt to go through the <em>Learn the Fundamentals</em> tutorial off the welcome page.
+		</p>
+
+		<p>Since VSCode works with files on your local computer, it is fundamental to have a folder that VSCode works from.  You should have or create a folder that is a project.  If you don't have one currently, use the Finder (MacOS) or Explorer (Windows) to create one inside your <c>Documents</c> folder called <c>My Project</c>. Next, in VSCode, go to <em>File</em>, <em>Add Folder to Workspace...</em> and navigate to the folder you just made.  You will be asked if you trust this folder.
+
+		</p>
+
+		<p>
+			Although you can use VSCode to access the REPL or write files written in Julia, it's most powerful and flexible by running a notebook file.  To do this there are two ways to start a file:
+		</p>
+
+		<p>
+			<ol>
+				<li>
+					<p>
+						Open a new document (<em>File</em>, then <em>New File...</em>). Then save it somewhere ending with <c>.ipynb</c> for example <c>test.ipynb</c>. You should see a file that looks like
+					</p>
+
+					<image source="images/getting-started/ipynb.png">
+						<shortdescription>A test.ipynb file. </shortdescription>
+					</image>
+				</li>
+
+				<li>
+					<p>
+						Another way to start a file is to click on the top left sidebar button that looks like two file icons.  Create a new file inside the project by selecting the directory that you want it to go in.  (If nothing is selected it will go in the top-level). Hover over the name of the project and click the icon that looks like a file with a +.   It will make a new file which you should name like <c>test.ipynb</c>.
+					</p>
+				</li>
+			</ol>
+		</p>
+
+		<p>Next, in the upper right corner, you should see "Select Kernel".  In this case, select the Julia 1.11 kernel if you installed that.  If not, select one that was installed.</p>
+
+		<p>In the cell, enter <c>2+2</c> or some simple calculation.  If you get 4 below the cell with no errors, everything was installed correctly.  </p>
+
+		<p>
+			It is a good idea to also install the <c>IJulia</c> package.  You can do this within VSCode, by first revealing a terminal with <em>View</em>, the <em>Terminal</em> (also CTRL ` --backtick) will work or CMD-J on the Mac. You should see the bottom of the VSCode window split revealing a terminal.  Within this type <c>julia</c>, then the following two lines:
+		</p>
+
+		<p>
+			<cd>
+				<cline>using Pkg</cline>
+				<cline>Pkg.add("IJulia")</cline>
+			</cd>
+		</p>
+
+	</section>
+
+	<section>
+		<title>Running Julia code inside VSCode</title>
+
+		<introduction>
+			<p>
+				MORE HERE.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Running a Julia REPL</title>
+
+			<p>
+				The <em>Julia REPL</em> is where you enter single julia statements. A <url href="https://en.wikipedia.org/wiki/Read–eval–print_loop" visual="wikipedia">REPL</url> is short for Read-Eval-Print-Loop and is often a interpretative shell where you can enter commands in some language.  To get started, click on the REPL part of Atom and hit ENTER. This starts up julia and you should see:
+			</p>
+
+			<figure xml:id="fig-repl-startup">
+				<caption>REPL inside of VScode</caption>
+				<image source="images/getting-started/REPL-startup.png">
+					<shortdescription>
+						REPL inside of VScode
+					</shortdescription>
+				</image>
+			</figure>
+
+			<p>
+				Notice that it's ready for you to enter something with the <c>julia&gt;</c> prompt.
+			</p>
+
+			<p>
+				We will enter a few commands to get started.  All julia commands throughout the book will be written in a \verb|monospace font| and it is a good idea to type along at the same time.
+			</p>
+
+			<p>
+				Enter <c>a=2</c> at one prompt and <c>b=3</c> at another prompt. You will see the response of 2 and 3 as well.  (Additionally, you may notice that the <em>Workspace</em> tab in the upper right has changed.  We will discuss that later.). Now enter <c>a+b</c> in a prompt and you should see the result 5.
+			</p>
+
+			<p>
+				Later in this chapter we do a simple plot, but need to load a package first.  Type <c>]</c> at a prompt and the julia prompt will turn into <c>(@1.11) pkg&gt;</c> which is the package manager mode.  First, type <c>up</c> to update all packages.  You will need to authenticate first.  Your default browser will automatically open and you will need to login. After you authenticate, the browser will say that it was successful and you can close that tab.  Return to Atom and you should see that julia is updating some packages.  This may take a minute or so.
+			</p>
+
+			<p>
+				Next, we will install the <em>Plots</em> package.  At the <c>(@1.11) pkg&gt;</c> prompt, type <c>add Plots</c>.  Julia will need to add a lot of other packages, but you won't need to worry about this.  We will use this in the next section. We will also learn much more about packages in <xref ref="ch-packages"/>.
+			</p>
+
+			<p>
+				To exit the package manager mode, enter CONTROL-C.  You will leave this mode and return to julia prompt.
+			</p>
+		</subsection>
+	</section>
+
+	<section>
+		<title>using the <c>Repl.it</c> website</title>
+
+		<introduction>
+			<p>
+				To get started immediately with julia, we can use the <url href="https://repl.it" visual="repl.it">http://repl.it</url> website.  Navigate to that in a browser and set yourself up with an account to get started.  You will answer a number of questions including languages that you are interested in.  At the end, you can click the big blue button in the top right corner <c>+ new repl</c> to get a playground.  Select \text{julia} for the language. You should get something that looks like:
+			</p>
+
+			<figure xml:id="fig-repl-it">
+				<caption>Screenshot of Repl.it</caption>
+				<image source="images/getting-started/repl.it.png">
+					<shortdescription>
+						Screenshot of Repl.it
+					</shortdescription>
+				</image>
+			</figure>
+
+			<p>
+				The idea with the website is that you can have files (for julia files, they end in <c>.jl</c>) which are listed on the left side. The middle is the current file being edited (and by default this is called <c>main.jl</c>) and then the REPL which has either output from the run file or by entering commands is on the right side.
+			</p>
+
+			<p>
+				Try entered <c>2+2</c> in the right side and hitting ENTER.  You'll see 4 and this means that everything seems to be working.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Limitations of <c>Repl.it</c></title>
+
+			<p>
+				Although <c>Repl.it</c> is nice when starting out, there's a number of limitations:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							Since it is a website, you must have internet access.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Also, since it is a website, there is latency, that is it may appear that commands and actions don't happen right away.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							It doesn't appear to use the latest version of julia (or probably any language). When you're starting out, this isn't that important, but you may be trying to find a feature that was newly released that isn't on <c>Repl.it</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Many of the advanced features of julia don't work quite including the parallel processing and GPU features.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				In short, if you are just starting in julia or trying it out, it's a good way to start, but I would download your own version of it as soon as you can.
+			</p>
+		</subsection>
 	</section>
 
 	<section>
@@ -320,78 +439,7 @@
 		</p>
 	</section>
 
-	<section>
-		<title>Installing Visual Studio Code</title>
 
-		<p>
-			A nice environment that is similar to jupyter is Visual Studio Code, often shortened to vscode.  This is an open-source text editor/integrated development environment (IDE) that has capability of handling many different languages.  The download and install is quite simple in that you should visit <url href="https://code.visualstudio.com">the VScode website</url>, click the <em>Download</em> button and install the standard way for your platform.  Opening the app, you should see something that looks like
-		</p>
-
-		<figure xml:id="fig-vscode">
-			<caption></caption>
-			<image source="images/getting-started/vscode.png">
-				<shortdescription>
-					(for accessibility)
-				</shortdescription>
-			</image>
-		</figure>
-
-		<p>
-			and it wouldn't hurt to go through the <em>Learn the Fundamentals</em> tutorial off the welcome page.
-		</p>
-	</section>
-
-	<section>
-		<title>Running Julia code inside VSCode</title>
-
-		<introduction>
-			<p>
-				MORE HERE.
-			</p>
-		</introduction>
-
-
-		<subsection>
-			<title>Running a Julia REPL</title>
-
-			<p>
-				The <em>Julia REPL</em> is where you enter single julia statements. A <url href="https://en.wikipedia.org/wiki/Read–eval–print_loop" visual="wikipedia">REPL</url> is short for Read-Eval-Print-Loop and is often a interpretative shell where you can enter commands in some language.  To get started, click on the REPL part of Atom and hit ENTER. This starts up julia and you should see:
-			</p>
-
-			<figure xml:id="fig-repl-startup">
-				<caption>REPL inside of VScode</caption>
-				<image source="images/getting-started/REPL-startup.png">
-					<shortdescription>
-						REPL inside of VScode
-					</shortdescription>
-				</image>
-			</figure>
-
-			<p>
-				Notice that it's ready for you to enter something with the <c>julia&gt;</c> prompt.
-			</p>
-
-			<p>
-				We will enter a few commands to get started.  All julia commands throughout the book will be written in a \verb|monospace font| and it is a good idea to type along at the same time.
-			</p>
-
-			<p>
-				Enter <c>a=2</c> at one prompt and <c>b=3</c> at another prompt. You will see the response of 2 and 3 as well.  (Additionally, you may notice that the <em>Workspace</em> tab in the upper right has changed.  We will discuss that later.). Now enter <c>a+b</c> in a prompt and you should see the result 5.
-			</p>
-
-			<p>
-				Later in this chapter we do a simple plot, but need to load a package first.  Type <c>]</c> at a prompt and the julia prompt will turn into <c>(@1.11) pkg&gt;</c> which is the package manager mode.  First, type <c>up</c> to update all packages.  You will need to authenticate first.  Your default browser will automatically open and you will need to login. After you authenticate, the browser will say that it was successful and you can close that tab.  Return to Atom and you should see that julia is updating some packages.  This may take a minute or so.
-			</p>
-
-			<p>
-				Next, we will install the <em>Plots</em> package.  At the <c>(@1.11) pkg&gt;</c> prompt, type <c>add Plots</c>.  Julia will need to add a lot of other packages, but you won't need to worry about this.  We will use this in the next section. We will also learn much more about packages in <xref ref="ch-packages"/>.
-			</p>
-
-			<p>
-				To exit the package manager mode, enter CONTROL-C.  You will leave this mode and return to julia prompt.
-			</p>
-		</subsection>
-	</section>
 
 	<section xml:id="sect-kernel">
 		<title>The kernel</title>
@@ -440,6 +488,10 @@
 			<p>
 				This is probably the simplest.  If you opened julia by launching the app by double-clicking an icon, just close the window and you stop the program. Note: you lose everything that you have done, which is another reason why I don't use this often.  Then restart by reopening julia.
 			</p>
+
+			<p>
+				If you started julia from a terminal or PowerShell, quit julia using CTRL-D.  Then restart julia with the command <c>julia</c>.
+			</p>
 		</subsection>
 
 
@@ -448,6 +500,15 @@
 
 			<p>
 				To restart the kernel in Jupyter, click the <em>Kernel</em> menu, then select <em>Restart Kernel\ldots</em>. To restart, just rerun a cell in Jupyter. Note: you'll probably need to reload any packages in the notebook if you have any.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Restarting the Kernel in VSCode</title>
+
+			<p>
+				To restart the kernel in VSCode click the <em>Restart</em> button at the top of the document.  Unfortunately there is not indication that anything happens, but reevaluating a cell should indicate that it has been restarted. Note that the cells are numbers and should restart at 1.
 			</p>
 		</subsection>
 	</section>
