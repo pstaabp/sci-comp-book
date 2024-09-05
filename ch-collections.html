@@ -8,7 +8,7 @@
 <html lang="en-US" dir="ltr">
 <head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Plotting Basics</title>
+<title>Collections, Sets and Dictionaries</title>
 <meta name="Keywords" content="Authored in PreTeXt">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:type" content="book">
@@ -180,7 +180,7 @@ window.MathJax = {
 <ol id="searchresults" class="searchresults"></ol>
 </div>
 </div>
-<span class="nav-other-controls"></span><span class="treebuttons"><a class="previous-button button" href="part-plotting.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="part-plotting.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="ch-plotting-makie.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R}
+<span class="nav-other-controls"></span><span class="treebuttons"><a class="previous-button button" href="ch-adv-functions.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="part-advanced.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="ch-modules.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R}
 \newcommand{\lt}{&lt;}
 \newcommand{\gt}{&gt;}
 \newcommand{\amp}{&amp;}
@@ -481,10 +481,10 @@ window.MathJax = {
 </li>
 </ul>
 </li>
-<li class="toc-item toc-part contains-active">
+<li class="toc-item toc-part">
 <div class="toc-title-box"><a href="part-plotting.html" class="internal"><span class="codenumber">III</span> <span class="title">Plotting in Julia</span></a></div>
-<ul class="structural toc-item-list contains-active">
-<li class="toc-item toc-chapter active">
+<ul class="structural toc-item-list">
+<li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-plotting-basics.html" class="internal"><span class="codenumber">12</span> <span class="title">Plotting Basics</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-basics.html#ch-plotting-basics-3" class="internal"><span class="codenumber">12.1</span> <span class="title">Introduction to Makie</span></a></div></li>
@@ -649,9 +649,9 @@ window.MathJax = {
 </li>
 </ul>
 </li>
-<li class="toc-item toc-part">
+<li class="toc-item toc-part contains-active">
 <div class="toc-title-box"><a href="part-advanced.html" class="internal"><span class="codenumber">V</span> <span class="title">Advanced Features of Julia</span></a></div>
-<ul class="structural toc-item-list">
+<ul class="structural toc-item-list contains-active">
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-adv-functions.html" class="internal"><span class="codenumber">19</span> <span class="title">Advanced Function Features of Julia</span></a></div>
 <ul class="structural toc-item-list">
@@ -666,7 +666,7 @@ window.MathJax = {
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-8" class="internal"><span class="codenumber">19.6</span> <span class="title">Function Arguments</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-chapter">
+<li class="toc-item toc-chapter active">
 <div class="toc-title-box"><a href="ch-collections.html" class="internal"><span class="codenumber">20</span> <span class="title">Collections, Sets and Dictionaries</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-collections.html#ch-collections-3" class="internal"><span class="codenumber">20.1</span> <span class="title">Abstract Collection and Iteration</span></a></div></li>
@@ -1066,111 +1066,100 @@ window.MathJax = {
 </ul>
 </li>
 </ul></nav></div>
-<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="chapter" id="ch-plotting-basics"><h2 class="heading">
-<span class="type">Chapter</span><span class="space"> </span><span class="codenumber">12</span><span class="space"> </span><span class="title">Plotting Basics</span>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="chapter" id="ch-collections"><h2 class="heading">
+<span class="type">Chapter</span><span class="space"> </span><span class="codenumber">20</span><span class="space"> </span><span class="title">Collections, Sets and Dictionaries</span>
 </h2>
-<section class="introduction" id="ch-plotting-basics-2"><div class="para" id="ch-plotting-basics-2-1">Plotting is an important aspect of anything scientific or mathematical. The ability to visualize a complex model or data set is often key to understanding it. In Julia, there are two different systems currently that are both used.  These are called <em class="emphasis">Makie</em> and the <em class="emphasis">Plots</em> package.</div> <div class="para" id="ch-plotting-basics-2-2">Also, as is common with open systems, like Julia, both Makie and Plots are user grown systems that are evolving separate from each other.  Both have advantages and philosophies associated with them.  We will cover them each in depth in the next two chapters.</div></section><section class="section" id="ch-plotting-basics-3"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">12.1</span><span class="space"> </span><span class="title">Introduction to Makie</span>
+<section class="introduction" id="ch-collections-2"><div class="para" id="ch-collections-2-1">In <a href="ch-arrays.html" class="internal" title="Chapter 6: Arrays">Chapter 6</a>, we introduced an array, which is a set of things (integers, floats, string or other) with an order to it.  Julia has the notion of a collection, which is an abstract notion of a collection.  In this chapter, we will examine the abstract collection as well as discuss concrete versions, some of which we have seen previously and introduce Sets and Dictionaries an important collection types.</div></section><section class="section" id="ch-collections-3"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">20.1</span><span class="space"> </span><span class="title">Abstract Collection and Iteration</span>
 </h3>
-<div class="para" id="ch-plotting-basics-3-2">On the official <a class="external" href="https://docs.makie.org" target="_blank">Makie Home Page</a><details class="ptx-footnote" aria-live="polite" id="ch-plotting-basics-3-2-2"><summary class="ptx-footnote__number" title="Footnote 12.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="ch-plotting-basics-3-2-2"><code class="code-inline tex2jax_ignore">makie.org</code></div></details>: <em class="emphasis">Makie is a data visualization ecosystem for the Julia programming language, with high performance and extensibility.</em>
-</div>
-<div class="para" id="ch-plotting-basics-3-3">There is definitely a philosophy of making attractive plots in Makie.  In fact, there is another website called <a class="external" href="https://beautiful.makie.org/dev/" target="_blank">Beautiful Makie</a><details class="ptx-footnote" aria-live="polite" id="ch-plotting-basics-3-3-2"><summary class="ptx-footnote__number" title="Footnote 12.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-plotting-basics-3-3-2"><code class="code-inline tex2jax_ignore">beautiful.makie.org</code></div></details> whose purpose is to show off the amazing plots. The following is an example of a combination surface and vector field plot</div>
-<figure class="figure figure-like" id="fig-makie-example"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/plots/makie-example.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">12.1<span class="period">.</span></span><span class="space"> </span>Example of a Makie Plot</figcaption></figure><div class="para" id="ch-plotting-basics-3-5">I won’t post the code here, but it is available at the Beautiful Makie website. However, it is about 20 lines of code, which is quite compact for such a plot.</div></section><section class="section" id="ch-plotting-basics-4"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">12.2</span><span class="space"> </span><span class="title">Introduction to the <em class="emphasis">Plots</em> package</span>
+<div class="para" id="ch-collections-3-2">A collection is an ordered set of things. The concrete objects we have seen so far in this text include arrays, tuples and ranges.  Any collection has the following functions applied to it</div>
+<div class="para logical" id="ch-collections-3-3"><dl class="description-list">
+<dt id="ch-collections-3-3-1-1"><code class="code-inline tex2jax_ignore">isempty</code></dt>
+<dd><div class="para" id="ch-collections-3-3-1-1-2">A boolean function that determines if a collection is empty.  <code class="code-inline tex2jax_ignore">isempty([1,2,3])</code> returns <code class="code-inline tex2jax_ignore">false</code> and <code class="code-inline tex2jax_ignore">isempty(3:2)</code> returns true because <code class="code-inline tex2jax_ignore">3:2</code> is a range and since the second number is smaller than the first, there are no elements in it.</div></dd>
+<dt id="ch-collections-3-3-1-2"><code class="code-inline tex2jax_ignore">empty!</code></dt>
+<dd><div class="para" id="ch-collections-3-3-1-2-2">This function takes a collection and removes all elements of the collection.  If <code class="code-inline tex2jax_ignore">A=[1,2,3,4]</code> then applying <code class="code-inline tex2jax_ignore">empty!(A)</code> results in <code class="code-inline tex2jax_ignore">A</code> being the empty array <code class="code-inline tex2jax_ignore">[]</code>.</div></dd>
+<dt id="ch-collections-3-3-1-3"><code class="code-inline tex2jax_ignore">length</code></dt>
+<dd>
+<div class="para" id="ch-collections-3-3-1-3-2">A function that returns the number of elements in the collection.  As we’ve seen before <code class="code-inline tex2jax_ignore">length([1,2,3])</code> returns 3, but note also <code class="code-inline tex2jax_ignore">(1,2,3,4)</code> returns <code class="code-inline tex2jax_ignore">4</code>.   <code class="code-inline tex2jax_ignore">length(1:2:11)</code> returns 6.</div>
+<div class="para" id="ch-collections-3-3-1-3-3">Note that a 2D array (Matrix) is also a collection and if <code class="code-inline tex2jax_ignore">C=[1,2; 3, 4; 5, 6]</code> is the 3 by 2 matrix, then <code class="code-inline tex2jax_ignore">length(C)</code> returns <code class="code-inline tex2jax_ignore">6</code>, the total number of elements in the Matrix.  This applies also to higher dimensional arrays.</div>
+</dd>
+</dl></div>
+<div class="para" id="ch-collections-3-4">One can access all of the elements of a collection by iterating over the elements. One simple way of doing this is with a for loop and we have seen this in <a href="ch-boolean-loops.html" class="internal" title="Chapter 5: Boolean Statements, Loops and Branching">Chapter 5</a>.  For example</div>
+<div class="para logical" id="ch-collections-3-5"><pre class="code-display tex2jax_ignore">for i=1:4
+  @show i
+end
+</pre></div>
+<div class="para" id="ch-collections-3-6">will print out (show) all of the elements in the range <code class="code-inline tex2jax_ignore">1:4</code>. Recall also, we can use a for loop over an array like</div>
+<div class="para logical" id="ch-collections-3-7"><pre class="code-display tex2jax_ignore">for i in [5, 9, 10, 2]
+  @show i
+end
+</pre></div>
+<div class="para" id="ch-collections-3-8">will show each of the elements in the array.</div></section><section class="section" id="ch-collections-4"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">20.2</span><span class="space"> </span><span class="title">Sets</span>
 </h3>
-<div class="para" id="ch-plotting-basics-4-2">
-<em class="emphasis">Plots</em> is a packaging system that has some similar ideas to that of Makie. According to the <a class="external" href="https://docs.juliaplots.org" target="_blank">Plots website</a><details class="ptx-footnote" aria-live="polite" id="ch-plotting-basics-4-2-3"><summary class="ptx-footnote__number" title="Footnote 12.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="ch-plotting-basics-4-2-3"><code class="code-inline tex2jax_ignore">juliaplots.org</code></div></details>, the goals with the package are:</div>
-<div class="para logical" id="ch-plotting-basics-4-3"><ul class="disc" id="ch-plotting-basics-4-3-1">
-<li id="ch-plotting-basics-4-3-1-1"><div class="para" id="ch-plotting-basics-4-3-1-1-1">
-<em class="emphasis">Powerful.</em> Do more with less. Complex visualizations become easy.</div></li>
-<li id="ch-plotting-basics-4-3-1-2"><div class="para" id="ch-plotting-basics-4-3-1-2-1">
-<em class="emphasis">Intuitive.</em> Start generating plots without reading volumes of documentation. Commands should "just work."</div></li>
-<li id="ch-plotting-basics-4-3-1-3"><div class="para" id="ch-plotting-basics-4-3-1-3-1">
-<em class="emphasis">Concise.</em> Less code means fewer mistakes and more efficient development and analysis.</div></li>
-<li id="ch-plotting-basics-4-3-1-4"><div class="para" id="ch-plotting-basics-4-3-1-4-1">
-<em class="emphasis">Flexible.</em> Produce your favorite plots from your favorite package, only quicker and simpler.</div></li>
-<li id="ch-plotting-basics-4-3-1-5"><div class="para" id="ch-plotting-basics-4-3-1-5-1">
-<em class="emphasis">Consistent.</em> Don’t commit to one graphics package. Use the same code and access the strengths of all backends.</div></li>
-<li id="ch-plotting-basics-4-3-1-6"><div class="para" id="ch-plotting-basics-4-3-1-6-1">
-<em class="emphasis">Lightweight.</em> Very few dependencies, since backends are loaded and initialized dynamically.</div></li>
-<li id="ch-plotting-basics-4-3-1-7"><div class="para" id="ch-plotting-basics-4-3-1-7-1">
-<em class="emphasis">Smart.</em> It’s not quite AGI, but Plots should figure out what you want it to do... not just what you tell it.</div></li>
-</ul></div>
-<div class="para" id="ch-plotting-basics-4-4">An example of using Plots is the following Lorenz attractor as an animator.  If you return to the Makie Homepage, you’ll see a similar example.</div>
-<figure class="figure figure-like" id="fig-plots-example"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/plots/plots-example.gif" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">12.2<span class="period">.</span></span><span class="space"> </span>Example Animated plot using the Plots package</figcaption></figure></section><section class="section" id="ch-plotting-basics-5"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">12.3</span><span class="space"> </span><span class="title">Plotting is Hard</span>
+<div class="para" id="ch-collections-4-2">A mathematical <em class="emphasis">set</em> is a collect of things without an order.    For example, mathematically, a set is generally written as <span class="process-math">\(\{1,2,3\}\)</span> and there are important functions like union and intersection that is used.  If <span class="process-math">\(A=\{1,2,3\}\)</span> and <span class="process-math">\(B=\{3,4,5\}\text{,}\)</span> then <span class="process-math">\(A \cup B = \{1,2,3,4,5\}\)</span> and <span class="process-math">\(A \cap B = \{3\}\text{.}\)</span>  Also the sets <span class="process-math">\(\{1,2,3\}\)</span> and <span class="process-math">\(\{3,2,1\}\)</span> are the same in that order of the elements is not important.</div>
+<div class="para" id="ch-collections-4-3">Julia has a <code class="code-inline tex2jax_ignore">Set</code> is a collection that behaves the same way. If</div>
+<div class="para logical" id="ch-collections-4-4"><pre class="code-display tex2jax_ignore">A=Set([1,2,3])
+B=Set([3,2,1])
+</pre></div>
+<div class="para" id="ch-collections-4-5">then first notice that the order of the element may be switched around on output, but if we check for equality with <code class="code-inline tex2jax_ignore">A==B</code>, then the result is <code class="code-inline tex2jax_ignore">true</code><details class="ptx-footnote" aria-live="polite" id="ch-collections-4-5-3"><summary class="ptx-footnote__number" title="Footnote 20.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="ch-collections-4-5-3">If we did <code class="code-inline tex2jax_ignore">[1,2,3]==[3,2,1]</code> on arrays, the result is <code class="code-inline tex2jax_ignore">false</code>
+</div></details>
+</div>
+<div class="para" id="ch-collections-4-6">Julia also has the functions <code class="code-inline tex2jax_ignore">union</code> and <code class="code-inline tex2jax_ignore">intersection</code> that work on <code class="code-inline tex2jax_ignore">Sets</code>, but also any iterators. <code class="code-inline tex2jax_ignore">union(Set([1,2,3]),Set([3,4,5]))</code> returns <code class="code-inline tex2jax_ignore">Set([1,2,3,4,5])</code>, but <code class="code-inline tex2jax_ignore">union([3,4,8],3:7)</code> returns <code class="code-inline tex2jax_ignore">[3,4,8,5,6,7]</code> and notice that in this case the order is kept.</div>
+<div class="para" id="ch-collections-4-7">
+<code class="code-inline tex2jax_ignore">Sets</code> don’t need to be sets of integers.  A set of a string produces the characters.  For example, <code class="code-inline tex2jax_ignore">Set("hello")</code> returns</div>
+<div class="para logical" id="ch-collections-4-8"><pre class="code-display tex2jax_ignore">Set{Char} with 4 elements:
+  'h'
+  'l'
+  'e'
+  'o'
+</pre></div>
+<div class="para" id="ch-collections-4-9">and notice that is it the set of characters in the work "hello" and "l" is not repeated.</div>
+<div class="para" id="ch-collections-4-10">Another function is the boolean version of <code class="code-inline tex2jax_ignore">in</code> or <code class="code-inline tex2jax_ignore">ϵ</code> that will return <code class="code-inline tex2jax_ignore">true</code> if a element is in the set, <code class="code-inline tex2jax_ignore">false</code> otherwise. For example if <code class="code-inline tex2jax_ignore">A=Set([1,3,5,7,9])</code>, then <code class="code-inline tex2jax_ignore">7 ϵ A</code> returns <code class="code-inline tex2jax_ignore">true</code>.</div></section><section class="section" id="ch-collections-5"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">20.3</span><span class="space"> </span><span class="title">Dictionaries</span>
 </h3>
-<div class="para" id="ch-plotting-basics-5-2">As the title says "Plotting is hard".  For scientific computing software, often plotting is what takes the most CPU/GPU cycles. In fact, the team of developers that have been working on Julia have given this issue the acronym TTFP (time to first plot), which is the amount of time from starting julia to getting a plot rendered.  Recently a lot of work has been done to reduce this.</div>
-<div class="para" id="ch-plotting-basics-5-3">When people usually think of plots or visualization, we think of high-level ideas, like function plots, scatter plots, vector field plots, etc.  We’d like to give functions or data and some attributes to some plotting routine and then just wait for the results.  These routine need to handle a lot of the details, including drawing lines and points on the screen with various fonts and make sure that all of the spacing is correct.</div></section><section class="section" id="ch-plotting-basics-6"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">12.4</span><span class="space"> </span><span class="title">Presenting Results with Visualization, an overview</span>
+<div class="para" id="ch-collections-5-2">In Julia, a <code class="code-inline tex2jax_ignore">Dictionary</code> is more general version of a named tuple and are sets of key/value pairs.  For example,</div>
+<div class="para logical" id="ch-collections-5-3"><pre class="code-display tex2jax_ignore">d = Dict("a"=&gt;1, "b"=&gt;2, "c" =&gt; 3)
+</pre></div>
+<div class="para" id="ch-collections-5-4">An getter/accessor is similar to that of an array.  <code class="code-inline tex2jax_ignore">d["a"]</code> will return <code class="code-inline tex2jax_ignore">1</code>, the value of the key correpsonding to <code class="code-inline tex2jax_ignore">"a"</code>. And one can set a value in the same way.  <code class="code-inline tex2jax_ignore">d["a"] = 10</code> will update the value associated with the key "a" to be 10.</div></section><section class="section" id="ch-collections-6"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">20.4</span><span class="space"> </span><span class="title">User-created collections</span>
 </h3>
-<section class="introduction" id="ch-plotting-basics-6-2"><div class="para" id="ch-plotting-basics-6-2-1">Before starting with code to create plots, let’s remind ourselves of the types of plots that can occur and what they mean.</div></section><section class="subsection" id="ch-plotting-basics-6-3"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">12.4.1</span><span class="space"> </span><span class="title">Scatter Plots</span>
-</h4>
-<div class="para" id="ch-plotting-basics-6-3-2">A <dfn class="terminology">scatter plot</dfn> is a plot of points in 2D or 3D in which each point represents a piece of data.  Although we will usually think of them in terms of x, y and z axes, the two or three axes can represent anything. The following is the graph of carbon dioxide levels in Hawaii from 1959  to 2023.</div>
-<figure class="figure figure-like" id="fig-co2-scatter"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/intro-plots/co2-scatter.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">12.3<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="subsection" id="ch-plotting-basics-6-4"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">12.4.2</span><span class="space"> </span><span class="title">Function Plots</span>
-</h4>
-<div class="para" id="ch-plotting-basics-6-4-2">Mathematically, the graph of a function <span class="process-math">\(f(x)\)</span> is the set of all points that satisfy the points <span class="process-math">\((x,f(x))\)</span> or if it is a function of two variables <span class="process-math">\((x,y,f(x,y))\text{.}\)</span>  This is generally what is thought of as a function graph that is often first seen in a Precalculus class, but extends throughout a science fields. The following is a sine curve.</div>
-<figure class="figure figure-like" id="fig-sine-curve"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/plots/sine-curve.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">12.4<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="subsection" id="ch-plotting-basics-6-5"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">12.4.3</span><span class="space"> </span><span class="title">Parametric Plots</span>
-</h4>
-<div class="para" id="ch-plotting-basics-6-5-2">Additionally, a function plot can be created for a parametric curve defined as <span class="process-math">\(\langle x(t), y(t) \)</span> for functions <span class="process-math">\(x\)</span> and <span class="process-math">\(y\text{.}\)</span> For example the spiral:</div>
-<figure class="figure figure-like" id="fig-spiral-curve"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/plots/makie-spiral.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">12.5<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="subsection" id="ch-plotting-basics-6-6"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">12.4.4</span><span class="space"> </span><span class="title">Parametric Plots in 3D</span>
-</h4>
-<div class="para logical" id="ch-plotting-basics-6-6-2">
-<div class="para">Vector Functions in 3D are often represented as parametric functions of the form:</div>
-<div class="displaymath process-math">
-\begin{equation*}
-\langle x(t), y(t), z(t) \rangle
-\end{equation*}
-</div>
-<div class="para">where each function gives the <span class="process-math">\(x\text{,}\)</span> <span class="process-math">\(y\)</span> or <span class="process-math">\(z\)</span> coordinate at a time <span class="process-math">\(t\text{.}\)</span>  Examples of this are in</div>
-</div>
-<figure class="figure figure-like" id="fig-parametric-3d"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/plots/parametric3d.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">12.6<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="subsection" id="ch-plotting-basics-6-7"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">12.4.5</span><span class="space"> </span><span class="title">Surface Plots</span>
-</h4>
-<div class="para" id="ch-plotting-basics-6-7-2">Functions of two variables in the form <span class="process-math">\(z = f(x,y)\)</span> and that the two independent variables are <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> and the third variable is the height of the function.  The set of points that satisfy this equation generally form surfaces in 3D.  An example of this is the function <span class="process-math">\(f(x,y)=\sin x \cos y\)</span> which has the surface plot</div>
-<figure class="figure figure-like" id="fig-surface"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/plots/surface.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">12.7<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="subsection" id="ch-plotting-basics-6-8"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">12.4.6</span><span class="space"> </span><span class="title">Implicit Curves</span>
-</h4>
-<div class="para logical" id="ch-plotting-basics-6-8-2">
-<div class="para">An implcit curve is the set of points <span class="process-math">\((x,y)\)</span> in which <span class="process-math">\(f(x,y)=C\)</span> for some constant <span class="process-math">\(C\text{.}\)</span>  The classic example is the circle</div>
-<div class="displaymath process-math">
-\begin{equation*}
-x^2 + y^2 = 1
-\end{equation*}
-</div>
-<div class="para">The following is the circle above plotted implicitly:</div>
-</div>
-<figure class="figure figure-like" id="fig-implicit-circle"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/plots/implicit-circle.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">12.8<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="subsection" id="ch-plotting-basics-6-9"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">12.4.7</span><span class="space"> </span><span class="title">Contour Plots</span>
-</h4>
-<div class="para" id="ch-plotting-basics-6-9-2">Related to plots of an implicit curve is that of a contour plot.  Recall from above that a function of two variables <span class="process-math">\(z=f(x,y)\)</span> can be plotted in 3D, however another way to view these is as a series of implicit curves in the form <span class="process-math">\(f(x,y)=C\)</span> for some number of constants <span class="process-math">\(C\text{.}\)</span>  For example, the contour plot of</div>
-<div class="para logical" id="ch-plotting-basics-6-9-3"><div class="displaymath process-math">
-\begin{equation*}
-f(x,y) = \sin\biggl(\frac{1}{2}x^2-\frac{1}{4}y^2+2\biggr)\cos(x+y)
-\end{equation*}
-</div></div>
-<div class="para" id="ch-plotting-basics-6-9-4">has the contour plot:</div>
-<figure class="figure figure-like" id="fig-contour-ex"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/plots/contour.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">12.9<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section></section><section class="section" id="sect-plotting-backends"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">12.5</span><span class="space"> </span><span class="title">Plotting Backends</span>
-</h3>
-<div class="para" id="sect-plotting-backends-2">Each of the two plotting environments that we are discussing in this chapter rely on other software to do the plotting.  These are known as <em class="emphasis">backends</em>, which are the actual routines to draw the lines, place the glyphs in a font and handling spacing.  There is different technology that is used for each backend and you don’t need to know the specifics, but you should know that there are different backends and there are strengths and weaknesses of each.</div>
-<div class="para" id="sect-plotting-backends-3">Makie and the Plots package are each high-level wrappers with a consistent interface. That is, say, to perform a function plot, each takes a function, the limits and various attributes of the plot and the backends handle the details. Although we haven’t discussed which plotting environment to use, one way to decide is which style of wrappers do you like better.</div>
-<div class="para" id="sect-plotting-backends-4">As this text is agnostic for the plotting environment, once that is chosen, some reading should be done on the backend.  Each of the next two chapters covers the backends for Makie and Plots respectively.</div></section></section></div>
+<div class="para" id="ch-collections-6-2">Although we have seen many built-in collections and there are plenty of other examples in Julia package, it should be no surprise to note that we can create a collection.  Mainly, there are some key functions that need to be implemented on the collection.  Let’s just show this with an example.</div>
+<div class="para" id="ch-collections-6-3">In <a href="ch-functional-programming.html" class="internal" title="Chapter 7: Functional Programming">Chapter 7</a>, we looked at Fibonacci numbers as examples of recursive functions and how to implement them efficiently.  We will create a type <code class="code-inline tex2jax_ignore">Fibonacci</code> using a <code class="code-inline tex2jax_ignore">struct</code> like in <a href="ch-comp-types.html" class="internal" title="Chapter 11: Creating New Data Types in Julia">Chapter 11</a> in the following manner:</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">struct Fibonnacci
+  n::Integer
+  function Fibonnacci(n)
+    n &gt;= 0 || throw(ArgumentError("This must be called with a positive integer"))
+    new(n)
+  end
+end
+</code></pre></div>
+<div class="para" id="ch-collections-6-5">where a constructor has been used to check that only positive integers are used.  As is, this is just a struct with a single field called <code class="code-inline tex2jax_ignore">n</code>. To make this an interator we need to implement some of the functions associated with an iterator.  We will first implement the functions <code class="code-inline tex2jax_ignore">isempty</code> and <code class="code-inline tex2jax_ignore">length</code> and define them as</div>
+<div class="para logical" id="ch-collections-6-6"><pre class="code-display tex2jax_ignore">Base.isempty(f::Fibonnacci) = f.n == 0
+Base.length(f::Fibonnacci) = f.n
+</pre></div>
+<div class="para" id="ch-collections-6-7">and as can be seen that if we create a Fibonacci with 0 elements that it is empty and has length 0. It can be tested with <code class="code-inline tex2jax_ignore">isempty(Fibonacci(0))</code> which returns <code class="code-inline tex2jax_ignore">true</code> and <code class="code-inline tex2jax_ignore">length(Fibonacci(10))</code> returns 10.</div>
+<div class="para" id="ch-collections-6-8">This doesn’t see to do anything related to the fibonacci numbers, but by defining the <code class="code-inline tex2jax_ignore">iterator</code> function we can get the functionality that we desire.  If</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">   function Base.iterate(f::Fibonnacci, state = 1)
+   if state &gt; f.n
+    return nothing
+   end
+   local (x,y) = (1,1)
+   for i = 1:state-1
+     x,y = (y, x+y)
+   end
+   (x, state + 1)
+end
+</code></pre></div>
+<div class="para" id="ch-collections-6-10">where the <code class="code-inline tex2jax_ignore">iterate</code> function takes in the data type and a variable <code class="code-inline tex2jax_ignore">state</code> which acts like an index.  The function should return <code class="code-inline tex2jax_ignore">nothing</code> if the iteration is done and otherwise, return the value of the next value and increment the index.  Note in our case above, we have used the faster (non recurvise) version of fibonacci in <a href="ch-functional-programming.html#sect-fast-fibonacci" class="internal" title="Subsection 7.7.1: Speeding Up Fibonacci">Subsection 7.7.1</a>.</div>
+<div class="para" id="ch-collections-6-11">There are many ways that <code class="code-inline tex2jax_ignore">iterate</code> can be used.  For example in a for loop like</div>
+<div class="para logical" id="ch-collections-6-12"><pre class="code-display tex2jax_ignore">for i in Fibonnacci(10)
+  @show i
+end
+</pre></div>
+<div class="para" id="ch-collections-6-13">will produce the first 10 fibonacci numbers.  Also, <code class="code-inline tex2jax_ignore">collect(Fibonacci(10))</code> will create an array of length 10 with the Fibonacci numbers.</div></section></section></div>
 <div class="ptx-content-footer">
-<a class="previous-button button" href="part-plotting.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-plotting-makie.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
+<a class="previous-button button" href="ch-adv-functions.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-modules.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
 </div></main>
 </div>
 <div id="ptx-page-footer" class="ptx-page-footer">

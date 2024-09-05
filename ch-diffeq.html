@@ -110,9 +110,9 @@ window.MathJax = {
 #sect-reduce-array-15-1 { counter-set: sect-reduce-array-15-1 0; }
 #sect-reduce-array-15-1 > li::marker { content: ""counter(sect-reduce-array-15-1,decimal)"."; }
 #sect-reduce-array-15-1 > li { counter-increment: sect-reduce-array-15-1; }
-#sect-faster-fibonacci-3-7-1-1 { counter-set: sect-faster-fibonacci-3-7-1-1 0; }
-#sect-faster-fibonacci-3-7-1-1 > li::marker { content: ""counter(sect-faster-fibonacci-3-7-1-1,decimal)"."; }
-#sect-faster-fibonacci-3-7-1-1 > li { counter-increment: sect-faster-fibonacci-3-7-1-1; }
+#sect-fast-fibonacci-7-1-1 { counter-set: sect-fast-fibonacci-7-1-1 0; }
+#sect-fast-fibonacci-7-1-1 > li::marker { content: ""counter(sect-fast-fibonacci-7-1-1,decimal)"."; }
+#sect-fast-fibonacci-7-1-1 > li { counter-increment: sect-fast-fibonacci-7-1-1; }
 #ch-number-theory-6-2-2-1 { counter-set: ch-number-theory-6-2-2-1 0; }
 #ch-number-theory-6-2-2-1 > li::marker { content: ""counter(ch-number-theory-6-2-2-1,decimal)"."; }
 #ch-number-theory-6-2-2-1 > li { counter-increment: ch-number-theory-6-2-2-1; }
@@ -336,7 +336,7 @@ window.MathJax = {
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-comprehensions" class="internal"><span class="codenumber">6.2</span> <span class="title">Comprehensions</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-accessing-arrays" class="internal"><span class="codenumber">6.3</span> <span class="title">Accessing elements of an array</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-6" class="internal"><span class="codenumber">6.4</span> <span class="title">Common Operations on Arrays</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-broadcasting" class="internal"><span class="codenumber">6.5</span> <span class="title">Element by Element Operations</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-broadcasting" class="internal"><span class="codenumber">6.5</span> <span class="title">Element by Element Operations (Broadcasting)</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-8" class="internal"><span class="codenumber">6.6</span> <span class="title">Other Operations on Arrays</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-9" class="internal"><span class="codenumber">6.7</span> <span class="title">Sorting Vectors and matrices</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-10" class="internal"><span class="codenumber">6.8</span> <span class="title">Push and Pop; Array as a Stack</span></a></div></li>
@@ -351,6 +351,7 @@ window.MathJax = {
 </ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Spliting Strings</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-13" class="internal"><span class="codenumber">6.11</span> <span class="title">Arrays as a Collection</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
@@ -379,7 +380,7 @@ window.MathJax = {
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-8" class="internal"><span class="codenumber">7.6</span> <span class="title">Summary of Results</span></a></div></li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-functional-programming.html#sect-faster-fibonacci" class="internal"><span class="codenumber">7.7</span> <span class="title">Computing Fibonacci Numbers</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-faster-fibonacci-3" class="internal"><span class="codenumber">7.7.1</span> <span class="title">Speeding Up Fibonacci</span></a></div></li></ul>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-fast-fibonacci" class="internal"><span class="codenumber">7.7.1</span> <span class="title">Speeding Up Fibonacci</span></a></div></li></ul>
 </li>
 </ul>
 </li>
@@ -666,70 +667,79 @@ window.MathJax = {
 </ul>
 </li>
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-modules.html" class="internal"><span class="codenumber">20</span> <span class="title">Creating Modules and using Unit Tests</span></a></div>
+<div class="toc-title-box"><a href="ch-collections.html" class="internal"><span class="codenumber">20</span> <span class="title">Collections, Sets and Dictionaries</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-3" class="internal"><span class="codenumber">20.1</span> <span class="title">The <code class="code-inline tex2jax_ignore">Revise</code></span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-4" class="internal"><span class="codenumber">20.2</span> <span class="title">Creating a Module</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#sect-unit-tests" class="internal"><span class="codenumber">20.3</span> <span class="title">Unit Tests</span></a></div></li>
-<li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-modules.html#ch-modules-6" class="internal"><span class="codenumber">20.4</span> <span class="title">Creating a test suite</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-6-3" class="internal"><span class="codenumber">20.4.1</span> <span class="title">Putting all tests in a file</span></a></div></li></ul>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-collections.html#ch-collections-3" class="internal"><span class="codenumber">20.1</span> <span class="title">Abstract Collection and Iteration</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-collections.html#ch-collections-4" class="internal"><span class="codenumber">20.2</span> <span class="title">Sets</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-collections.html#ch-collections-5" class="internal"><span class="codenumber">20.3</span> <span class="title">Dictionaries</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-collections.html#ch-collections-6" class="internal"><span class="codenumber">20.4</span> <span class="title">User-created collections</span></a></div></li>
+</ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-7" class="internal"><span class="codenumber">20.5</span> <span class="title">Modules and Unit Tests</span></a></div></li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-modules.html" class="internal"><span class="codenumber">21</span> <span class="title">Creating Modules and using Unit Tests</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-3" class="internal"><span class="codenumber">21.1</span> <span class="title">The <code class="code-inline tex2jax_ignore">Revise</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-4" class="internal"><span class="codenumber">21.2</span> <span class="title">Creating a Module</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#sect-unit-tests" class="internal"><span class="codenumber">21.3</span> <span class="title">Unit Tests</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-modules.html#ch-modules-8" class="internal"><span class="codenumber">20.6</span> <span class="title">A Rootfinding Module</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-8-3" class="internal"><span class="codenumber">20.6.1</span> <span class="title">A Test Suite for Rootfinding</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-modules.html#ch-modules-6" class="internal"><span class="codenumber">21.4</span> <span class="title">Creating a test suite</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-6-3" class="internal"><span class="codenumber">21.4.1</span> <span class="title">Putting all tests in a file</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-7" class="internal"><span class="codenumber">21.5</span> <span class="title">Modules and Unit Tests</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-modules.html#ch-modules-8" class="internal"><span class="codenumber">21.6</span> <span class="title">A Rootfinding Module</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-modules.html#ch-modules-8-3" class="internal"><span class="codenumber">21.6.1</span> <span class="title">A Test Suite for Rootfinding</span></a></div></li></ul>
 </li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-parallel.html" class="internal"><span class="codenumber">21</span> <span class="title">Parallel Computing</span></a></div>
+<div class="toc-title-box"><a href="ch-parallel.html" class="internal"><span class="codenumber">22</span> <span class="title">Parallel Computing</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-3" class="internal"><span class="codenumber">21.1</span> <span class="title">Running parallel code</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-3-3" class="internal"><span class="codenumber">21.1.1</span> <span class="title">Assigning code to workers</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-3" class="internal"><span class="codenumber">22.1</span> <span class="title">Running parallel code</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-3-3" class="internal"><span class="codenumber">22.1.1</span> <span class="title">Assigning code to workers</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4" class="internal"><span class="codenumber">21.2</span> <span class="title">Managing Processes</span></a></div>
+<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4" class="internal"><span class="codenumber">22.2</span> <span class="title">Managing Processes</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4-3" class="internal"><span class="codenumber">21.2.1</span> <span class="title">The <code class="code-inline tex2jax_ignore">procs</code> command</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4-4" class="internal"><span class="codenumber">21.2.2</span> <span class="title">Adding all of the cores</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4-5" class="internal"><span class="codenumber">21.2.3</span> <span class="title">Removing cores</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4-3" class="internal"><span class="codenumber">22.2.1</span> <span class="title">The <code class="code-inline tex2jax_ignore">procs</code> command</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4-4" class="internal"><span class="codenumber">22.2.2</span> <span class="title">Adding all of the cores</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-4-5" class="internal"><span class="codenumber">22.2.3</span> <span class="title">Removing cores</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-5" class="internal"><span class="codenumber">21.3</span> <span class="title">Parallel for loops</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-5" class="internal"><span class="codenumber">22.3</span> <span class="title">Parallel for loops</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-6" class="internal"><span class="codenumber">21.4</span> <span class="title">Writing a parallel card simulator</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-6-3" class="internal"><span class="codenumber">21.4.1</span> <span class="title">parallelizing the ....</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-6" class="internal"><span class="codenumber">22.4</span> <span class="title">Writing a parallel card simulator</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-6-3" class="internal"><span class="codenumber">22.4.1</span> <span class="title">parallelizing the ....</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-7" class="internal"><span class="codenumber">21.5</span> <span class="title">A Parallel Map Function</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-7-3" class="internal"><span class="codenumber">21.5.1</span> <span class="title">When to use <code class="code-inline tex2jax_ignore">pmap</code></span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-7" class="internal"><span class="codenumber">22.5</span> <span class="title">A Parallel Map Function</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-7-3" class="internal"><span class="codenumber">22.5.1</span> <span class="title">When to use <code class="code-inline tex2jax_ignore">pmap</code></span></a></div></li></ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-8" class="internal"><span class="codenumber">21.6</span> <span class="title">Shared arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-parallel.html#ch-parallel-8" class="internal"><span class="codenumber">22.6</span> <span class="title">Shared arrays</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-regexp.html" class="internal"><span class="codenumber">22</span> <span class="title">Regular Expressions</span></a></div>
+<div class="toc-title-box"><a href="ch-regexp.html" class="internal"><span class="codenumber">23</span> <span class="title">Regular Expressions</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3" class="internal"><span class="codenumber">22.1</span> <span class="title">Simple Pattern Matching</span></a></div>
+<div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3" class="internal"><span class="codenumber">23.1</span> <span class="title">Simple Pattern Matching</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3-3" class="internal"><span class="codenumber">22.1.1</span> <span class="title">Optional matches</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3-4" class="internal"><span class="codenumber">22.1.2</span> <span class="title">Digits and alphabetic characters</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3-5" class="internal"><span class="codenumber">22.1.3</span> <span class="title">Quantifiers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3-3" class="internal"><span class="codenumber">23.1.1</span> <span class="title">Optional matches</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3-4" class="internal"><span class="codenumber">23.1.2</span> <span class="title">Digits and alphabetic characters</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-3-5" class="internal"><span class="codenumber">23.1.3</span> <span class="title">Quantifiers</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-4" class="internal"><span class="codenumber">22.2</span> <span class="title">Matching integers and decimals</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-5" class="internal"><span class="codenumber">22.3</span> <span class="title">Matching and Capture Groups</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-6" class="internal"><span class="codenumber">22.4</span> <span class="title">Replacing substrings with regular expressions.</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-4" class="internal"><span class="codenumber">23.2</span> <span class="title">Matching integers and decimals</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-5" class="internal"><span class="codenumber">23.3</span> <span class="title">Matching and Capture Groups</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-6" class="internal"><span class="codenumber">23.4</span> <span class="title">Replacing substrings with regular expressions.</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7" class="internal"><span class="codenumber">22.5</span> <span class="title">Parsing a Polynomial</span></a></div>
+<div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7" class="internal"><span class="codenumber">23.5</span> <span class="title">Parsing a Polynomial</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-3" class="internal"><span class="codenumber">22.5.1</span> <span class="title">Testing the regular expression</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-4" class="internal"><span class="codenumber">22.5.2</span> <span class="title">Linear Functions with decimal coefficients</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-5" class="internal"><span class="codenumber">22.5.3</span> <span class="title">Splitting a Polynomial into terms</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-6" class="internal"><span class="codenumber">22.5.4</span> <span class="title">Parsing Polynomial Terms</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-3" class="internal"><span class="codenumber">23.5.1</span> <span class="title">Testing the regular expression</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-4" class="internal"><span class="codenumber">23.5.2</span> <span class="title">Linear Functions with decimal coefficients</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-5" class="internal"><span class="codenumber">23.5.3</span> <span class="title">Splitting a Polynomial into terms</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-regexp.html#ch-regexp-7-6" class="internal"><span class="codenumber">23.5.4</span> <span class="title">Parsing Polynomial Terms</span></a></div></li>
 </ul>
 </li>
 </ul>
@@ -740,86 +750,86 @@ window.MathJax = {
 <div class="toc-title-box"><a href="part-data-analysis.html" class="internal"><span class="codenumber">VI</span> <span class="title">Data Analysis</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-data.html" class="internal"><span class="codenumber">23</span> <span class="title">Introduction to Data Analysis</span></a></div>
+<div class="toc-title-box"><a href="ch-data.html" class="internal"><span class="codenumber">24</span> <span class="title">Introduction to Data Analysis</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data.html#ch-data-3" class="internal"><span class="codenumber">23.1</span> <span class="title">Data from the <code class="code-inline tex2jax_ignore">RDatasets</code> package</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data.html#ch-data-3" class="internal"><span class="codenumber">24.1</span> <span class="title">Data from the <code class="code-inline tex2jax_ignore">RDatasets</code> package</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-data.html#ch-data-4" class="internal"><span class="codenumber">23.2</span> <span class="title">Dataframes</span></a></div>
+<div class="toc-title-box"><a href="ch-data.html#ch-data-4" class="internal"><span class="codenumber">24.2</span> <span class="title">Dataframes</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-4-3" class="internal"><span class="codenumber">23.2.1</span> <span class="title">Constructing a DataFrame</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-4-4" class="internal"><span class="codenumber">23.2.2</span> <span class="title">Plotting with <code class="code-inline tex2jax_ignore">StatsPlots</code></span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-4-5" class="internal"><span class="codenumber">23.2.3</span> <span class="title">Basic Statistics</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-4-3" class="internal"><span class="codenumber">24.2.1</span> <span class="title">Constructing a DataFrame</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-4-4" class="internal"><span class="codenumber">24.2.2</span> <span class="title">Plotting with <code class="code-inline tex2jax_ignore">StatsPlots</code></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-4-5" class="internal"><span class="codenumber">24.2.3</span> <span class="title">Basic Statistics</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-data.html#ch-data-5" class="internal"><span class="codenumber">23.3</span> <span class="title">The pipe command</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-5-3" class="internal"><span class="codenumber">23.3.1</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">Chain</code> package</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-data.html#ch-data-5" class="internal"><span class="codenumber">24.3</span> <span class="title">The pipe command</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#ch-data-5-3" class="internal"><span class="codenumber">24.3.1</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">Chain</code> package</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-data.html#sect-missing" class="internal"><span class="codenumber">23.4</span> <span class="title">Missing Data</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#sect-missing-3" class="internal"><span class="codenumber">23.4.1</span> <span class="title">Missing Data in a Dataset</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-data.html#sect-missing" class="internal"><span class="codenumber">24.4</span> <span class="title">Missing Data</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-data.html#sect-missing-3" class="internal"><span class="codenumber">24.4.1</span> <span class="title">Missing Data in a Dataset</span></a></div></li></ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data.html#sect-csv-file" class="internal"><span class="codenumber">23.5</span> <span class="title">Loading Data from a CSV File</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data.html#sect-excel-file" class="internal"><span class="codenumber">23.6</span> <span class="title">Loading Data from an Excel File</span></a></div></li>
-</ul>
-</li>
-<li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-manipulating-data.html" class="internal"><span class="codenumber">24</span> <span class="title">Manipulating DataFrames</span></a></div>
-<ul class="structural toc-item-list">
-<li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-3" class="internal"><span class="codenumber">24.1</span> <span class="title">Subsets of DataFrames</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-3-3" class="internal"><span class="codenumber">24.1.1</span> <span class="title">Subsets of Columns</span></a></div></li></ul>
-</li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-4" class="internal"><span class="codenumber">24.2</span> <span class="title">Filtering (or Subsetting) Rows</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-5" class="internal"><span class="codenumber">24.3</span> <span class="title">Transforming DataFrames</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-6" class="internal"><span class="codenumber">24.4</span> <span class="title">Sorting DataFrames</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-7" class="internal"><span class="codenumber">24.5</span> <span class="title">Joining DataFrames</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-8" class="internal"><span class="codenumber">24.6</span> <span class="title">Summarizing Data</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-9" class="internal"><span class="codenumber">24.7</span> <span class="title">Multiple Steps on a DataFrame</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#sect-split-apply-combine" class="internal"><span class="codenumber">24.8</span> <span class="title">Split-Apply-Combine</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-11" class="internal"><span class="codenumber">24.9</span> <span class="title">Summary of DataFrame Transformations</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data.html#sect-csv-file" class="internal"><span class="codenumber">24.5</span> <span class="title">Loading Data from a CSV File</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-data.html#sect-excel-file" class="internal"><span class="codenumber">24.6</span> <span class="title">Loading Data from an Excel File</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-census.html" class="internal"><span class="codenumber">25</span> <span class="title">Analyzing Census Data</span></a></div>
+<div class="toc-title-box"><a href="ch-manipulating-data.html" class="internal"><span class="codenumber">25</span> <span class="title">Manipulating DataFrames</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-census.html#ch-census-3" class="internal"><span class="codenumber">25.1</span> <span class="title">Loading Packages and the Dataset</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-census.html#ch-census-4" class="internal"><span class="codenumber">25.2</span> <span class="title">Answering Census Questions</span></a></div>
+<div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-3" class="internal"><span class="codenumber">25.1</span> <span class="title">Subsets of DataFrames</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-3-3" class="internal"><span class="codenumber">25.1.1</span> <span class="title">Subsets of Columns</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-4" class="internal"><span class="codenumber">25.2</span> <span class="title">Filtering (or Subsetting) Rows</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-5" class="internal"><span class="codenumber">25.3</span> <span class="title">Transforming DataFrames</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-6" class="internal"><span class="codenumber">25.4</span> <span class="title">Sorting DataFrames</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-7" class="internal"><span class="codenumber">25.5</span> <span class="title">Joining DataFrames</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-8" class="internal"><span class="codenumber">25.6</span> <span class="title">Summarizing Data</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-9" class="internal"><span class="codenumber">25.7</span> <span class="title">Multiple Steps on a DataFrame</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#sect-split-apply-combine" class="internal"><span class="codenumber">25.8</span> <span class="title">Split-Apply-Combine</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-manipulating-data.html#ch-manipulating-data-11" class="internal"><span class="codenumber">25.9</span> <span class="title">Summary of DataFrame Transformations</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch-census.html" class="internal"><span class="codenumber">26</span> <span class="title">Analyzing Census Data</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-3" class="internal"><span class="codenumber">25.2.1</span> <span class="title">What are the top 10 areas in population?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-4" class="internal"><span class="codenumber">25.2.2</span> <span class="title">Find the total population of the areas west of 120 degrees longitude?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-5" class="internal"><span class="codenumber">25.2.3</span> <span class="title">Give a histogram plot in terms of population?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-6" class="internal"><span class="codenumber">25.2.4</span> <span class="title">What is the total population of all areas?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-7" class="internal"><span class="codenumber">25.2.5</span> <span class="title">What the top 10 area in housing density?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-8" class="internal"><span class="codenumber">25.2.6</span> <span class="title">What is the total number of housing units?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-9" class="internal"><span class="codenumber">25.2.7</span> <span class="title">What are the top 10 areas in land size?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-10" class="internal"><span class="codenumber">25.2.8</span> <span class="title">What are the top 10 areas in water size?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-11" class="internal"><span class="codenumber">25.2.9</span> <span class="title">What are the Massachusetts areas in the data?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-12" class="internal"><span class="codenumber">25.2.10</span> <span class="title">What is the average population, median and standard deviation of the each of the areas?</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-census.html#ch-census-3" class="internal"><span class="codenumber">26.1</span> <span class="title">Loading Packages and the Dataset</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-census.html#ch-census-4" class="internal"><span class="codenumber">26.2</span> <span class="title">Answering Census Questions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-3" class="internal"><span class="codenumber">26.2.1</span> <span class="title">What are the top 10 areas in population?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-4" class="internal"><span class="codenumber">26.2.2</span> <span class="title">Find the total population of the areas west of 120 degrees longitude?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-5" class="internal"><span class="codenumber">26.2.3</span> <span class="title">Give a histogram plot in terms of population?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-6" class="internal"><span class="codenumber">26.2.4</span> <span class="title">What is the total population of all areas?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-7" class="internal"><span class="codenumber">26.2.5</span> <span class="title">What the top 10 area in housing density?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-8" class="internal"><span class="codenumber">26.2.6</span> <span class="title">What is the total number of housing units?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-9" class="internal"><span class="codenumber">26.2.7</span> <span class="title">What are the top 10 areas in land size?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-10" class="internal"><span class="codenumber">26.2.8</span> <span class="title">What are the top 10 areas in water size?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-11" class="internal"><span class="codenumber">26.2.9</span> <span class="title">What are the Massachusetts areas in the data?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-census.html#ch-census-4-12" class="internal"><span class="codenumber">26.2.10</span> <span class="title">What is the average population, median and standard deviation of the each of the areas?</span></a></div></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-olympics.html" class="internal"><span class="codenumber">26</span> <span class="title">Olympic Medals</span></a></div>
+<div class="toc-title-box"><a href="ch-olympics.html" class="internal"><span class="codenumber">27</span> <span class="title">Olympic Medals</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-3" class="internal"><span class="codenumber">26.1</span> <span class="title">Downloading the Data and Loading the Packages</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-4" class="internal"><span class="codenumber">26.2</span> <span class="title">Loading the file</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-3" class="internal"><span class="codenumber">27.1</span> <span class="title">Downloading the Data and Loading the Packages</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-4" class="internal"><span class="codenumber">27.2</span> <span class="title">Loading the file</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5" class="internal"><span class="codenumber">26.3</span> <span class="title">Answering the Questions</span></a></div>
+<div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5" class="internal"><span class="codenumber">27.3</span> <span class="title">Answering the Questions</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-2" class="internal"><span class="codenumber">26.3.1</span> <span class="title">What is the total number of medals given in all Olympics in the dataset?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-3" class="internal"><span class="codenumber">26.3.2</span> <span class="title">Give the top 10 athletes by number of medals in the Summer Olympics</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-4" class="internal"><span class="codenumber">26.3.3</span> <span class="title">Which athlete had the most Olympic gold medals in the Summer 2000 games? How many medals?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-5" class="internal"><span class="codenumber">26.3.4</span> <span class="title">List the top 10 countries by medals in only winter Olympics.</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-6" class="internal"><span class="codenumber">26.3.5</span> <span class="title">Plot the average weight for male and female in each year over the entire span of the Olympic games.</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-7" class="internal"><span class="codenumber">26.3.6</span> <span class="title">Plot the number of medals that the U.S. collected over each olympic year.</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-8" class="internal"><span class="codenumber">26.3.7</span> <span class="title">What age the most common athlete?  What we are looking for is the mode of the age of all athletes.</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-9" class="internal"><span class="codenumber">26.3.8</span> <span class="title">What are the top 5 sports (not events) by total medals given for winter olympics between 1950 and 1970?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-2" class="internal"><span class="codenumber">27.3.1</span> <span class="title">What is the total number of medals given in all Olympics in the dataset?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-3" class="internal"><span class="codenumber">27.3.2</span> <span class="title">Give the top 10 athletes by number of medals in the Summer Olympics</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-4" class="internal"><span class="codenumber">27.3.3</span> <span class="title">Which athlete had the most Olympic gold medals in the Summer 2000 games? How many medals?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-5" class="internal"><span class="codenumber">27.3.4</span> <span class="title">List the top 10 countries by medals in only winter Olympics.</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-6" class="internal"><span class="codenumber">27.3.5</span> <span class="title">Plot the average weight for male and female in each year over the entire span of the Olympic games.</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-7" class="internal"><span class="codenumber">27.3.6</span> <span class="title">Plot the number of medals that the U.S. collected over each olympic year.</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-8" class="internal"><span class="codenumber">27.3.7</span> <span class="title">What age the most common athlete?  What we are looking for is the mode of the age of all athletes.</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-9" class="internal"><span class="codenumber">27.3.8</span> <span class="title">What are the top 5 sports (not events) by total medals given for winter olympics between 1950 and 1970?</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-6" class="internal"><span class="codenumber">26.4</span> <span class="title">Exercise</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-6" class="internal"><span class="codenumber">27.4</span> <span class="title">Exercise</span></a></div></li>
 </ul>
 </li>
 </ul>
@@ -828,38 +838,38 @@ window.MathJax = {
 <div class="toc-title-box"><a href="part-linear-algebra.html" class="internal"><span class="codenumber">VII</span> <span class="title">Linear Algebra</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-lin-alg-intro.html" class="internal"><span class="codenumber">27</span> <span class="title">Introduction to Linear Algebra</span></a></div>
+<div class="toc-title-box"><a href="ch-lin-alg-intro.html" class="internal"><span class="codenumber">28</span> <span class="title">Introduction to Linear Algebra</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3" class="internal"><span class="codenumber">27.1</span> <span class="title">Vectors and Matrices</span></a></div>
+<div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3" class="internal"><span class="codenumber">28.1</span> <span class="title">Vectors and Matrices</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-3" class="internal"><span class="codenumber">27.1.1</span> <span class="title">Addition and Subtraction of Vectors and Matrices</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-4" class="internal"><span class="codenumber">27.1.2</span> <span class="title">scalar multiplication</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-5" class="internal"><span class="codenumber">27.1.3</span> <span class="title">Matrix-vector products</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-6" class="internal"><span class="codenumber">27.1.4</span> <span class="title">Matrix Transpose</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-7" class="internal"><span class="codenumber">27.1.5</span> <span class="title">Trace and Determinant of a Matrix</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-8" class="internal"><span class="codenumber">27.1.6</span> <span class="title">Identity Matrix</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-3" class="internal"><span class="codenumber">28.1.1</span> <span class="title">Addition and Subtraction of Vectors and Matrices</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-4" class="internal"><span class="codenumber">28.1.2</span> <span class="title">scalar multiplication</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-5" class="internal"><span class="codenumber">28.1.3</span> <span class="title">Matrix-vector products</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-6" class="internal"><span class="codenumber">28.1.4</span> <span class="title">Matrix Transpose</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-7" class="internal"><span class="codenumber">28.1.5</span> <span class="title">Trace and Determinant of a Matrix</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-3-8" class="internal"><span class="codenumber">28.1.6</span> <span class="title">Identity Matrix</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-4" class="internal"><span class="codenumber">27.2</span> <span class="title">Matrix Inverse</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-5" class="internal"><span class="codenumber">27.3</span> <span class="title">Solving Linear Systems</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-6" class="internal"><span class="codenumber">27.4</span> <span class="title">Eigenvalues and Eigenvectors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-4" class="internal"><span class="codenumber">28.2</span> <span class="title">Matrix Inverse</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-5" class="internal"><span class="codenumber">28.3</span> <span class="title">Solving Linear Systems</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-6" class="internal"><span class="codenumber">28.4</span> <span class="title">Eigenvalues and Eigenvectors</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-7" class="internal"><span class="codenumber">27.5</span> <span class="title">Special Matrices</span></a></div>
+<div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-7" class="internal"><span class="codenumber">28.5</span> <span class="title">Special Matrices</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-7-3" class="internal"><span class="codenumber">27.5.1</span> <span class="title">Diagonal Matrices</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-7-4" class="internal"><span class="codenumber">27.5.2</span> <span class="title">Tridiagonal Matrices</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-7-3" class="internal"><span class="codenumber">28.5.1</span> <span class="title">Diagonal Matrices</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-7-4" class="internal"><span class="codenumber">28.5.2</span> <span class="title">Tridiagonal Matrices</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-8" class="internal"><span class="codenumber">27.6</span> <span class="title">Abstract Matrices</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-8-3" class="internal"><span class="codenumber">27.6.1</span> <span class="title">Solving with Matrices/Division</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-8" class="internal"><span class="codenumber">28.6</span> <span class="title">Abstract Matrices</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-lin-alg-intro.html#ch-lin-alg-intro-8-3" class="internal"><span class="codenumber">28.6.1</span> <span class="title">Solving with Matrices/Division</span></a></div></li></ul>
 </li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-adv-lin-alg.html" class="internal"><span class="codenumber">28</span> <span class="title">Advanced Topics in Linear Algebra</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-lin-alg.html#sect-sparse-matrices" class="internal"><span class="codenumber">28.1</span> <span class="title">Sparse Matrices</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-adv-lin-alg.html" class="internal"><span class="codenumber">29</span> <span class="title">Advanced Topics in Linear Algebra</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-lin-alg.html#sect-sparse-matrices" class="internal"><span class="codenumber">29.1</span> <span class="title">Sparse Matrices</span></a></div></li></ul>
 </li>
 </ul>
 </li>
@@ -867,73 +877,73 @@ window.MathJax = {
 <div class="toc-title-box"><a href="part-calc-diff-eqns.html" class="internal"><span class="codenumber">VIII</span> <span class="title">Calculus and Differential Equations</span></a></div>
 <ul class="structural toc-item-list contains-active">
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-num-int.html" class="internal"><span class="codenumber">29</span> <span class="title">Numerical Integration</span></a></div>
+<div class="toc-title-box"><a href="ch-num-int.html" class="internal"><span class="codenumber">30</span> <span class="title">Numerical Integration</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-3" class="internal"><span class="codenumber">29.1</span> <span class="title">Trapezoid Rule</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-3" class="internal"><span class="codenumber">30.1</span> <span class="title">Trapezoid Rule</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-4" class="internal"><span class="codenumber">29.2</span> <span class="title">Simpson’s Rule</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-4-3" class="internal"><span class="codenumber">29.2.1</span> <span class="title">Plotting the Error Function</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-4" class="internal"><span class="codenumber">30.2</span> <span class="title">Simpson’s Rule</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-4-3" class="internal"><span class="codenumber">30.2.1</span> <span class="title">Plotting the Error Function</span></a></div></li></ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-5" class="internal"><span class="codenumber">29.3</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">NumericalIntegration package</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-num-int.html#ch-num-int-5" class="internal"><span class="codenumber">30.3</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">NumericalIntegration package</code></span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter active">
-<div class="toc-title-box"><a href="ch-diffeq.html" class="internal"><span class="codenumber">30</span> <span class="title">Differential Equations</span></a></div>
+<div class="toc-title-box"><a href="ch-diffeq.html" class="internal"><span class="codenumber">31</span> <span class="title">Differential Equations</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-3" class="internal"><span class="codenumber">30.1</span> <span class="title">Euler’s Method</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-3-3" class="internal"><span class="codenumber">30.1.1</span> <span class="title">Implementing Euler’s method in Julia</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-3" class="internal"><span class="codenumber">31.1</span> <span class="title">Euler’s Method</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-3-3" class="internal"><span class="codenumber">31.1.1</span> <span class="title">Implementing Euler’s method in Julia</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-4" class="internal"><span class="codenumber">30.2</span> <span class="title">Runge Kutta methods</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-4-3" class="internal"><span class="codenumber">30.2.1</span> <span class="title">RK4 in julia</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-4" class="internal"><span class="codenumber">31.2</span> <span class="title">Runge Kutta methods</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-4-3" class="internal"><span class="codenumber">31.2.1</span> <span class="title">RK4 in julia</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5" class="internal"><span class="codenumber">30.3</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">DifferentialEquations package</code></span></a></div>
+<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5" class="internal"><span class="codenumber">31.3</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">DifferentialEquations package</code></span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-3" class="internal"><span class="codenumber">30.3.1</span> <span class="title">A Simple Example</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-4" class="internal"><span class="codenumber">30.3.2</span> <span class="title">Example of a system of differential equations</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-5" class="internal"><span class="codenumber">30.3.3</span> <span class="title">The Lorenz System</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-6" class="internal"><span class="codenumber">30.3.4</span> <span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-3" class="internal"><span class="codenumber">31.3.1</span> <span class="title">A Simple Example</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-4" class="internal"><span class="codenumber">31.3.2</span> <span class="title">Example of a system of differential equations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-5" class="internal"><span class="codenumber">31.3.3</span> <span class="title">The Lorenz System</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-6" class="internal"><span class="codenumber">31.3.4</span> <span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span></a></div></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-optimization.html" class="internal"><span class="codenumber">31</span> <span class="title">Optimization</span></a></div>
+<div class="toc-title-box"><a href="ch-optimization.html" class="internal"><span class="codenumber">32</span> <span class="title">Optimization</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-3" class="internal"><span class="codenumber">31.1</span> <span class="title">Newton’s Method</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-3" class="internal"><span class="codenumber">32.1</span> <span class="title">Newton’s Method</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-4" class="internal"><span class="codenumber">31.2</span> <span class="title">Gradient Descent</span></a></div>
+<div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-4" class="internal"><span class="codenumber">32.2</span> <span class="title">Gradient Descent</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-4-3" class="internal"><span class="codenumber">31.2.1</span> <span class="title">Gradient Descent using Julia</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-4-4" class="internal"><span class="codenumber">31.2.2</span> <span class="title">The Barzilai–Borwein method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-4-3" class="internal"><span class="codenumber">32.2.1</span> <span class="title">Gradient Descent using Julia</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-4-4" class="internal"><span class="codenumber">32.2.2</span> <span class="title">The Barzilai–Borwein method</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-5" class="internal"><span class="codenumber">31.3</span> <span class="title">Fitting Data to a Line -- Linear Regression</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-5-3" class="internal"><span class="codenumber">31.3.1</span> <span class="title">Fitting Data to Polynomial</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-5" class="internal"><span class="codenumber">32.3</span> <span class="title">Fitting Data to a Line -- Linear Regression</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-5-3" class="internal"><span class="codenumber">32.3.1</span> <span class="title">Fitting Data to Polynomial</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-6" class="internal"><span class="codenumber">31.4</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">JuMP</code> package</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-6-3" class="internal"><span class="codenumber">31.4.1</span> <span class="title">Linear Regression with JuMP</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-6" class="internal"><span class="codenumber">32.4</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">JuMP</code> package</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-optimization.html#ch-optimization-6-3" class="internal"><span class="codenumber">32.4.1</span> <span class="title">Linear Regression with JuMP</span></a></div></li></ul>
 </li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-complex.html" class="internal"><span class="codenumber">32</span> <span class="title">Complex Numbers and Analysis</span></a></div>
+<div class="toc-title-box"><a href="ch-complex.html" class="internal"><span class="codenumber">33</span> <span class="title">Complex Numbers and Analysis</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-complex.html#ch-complex-3" class="internal"><span class="codenumber">32.1</span> <span class="title">Complex Numbers</span></a></div>
+<div class="toc-title-box"><a href="ch-complex.html#ch-complex-3" class="internal"><span class="codenumber">33.1</span> <span class="title">Complex Numbers</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-3-3" class="internal"><span class="codenumber">32.1.1</span> <span class="title">Functions of Complex Numbers</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-3-4" class="internal"><span class="codenumber">32.1.2</span> <span class="title">Functions with Special Meaning for Complex Numbers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-3-3" class="internal"><span class="codenumber">33.1.1</span> <span class="title">Functions of Complex Numbers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-3-4" class="internal"><span class="codenumber">33.1.2</span> <span class="title">Functions with Special Meaning for Complex Numbers</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-4" class="internal"><span class="codenumber">32.2</span> <span class="title">Linear Algebra with Complex Numbers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-4" class="internal"><span class="codenumber">33.2</span> <span class="title">Linear Algebra with Complex Numbers</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-complex.html#ch-complex-5" class="internal"><span class="codenumber">32.3</span> <span class="title">Discrete Fourier Transforms</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-5-3" class="internal"><span class="codenumber">32.3.1</span> <span class="title">Fast Fourier Transform</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-complex.html#ch-complex-5" class="internal"><span class="codenumber">33.3</span> <span class="title">Discrete Fourier Transforms</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-complex.html#ch-complex-5-3" class="internal"><span class="codenumber">33.3.1</span> <span class="title">Fast Fourier Transform</span></a></div></li></ul>
 </li>
 </ul>
 </li>
@@ -943,31 +953,31 @@ window.MathJax = {
 <div class="toc-title-box"><a href="part-projects.html" class="internal"><span class="codenumber">IX</span> <span class="title">Scientific Computing Projects</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-polynomial.html" class="internal"><span class="codenumber">33</span> <span class="title">Creating a Polynomial Module</span></a></div>
+<div class="toc-title-box"><a href="ch-polynomial.html" class="internal"><span class="codenumber">34</span> <span class="title">Creating a Polynomial Module</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#sec-poly-module" class="internal"><span class="codenumber">33.1</span> <span class="title">Polynomial Module</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#sec-test-poly" class="internal"><span class="codenumber">33.2</span> <span class="title">Testing the Polynomial Module</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#sect-test-poly-string" class="internal"><span class="codenumber">33.3</span> <span class="title">Testing the Stringification</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-6" class="internal"><span class="codenumber">33.4</span> <span class="title">Test Driven Development</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-7" class="internal"><span class="codenumber">33.5</span> <span class="title">Tests for Addition, Subtraction and Multiplication</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-8" class="internal"><span class="codenumber">33.6</span> <span class="title">Creating tests for string contructors</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-9" class="internal"><span class="codenumber">33.7</span> <span class="title">Testing polynomial evalution</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#sec-poly-module" class="internal"><span class="codenumber">34.1</span> <span class="title">Polynomial Module</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#sec-test-poly" class="internal"><span class="codenumber">34.2</span> <span class="title">Testing the Polynomial Module</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#sect-test-poly-string" class="internal"><span class="codenumber">34.3</span> <span class="title">Testing the Stringification</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-6" class="internal"><span class="codenumber">34.4</span> <span class="title">Test Driven Development</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-7" class="internal"><span class="codenumber">34.5</span> <span class="title">Tests for Addition, Subtraction and Multiplication</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-8" class="internal"><span class="codenumber">34.6</span> <span class="title">Creating tests for string contructors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-9" class="internal"><span class="codenumber">34.7</span> <span class="title">Testing polynomial evalution</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
-<div class="toc-title-box"><a href="ch-calc-pi.html" class="internal"><span class="codenumber">34</span> <span class="title">Calculating the digits of <span class="process-math">\(\pi\)</span></span></a></div>
+<div class="toc-title-box"><a href="ch-calc-pi.html" class="internal"><span class="codenumber">35</span> <span class="title">Calculating the digits of <span class="process-math">\(\pi\)</span></span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-3" class="internal"><span class="codenumber">34.1</span> <span class="title">Power Series of Arctangent</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-4" class="internal"><span class="codenumber">34.2</span> <span class="title">Euler Improves this</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-5" class="internal"><span class="codenumber">34.3</span> <span class="title">Speed of the arctangent series</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-6" class="internal"><span class="codenumber">34.4</span> <span class="title">If I had a million <del class="delete">dollars</del> digits</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-3" class="internal"><span class="codenumber">35.1</span> <span class="title">Power Series of Arctangent</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-4" class="internal"><span class="codenumber">35.2</span> <span class="title">Euler Improves this</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-5" class="internal"><span class="codenumber">35.3</span> <span class="title">Speed of the arctangent series</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-6" class="internal"><span class="codenumber">35.4</span> <span class="title">If I had a million <del class="delete">dollars</del> digits</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-7" class="internal"><span class="codenumber">34.5</span> <span class="title">Machin’s Formula and related Formulas</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-7-3" class="internal"><span class="codenumber">34.5.1</span> <span class="title">Using Machin’s Formulas to Calculate <span class="process-math">\(\pi\)</span></span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-7" class="internal"><span class="codenumber">35.5</span> <span class="title">Machin’s Formula and related Formulas</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-7-3" class="internal"><span class="codenumber">35.5.1</span> <span class="title">Using Machin’s Formulas to Calculate <span class="process-math">\(\pi\)</span></span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-8" class="internal"><span class="codenumber">34.6</span> <span class="title">The Chudnovsky Brothers and Ramanujan</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-8-3" class="internal"><span class="codenumber">34.6.1</span> <span class="title">A parallel version of the Chudnovsky Algorithm</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-8" class="internal"><span class="codenumber">35.6</span> <span class="title">The Chudnovsky Brothers and Ramanujan</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-calc-pi.html#ch-calc-pi-8-3" class="internal"><span class="codenumber">35.6.1</span> <span class="title">A parallel version of the Chudnovsky Algorithm</span></a></div></li></ul>
 </li>
 </ul>
 </li>
@@ -1057,7 +1067,7 @@ window.MathJax = {
 </li>
 </ul></nav></div>
 <main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="chapter" id="ch-diffeq"><h2 class="heading">
-<span class="type">Chapter</span><span class="space"> </span><span class="codenumber">30</span><span class="space"> </span><span class="title">Differential Equations</span>
+<span class="type">Chapter</span><span class="space"> </span><span class="codenumber">31</span><span class="space"> </span><span class="title">Differential Equations</span>
 </h2>
 <section class="introduction" id="ch-diffeq-2"><div class="para" id="ch-diffeq-2-1">Another extremely important topic in Scientific Computation is that of differential equations.  These arise obviously in mathematics, but also in most other scientific fields including biology, chemistry, engineering, and economics.  Also, it is rare that a differential equation has a nice closed form solution, so often numerical methods must be used to get a solution.</div> <div class="para" id="ch-diffeq-2-2">We will discuss two often-used methods for solving differential equations, Euler’s method and Runge-Kutta methods and then delve into a very nice robust julia package.</div> <div class="para" id="ch-diffeq-2-3">A <dfn class="terminology">differential equation</dfn> is simply an equation that has derivatively in it.  For example</div> <div class="para logical" id="ch-diffeq-2-4"><div class="displaymath process-math">
 \begin{equation*}
@@ -1077,17 +1087,17 @@ y_2' \amp = -4y_1
 \mathbf{y}' = F(\mathbf{y})
 \end{equation*}
 </div></div></section><section class="section" id="ch-diffeq-3"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">30.1</span><span class="space"> </span><span class="title">Euler’s Method</span>
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">31.1</span><span class="space"> </span><span class="title">Euler’s Method</span>
 </h3>
 <section class="introduction" id="ch-diffeq-3-2"><div class="para" id="ch-diffeq-3-2-1">We start with one of the simplest methods to solve a differential equation.  If we have are solving</div> <div class="para" id="ch-diffeq-3-2-2"></div> <div class="para logical" id="ch-diffeq-3-2-3"><div class="displaymath process-math" id="eq-diff-eqn-simple">
 \begin{equation}
-y' = f(y,t), \qquad y(0) = y_0 \tag{30.1}
+y' = f(y,t), \qquad y(0) = y_0 \tag{31.1}
 \end{equation}
 </div></div> <div class="para" id="ch-diffeq-3-2-4">with the understanding that we will solve this at a discrete set of points, so we let <span class="process-math">\(y_n = y(t_n)\)</span> and <span class="process-math">\(t_k = t_0 + k\Delta t\text{,}\)</span> where <span class="process-math">\(\Delta t\)</span> is a small time step.  We can then replace <span class="process-math">\(y'\)</span> with the approximation:</div> <div class="para logical" id="ch-diffeq-3-2-5"><div class="displaymath process-math">
 \begin{equation*}
 y' \approx \frac{y_{n+1}-y_n}{t_{n_1}-t_n}
 \end{equation*}
-</div></div> <div class="para" id="ch-diffeq-3-2-6">and the differential equation in <a href="ch-diffeq.html#eq-diff-eqn-simple" class="xref" data-knowl="./knowl/xref/eq-diff-eqn-simple.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 30.1">(30.1)</a> is</div> <div class="para logical" id="ch-diffeq-3-2-7"><div class="displaymath process-math">
+</div></div> <div class="para" id="ch-diffeq-3-2-6">and the differential equation in <a href="ch-diffeq.html#eq-diff-eqn-simple" class="xref" data-knowl="./knowl/xref/eq-diff-eqn-simple.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 31.1">(31.1)</a> is</div> <div class="para logical" id="ch-diffeq-3-2-7"><div class="displaymath process-math">
 \begin{equation*}
 \frac{y_{n+1}-y_n}{t_{n_1}-t_n} = \frac{y_{n+1}-y_n}{\Delta t} = f(y_n,t_n)
 \end{equation*}
@@ -1096,7 +1106,7 @@ y' \approx \frac{y_{n+1}-y_n}{t_{n_1}-t_n}
 y_{n+1} = y_n + \Delta t f(y_n,t_n)
 \end{equation*}
 </div></div> <div class="para" id="ch-diffeq-3-2-10">and this iterative (or difference equation) is known as <dfn class="terminology">Euler’s Method</dfn>.</div></section><section class="subsection" id="ch-diffeq-3-3"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">30.1.1</span><span class="space"> </span><span class="title">Implementing Euler’s method in Julia</span>
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">31.1.1</span><span class="space"> </span><span class="title">Implementing Euler’s method in Julia</span>
 </h4>
 <div class="para" id="ch-diffeq-3-3-2">Let’s take a look at Euler’s method in Julia. Of course, we’ll write a function to evaluate this and there are a few things that we need for the function:</div>
 <div class="para logical" id="ch-diffeq-3-3-3"><ul class="disc" id="ch-diffeq-3-3-3-1">
@@ -1121,7 +1131,7 @@ y_{n+1} = y_n + \Delta t f(y_n,t_n)
 end
 </code></pre></div>
 <details id="ch-diffeq-3-3-7" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
-<span class="type">Example</span><span class="space"> </span><span class="codenumber">30.1</span><span class="period">.</span>
+<span class="type">Example</span><span class="space"> </span><span class="codenumber">31.1</span><span class="period">.</span>
 </h5></summary><article class="example example-like knowl__content"><div class="para logical" id="ch-diffeq-3-3-7-1">
 <div class="para">We’ll solve <span class="process-math">\(y'=y\text{,}\)</span> <span class="process-math">\(y(0)=1\)</span> for <code class="code-inline tex2jax_ignore">dt=0.1</code> and <span class="process-math">\(10\)</span> steps.</div>
 <pre class="code-display tex2jax_ignore">t,y = euler( (t,y) -&gt; y, 0, 1, 0.1, 10)
@@ -1130,10 +1140,10 @@ end
 </pre></div> <div class="para" id="ch-diffeq-3-3-7-4">which is a tuple of two arrays.  This results the <span class="process-math">\(t\)</span> and <span class="process-math">\(y\)</span> values based on Euler’s method.  However, perhaps it’s more interesting to see a plot.  Also, note that the analytic solution to this is <span class="process-math">\(y=e^x\text{,}\)</span> so the plot of the approximate solution using Euler’s method as well as the analytic solution is</div> <div class="para logical" id="ch-diffeq-3-3-7-5"><pre class="code-display tex2jax_ignore">plot(t,y,label="Euler's solution")
 plot!(t-&gt;exp(t),0,1,label="Analytic solution")
 </pre></div> <figure class="figure figure-like" id="fig-euler"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/diffeqn/euler.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">30.2<span class="period">.</span></span><span class="space"> </span></figcaption></figure></article></details></section></section><section class="section" id="ch-diffeq-4"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">30.2</span><span class="space"> </span><span class="title">Runge Kutta methods</span>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">31.2<span class="period">.</span></span><span class="space"> </span></figcaption></figure></article></details></section></section><section class="section" id="ch-diffeq-4"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">31.2</span><span class="space"> </span><span class="title">Runge Kutta methods</span>
 </h3>
-<section class="introduction" id="ch-diffeq-4-2"><div class="para" id="ch-diffeq-4-2-1">There is a family of other methods called the <a class="external" href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods" target="_blank">Runge Kutta methods</a><details class="ptx-footnote" aria-live="polite" id="ch-diffeq-4-2-1-2"><summary class="ptx-footnote__number" title="Footnote 30.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="ch-diffeq-4-2-1-2"><code class="code-inline tex2jax_ignore">wikipedia.org</code></div></details> that are relatively simple with a high order of accuracy.  One version that was often a standard version is what is called the 4th-order Runge-Kutta or RK4 method is</div> <div class="para logical" id="ch-diffeq-4-2-2"><div class="displaymath process-math">
+<section class="introduction" id="ch-diffeq-4-2"><div class="para" id="ch-diffeq-4-2-1">There is a family of other methods called the <a class="external" href="https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods" target="_blank">Runge Kutta methods</a><details class="ptx-footnote" aria-live="polite" id="ch-diffeq-4-2-1-2"><summary class="ptx-footnote__number" title="Footnote 31.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="ch-diffeq-4-2-1-2"><code class="code-inline tex2jax_ignore">wikipedia.org</code></div></details> that are relatively simple with a high order of accuracy.  One version that was often a standard version is what is called the 4th-order Runge-Kutta or RK4 method is</div> <div class="para logical" id="ch-diffeq-4-2-2"><div class="displaymath process-math">
 \begin{equation*}
 y_{n+1} = y_n + \frac{h}{6} \bigl(k_1+2k_2+2k_3+k_4 \bigr)
 \end{equation*}
@@ -1145,7 +1155,7 @@ k_3 \amp = f\biggl(t_n + \frac{h}{2}, y_n + \frac{h}{2} k_2 \biggr) \\
 k_4 \amp = f(t_n + h, y_n + h k_3 \biggr) 
 \end{align*}
 </div></div></section><section class="subsection" id="ch-diffeq-4-3"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">30.2.1</span><span class="space"> </span><span class="title">RK4 in julia</span>
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">31.2.1</span><span class="space"> </span><span class="title">RK4 in julia</span>
 </h4>
 <div class="para" id="ch-diffeq-4-3-2">The following is the <code class="code-inline tex2jax_ignore">rk4</code> method in julia.  It is very similar to euler’s method...</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function rk4(f::Function, t0:: Real, y0::Real, dt::Real, num_steps::Integer)
@@ -1168,11 +1178,11 @@ end
 <div class="para logical" id="ch-diffeq-4-3-5"><pre class="code-display tex2jax_ignore">t,y = rk4((t,y) -&gt; y, 0, 1, 0.1, 10)
 </pre></div>
 <div class="para" id="ch-diffeq-4-3-6">and the results are  <code class="code-inline tex2jax_ignore"></code>.</div></section></section><section class="section" id="ch-diffeq-5"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">30.3</span><span class="space"> </span><span class="title">Using the <code class="code-inline tex2jax_ignore">DifferentialEquations package</code></span>
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">31.3</span><span class="space"> </span><span class="title">Using the <code class="code-inline tex2jax_ignore">DifferentialEquations package</code></span>
 </h3>
-<section class="introduction" id="ch-diffeq-5-2"><div class="para" id="ch-diffeq-5-2-1">There is a very mature and robust package for solving differential equations aptly called <code class="code-inline tex2jax_ignore">DifferentialEquations</code>.  We will show a few examples to get a feeling for how to use the package, but as you can tell from <a class="external" href="https://docs.sciml.ai/dev/index.html" target="_blank">the documentation</a><details class="ptx-footnote" aria-live="polite" id="ch-diffeq-5-2-1-3"><summary class="ptx-footnote__number" title="Footnote 30.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-diffeq-5-2-1-3"><code class="code-inline tex2jax_ignore">docs.sciml.ai</code></div></details>, that there are a lot of possibilities with the package so we’ll show a couple of examples.</div> <div class="para" id="ch-diffeq-5-2-2">In short, you’ll need to include the equation, an initial condition and a range of values on which you want it solved.  Don’t forget to add the package and evaluate</div> <div class="para logical" id="ch-diffeq-5-2-3"><pre class="code-display tex2jax_ignore">using DifferentialEquations
+<section class="introduction" id="ch-diffeq-5-2"><div class="para" id="ch-diffeq-5-2-1">There is a very mature and robust package for solving differential equations aptly called <code class="code-inline tex2jax_ignore">DifferentialEquations</code>.  We will show a few examples to get a feeling for how to use the package, but as you can tell from <a class="external" href="https://docs.sciml.ai/dev/index.html" target="_blank">the documentation</a><details class="ptx-footnote" aria-live="polite" id="ch-diffeq-5-2-1-3"><summary class="ptx-footnote__number" title="Footnote 31.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-diffeq-5-2-1-3"><code class="code-inline tex2jax_ignore">docs.sciml.ai</code></div></details>, that there are a lot of possibilities with the package so we’ll show a couple of examples.</div> <div class="para" id="ch-diffeq-5-2-2">In short, you’ll need to include the equation, an initial condition and a range of values on which you want it solved.  Don’t forget to add the package and evaluate</div> <div class="para logical" id="ch-diffeq-5-2-3"><pre class="code-display tex2jax_ignore">using DifferentialEquations
 </pre></div></section><section class="subsection" id="ch-diffeq-5-3"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">30.3.1</span><span class="space"> </span><span class="title">A Simple Example</span>
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">31.3.1</span><span class="space"> </span><span class="title">A Simple Example</span>
 </h4>
 <div class="para" id="ch-diffeq-5-3-2">We will solve</div>
 <div class="para logical" id="ch-diffeq-5-3-3"><div class="displaymath process-math">
@@ -1223,7 +1233,7 @@ u0: 1.0
 <div class="para logical" id="ch-diffeq-5-3-27"><pre class="code-display tex2jax_ignore"> plot(0:0.01:1,map(t-&gt;sol(t)-exp(t),0:0.01:1)) </pre></div>
 <div class="para" id="ch-diffeq-5-3-28">this shows that error is within <span class="process-math">\(10^{-6}\text{.}\)</span>
 </div></section><section class="subsection" id="ch-diffeq-5-4"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">30.3.2</span><span class="space"> </span><span class="title">Example of a system of differential equations</span>
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">31.3.2</span><span class="space"> </span><span class="title">Example of a system of differential equations</span>
 </h4>
 <div class="para" id="ch-diffeq-5-4-2">Let’s solve</div>
 <div class="para logical" id="ch-diffeq-5-4-3"><div class="displaymath process-math" id="ch-diffeq-5-4-3-1">
@@ -1249,7 +1259,7 @@ y_2' \amp = -y_1
 <div class="para" id="ch-diffeq-5-4-15">If instead, you want the results plotted like a parametric equation, then we use the <code class="code-inline tex2jax_ignore">vars</code> keyword and the <code class="code-inline tex2jax_ignore">(1,2)</code> refers to the two elements of the solution if you use 0 for vars, that represents the independent variable--generally <span class="process-math">\(t\text{.}\)</span>
 </div>
 <div class="para logical" id="ch-diffeq-5-4-16"><pre class="code-display tex2jax_ignore"> plot(sol2,vars=(1,2),aspect_ratio=:equal) </pre></div></section><section class="subsection" id="ch-diffeq-5-5"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">30.3.3</span><span class="space"> </span><span class="title">The Lorenz System</span>
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">31.3.3</span><span class="space"> </span><span class="title">The Lorenz System</span>
 </h4>
 <div class="para" id="ch-diffeq-5-5-2">The Lorenz system is relatively famous system of differential equations for many reasons.  It is a system of ODEs, it is nonlinear and for many parameters the solution exhibits sensitivity on initial conditions, an important property for differential equation that exhibit chaotic behavior.  The Lorenz system is</div>
 <div class="para logical" id="ch-diffeq-5-5-3"><div class="displaymath process-math" id="ch-diffeq-5-5-3-1">
@@ -1268,9 +1278,9 @@ y_2' \amp = -y_1
 <div class="para" id="ch-diffeq-5-5-10">which shows each of the variables as a plot with respect to <span class="process-math">\(t\text{.}\)</span>  Instead, the classic plot of this solution is as a 3D parametric plot, which you can see with:</div>
 <div class="para logical" id="ch-diffeq-5-5-11"><pre class="code-display tex2jax_ignore"> plot(sol3,vars=(1,2,3)) </pre></div>
 <div class="para" id="ch-diffeq-5-5-12">and this results in</div></section><section class="subsection" id="ch-diffeq-5-6"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">30.3.4</span><span class="space"> </span><span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span>
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">31.3.4</span><span class="space"> </span><span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span>
 </h4>
-<div class="para" id="ch-diffeq-5-6-2">If you take a look at the  <a class="external" href="https://docs.sciml.ai/dev/index.html" target="_blank">the documentation of the package</a><details class="ptx-footnote" aria-live="polite" id="ch-diffeq-5-6-2-2"><summary class="ptx-footnote__number" title="Footnote 30.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="ch-diffeq-5-6-2-2"><code class="code-inline tex2jax_ignore">docs.sciml.ai</code></div></details>, we have only touched the surface of this package and it can do a lot with many different differential equations including initial value problems (that all three examples fit into), boundary value problems, stiff equations (aka they are hard to solve numerically) and stocastic differential equations.</div>
+<div class="para" id="ch-diffeq-5-6-2">If you take a look at the  <a class="external" href="https://docs.sciml.ai/dev/index.html" target="_blank">the documentation of the package</a><details class="ptx-footnote" aria-live="polite" id="ch-diffeq-5-6-2-2"><summary class="ptx-footnote__number" title="Footnote 31.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="ch-diffeq-5-6-2-2"><code class="code-inline tex2jax_ignore">docs.sciml.ai</code></div></details>, we have only touched the surface of this package and it can do a lot with many different differential equations including initial value problems (that all three examples fit into), boundary value problems, stiff equations (aka they are hard to solve numerically) and stocastic differential equations.</div>
 <div class="para" id="ch-diffeq-5-6-3">Also, the actual solvers are not discussed here, however if you want to know the details, the documentation explains them.  I have found that the default solvers are generally good enough and unless there is an issue, probably work for most problems.</div></section></section></section></div>
 <div class="ptx-content-footer">
 <a class="previous-button button" href="ch-num-int.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-optimization.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
