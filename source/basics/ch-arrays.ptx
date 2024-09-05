@@ -167,7 +167,7 @@
 		<title>Comprehensions</title>
 
 		<p>
-			If the elements of an array form a functional pattern, we can use what is called a <term>comprehension</term> to construct it in a compact manner. For example, a 1D array with the elements 1,-1,1,-1,1,-1 can be made:
+			If the elements of an array form a functional pattern, we can use what is called a <term>comprehension</term> to construct it in a compact manner. For example, a 1D array <c>[1, -1, 1, -1, 1, -1, 1, -1]</c> can be made:
 		</p>
 
 		<p>
@@ -405,10 +405,10 @@
 	</section>
 
 	<section xml:id="sect-broadcasting">
-		<title>Element by Element Operations</title>
+		<title>Element by Element Operations (Broadcasting)</title>
 
 		<p>
-			Many methods exist to simplify a <em>vectorized</em> method that returns the operation applied element by element to the matrix. To do this, most operations have a <c>.</c> variety.  For example, if we want multiply <c>A</c> and <c>B</c> in an element by element manner then
+			Many methods exist to simplify a <em>vectorized</em> method that returns the operation applied element by element to the matrix. To do this, most operations have a <c>.</c> variety and is also called <em>broadcasting</em>.  For example, if we want multiply <c>A</c> and <c>B</c> in an element by element manner then
 		</p>
 
 		<p>
@@ -482,6 +482,20 @@
 				</ol>
 			</p>
 		</exercise>
+
+		<p>
+			Broadcasting can be applied to other array-like structures like tuples, but also scalars and other collections.  For example,
+		</p>
+
+		<p>
+			<cd>
+			<cline>(1,2,3) .+ (4,5,6)</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns <c>(5, 7, 9)</c>. And if we want to add 10 to every element of a matrix, we can use this syntax as well.  <c>[1, 2, 3, 4] .+ 10</c> returns <c>[11, 12, 13, 14]</c>.
+		</p>
 	</section>
 
 	<section>
@@ -864,13 +878,23 @@
 		<p>
 			and notice that this is an array elements of type <c>Substring{String}</c>.  This type is used as an efficiency to show where in the original string the substring occurs.  If it is desirable to extract the integer representations of the strings, then use the <c>parse</c> function explained in <xref ref="sect-convert-numbers"/>.  The integers can be extracted with
 		</p>
-<p>
-	<cd>
-		<cline>map(s-&gt; parse(Int,s), split(str, "; "))</cline>
-	</cd>
-</p>
-<p>
-	where the <c>map</c> function from <xref ref="ch-functional-programming"/> is used.  This returns the integer array <c>[1, 2, 3, 4, 5, 6]</c>. See the <url href="https://docs.julialang.org/en/v1/base/strings/#Base.split" visual="julialang.org">Julia documentation on <c>split</c></url> for more information and options.
-</p>
+
+		<p>
+			<cd>
+			<cline>map(s-&gt; parse(Int,s), split(str, "; "))</cline>
+			</cd>
+		</p>
+
+		<p>
+			where the <c>map</c> function from <xref ref="ch-functional-programming"/> is used.  This returns the integer array <c>[1, 2, 3, 4, 5, 6]</c>. See the <url href="https://docs.julialang.org/en/v1/base/strings/#Base.split" visual="julialang.org">Julia documentation on <c>split</c></url> for more information and options.
+		</p>
+	</section>
+
+	<section>
+		<title>Arrays as a Collection</title>
+
+		<p>
+			An array is one example of a <em>Collection</em> in Julia.  We will cover these in more details in <xref ref="ch-collections"/> and it is helpful to have knowledge of the more abtract idea when handling arrays.
+		</p>
 	</section>
 </chapter>

@@ -987,7 +987,7 @@ end
 			</p>
 		</introduction>
 
-		<subsection>
+		<subsection xml:id="sect-fast-fibonacci">
 			<title>Speeding Up Fibonacci</title>
 			<p>
 				As we saw above, the standard recursive version of <c>fibonacci</c> function is very

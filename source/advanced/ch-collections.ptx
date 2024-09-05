@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<chapter xml:id="ch-collections">
+  <title>Collections, Sets and Dictionaries</title>
+
+  <introduction>
+    <p>
+      In <xref ref="ch-arrays"/>, we introduced an array, which is a set of things (integers, floats, string or other) with an order to it.  Julia has the notion of a collection, which is an abstract notion of a collection.  In this chapter, we will examine the abstract collection as well as discuss concrete versions, some of which we have seen previously and introduce Sets and Dictionaries an important collection types.
+    </p>
+  </introduction>
+
+  <section>
+    <title>Abstract Collection and Iteration</title>
+
+    <p>
+      A collection is an ordered set of things. The concrete objects we have seen so far in this text include arrays, tuples and ranges.  Any collection has the following functions applied to it
+    </p>
+
+    <p>
+      <dl>
+      <li>
+        <title><c>isempty</c></title>
+
+        <p>
+          A boolean function that determines if a collection is empty.  <c>isempty([1,2,3])</c> returns <c>false</c> and <c>isempty(3:2)</c> returns true because <c>3:2</c> is a range and since the second number is smaller than the first, there are no elements in it.
+        </p>
+      </li>
+
+      <li>
+        <title><c>empty!</c></title>
+
+        <p>
+          This function takes a collection and removes all elements of the collection.  If <c>A=[1,2,3,4]</c> then applying <c>empty!(A)</c> results in <c>A</c> being the empty array <c>[]</c>.
+        </p>
+      </li>
+
+      <li>
+        <title><c>length</c></title>
+
+        <p>
+          A function that returns the number of elements in the collection.  As we've seen before <c>length([1,2,3])</c> returns 3, but note also <c>(1,2,3,4)</c> returns <c>4</c>.   <c>length(1:2:11)</c> returns 6.
+        </p>
+
+        <p>
+          Note that a 2D array (Matrix) is also a collection and if <c>C=[1,2; 3, 4; 5, 6]</c> is the 3 by 2 matrix, then <c>length(C)</c> returns <c>6</c>, the total number of elements in the Matrix.  This applies also to higher dimensional arrays.
+        </p>
+      </li>
+      </dl>
+    </p>
+
+    <p>
+      One can access all of the elements of a collection by iterating over the elements. One simple way of doing this is with a for loop and we have seen this in <xref ref="ch-boolean-loops"/>.  For example
+    </p>
+
+    <p>
+      <cd>
+      <cline>for i=1:4</cline>
+      <cline>  @show i</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      will print out (show) all of the elements in the range <c>1:4</c>. Recall also, we can use a for loop over an array like
+    </p>
+
+    <p>
+      <cd>
+      <cline>for i in [5, 9, 10, 2]</cline>
+      <cline>  @show i</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      will show each of the elements in the array.
+    </p>
+  </section>
+
+  <section>
+    <title>Sets</title>
+
+    <p>
+      A mathematical <em>set</em> is a collect of things without an order.    For example, mathematically, a set is generally written as <m>\{1,2,3\}</m> and there are important functions like union and intersection that is used.  If <m>A=\{1,2,3\}</m> and <m>B=\{3,4,5\}</m>, then <m>A \cup B = \{1,2,3,4,5\}</m> and <m>A \cap B = \{3\}</m>.  Also the sets <m>\{1,2,3\}</m> and <m>\{3,2,1\}</m> are the same in that order of the elements is not important.
+    </p>
+
+    <p>
+      Julia has a <c>Set</c> is a collection that behaves the same way. If
+    </p>
+
+    <p>
+      <cd>
+      <cline>A=Set([1,2,3])</cline>
+      <cline>B=Set([3,2,1])</cline>
+      </cd>
+    </p>
+
+    <p>
+      then first notice that the order of the element may be switched around on output, but if we check for equality with <c>A==B</c>, then the result is <c>true</c><fn>If we did <c>[1,2,3]==[3,2,1]</c> on arrays, the result is <c>false</c></fn>
+    </p>
+
+    <p>
+      Julia also has the functions <c>union</c> and <c>intersection</c> that work on <c>Sets</c>, but also any iterators. <c>union(Set([1,2,3]),Set([3,4,5]))</c> returns <c>Set([1,2,3,4,5])</c>, but <c>union([3,4,8],3:7)</c> returns <c>[3,4,8,5,6,7]</c> and notice that in this case the order is kept.
+    </p>
+
+    <p>
+      <c>Sets</c> don't need to be sets of integers.  A set of a string produces the characters.  For example, <c>Set("hello")</c> returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>Set{Char} with 4 elements:</cline>
+      <cline>  'h'</cline>
+      <cline>  'l'</cline>
+      <cline>  'e'</cline>
+      <cline>  'o'</cline>
+      </cd>
+    </p>
+
+    <p>
+      and notice that is it the set of characters in the work "hello" and "l" is not repeated.
+    </p>
+
+    <p>
+      Another function is the boolean version of <c>in</c> or <c>ϵ</c> that will return <c>true</c> if a element is in the set, <c>false</c> otherwise. For example if <c>A=Set([1,3,5,7,9])</c>, then <c>7 ϵ A</c> returns <c>true</c>.
+    </p>
+  </section>
+
+  <section>
+    <title>Dictionaries</title>
+
+    <p>
+      In Julia, a <c>Dictionary</c> is more general version of a named tuple and are sets of key/value pairs.  For example,
+    </p>
+
+    <p>
+      <cd>
+      <cline>d = Dict("a"=&gt;1, "b"=&gt;2, "c" =&gt; 3)</cline>
+      </cd>
+    </p>
+
+    <p>
+      An getter/accessor is similar to that of an array.  <c>d["a"]</c> will return <c>1</c>, the value of the key correpsonding to <c>"a"</c>. And one can set a value in the same way.  <c>d["a"] = 10</c> will update the value associated with the key "a" to be 10.
+    </p>
+  </section>
+
+  <section>
+    <title>User-created collections</title>
+
+    <p>
+      Although we have seen many built-in collections and there are plenty of other examples in Julia package, it should be no surprise to note that we can create a collection.  Mainly, there are some key functions that need to be implemented on the collection.  Let's just show this with an example.
+    </p>
+
+    <p>
+      In <xref ref="ch-functional-programming"/>, we looked at Fibonacci numbers as examples of recursive functions and how to implement them efficiently.  We will create a type <c>Fibonacci</c> using a <c>struct</c> like in <xref ref="ch-comp-types"/> in the following manner:
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+struct Fibonnacci
+  n::Integer
+  function Fibonnacci(n)
+    n &gt;= 0 || throw(ArgumentError("This must be called with a positive integer"))
+    new(n)
+  end
+end
+      </input>
+    </program>
+
+    <p>
+      where a constructor has been used to check that only positive integers are used.  As is, this is just a struct with a single field called <c>n</c>. To make this an interator we need to implement some of the functions associated with an iterator.  We will first implement the functions <c>isempty</c> and <c>length</c> and define them as
+    </p>
+
+    <p>
+      <cd>
+      <cline>Base.isempty(f::Fibonnacci) = f.n == 0</cline>
+      <cline>Base.length(f::Fibonnacci) = f.n</cline>
+      </cd>
+    </p>
+
+    <p>
+      and as can be seen that if we create a Fibonacci with 0 elements that it is empty and has length 0. It can be tested with <c>isempty(Fibonacci(0))</c> which returns <c>true</c> and <c>length(Fibonacci(10))</c> returns 10.
+    </p>
+
+    <p>
+      This doesn't see to do anything related to the fibonacci numbers, but by defining the <c>iterator</c> function we can get the functionality that we desire.  If
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+        function Base.iterate(f::Fibonnacci, state = 1)
+        if state &gt; f.n
+         return nothing
+        end
+        local (x,y) = (1,1)
+        for i = 1:state-1
+          x,y = (y, x+y)
+        end
+        (x, state + 1)
+     end
+      </input>
+    </program>
+
+    <p>
+      where the <c>iterate</c> function takes in the data type and a variable <c>state</c> which acts like an index.  The function should return <c>nothing</c> if the iteration is done and otherwise, return the value of the next value and increment the index.  Note in our case above, we have used the faster (non recurvise) version of fibonacci in <xref ref="sect-fast-fibonacci"/>.
+    </p>
+
+    <p>
+      There are many ways that <c>iterate</c> can be used.  For example in a for loop like
+    </p>
+
+    <p>
+      <cd>
+      <cline>for i in Fibonnacci(10)</cline>
+      <cline>  @show i</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      will produce the first 10 fibonacci numbers.  Also, <c>collect(Fibonacci(10))</c> will create an array of length 10 with the Fibonacci numbers.
+    </p>
+  </section>
+</chapter>

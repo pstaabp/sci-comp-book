@@ -5,6 +5,7 @@
 
   <!-- include sections -->
   <xi:include href="advanced/ch-adv-functions.ptx" />
+  <xi:include href="advanced/ch-collections.ptx" />
   <xi:include href="advanced/ch-modules.ptx" />
   <xi:include href="advanced/ch-parallel.ptx" />
   <xi:include href="advanced/ch-regular-expr.ptx" />
