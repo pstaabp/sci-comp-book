@@ -28,9 +28,9 @@ struct Card
     function Card(str::String)
         length(str)==2 || throw(ArgumentError("The string should only be 2 characters"))
         local r = findfirst(a->a==str[1],ranks)
-        r != nothing &&  1 <= r <= 13 || throw(ArgumentError(string("The first character should be one of ",join(ranks,","))))
+        !isnothing(r) &&  1 <= r <= 13 || throw(ArgumentError(string("The first character should be one of ",join(ranks,","))))
         local s=findfirst(a->a==str[2],suits)
-        s != nothing && 1<= s <= 4 || throw(ArgumentError(string("The second character should be one of ",join(suits,","))))
+        !isnothing(s) && 1<= s <= 4 || throw(ArgumentError(string("The second character should be one of ",join(suits,","))))
         new(r,s)
     end
 end

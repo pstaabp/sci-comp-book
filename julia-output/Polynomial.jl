@@ -32,7 +32,7 @@ function splitPoly(p::String)
 
   while true
     ind2 = findnext(r"[+-]", p, ind1)
-    if ind2 == nothing
+    if isnothing(ind2)
       # Push the last term onto the term stack.
       push!(terms, string(SubString(p, ind1-1)))
       break
@@ -48,7 +48,7 @@ end
 function polyTerm(str::String)
   local poly_re = r"^([+-]?)(\d+)?(x(\^(\d+))?)?$"
   local m = match(poly_re, str)
-  local c = "$(m[1])$(m[2] == nothing ? 1 : m[2])"
+  local c = "$(m[1])$(isnothing(m[2]) ? 1 : m[2])"
   (coeff = parse(Int, c), pow = m[3] == "x" ? 1 : m[5] !== nothing ? parse(Int, m[5]) : 0)
 end
 
