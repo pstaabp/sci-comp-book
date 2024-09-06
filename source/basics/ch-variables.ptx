@@ -3,6 +3,37 @@
 <chapter xml:id="ch-variables">
 	<title>Storing number and strings and using Julia syntax</title>
 
+<objectives>
+	<ul>
+		<li>
+			<p>
+				Basic syntax of string and numbers.
+			</p>
+		</li>
+		<li>
+			<p>
+				Assigning values (strings and numbers) to variables.
+			</p>
+		</li>
+		<li>
+			<p>
+				Simple string operations like concatenation and string length.
+			</p>
+		</li>
+		<li>
+			<p>
+				Expressions and operator precedence.
+			</p>
+		</li>
+		<li>
+			<p>
+				Comments in code.
+			</p>
+		</li>
+	</ul>
+</objectives>
+
+
 	<introduction>
 		<p>
 			Although Scientific Computing problems generally involved developing models, at the lowest level, one is manipulating data generally strings and numbers.  We begin with understanding these data types and how to store values in them.

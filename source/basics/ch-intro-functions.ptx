@@ -3,6 +3,58 @@
 <chapter xml:id="ch-intro-functions">
 	<title>Introduction to Functions</title>
 
+	<objectives>
+		<ul>
+			<li>
+				<p>
+					The definition of a function.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					How to write a function in full or shortcut form.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					How to return a value or multiple values from a function.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					The definition of the function arguments and how to specify a type.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					How to write a function with arbitrary number of arguments.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					The definition of <em>Multiple Dispatch</em> and how this helps us write functions.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Introduction to recursive functions.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Variable scope related to functions.
+				</p>
+			</li>
+		</ul>
+	</objectives>
+
 	<introduction>
 		<p>
 			In any language, the function is one of the most important ideas and this chapter covers the introduction of functions with examples in julia. There are four main purposes of functions in scientific computation.
@@ -30,7 +82,7 @@
 
 				<li>
 					<p>
-						Functions allow separation of code.  If there is a large code and a section of it does a specific task, making it a function will separate code.
+						Functions allow separation of code.  If there is a large code and a section of it does a specific task, making it a function will separate code resulting in simplication.
 					</p>
 				</li>
 			</ol>
@@ -233,14 +285,14 @@
 			<p>
 				<cd>
 				<cline># 3 methods for generic function theMean from Main:</cline>
-				<cline>	theMean(x::Real, y::Real) in Main at /Users/pstaab/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
-				<cline>	theMean(x, y) in Main at /Users/pstaab/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
-				<cline>	theMean(x::Real, y::Real, z::Real) in Main at /Users/pstaab/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
+				<cline>	theMean(x::Real, y::Real) in Main at /Users/XXXXX/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
+				<cline>	theMean(x, y) in Main at /Users/XXXXX/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
+				<cline>	theMean(x::Real, y::Real, z::Real) in Main at /Users/XXXXX/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
 				</cd>
 			</p>
 
 			<p>
-				Much of yours will be different depending on using the REPL or a jupyter notebook, however the important part is that you will see that there are 3 methods and the rest shows where they were defined.
+				Much of yours will be different depending on using the REPL or a notebook, however the important part is that you will see that there are 3 methods and the rest shows where they were defined.
 			</p>
 
 			<p>
@@ -278,20 +330,20 @@
 			<program language="julia" line-numbers="yes">
 				<input>
 					# 197 methods for generic function + from Base:
-					+(B::BitMatrix, J::LinearAlgebra.UniformScaling) in LinearAlgebra at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/LinearAlgebra/src/uniformscaling.jl:151
+					+(B::BitMatrix, J::LinearAlgebra.UniformScaling) in LinearAlgebra at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/LinearAlgebra/src/uniformscaling.jl:151
 					+(x::Bool, z::Complex{Bool}) in Base at complex.jl:308
 					+(x::Bool, y::Bool) in Base at bool.jl:166
 					+(x::Bool) in Base at bool.jl:163
 					+(x::Bool, z::Complex) in Base at complex.jl:315
 					+(x::Real, z::Complex{Bool}) in Base at complex.jl:322
 					+(x::Bool, y::T) where T&gt;:AbstractFloat in Base at bool.jl:173
-					+(x::Dates.CompoundPeriod, y::Dates.CompoundPeriod) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:335
-					+(x::Dates.CompoundPeriod, y::Dates.Period) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:333
-					+(x::Dates.CompoundPeriod, y::Dates.TimeType) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:363
-					+(dt::Dates.DateTime, y::Dates.Year) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:25
-					+(dt::Dates.DateTime, z::Dates.Month) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:49
-					+(x::Dates.DateTime, y::Dates.Quarter) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:77
-					+(x::Dates.DateTime, y::Dates.Period) in Dates at /Users/pstaab/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:83
+					+(x::Dates.CompoundPeriod, y::Dates.CompoundPeriod) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:335
+					+(x::Dates.CompoundPeriod, y::Dates.Period) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:333
+					+(x::Dates.CompoundPeriod, y::Dates.TimeType) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:363
+					+(dt::Dates.DateTime, y::Dates.Year) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:25
+					+(dt::Dates.DateTime, z::Dates.Month) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:49
+					+(x::Dates.DateTime, y::Dates.Quarter) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:77
+					+(x::Dates.DateTime, y::Dates.Period) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:83
 					+(z::Complex{Bool}, x::Bool) in Base at complex.jl:309
 					+(z::Complex{Bool}, x::Real) in Base at complex.jl:323
 				</input>
@@ -397,24 +449,23 @@
 	<section xml:id="sect-factorial">
 		<title>Factorial Function</title>
 
-		<introduction>
-			<p>
-				Mathematically, we define the factorial as a function on a non-negative integer as
-			</p>
+		<p>
+			Mathematically, we define the factorial as a function on a non-negative integer as
+		</p>
 
-			<p>
-				<me>
-					n! = n(n-1)(n-2)\cdots 3 \cdot 2 \cdot 1
-				</me>
-			</p>
+		<p>
+			<me>
+				n! = n(n-1)(n-2)\cdots 3 \cdot 2 \cdot 1
+			</me>
+		</p>
 
-			<p>
-				or the product of all of the numbers from itself down to 1. There are a number of ways to program this function as we will see. Using
-			</p>
+		<p>
+			or the product of all of the numbers from itself down to 1. There are a number of ways to program this function as we will see. Using
+		</p>
 
 
-			<program language="julia" line-numbers="yes">
-				<input>
+		<program language="julia" line-numbers="yes">
+			<input>
   function fact(n::Integer)
     local prod=1
     for i=1:n
@@ -422,40 +473,40 @@
     end
     prod
   end
-				</input>
-			</program>
+			</input>
+		</program>
 
-			<p>
-				uses a <c>for</c> loop and we will see the details of this in <xref ref="ch-boolean-loops"/>. The for loop first assigns <c>i</c> the value 1 then executes the lines, then sets the value to 2, then executes the block, and so on until <c>i</c> is <c>n</c>.  Since <c>prod</c> starts as 1, this multiplies <c>prod</c> by every integer between 1 and <m>n</m>, and thus is the factorial.  The result in <c>prod</c> is returned.
-			</p>
-		</introduction>
+		<p>
+			uses a <c>for</c> loop and we will see the details of this in <xref ref="ch-boolean-loops"/>. The for loop first assigns <c>i</c> the value 1 then executes the lines, then sets the value to 2, then executes the block, and so on until <c>i</c> is <c>n</c>.  Since <c>prod</c> starts as 1, this multiplies <c>prod</c> by every integer between 1 and <m>n</m>, and thus is the factorial.  The result in <c>prod</c> is returned.
+		</p>
+
+		<exercise>
+			<task>
+				<statement>
+					<p>
+						Test the function above for various positive integers.
+					</p>
+				</statement>
+			</task>
 
 
-		<subsection>
-			<title>Exercise</title>
+			<task>
+				<statement>
+					<p>
+						What happens if you put in 0 or a negative integer?
+					</p>
+				</statement>
+			</task>
 
-			<p>
-				<ul>
-					<li>
-						<p>
-							Test the function above for various positive integers.
-						</p>
-					</li>
 
-					<li>
-						<p>
-							What happens if you put in 0 or a negative integer?
-						</p>
-					</li>
-
-					<li>
-						<p>
-							What happens if you put in a number that is not an integer?
-						</p>
-					</li>
-				</ul>
-			</p>
-		</subsection>
+			<task>
+				<statement>
+					<p>
+						What happens if you put in a number that is not an integer?
+					</p>
+				</statement>
+			</task>
+		</exercise>
 	</section>
 
 	<section xml:id="sect-recursion">

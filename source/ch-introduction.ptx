@@ -21,7 +21,7 @@
 		</p>
 
 		<p>
-			Data analysis is also ubiquitous and one can think about this falling in the realm of scientific computing. Although this varies, an autonomous vehicle can generate 25 Gb of data per day.\footnote{\url{https://www.tuxera.com/blog/autonomous-cars-300-tb-of-data-per-year/}}. Although there is plenty of scientific computing without the data generation in self-driving cars, this is an example of needing to handle and analyze large amount of data quite quickly.
+			Data analysis is also ubiquitous and one can think about this falling in the realm of scientific computing. Although this varies, an autonomous vehicle can generate 25 Gb of data per day.<fn><url href="https://www.tuxera.com/blog/autonomous-cars-300-tb-of-data-per-year/">see this link</url></fn>. Although there is plenty of scientific computing without the data generation in self-driving cars, this is an example of needing to handle and analyze large amount of data quite quickly.
 		</p>
 
 		<p>
@@ -141,11 +141,7 @@
 		</p>
 
 		<p>
-			One of the best languages for scientific computing has been Matlab over the past 3 or 4 decades. It is used extensively in engineering firms throughout the world (and the headquarters is in nearby Natick, MA). We won't be using Matlab here though. One of the nice things about taking a class is exploring new languages. Here we will use
-		</p>
-
-		<p>
-			<url href="http://julialang.org" visual="julialang.org">Julia</url>, which is a very new language that a lot of people in scientific computing are excited about. We will give examples using Julia, but the ideas here should be applicable to other languages. Julia was designed as a scientific computing language, but in short is a modern language. There are number of aspects that makes julia a good language for this. Julia is
+			One of the best languages for scientific computing has been Matlab over the past 3 or 4 decades. It is used extensively in engineering firms throughout the world (and the headquarters is in nearby Natick, MA). We won't be using Matlab here though. One of the nice things about taking a class is exploring new languages. Here we will use <url href="http://julialang.org" visual="julialang.org">Julia</url>, which is a very new language that a lot of people in scientific computing are excited about. We will give examples using Julia, but the ideas here should be applicable to other languages. Julia was designed as a scientific computing language, but in short is a modern language. There are number of aspects that makes julia a good language for this. Julia is
 		</p>
 
 		<p>
@@ -189,19 +185,19 @@
 					Additionally, the structure of the language makes it easy to start with, but as projects get more complex, it can be written in a simple way.
 				</p>
 			</li>
-		</dl>
-	</p>
-</section>
+			</dl>
+		</p>
+	</section>
 
-<section>
-	<title>Let's get started</title>
+	<section>
+		<title>Let's get started</title>
 
-	<p>
-		You can start by just reading the book, but to get the most out of this, make sure that you have a computer with access to julia. If you already have this, great. If not, see Appendix \ref{append:getting-started} which will show you a few way to get the code up and running.
-	</p>
+		<p>
+			You can start by just reading the book, but to get the most out of this, make sure that you have a computer with access to julia. If you already have this, great. If not, see <xref ref="ch-getting-started"/> which will show you a few way to get the code up and running.
+		</p>
 
-	<p>
-		Solving Scientific Computing problems ultimately boils down to manipulating data and at the most basic is that of strings and numbers. We begin with understanding these data types and how to store values in them. We also show some of julia syntax, which looks like other languages (like python). Hopefully you have some basic knowledge of computing, but no assumption of any particular language is necessary.
-	</p>
-</section>
+		<p>
+			Solving Scientific Computing problems ultimately boils down to manipulating data and at the most basic is that of strings and numbers. We begin with understanding these data types and how to store values in them. We also show some of julia syntax, which looks like other languages (like python). Hopefully you have some basic knowledge of computing, but no assumption of any particular language is necessary.
+		</p>
+	</section>
 </chapter>
