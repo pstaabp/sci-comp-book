@@ -576,7 +576,7 @@
 		<title>Variable Scope</title>
 
 		<p>
-			If you are using the command line julia (also called the REPL) or iJulia, then entering <c>x=6</c> will create <c>x</c> as a global variable, even without saying so explicitly. If we consider the factorial function above:
+			If you are using the command line julia (also called the REPL) or in a notebook, then entering <c>x=6</c> will create <c>x</c> as a global variable, even without saying so explicitly. If we consider the factorial function above:
 		</p>
 
 
@@ -610,11 +610,11 @@ end
 		</program>
 
 		<p>
-			The variable <c>prod</c> is not defined or visible outside the function. If we type <c>2*prod</c> for example, an error will occur saying that <c>prod</c> is not defined.
+			The variable <c>prod</c> is not defined or visible outside the function. If we type <c>2*prod</c> outside the function for example, an error will occur saying that <c>prod</c> is not defined.  It is acutally a good thing that variables inside a function is only visible inside the function (that is has local scope), because this encapusulates the code inside a function in  that the function doesn't affect anything outside of it.
 		</p>
 
 		<p>
-			If we have:
+			Let's look at local a global variables in a bit more detail, by the following function whose only purpose is to understand global and local variables.
 		</p>
 
 
@@ -630,11 +630,11 @@ f()
 		</program>
 
 		<p>
-			then this will return <c>2</c> and typing <c>x</c> (to see it's value) returns <c>3</c>, indicating that there are two different <c>x</c> variables.
+			then evaluating the function with <c>f()</c> this will return <c>2</c> and typing <c>x</c> outside the function just to see it's  (to see it's value) returns <c>3</c>, indicating that there are two different <c>x</c> variables.
 		</p>
 
 		<p>
-			If we indeed need a variable inside of a function to use a global, we can use the <c>global</c> keyword.  If instead we have
+			If we indeed need a variable inside of a function to use a global variable, we can use the <c>global</c> keyword.  If instead we have
 		</p>
 
 
@@ -649,7 +649,7 @@ end
 		</program>
 
 		<p>
-			then executing <c>g()</c> results in <c>4</c> showing that it is using the global value.  We will use a global variable to determine the number of function evaluations to test a function in <xref ref="sect-faster-fibonacci"/>.
+			then executing <c>g()</c> results in <c>4</c> showing that it is using the global value.  Entering <c>x</c> after evaluating the function, also will return <c>4</c>.  Although it is rare to need to use a global variable,  we will use this technique to determine the number of function evaluations to test a function in <xref ref="sect-faster-fibonacci"/>.
 		</p>
 	</section>
 

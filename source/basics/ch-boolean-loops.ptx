@@ -3,6 +3,46 @@
 <chapter xml:id="ch-boolean-loops">
 	<title>Boolean Statements, Loops and Branching</title>
 
+	<objectives>
+		<ul>
+			<li>
+				<p>
+					Understanding the operators  equal, less than, less than or equal, greater than, and greater than or equal applied to variables, numbers and strings.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Understanding the boolean operators AND, OR and NOT and compound boolean statements.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					How to write an if-then-else statement and when to use it.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					How to write a while loop and examine the troubles that can occur.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					How to write a for loop and when to use it versus a while loop.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Introduction to ranges, which store linear sequences of numbers.
+				</p>
+			</li>
+		</ul>
+	</objectives>
+
 	<introduction>
 		<p>
 			The basic computer science structures of if statements, while and for loops are crucial in scientific computing. In this chapter, we cover the basics of these structures in Julia. We will see all of these in more context in later chapters, but here's the syntax and basics.
@@ -27,6 +67,10 @@
 
 			<p>
 				If we set <c>x=3</c> and then can just type <c>x==3</c>, <c>x &lt; 3 </c>, <c>x &gt; 3</c> to test a variety of comparisons.
+			</p>
+
+			<p>
+				In addition, we can test if a boolean value does not have some value using the <c>!=</c> and <c>!</c> operators.  For example using the same example <c>x=3</c> as above, then we can test that <c>x</c> is not 4 with <c>x != 4</c>.  If a variable is a boolean, like <c>b = true</c>, the operator that changes <c>true</c> to <c>false</c> or vice versa with <c>!b</c>.
 			</p>
 		</introduction>
 
@@ -199,19 +243,19 @@ end
 
 			<program language="julia" line-numbers="yes">
 				<input>
-function quadrant(x::Real,y::Real)
-  if x &gt; 0 &amp;&amp; y &gt; 0
-    return "I"
-  elseif x &lt; 0 &amp;&amp; y &gt; 0
-    return "II"
-  elseif x &lt; 0 &amp;&amp; y &lt; 0
-    return "III"
-  elseif x &gt; 0 &amp;&amp; y &lt; 0
-    return "IV"
-  else
-    return "NONE"
-  end
-end
+					function quadrant(x::Real,y::Real)
+					if x &gt; 0 &amp;&amp; y &gt; 0
+						return "I"
+					elseif x &lt; 0 &amp;&amp; y &gt; 0
+						return "II"
+					elseif x &lt; 0 &amp;&amp; y &lt; 0
+						return "III"
+					elseif x &gt; 0 &amp;&amp; y &lt; 0
+						return "IV"
+					else
+						return "NONE"
+					end
+				end
 				</input>
 			</program>
 
@@ -260,7 +304,7 @@ end
 		<title>Ternary <c>if-then-else</c></title>
 
 		<p>
-			A common use of an <c>if-then-else</c> statement is to assign a value to a varible (or return from a function) depending on some condition.  There is a compact way to do this with a ternary <c>if-then-else</c> statement that has the form:
+			A common use of an <c>if-then-else</c> statement is to assign a value to a variable (or return from a function) depending on some condition.  There is a compact way to do this with a ternary <c>if-then-else</c> statement that has the form:
 		</p>
 
 		<p>
@@ -297,11 +341,35 @@ end
 			The <c>ifelse</c> is not used in this book, preference goes to the <c> ? : </c> format instead--which is available in almost all modern languages as well.
 		</p>
 
+		<p>
+			The ternary <c>if-then-else</c> is useful if you want to store a value that has a branching condition and that branch is relatively simple.  If you have more complicated logic or need to call a function, this is where a <c>if-then</c> or <c>if-then-else</c> statement would be used.
+		</p>
+
 		<exercise>
 			<p>
 				Write the recursive factorial function above using the ternary if-then-else.
 			</p>
 		</exercise>
+
+		<p>
+			You can nest the ternary <c>if-then-else</c>.  For example, the following will perform the same as the quadrant function above.
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<input>
+function quadrant2(x::Real, y::Real)
+  x &gt; 0 &amp;&amp; y &gt; 0 ? "I" :
+    x &lt; 0 &amp;&amp; y &gt; 0 ? "II" :
+    x &lt; 0 &amp;&amp; y &lt; 0 ? "III" :
+    x &gt; 0 &amp;&amp; y &lt; 0 ? "IV" : "NONE"
+end
+			</input>
+		</program>
+
+		<p>
+			Note that although this can be written on a single line (it is a single nested statement), it has been split on lines for clarity.  Also, the precendence order is that <c>:</c> is higher that <c>?</c> in order for this to evaluate as expected without parentheses.
+		</p>
 	</section>
 
 	<section>
@@ -335,7 +403,7 @@ end
 			</program>
 
 			<p>
-				and note that the expression <c>n+=1</c> is shorthand for <c>n=n+1</c>.  We are using the <c>@show</c> macro which dumps the expression and its value to the screen.
+				and note that the expression <c>n+=1</c> is shorthand for <c>n=n+1</c>.  We are using the <c>@show</c> macro which dumps the expression and its value to the screen.  Also, we are using a <c>let</c> block to just encapsulate the variables.
 			</p>
 
 			<p>
@@ -358,7 +426,11 @@ end
 			</program>
 
 			<p>
-				In short, this method takes a function <m>f</m> and an interval <m>[a,b]</m> and continually bisects it ensuring there is a root in the resulting interval.  It continues while the length of the interval is greater than <c>1e-6</c> or <m>10^{-6}</m>. To test it, consider
+				In short, this method takes a function <m>f</m> and an interval <m>[a,b]</m> and continually bisects it ensuring there is a root in the resulting interval.  It continues while the length of the interval is greater than <c>1e-6</c> or <m>10^{-6}</m>.  We use a tuple to handle the interval and on line 6, we have used a ternary <c>if-then-else</c> to first test which interval to use and then return either the left or right hand subintervals.
+			</p>
+
+			<p>
+				To test it, consider
 			</p>
 
 			<p>
@@ -424,7 +496,7 @@ end
 
 					<li>
 						<p>
-							Stop the code if you need to. You may need to interrupt the kernel.  In the REPL, CTRL-C will stop and in Jupyter, selecting the <em>Kernel</em> menu then <em>Interrupt</em> should stop it.  The square in the toolbar should work too.  See section \ref{sect:kernel} for more information.
+							Stop the code if you need to. You may need to interrupt the kernel.  In the REPL, CTRL-C will stop and in a notebook, selecting the <em>Kernel</em> menu then <em>Interrupt</em> or there is often a stop button which should stop it.  The square in the toolbar should work too.  See <xref ref="sect-kernel"/> for more information.
 						</p>
 					</li>
 
@@ -436,16 +508,59 @@ end
 				</ul>
 			</p>
 
-			<p>
-				<term>MAYBE CITE A DEBUG SECTION?</term>
-			</p>
+
+
 		</subsection>
-</section>
 
-		<section>
-			<title>For loops</title>
+		<subsection>
+			<title>Debugging While Loops</title>
 
-			<introduction>
+			<p>As we mentioned above, if we use a function that does not have a root, like <m>f(x)=x^2+2</m>, the <c>bisection</c> function will not stop.  Go ahead and try it.  Here we will add some code to that method that will prevent it from running forever. </p>
+			<p>
+				<ol>
+					<li>
+						<p>
+							we will introduce a variable <c>n</c> which will keep track of the number of steps we have done.  We will start this variable with the value <c>0</c>.
+						</p>
+					</li>
+					<li>
+						<p>
+							Then, inside the loop update the value of <c>n</c> with the statement <c>n += 1</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							Lastly, add another condition to the while statement that will only continue if <c>n</c> is less than some value, say <c>10</c>.
+						</p>
+					</li>
+				</ol>
+			</p>
+
+			<p>The following update to the <c>bisection</c> method will now stop if we go too many times:</p>
+
+			<program language="julia" line-numbers="yes">
+				<input>
+function bisection(f::Function, a::Real, b::Real)
+  local c
+  local n = 0
+  while (b-a) &gt; 1e-6 &amp;&amp; n lt; 10
+    c = 0.5*(a+b)  # find the midpoint
+    # test if f(a) and f(c) have opposite signs to determine the new interval
+    (a,b) = f(a)*f(c) lt; 0 ? (a,c) : (c,b)
+    n += 1
+  end
+  c
+end
+</input>
+</program>
+		</subsection>
+	</section>
+
+	<section>
+		<title>For loops</title>
+
+		<introduction>
 			<p>
 				A for loop executes some code a fixed number of times and has a variable (called an index) that updates.  The next few examples are not practical, but are designed to illustrate the syntax and what is possible. The following is a simple for loop that prints out the numbers 1 to 10
 			</p>
