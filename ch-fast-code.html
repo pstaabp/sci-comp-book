@@ -8,7 +8,7 @@
 <html lang="en-US" dir="ltr">
 <head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Introduction to Scientific Computing</title>
+<title>Timing Code and Writing for Speed</title>
 <meta name="Keywords" content="Authored in PreTeXt">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:type" content="book">
@@ -183,7 +183,7 @@ window.MathJax = {
 <ol id="searchresults" class="searchresults"></ol>
 </div>
 </div>
-<span class="nav-other-controls"></span><span class="treebuttons"><a class="previous-button button" href="frontmatter-2.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="my-great-book.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="ch-intro.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R}
+<span class="nav-other-controls"></span><span class="treebuttons"><a class="previous-button button" href="ch-functional-programming.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="part-julia-basics.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="ch-number-theory.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R}
 \newcommand{\lt}{&lt;}
 \newcommand{\gt}{&gt;}
 \newcommand{\amp}{&amp;}
@@ -193,7 +193,7 @@ window.MathJax = {
 <div class="ptx-page">
 <div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 parts"><ul class="structural contains-active toc-item-list">
 <li class="toc-item toc-frontmatter"><div class="toc-title-box"><a href="frontmatter.html" class="internal"><span class="title">Front Matter</span></a></div></li>
-<li class="toc-item toc-part active">
+<li class="toc-item toc-part">
 <div class="toc-title-box"><a href="part-intro.html" class="internal"><span class="codenumber">I</span> <span class="title">Introduction to Scientific Computing</span></a></div>
 <ul class="structural toc-item-list"><li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-intro.html" class="internal"><span class="codenumber">1</span> <span class="title">Introduction to Scientific Computing</span></a></div>
@@ -207,9 +207,9 @@ window.MathJax = {
 </ul>
 </li></ul>
 </li>
-<li class="toc-item toc-part">
+<li class="toc-item toc-part contains-active">
 <div class="toc-title-box"><a href="part-julia-basics.html" class="internal"><span class="codenumber">II</span> <span class="title">Scientific Computation and Julia Basics</span></a></div>
-<ul class="structural toc-item-list">
+<ul class="structural toc-item-list contains-active">
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-variables.html" class="internal"><span class="codenumber">2</span> <span class="title">Storing number and strings and using Julia syntax</span></a></div>
 <ul class="structural toc-item-list">
@@ -370,7 +370,7 @@ window.MathJax = {
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7" class="internal"><span class="codenumber">7.4</span> <span class="title">Mapping a Function over an 2D array</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-chapter">
+<li class="toc-item toc-chapter active">
 <div class="toc-title-box"><a href="ch-fast-code.html" class="internal"><span class="codenumber">8</span> <span class="title">Timing Code and Writing for Speed</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-4" class="internal"><span class="codenumber">8.1</span> <span class="title">Attempt #1</span></a></div></li>
@@ -1068,12 +1068,210 @@ window.MathJax = {
 </ul>
 </li>
 </ul></nav></div>
-<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="part" id="part-intro"><h2 class="heading hide-type">
-<span class="type">Part</span><span class="space"> </span><span class="codenumber">I</span><span class="space"> </span><span class="title">Introduction to Scientific Computing</span>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="chapter" id="ch-fast-code"><h2 class="heading">
+<span class="type">Chapter</span><span class="space"> </span><span class="codenumber">8</span><span class="space"> </span><span class="title">Timing Code and Writing for Speed</span>
 </h2>
-<nav class="summary-links"><ul><li><a href="ch-intro.html" class="internal"><span class="codenumber">1</span> <span class="title">Introduction to Scientific Computing</span></a></li></ul></nav></section></div>
+<article class="objectives goal-like" id="ch-fast-code-2"><h3 class="heading"><span class="type">Objectives</span></h3>
+<ul class="disc" id="ch-fast-code-2-1">
+<li id="ch-fast-code-2-1-1"><div class="para" id="ch-fast-code-2-1-1-1">Introduction to timing code and doing comparisons between code that gets the same results.</div></li>
+<li id="ch-fast-code-2-1-2"><div class="para" id="ch-fast-code-2-1-2-1">Understanding why code takes longer than other code.</div></li>
+<li id="ch-fast-code-2-1-3"><div class="para" id="ch-fast-code-2-1-3-1">Comparing recursive and nonrecursive code in terms of number of function evaluations.</div></li>
+</ul></article><section class="introduction" id="ch-fast-code-3"><div class="para" id="ch-fast-code-3-1">This chapter will show one aspect of writing fast code, an important aspect of scientific computing. We will study a number of ways to sum up the first <span class="process-math">\(n\)</span> counting numbers and determine why the timing of things are different. Also, we are going to test the various types of integers as well to determine the speed of things with that. In each case we are going to create a function and then time it.</div></section><section class="section" id="ch-fast-code-4"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">8.1</span><span class="space"> </span><span class="title">Attempt #1</span>
+</h3>
+<div class="para" id="ch-fast-code-4-2">Let’s start by making an array of all of the numbers, then summing them in a for loop:</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function sum1(n::Int)
+  local arr = collect(1:n)
+  local sum = 0
+  for i in arr
+    sum += i
+  end
+  sum
+end
+</code></pre></div>
+<div class="para" id="ch-fast-code-4-4">On my laptop: <code class="code-inline tex2jax_ignore">@time sum1(1_000_000)</code>.</div>
+<div class="para" id="ch-fast-code-4-5">returns</div>
+<div class="para logical" id="ch-fast-code-4-6"><pre class="code-display tex2jax_ignore">0.026257 seconds (2 allocations: 7.629 MiB, 91.73% gc time)
+
+500000500000
+</pre></div>
+<div class="para" id="ch-fast-code-4-7">The <code class="code-inline tex2jax_ignore">@time</code> is called a macro, which is similar to a function, however is more flexible. The first line clearly has the time, but also the array allocations and memory allocated. The second line of the macro returns the value of the function.</div>
+<div class="para logical" id="ch-fast-code-4-8">
+<div class="para">If we repeat this for the sum of the first billion counting numbers:</div>
+<pre class="code-display tex2jax_ignore">@time sum1(1_000_000_000)
+</pre>
+</div>
+<div class="para" id="ch-fast-code-4-9">it takes a while to get</div>
+<div class="para logical" id="ch-fast-code-4-10"><pre class="code-display tex2jax_ignore">  4.286106 seconds (2 allocations: 7.451 GiB, 7.30% gc time)
+
+  500000000500000000
+</pre></div>
+<div class="para" id="ch-fast-code-4-11">The big difference between these is the total memory allocation. There is a 1000-fold increase in memory allocated (note the MiB or megabytes versus GiB or gigabytes).  This also shows about a 160-fold increase in time, surprising that it didn’t go up 1000 times as well.</div>
+<div class="para" id="ch-fast-code-4-12">Allocating memory is a time-expensive endeavor.  Also, even though the machine that I ran this on has 16 gigabytes, perhaps it couldn’t get all 7.5 GiB it needed for this operation at once.  This is shown with the 7.30% gc time, which mean garbage collection.  In short, there was some time needed to handling so much memory.  Garbage collection is a way to clean up allocated memory that is no longer needed.  It’s complicated, but the percentage of gc can reveal why a calcuation may be taking longer than expected.</div>
+<div class="para" id="ch-fast-code-4-13">If you have some patience, try this will 2 billion or more and see the results. You will probably need more allocation time and should be at least twice as long.</div></section><section class="section" id="ch-fast-code-5"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">8.2</span><span class="space"> </span><span class="title">Attempt #2</span>
+</h3>
+<div class="para" id="ch-fast-code-5-2">The big difference seemed to be the total memory allocation, so let’s try a version where we don’t allocate the array.</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function sum2(n::Integer)
+  local sum = 0
+  for i=1:n
+    sum+=i
+  end
+  sum
+end
+</code></pre></div>
+<div class="para" id="ch-fast-code-5-4">and running it as <code class="code-inline tex2jax_ignore">@time sum2(1_000_000_000)</code> we get</div>
+<div class="para logical" id="ch-fast-code-5-5"><pre class="code-display tex2jax_ignore">0.000000 seconds
+
+  500000000500000000
+</pre></div>
+<div class="para" id="ch-fast-code-5-6">and notice that the time has shrunk to zero--we’ll see later why this is true. If we try for larger numbers, such as <code class="code-inline tex2jax_ignore">@time sum2(100_000_000_000)</code>, which still takes almost no time, but notice that that the result is not correct.  Why? Consider the ideas from <a href="ch-data-types.html" class="internal" title="Chapter 3: Introduction to Data Types">Chapter 3</a>.</div></section><section class="section" id="ch-fast-code-6"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">8.3</span><span class="space"> </span><span class="title">Attempt #3</span>
+</h3>
+<div class="para" id="ch-fast-code-6-2">Hopefully you thought about the strange result above.  If you thought overflow, give yourself a gold star.  To avoid this, let’s write a <code class="code-inline tex2jax_ignore">BigInt</code> version of this:</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function sum3(n::Int)
+  local sum = big(0)
+  for i=1:n
+    sum+=i
+  end
+  sum
+end
+</code></pre></div>
+<div class="para" id="ch-fast-code-6-4">and, <code class="code-inline tex2jax_ignore">@time sum3(1_000_000)</code> returns</div>
+<div class="para logical" id="ch-fast-code-6-5"><pre class="code-display tex2jax_ignore">0.146406 seconds (3.00 M allocations: 45.776 MiB)
+
+  500000500000
+</pre></div>
+<div class="para" id="ch-fast-code-6-6">Comparing this with the results at the beginning of Attempt #1, shows that BigInts are much slower as mentioned in <a href="ch-data-types.html" class="internal" title="Chapter 3: Introduction to Data Types">Chapter 3</a>.</div>
+<div class="para logical" id="ch-fast-code-6-7"><pre class="code-display tex2jax_ignore">@time sum3(10_000_000)
+</pre></div>
+<div class="para" id="ch-fast-code-6-8">returns</div>
+<div class="para logical" id="ch-fast-code-6-9"><pre class="code-display tex2jax_ignore">2.288845 seconds (30.00 M allocations: 457.764 MiB, 34.08% gc time) 
+
+  50000005000000
+</pre></div>
+<div class="para" id="ch-fast-code-6-10">which is more than 10 times slower, so it appears that this is linear as possibly as expected. This isn’t practical to find much larger sums though.</div></section><section class="section" id="ch-fast-code-7"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">8.4</span><span class="space"> </span><span class="title">Attempt #4</span>
+</h3>
+<div class="para" id="ch-fast-code-7-2">Let’s trying using the <code class="code-inline tex2jax_ignore">reduce</code> function on BigInts:</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function sum4(n::Int)
+    reduce(+,1:big(n))
+end
+</code></pre></div>
+<div class="para" id="ch-fast-code-7-4">Then <code class="code-inline tex2jax_ignore">@time sum4(1_000_000)</code> returns</div>
+<div class="para logical" id="ch-fast-code-7-5"><pre class="code-display tex2jax_ignore">  0.335802 seconds (5.00 M allocations: 91.553 MiB, 20.56% gc time)
+
+  500000500000
+</pre></div>
+<div class="para" id="ch-fast-code-7-6">Notice that this allocates about 91 MiB of memory, which isn’t a lot, but this is probably due to the <code class="code-inline tex2jax_ignore">BigInt</code> allocations.  Also, this is about twice the amount of time as that in Attempt #3. Notice also a significant amount of gc (garbage collection) time.</div>
+<div class="para" id="ch-fast-code-7-7">Also, <code class="code-inline tex2jax_ignore">@time sum4(10_000_000)</code> returns</div>
+<div class="para logical" id="ch-fast-code-7-8"><pre class="code-display tex2jax_ignore">  3.254972 seconds (50.00 M allocations: 915.528 MiB, 16.57% gc time)
+
+  50000005000000
+</pre></div>
+<div class="para" id="ch-fast-code-7-9">returns: <code class="code-inline tex2jax_ignore">display(@time sum4(10_000_000))</code> \printpythontex[verbatim]</div>
+<div class="para" id="ch-fast-code-7-10">which is about 10 times slower that the previous one, and still about twice the speed of <code class="code-inline tex2jax_ignore">sum3</code> for the same number <code class="code-inline tex2jax_ignore">n</code>.</div>
+<div class="para" id="ch-fast-code-7-11">Also notice that the number and size of the allocations have increased by a factor of 10, which should not be surprising.  However, notice that they are quite large. For the second sum, there was nearly 1 Gb of allocation despite no array.  This is due to the BigInt which allocates quite a bit of memory.  It appears that julia allocates memory for every BigInt created (and there are 10 million in this example).</div></section><section class="section" id="ch-fast-code-8"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">8.5</span><span class="space"> </span><span class="title">Attempt #5</span>
+</h3>
+<div class="para" id="ch-fast-code-8-2">Let’s use the built-in <code class="code-inline tex2jax_ignore">sum</code> command. Entering <code class="code-inline tex2jax_ignore">@time sum(1:big(10)^6)</code> returns</div>
+<div class="para logical" id="ch-fast-code-8-3"><pre class="code-display tex2jax_ignore"> 0.001495 seconds (41 allocations: 816 bytes)
+
+  500000500000
+</pre></div>
+<div class="para" id="ch-fast-code-8-4">and note that higher powers of 10 do not increase the time much. For example, <code class="code-inline tex2jax_ignore">@time sum(1:big(10)^20)</code> results in</div>
+<div class="para logical" id="ch-fast-code-8-5"><pre class="code-display tex2jax_ignore">0.000828 seconds (42 allocations: 904 bytes)
+
+  5000000000000000000050000000000000000000
+</pre></div>
+<div class="para" id="ch-fast-code-8-6">What is going on? How is this so fast?  Think about this and we’ll answer it below.</div>
+<details id="ch-fast-code-8-7" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">8.1</span><span class="period">.</span>
+</h4></summary><article class="exercise exercise-like knowl__content"><div class="para" id="ch-fast-code-8-7-1">Repeat Attempts #1--#4 for <code class="code-inline tex2jax_ignore">Int128</code>.  That is, make sure that the calculations are being done using this type.  For the <code class="code-inline tex2jax_ignore">for</code> loops, start with</div>
+<div class="para logical" id="ch-fast-code-8-7-2"><pre class="code-display tex2jax_ignore">local sum = Int128(0)
+</pre></div>
+<div class="para" id="ch-fast-code-8-7-3">and for the <code class="code-inline tex2jax_ignore">reduce</code> function use <code class="code-inline tex2jax_ignore">Int128(n)</code> instead of <code class="code-inline tex2jax_ignore">big(n)</code>.</div>
+<div class="para" id="ch-fast-code-8-7-4">Compare your results with those above.</div></article></details></section><section class="section" id="ch-fast-code-9"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">8.6</span><span class="space"> </span><span class="title">Summary of Results</span>
+</h3>
+<div class="para" id="ch-fast-code-9-2">There were a lot of factors going on in the above example.  Here’s a summary.</div>
+<div class="para logical" id="ch-fast-code-9-3"><ul class="disc" id="ch-fast-code-9-3-1">
+<li id="ch-fast-code-9-3-1-1"><div class="para" id="ch-fast-code-9-3-1-1-1">
+<em class="emphasis">Allocating an array is expensive (in terms of memory and time).</em>  In Attempt #1, we created an array using the <code class="code-inline tex2jax_ignore">collect</code> function. The creation was why this took so much time.</div></li>
+<li id="ch-fast-code-9-3-1-2">
+<div class="para" id="ch-fast-code-9-3-1-2-1">
+<em class="emphasis">BigInts and <code class="code-inline tex2jax_ignore">Int128</code> are slower than <code class="code-inline tex2jax_ignore">Int64</code>s.</em>   We noticed that switching from <code class="code-inline tex2jax_ignore">Int64</code> to <code class="code-inline tex2jax_ignore">BigInt</code> in Attempt #2 to #3, there was a significant drop in speed.  In short, <code class="code-inline tex2jax_ignore">BigInt</code>s are slow.  Only use them when needed.</div>
+<div class="para" id="ch-fast-code-9-3-1-2-2">You should have noticed from the exercise that <code class="code-inline tex2jax_ignore">Int128</code> is a viable alternative to <code class="code-inline tex2jax_ignore">Int64</code> if you need larger integers.  <code class="code-inline tex2jax_ignore">Int128</code> is slower than <code class="code-inline tex2jax_ignore">Int64</code>, but still much better than <code class="code-inline tex2jax_ignore">BigInt</code>.  Only use <code class="code-inline tex2jax_ignore">BigInt</code> when you need really large integers.</div>
+</li>
+<li id="ch-fast-code-9-3-1-3">
+<div class="para" id="ch-fast-code-9-3-1-3-1">
+<em class="emphasis">Sometimes julia is super smart about some operations.</em>  In both Attempt #2 and Attempt #5, we got much shorter times than expected.  In both, you would expect summing 1000 times more numbers would take 1000 times longer, but this isn’t true. In both cases, julia recognizes that integers are begin summed and is probably using the formula,</div>
+<div class="para logical" id="ch-fast-code-9-3-1-3-2"><div class="displaymath process-math">
+\begin{equation*}
+1+2+3 + \cdots + n = \frac{n(n+1)}{2}
+\end{equation*}
+</div></div>
+<div class="para" id="ch-fast-code-9-3-1-3-3">and using this formula can be done for any number <span class="process-math">\(n\)</span> with no summing at all.</div>
+</li>
+</ul></div></section><section class="section" id="sect-faster-fibonacci"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">8.7</span><span class="space"> </span><span class="title">Computing Fibonacci Numbers</span>
+</h3>
+<section class="introduction" id="sect-faster-fibonacci-2"><div class="para" id="sect-faster-fibonacci-2-1">In <a href="ch-intro-functions.html#sect-recursion" class="internal" title="Section 4.9: Recursive Functions">Section 4.9</a>, there was an exercise to use recursion to find the fibonacci numbers.  A possible solution to this is:</div> <div class="para logical" id="sect-faster-fibonacci-2-2"><pre class="code-display tex2jax_ignore">fibonacci(n::Integer) = (n==1 || n==2) ? 1 : fibonacci(n-1) + fibonacci(n-2)
+</pre></div> <div class="para" id="sect-faster-fibonacci-2-3">where we have used the ternary <code class="code-inline tex2jax_ignore">if-then-else</code>.  Note: if <code class="code-inline tex2jax_ignore">n</code> is 1 or 2, then 1 is returned, if not it uses the recursive formula.  The first 10 fibonacci numbers are found with</div> <div class="para logical" id="sect-faster-fibonacci-2-4"><pre class="code-display tex2jax_ignore">map(fibonacci,1:10)
+</pre></div> <div class="para" id="sect-faster-fibonacci-2-5">and this results in the array<code class="code-inline tex2jax_ignore">[1 1 2 3 5 8 13 21 34 55]</code>.</div> <div class="para" id="sect-faster-fibonacci-2-6">It is fast to find the fibonacci numbers for smaller values, but consider</div> <div class="para logical" id="sect-faster-fibonacci-2-7"><pre class="code-display tex2jax_ignore">@time fibonacci(45)
+</pre></div> <div class="para" id="sect-faster-fibonacci-2-8">took 3.149046 seconds.  If we find <code class="code-inline tex2jax_ignore">@time fibonacci(46)</code>, it takes about 60% longer. To determine what’s going on, consider <code class="code-inline tex2jax_ignore">fibonacci(5)</code>.  Inside the function, it calls <code class="code-inline tex2jax_ignore">fibonacci(4)</code> and <code class="code-inline tex2jax_ignore">fibonacci(3)</code>.  Each of these then called the previous two. This can be seen in the following tree graph where <span class="process-math">\(f(n)\)</span> is the fibonacci function:</div> <figure class="figure figure-like" id="fig-fibonacci-tree-graph"><div class="image-box" style="width: 75%; margin-left: 12.5%; margin-right: 12.5%;"><img src="generated/latex-image/img-fibonacci-tree-graph.svg" role="img" class="contained"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">8.2<span class="period">.</span></span><span class="space"> </span>A tree graph that shows how the recursive fibonacci numbers are created.</figcaption></figure> <div class="para" id="sect-faster-fibonacci-2-10">Since each of the endpoints (either <span class="process-math">\(f(2)\)</span> or <span class="process-math">\(f(1)\)</span>) requires and evaluation as does each arrow, there are a total of 13 evaluations for this.  If we define:</div> <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function fibonacciEval(n::Integer)
+  global num_evals
+  if n==1 || n==2
+    num_evals +=1
+    return 1
+  else
+    num_evals += 2
+    return fibonacciEval(n-1) + fibonacciEval(n-2)
+  end
+end
+</code></pre></div> <div class="para logical" id="sect-faster-fibonacci-2-12">
+<div class="para">then</div>
+<pre class="code-display tex2jax_ignore">num_evals=0
+fibonacciEval(5)
+num_evals
+</pre>
+</div> <div class="para" id="sect-faster-fibonacci-2-13">returns <code class="code-inline tex2jax_ignore">13</code>. Also</div> <div class="para logical" id="sect-faster-fibonacci-2-14"><pre class="code-display tex2jax_ignore">num_evals=0
+fibonacciEval(20)
+num_evals
+</pre></div> <div class="para" id="sect-faster-fibonacci-2-15">returns <code class="code-inline tex2jax_ignore">20293</code> and</div> <div class="para logical" id="sect-faster-fibonacci-2-16"><pre class="code-display tex2jax_ignore">num_evals=0
+fibonacciEval(21)
+num_evals
+</pre></div> <div class="para" id="sect-faster-fibonacci-2-17">returns <code class="code-inline tex2jax_ignore">32836</code> and notice that finding the 21st fibonacci number takes about 60% more operations and therefore would take about this much longer.</div> <div class="para" id="sect-faster-fibonacci-2-18">Thinking about this result shows that we aren’t doing things efficiently.  If we have already calculated the 19th and 20th fibonacci numbers, why does it take an extra 60% longer? Basically this is because we aren’t saving the results to be reused.</div></section><section class="subsection" id="sect-fast-fibonacci"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">8.7.1</span><span class="space"> </span><span class="title">Speeding Up Fibonacci</span>
+</h4>
+<div class="para" id="sect-fast-fibonacci-2">As we saw above, the standard recursive version of <code class="code-inline tex2jax_ignore">fibonacci</code> function is very slow.<details class="ptx-footnote" aria-live="polite" id="sect-fast-fibonacci-2-2"><summary class="ptx-footnote__number" title="Footnote 8.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="sect-fast-fibonacci-2-2">in fact, it is <span class="process-math">\(O(e^n)\)</span>
+</div></details> We now attempt to find a faster version. The following is a fibonacci function that uses a for loop:</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function fibonacci2(n::Integer)
+  local x,y = (1,1)
+  for i = 1:n-1
+    x,y = (y, x+y)
+  end
+  x
+end
+</code></pre></div>
+<div class="para" id="sect-fast-fibonacci-4">and note that there is no recursive call. Instead, we use a tuple to iterate pairs of numbers <code class="code-inline tex2jax_ignore">(x,y)</code> which get updated each time through the for loop. Notice on line 2, this initializes the fibonacci sequence and line 4 is the key to this. <code class="code-inline tex2jax_ignore">x</code> takes on the value of <code class="code-inline tex2jax_ignore">y</code> and then <code class="code-inline tex2jax_ignore">y</code> is the sum of the previous two integers.</div>
+<div class="para logical" id="sect-fast-fibonacci-5">
+<div class="para">You should run this and if you do, note that <code class="code-inline tex2jax_ignore">@time fibonacci2(100)</code> returns</div>
+<pre class="code-display tex2jax_ignore">0.000000 seconds
+3736710778780434371
+</pre>
+</div>
+<div class="para" id="sect-fast-fibonacci-6">and clearly obviously much faster than the 45th fibonacci number with the original function. The exercise below explores the <code class="code-inline tex2jax_ignore">fibonacci2</code> function.</div>
+<details id="sect-fast-fibonacci-7" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
+<span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">8.3</span><span class="period">.</span>
+</h5></summary><article class="exercise exercise-like knowl__content"><div class="para logical" id="sect-fast-fibonacci-7-1"><ol class="decimal" id="sect-fast-fibonacci-7-1-1">
+<li id="sect-fast-fibonacci-7-1-1-1"><div class="para" id="sect-fast-fibonacci-7-1-1-1-1">Determine which fibonacci number results in an overflow for <code class="code-inline tex2jax_ignore">Int64</code>. Do this by trial and error with the <code class="code-inline tex2jax_ignore">fibonacci2</code> function.</div></li>
+<li id="sect-fast-fibonacci-7-1-1-2"><div class="para" id="sect-fast-fibonacci-7-1-1-2-1">Rewrite the <code class="code-inline tex2jax_ignore">fibonacci2</code> function to return a <code class="code-inline tex2jax_ignore">BigInt</code> version if <span class="process-math">\(n\)</span> is greater than or equal to the number in #1.</div></li>
+<li id="sect-fast-fibonacci-7-1-1-3"><div class="para" id="sect-fast-fibonacci-7-1-1-3-1">Find the first 200 fibonacci numbers.</div></li>
+</ol></div></article></details></section></section></section></div>
 <div class="ptx-content-footer">
-<a class="previous-button button" href="frontmatter-2.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-intro.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
+<a class="previous-button button" href="ch-functional-programming.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-number-theory.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
 </div></main>
 </div>
 <div id="ptx-page-footer" class="ptx-page-footer">
