@@ -459,7 +459,7 @@ end
 			<p>
 				<cd>
 				<cline>function Base.show(io::IO, p::Polynomial)</cline>
-				<cline>  print(io, reduce((str, n) -&gt; "$str $(n==1 ? "" : "+") $(p.coeffs[n]) x^$(n-1)", 1:length(p.coeffs),init=""))</cline>
+				<cline>  print(io, mapreduce(i -&gt; "$(coeffs[i]) x^$(i-1)", (str, term) -&gt; str * " + $term " , 1:length(coeffs)))</cline>
 				<cline>end</cline>
 				</cd>
 			</p>
@@ -502,7 +502,7 @@ end
 
 					<li>
 						<p>
-							This isn't perfect.  For example, if there are negative coefficients, then you'll see a +- for a term.  This can be taken care of with another ternary <c>if-then-else</c>. Also, it would be nice to eliminate the <c>x^0</c> term (because it is just 1 as well as instead of writing <c>x^1</c> write <c>x</c>, but this is just a little icing.
+							This isn't perfect.  For example, if there are negative coefficients, then you'll see a +- for a term.  This can be taken care of with another ternary <c>if-then-else</c>. Also, it would be nice to eliminate the <c>x^0</c> term (because it is just 1 as well as instead of writing <c>x^1</c> write <c>x</c>, but this is just a little icing).
 						</p>
 					</li>
 

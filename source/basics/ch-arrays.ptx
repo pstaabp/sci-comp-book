@@ -3,6 +3,46 @@
 <chapter xml:id="ch-arrays">
 	<title>Arrays</title>
 
+	<objectives>
+		<ul>
+			<li>
+				<p>
+					Learn that arrays are ordered collections of things that can be accessed and updated.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					There are numerous methods including direct entry and comprehensions to contruct an array.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					There are many methods on arrays including some arithmetic ones on both vectors and matrices as well as the sum and product of numeric vectors.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					There are numerous methods to extract, delete, insert and append elements to vectors.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Understanding how to sort vectors either numerically, lexiographically or by applying another function first.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					The join method takes an array and returns a string and similarly a split method, takes a string and splits into an array.
+				</p>
+			</li>
+		</ul>
+	</objectives>
+
 	<introduction>
 		<p>
 			Arrays are a fundamental data structure for nearly every computer language and it is a crucial for scientific computing as that it is an efficient way of handling large amount of the same datatype.  Additionally, arrays are the computing version of mathematical vectors and matrices.
@@ -280,7 +320,7 @@
 		</p>
 
 		<p>
-			To access the 2nd element, type <c>x[2]</c>. To get an array the elements 3, 4 and 5, type
+			To access the 2nd element, type <c>x[2]</c>. To get a vector consisting of the elements 3, 4 and 5, type
 		</p>
 
 		<p>
@@ -428,7 +468,7 @@
 		</p>
 
 		<p>
-			Note that <c>A*B</c> performs matrix multiplication and we will discuss this in <xref ref="ch-lin-alg-intro"/>.  Many other operations can be done in similar way. For example, to take the square root of every number in the matrix <c>A</c>, we can enter <c>sqrt.(A)</c> which returns:
+			Note that this is not matrix multiplication, which is <c>A*B</c> and we will discuss this in <xref ref="ch-lin-alg-intro"/>.  Many other operations can be done in similar way. For example, to take the square root of every number in the matrix <c>A</c>, we can enter <c>sqrt.(A)</c> which returns:
 		</p>
 
 		<p>
@@ -494,7 +534,7 @@
 		</p>
 
 		<p>
-			returns <c>(5, 7, 9)</c>. And if we want to add 10 to every element of a matrix, we can use this syntax as well.  <c>[1, 2, 3, 4] .+ 10</c> returns <c>[11, 12, 13, 14]</c>.
+			returns <c>(5, 7, 9)</c>. And if we want to add 10 to every element of a matrix, we can use this syntax as well.  <c>[1, 2, 3, 4] .+ 10</c> returns <c>[11, 12, 13, 14]</c>.  Note that having broadcasting simplifies a lot of operations with arrays.  Without this, typically a for loop would be needed to be written, which is not difficult, but more more complicated than a single operation.
 		</p>
 	</section>
 
@@ -540,7 +580,7 @@
 		</p>
 
 		<p>
-			results in <c>[1 2 3 4 5 6 8]</c>.  The <c>sort</c> function returns a sorted array. If you want a sorted version of <c>A</c> in place, use the <c>sort!</c> function instead.
+			results in <c>[1 2 3 4 5 6 8]</c>.  The <c>sort</c> function returns a new array that is the sorted version of the original. If you want a sorted version of <c>A</c> in place, use the <c>sort!</c> function instead.
 		</p>
 
 		<p>
@@ -555,6 +595,36 @@
 
 		<p>
 			results in <c>[8 6 5 4 3 2 1]</c>.
+		</p>
+
+		<p>
+			If an array element type is a <c>String</c>, then it is sorted lexiographically (similar to alphabetical).  If
+		</p>
+
+		<p>
+			<cd>
+			<cline>B = ["This","is","a","string","array"]</cline>
+			<cline>sort(B)</cline>
+			</cd>
+		</p>
+
+		<p>
+			which returns <c>["This", "a", "array", "is", "string"]</c>, where capitalized words come before lower case.
+		</p>
+
+		<p>
+			We can also specify the function that is applied before sorting is done.  For example,
+		</p>
+
+		<p>
+			<cd>
+			<cline>C = collect(1:9)</cline>
+			<cline>sort(C, by = x -&gt; x % 3)</cline>
+			</cd>
+		</p>
+
+		<p>
+			where <c>C</c> is the array from 1 to 9 and before sorting, the mod is taken. The <c>by</c> is a keyword argument that takes a function.  in this case, we have used an <em>anonymous function</em>, which is a function without a name and is often used inside of other functions.  We will explore these in more detail in <xref ref="ch-functional-programming"/>.  The result of the sort function is <c>[3,6,9,1,4,7,2,5,8]</c>, where the mod of the first 3 are 0, the next three are 1 and the last three are 2.
 		</p>
 
 		<p>
@@ -625,7 +695,7 @@
 			</p>
 
 			<p>
-				and now the array stored in <c>A</c> is \jlc{print(A)} \printpythontex[verb].
+				and now the array stored in <c>A</c> is <c>[1,2,3,4,5,6]</c>
 			</p>
 		</subsection>
 
@@ -663,7 +733,7 @@
 			<title>It Splices, It Dices!! --- okay, it doesn't dice</title>
 
 			<p>
-				Although you can get a long ways with <c>push, pop, insert</c> and <c>deleteat</c>, the <c>splice!</c> function is a <url href="https://en.wikipedia.org/wiki/Swiss_Army_knife" visual="wikipedia.org">Swiss Army knife</url> for arrays. It can take an array, pull elements out and put elements in. We will walk through the options:
+				Although you can get a long ways with <c>push!, pop!, insert!</c> and <c>deleteat!</c>, the <c>splice!</c> function is a <url href="https://en.wikipedia.org/wiki/Swiss_Army_knife" visual="wikipedia.org">Swiss Army knife</url> for arrays. It can take an array, pull elements out and put elements in. We will walk through the options:
 			</p>
 
 			<p>
@@ -765,11 +835,11 @@
 			</p>
 
 			<p>
-				<cd> filter(n-&gt;n%2==0,A) </cd>
+				<cd> filter(n -&gt; n%2==0, A) </cd>
 			</p>
 
 			<p>
-				returns all elements that satisfy that the mod 2 is 0 (or even numbers) or <c>[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]</c>.
+				returns all elements that satisfy that the mod 2 is 0 (or even numbers) or <c>[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]</c>.  The first argument is a function and we use an anonymous function for this.
 			</p>
 
 			<p>

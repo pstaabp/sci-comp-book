@@ -10,6 +10,7 @@
   <xi:include href="basics/ch-boolean-loops.ptx" />
   <xi:include href="basics/ch-arrays.ptx" />
   <xi:include href="basics/ch-functional-programming.ptx" />
+  <xi:include href="basics/ch-fast-code.ptx" />
   <xi:include href="basics/ch-number-theory.ptx" />
   <xi:include href="basics/ch-algo-anal.ptx" />
   <xi:include href="basics/ch-rootfinding.ptx" />

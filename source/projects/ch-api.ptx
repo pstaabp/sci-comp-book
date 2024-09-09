@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<chapter xml:id="ch-api">
+  <title>Working with a web API and JSON strings</title>
+
+  <p>
+    This chapter will shown how to interact with a web API, a common way of getting data from a webserver in a way that can be more easily processed than with a HTML page. We first start with what a JSON string is and how to parse it, recall some basics of dictionaries from <xref ref="sect-dictionaries"/> and then make API calls using some network tools in Julia.
+  </p>
+</chapter>

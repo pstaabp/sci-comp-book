@@ -3,6 +3,34 @@
 <chapter xml:id="ch-collections">
   <title>Collections, Sets and Dictionaries</title>
 
+  <objectives>
+    <ul>
+      <li>
+        <p>
+          Learn that many previously-learned data structures like arrays, can be thought of more abstractly.
+        </p>
+      </li>
+
+      <li>
+        <p>
+          Create a Set, a Julia type that is similar to a mathematical set, which is a collection of things without an order to them.
+        </p>
+      </li>
+
+      <li>
+        <p>
+          Create a Dictionary, which is a collection of key/value pairs and tasks to perform on them.
+        </p>
+      </li>
+
+      <li>
+        <p>
+          Create a user-defined collection by specifying an iterator, which explains how to construct the collection.
+        </p>
+      </li>
+    </ul>
+  </objectives>
+
   <introduction>
     <p>
       In <xref ref="ch-arrays"/>, we introduced an array, which is a set of things (integers, floats, string or other) with an order to it.  Julia has the notion of a collection, which is an abstract notion of a collection.  In this chapter, we will examine the abstract collection as well as discuss concrete versions, some of which we have seen previously and introduce Sets and Dictionaries an important collection types.
@@ -122,15 +150,19 @@
     </p>
 
     <p>
-      Another function is the boolean version of <c>in</c> or <c>ϵ</c> that will return <c>true</c> if a element is in the set, <c>false</c> otherwise. For example if <c>A=Set([1,3,5,7,9])</c>, then <c>7 ϵ A</c> returns <c>true</c>.
+      Another function is the boolean version of <c>in</c> or <c>ϵ</c> that will return <c>true</c> if a element is in the set, <c>false</c> otherwise. For example if <c>A=Set([1,3,5,7,9])</c>, then <c>7 ϵ A</c> returns <c>true</c>.  There is also a not-in operator, <c>∉</c> which can be enters as <c>\notin</c> TAB and if we do <c> 4 ∉ A</c>, the result is <c>true</c>.
+    </p>
+
+    <p>
+      There are other functions that can be used with sets include set difference and testing for subsets.  See <url href="https://docs.julialang.org/en/v1/base/collections/#Set-Like-Collections">the Julia documentation on sets</url> for more information.
     </p>
   </section>
 
-  <section>
+  <section xml:id="sect-dictionaries">
     <title>Dictionaries</title>
 
     <p>
-      In Julia, a <c>Dictionary</c> is more general version of a named tuple and are sets of key/value pairs.  For example,
+      In Julia, a <c>Dictionary</c> is more general version of a named tuple and are sets of key/value pairs.  The main difference is that a <c>Dict</c> is mutable and there are many methods that update a <c>Dict</c>.  To create a <c>Dict</c>, pass key/value pairs using "fat arrow" notation like:
     </p>
 
     <p>
@@ -140,7 +172,82 @@
     </p>
 
     <p>
+      or alternatively, an array of tuples as key/value pairs:
+    </p>
+
+    <p>
+      <cd>
+      <cline>s = Dict([("bart", 10), ("lisa", 8), ("maggie", 1)])</cline>
+      </cd>
+    </p>
+
+    <p>
       An getter/accessor is similar to that of an array.  <c>d["a"]</c> will return <c>1</c>, the value of the key correpsonding to <c>"a"</c>. And one can set a value in the same way.  <c>d["a"] = 10</c> will update the value associated with the key "a" to be 10.
+    </p>
+
+    <p>
+      <c>push!</c> and <c>pop!</c> work with <c>Dict</c>s in a similar manner to those as arrays.  For example,
+    </p>
+
+    <p>
+      <cd>
+      <cline>push!(s, "homer" =&gt; 45)</cline>
+      </cd>
+    </p>
+
+    <p>
+      now returns the Dictionary with this entry added.  Unlike an array, <c>pop!</c> requires both the <c>Dict</c> and a key which will be returns and removed.
+    </p>
+
+    <p>
+      <cd>
+      <cline>pop!(s, "maggie")</cline>
+      </cd>
+    </p>
+
+    <p>
+      returns <c>1</c> the value that corresponds to the <c>"maggie"</c> entry and if <c>s</c> is entered, then it no longer contains this entry.
+    </p>
+
+    <p>
+      The method <c>keys</c> returns an array of the keys in the Dictionary.  Since <c>"maggie"</c> is no longer there <c>keys(s)</c> returns <c>["lisa", "homer", "bart"]</c>.  The order of the keys may differ from what you see here.  It returns an iterator, but probably better thought of as a set.
+    </p>
+
+    <p>
+      The method <c>values</c> returns an array of the values in the Dictionary in the same order as that of the keys.  When running <c>values(s)</c>, we get <c>[8,45,10]</c>.
+    </p>
+
+    <p>
+      As mentioned above, a dictionary is a more flexible version of a named tuple.  Another example is that Dictionaries can be nested.  Consider creating a dictionary which stores contact information for a person.
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+homer = Dict(
+  "first_name" =&gt; "Homer",
+  "last_name" =&gt; "Simpson",
+  "phones" =&gt; [
+    "home" =&gt; "987-555-1234",
+    "cell" =&gt; "987-555-1212"
+  ],
+  "home_address" =&gt; Dict(
+    "street" =&gt; "742 Evergreen Terrace",
+    "city" =&gt; "Springfield"
+  ),
+  "work_address" =&gt; Dict(
+    "street" =&gt; "10 Power Plant Lane",
+    "city" =&gt; "Springfield"
+  )
+)
+      </input>
+    </program>
+
+    <p>
+      and as you can see, the keys are all strings, but the corresponding values differ.  There are two strings, an array (of strings) and two <c>Dict</c>s.   Although this is more complex, we can still access things in a similar way.  For example <c>homer["work_address"]["street"]</c> will return <c>"10 Power Plant Lane"</c>.
+    </p>
+    <p>
+      There are other methods that we can use with Dictionaries and <url href="https://docs.julialang.org/en/v1/base/collections/#Dictionaries">the Julia documentation on dictionaries</url> is a good source.  Additionally in <xref ref="ch-api"/>, we will examine how to interact with a webserver that returns JSON strings which are parsed as dictionaries.  This is a common format on the internet and we will see how to handle such things in Julia.
     </p>
   </section>
 
@@ -148,7 +255,7 @@
     <title>User-created collections</title>
 
     <p>
-      Although we have seen many built-in collections and there are plenty of other examples in Julia package, it should be no surprise to note that we can create a collection.  Mainly, there are some key functions that need to be implemented on the collection.  Let's just show this with an example.
+      Although we have seen many built-in collections and there are plenty of other examples in Julia packages, it should be no surprise to note that we can create a collection.  Mainly, there are some key functions that need to be implemented on the collection.  Let's just show this with an example.
     </p>
 
     <p>
@@ -190,7 +297,7 @@ end
 
     <program language="julia" line-numbers="yes">
       <input>
-        function Base.iterate(f::Fibonnacci, state = 1)
+      function Base.iterate(f::Fibonnacci, state = 1)
         if state &gt; f.n
          return nothing
         end
@@ -204,7 +311,7 @@ end
     </program>
 
     <p>
-      where the <c>iterate</c> function takes in the data type and a variable <c>state</c> which acts like an index.  The function should return <c>nothing</c> if the iteration is done and otherwise, return the value of the next value and increment the index.  Note in our case above, we have used the faster (non recurvise) version of fibonacci in <xref ref="sect-fast-fibonacci"/>.
+      where the arguments of the <c>iterate</c> function is a object of the type in question and a variable <c>state</c> which acts like an index.  The function should return <c>nothing</c> if the iteration is done and otherwise, return a tuple with the next value and increment the index/state.  Note in our case above, we have used the faster (non recurvise) version of fibonacci in <xref ref="sect-fast-fibonacci"/>.
     </p>
 
     <p>
