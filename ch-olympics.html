@@ -116,12 +116,15 @@ window.MathJax = {
 #sect-fast-fibonacci-7-1-1 { counter-set: sect-fast-fibonacci-7-1-1 0; }
 #sect-fast-fibonacci-7-1-1 > li::marker { content: ""counter(sect-fast-fibonacci-7-1-1,decimal)"."; }
 #sect-fast-fibonacci-7-1-1 > li { counter-increment: sect-fast-fibonacci-7-1-1; }
-#ch-number-theory-6-2-2-1 { counter-set: ch-number-theory-6-2-2-1 0; }
-#ch-number-theory-6-2-2-1 > li::marker { content: ""counter(ch-number-theory-6-2-2-1,decimal)"."; }
-#ch-number-theory-6-2-2-1 > li { counter-increment: ch-number-theory-6-2-2-1; }
-#ch-number-theory-8-7-5-1 { counter-set: ch-number-theory-8-7-5-1 0; }
-#ch-number-theory-8-7-5-1 > li::marker { content: ""counter(ch-number-theory-8-7-5-1,decimal)"."; }
-#ch-number-theory-8-7-5-1 > li { counter-increment: ch-number-theory-8-7-5-1; }
+#ch-number-theory-7-2-2-1 { counter-set: ch-number-theory-7-2-2-1 0; }
+#ch-number-theory-7-2-2-1 > li::marker { content: ""counter(ch-number-theory-7-2-2-1,decimal)"."; }
+#ch-number-theory-7-2-2-1 > li { counter-increment: ch-number-theory-7-2-2-1; }
+#ch-number-theory-9-8-5-1 { counter-set: ch-number-theory-9-8-5-1 0; }
+#ch-number-theory-9-8-5-1 > li::marker { content: ""counter(ch-number-theory-9-8-5-1,decimal)"."; }
+#ch-number-theory-9-8-5-1 > li { counter-increment: ch-number-theory-9-8-5-1; }
+#alg-bisect-1-2-1 { counter-set: alg-bisect-1-2-1 0; }
+#alg-bisect-1-2-1 > li::marker { content: ""counter(alg-bisect-1-2-1,decimal)"."; }
+#alg-bisect-1-2-1 > li { counter-increment: alg-bisect-1-2-1; }
 #ch-probability-random-8-2-5-1 { counter-set: ch-probability-random-8-2-5-1 0; }
 #ch-probability-random-8-2-5-1 > li::marker { content: ""counter(ch-probability-random-8-2-5-1,decimal)"."; }
 #ch-probability-random-8-2-5-1 > li { counter-increment: ch-probability-random-8-2-5-1; }
@@ -202,8 +205,9 @@ window.MathJax = {
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-4" class="internal"><span class="codenumber">1.2</span> <span class="title">Modeling</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-5" class="internal"><span class="codenumber">1.3</span> <span class="title">Computing</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-6" class="internal"><span class="codenumber">1.4</span> <span class="title">Ideas needed to do Effective Scientific Computing</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-7" class="internal"><span class="codenumber">1.5</span> <span class="title">Writing Code for Scientific Computing</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-8" class="internal"><span class="codenumber">1.6</span> <span class="title">Let’s get started</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-7" class="internal"><span class="codenumber">1.5</span> <span class="title">Examples of Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-8" class="internal"><span class="codenumber">1.6</span> <span class="title">Writing Code for Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-9" class="internal"><span class="codenumber">1.7</span> <span class="title">Let’s get started</span></a></div></li>
 </ul>
 </li></ul>
 </li>
@@ -315,7 +319,7 @@ window.MathJax = {
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7" class="internal"><span class="codenumber">5.4</span> <span class="title">Loops</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7-3" class="internal"><span class="codenumber">5.4.1</span> <span class="title">While Loops</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#sect-while-loop" class="internal"><span class="codenumber">5.4.1</span> <span class="title">While Loops</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7-4" class="internal"><span class="codenumber">5.4.2</span> <span class="title">Infinite Loops</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7-5" class="internal"><span class="codenumber">5.4.3</span> <span class="title">Debugging While Loops</span></a></div></li>
 </ul>
@@ -388,66 +392,67 @@ window.MathJax = {
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-number-theory.html" class="internal"><span class="codenumber">9</span> <span class="title">Number theory and Algorithm Development</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-3" class="internal"><span class="codenumber">9.1</span> <span class="title">Prime Numbers</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-4" class="internal"><span class="codenumber">9.2</span> <span class="title">Finding Primes</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-4" class="internal"><span class="codenumber">9.1</span> <span class="title">Prime Numbers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5" class="internal"><span class="codenumber">9.2</span> <span class="title">Finding Primes</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5" class="internal"><span class="codenumber">9.3</span> <span class="title">Perfect Numbers</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5-3" class="internal"><span class="codenumber">9.3.1</span> <span class="title">Timing the two functions and the <code class="code-inline tex2jax_ignore">BenchmarkTools</code> package</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6" class="internal"><span class="codenumber">9.3</span> <span class="title">Perfect Numbers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-3" class="internal"><span class="codenumber">9.3.1</span> <span class="title">Timing the two functions and the <code class="code-inline tex2jax_ignore">BenchmarkTools</code> package</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6" class="internal"><span class="codenumber">9.4</span> <span class="title">Happy Numbers</span></a></div>
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7" class="internal"><span class="codenumber">9.4</span> <span class="title">Happy Numbers</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-3" class="internal"><span class="codenumber">9.4.1</span> <span class="title">Computing Happy Numbers in Julia</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-4" class="internal"><span class="codenumber">9.4.2</span> <span class="title">Alternative forms</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-5" class="internal"><span class="codenumber">9.4.3</span> <span class="title">Finding Happy numbers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7-3" class="internal"><span class="codenumber">9.4.1</span> <span class="title">Computing Happy Numbers in Julia</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7-4" class="internal"><span class="codenumber">9.4.2</span> <span class="title">Alternative forms</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7-5" class="internal"><span class="codenumber">9.4.3</span> <span class="title">Finding Happy numbers</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7" class="internal"><span class="codenumber">9.5</span> <span class="title">Primes can be big!!</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8" class="internal"><span class="codenumber">9.5</span> <span class="title">Primes can be big!!</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8" class="internal"><span class="codenumber">9.6</span> <span class="title">Speeding up <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div>
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9" class="internal"><span class="codenumber">9.6</span> <span class="title">Speeding up <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-3" class="internal"><span class="codenumber">9.6.1</span> <span class="title">Speedup #1: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to stop earlier</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-4" class="internal"><span class="codenumber">9.6.2</span> <span class="title">Speedup #2: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to not check all integers as factors</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-5" class="internal"><span class="codenumber">9.6.3</span> <span class="title">Speedup #3: Don’t use <code class="code-inline tex2jax_ignore">findAllFactors</code> at all</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-6" class="internal"><span class="codenumber">9.6.4</span> <span class="title">Speedup #4: Don’t do unnecessary calculations</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-7" class="internal"><span class="codenumber">9.6.5</span> <span class="title">Speedup #5: check only primes as possible factors</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-3" class="internal"><span class="codenumber">9.6.1</span> <span class="title">Speedup #1: Use a For loop</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-4" class="internal"><span class="codenumber">9.6.2</span> <span class="title">Speedup #2: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to stop earlier</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-5" class="internal"><span class="codenumber">9.6.3</span> <span class="title">Speedup #3: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to not check all integers as factors</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-6" class="internal"><span class="codenumber">9.6.4</span> <span class="title">Speedup #4: Don’t use <code class="code-inline tex2jax_ignore">findAllFactors</code> at all</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-7" class="internal"><span class="codenumber">9.6.5</span> <span class="title">Speedup #5: Don’t do unnecessary calculations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-8" class="internal"><span class="codenumber">9.6.6</span> <span class="title">Speedup #6: check only primes as possible factors</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9" class="internal"><span class="codenumber">9.7</span> <span class="title">Summary of <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-10" class="internal"><span class="codenumber">9.8</span> <span class="title">Testing for Primes using the <code class="code-inline tex2jax_ignore">Primes</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-10" class="internal"><span class="codenumber">9.7</span> <span class="title">Summary of <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-11" class="internal"><span class="codenumber">9.8</span> <span class="title">Testing for Primes using the <code class="code-inline tex2jax_ignore">Primes</code></span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-algorithm-analysis.html" class="internal"><span class="codenumber">10</span> <span class="title">Algorithm Analysis</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-3" class="internal"><span class="codenumber">10.1</span> <span class="title">Big-O Notation</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4" class="internal"><span class="codenumber">10.1</span> <span class="title">Big-O Notation</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4" class="internal"><span class="codenumber">10.2</span> <span class="title">Polynomial Evaluation</span></a></div>
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5" class="internal"><span class="codenumber">10.2</span> <span class="title">Polynomial Evaluation</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#sect-horner" class="internal"><span class="codenumber">10.2.1</span> <span class="title">Horner’s Form</span></a></div></li>
 <li class="toc-item toc-subsection">
-<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4-4" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Benchmarking Polynomial Evaluation</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4-4-3" class="internal"><span class="codenumber">10.2.2.1</span> <span class="title">Horner’s Form</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5-4" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Benchmarking Polynomial Evaluation</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5-4-3" class="internal"><span class="codenumber">10.2.2.1</span> <span class="title">Horner’s Form</span></a></div></li></ul>
 </li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5" class="internal"><span class="codenumber">10.3</span> <span class="title">Interpreting big-O results</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-6" class="internal"><span class="codenumber">10.4</span> <span class="title">Using Data to determine Algorithm order</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-6" class="internal"><span class="codenumber">10.3</span> <span class="title">Interpreting big-O results</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-7" class="internal"><span class="codenumber">10.4</span> <span class="title">Using Data to determine Algorithm order</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-rootfinding.html" class="internal"><span class="codenumber">11</span> <span class="title">Solving Quadratics and Rootfinding</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-3" class="internal"><span class="codenumber">11.1</span> <span class="title">Absolute and Relative Errors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4" class="internal"><span class="codenumber">11.1</span> <span class="title">Absolute and Relative Errors</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4" class="internal"><span class="codenumber">11.2</span> <span class="title">Rounding Errors and the Quadratic Formula</span></a></div>
+<div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5" class="internal"><span class="codenumber">11.2</span> <span class="title">Rounding Errors and the Quadratic Formula</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-3" class="internal"><span class="codenumber">11.2.1</span> <span class="title">Investigating Errors with Code</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-4" class="internal"><span class="codenumber">11.2.2</span> <span class="title">Be skeptical of numerical answers</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-5" class="internal"><span class="codenumber">11.2.3</span> <span class="title">Can we ever be confident of answers?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-3" class="internal"><span class="codenumber">11.2.1</span> <span class="title">Investigating Errors with Code</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-4" class="internal"><span class="codenumber">11.2.2</span> <span class="title">Be skeptical of numerical answers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-5" class="internal"><span class="codenumber">11.2.3</span> <span class="title">Can we ever be confident of answers?</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5" class="internal"><span class="codenumber">11.3</span> <span class="title">Are We Sunk?  Reexamining the Quadratic Formula</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-6" class="internal"><span class="codenumber">11.3</span> <span class="title">Are We Sunk?  Reexamining the Quadratic Formula</span></a></div></li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton" class="internal"><span class="codenumber">11.4</span> <span class="title">Newton’s Method</span></a></div>
 <ul class="structural toc-item-list">
@@ -457,6 +462,7 @@ window.MathJax = {
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton-6" class="internal"><span class="codenumber">11.4.4</span> <span class="title">Adding an extra stopping condition</span></a></div></li>
 </ul>
 </li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-8" class="internal"><span class="codenumber">11.5</span> <span class="title">The Bisection Method</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
@@ -1235,7 +1241,7 @@ end
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">28.4</span><span class="space"> </span><span class="title">Exercise</span>
 </h3>
 <details id="ch-olympics-6-2" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
-<span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">28.1</span><span class="period">.</span>
+<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">28.1</span><span class="period">.</span>
 </h4></summary><article class="exercise exercise-like knowl__content"><div class="introduction" id="ch-olympics-6-2-1"><div class="para" id="ch-olympics-6-2-1-1">Use the dataset for this chapter to answer the following questions:</div></div>
 <article class="task exercise-like" id="ch-olympics-6-2-2"><h5 class="heading"><span class="codenumber">(a)</span></h5>
 <div class="para" id="ch-olympics-6-2-2-1-1">Who has the most Winter Olympic Silver medals?</div></article><article class="task exercise-like" id="ch-olympics-6-2-3"><h5 class="heading"><span class="codenumber">(b)</span></h5>

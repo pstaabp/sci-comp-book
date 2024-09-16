@@ -116,12 +116,15 @@ window.MathJax = {
 #sect-fast-fibonacci-7-1-1 { counter-set: sect-fast-fibonacci-7-1-1 0; }
 #sect-fast-fibonacci-7-1-1 > li::marker { content: ""counter(sect-fast-fibonacci-7-1-1,decimal)"."; }
 #sect-fast-fibonacci-7-1-1 > li { counter-increment: sect-fast-fibonacci-7-1-1; }
-#ch-number-theory-6-2-2-1 { counter-set: ch-number-theory-6-2-2-1 0; }
-#ch-number-theory-6-2-2-1 > li::marker { content: ""counter(ch-number-theory-6-2-2-1,decimal)"."; }
-#ch-number-theory-6-2-2-1 > li { counter-increment: ch-number-theory-6-2-2-1; }
-#ch-number-theory-8-7-5-1 { counter-set: ch-number-theory-8-7-5-1 0; }
-#ch-number-theory-8-7-5-1 > li::marker { content: ""counter(ch-number-theory-8-7-5-1,decimal)"."; }
-#ch-number-theory-8-7-5-1 > li { counter-increment: ch-number-theory-8-7-5-1; }
+#ch-number-theory-7-2-2-1 { counter-set: ch-number-theory-7-2-2-1 0; }
+#ch-number-theory-7-2-2-1 > li::marker { content: ""counter(ch-number-theory-7-2-2-1,decimal)"."; }
+#ch-number-theory-7-2-2-1 > li { counter-increment: ch-number-theory-7-2-2-1; }
+#ch-number-theory-9-8-5-1 { counter-set: ch-number-theory-9-8-5-1 0; }
+#ch-number-theory-9-8-5-1 > li::marker { content: ""counter(ch-number-theory-9-8-5-1,decimal)"."; }
+#ch-number-theory-9-8-5-1 > li { counter-increment: ch-number-theory-9-8-5-1; }
+#alg-bisect-1-2-1 { counter-set: alg-bisect-1-2-1 0; }
+#alg-bisect-1-2-1 > li::marker { content: ""counter(alg-bisect-1-2-1,decimal)"."; }
+#alg-bisect-1-2-1 > li { counter-increment: alg-bisect-1-2-1; }
 #ch-probability-random-8-2-5-1 { counter-set: ch-probability-random-8-2-5-1 0; }
 #ch-probability-random-8-2-5-1 > li::marker { content: ""counter(ch-probability-random-8-2-5-1,decimal)"."; }
 #ch-probability-random-8-2-5-1 > li { counter-increment: ch-probability-random-8-2-5-1; }
@@ -202,8 +205,9 @@ window.MathJax = {
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-4" class="internal"><span class="codenumber">1.2</span> <span class="title">Modeling</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-5" class="internal"><span class="codenumber">1.3</span> <span class="title">Computing</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-6" class="internal"><span class="codenumber">1.4</span> <span class="title">Ideas needed to do Effective Scientific Computing</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-7" class="internal"><span class="codenumber">1.5</span> <span class="title">Writing Code for Scientific Computing</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-8" class="internal"><span class="codenumber">1.6</span> <span class="title">Let’s get started</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-7" class="internal"><span class="codenumber">1.5</span> <span class="title">Examples of Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-8" class="internal"><span class="codenumber">1.6</span> <span class="title">Writing Code for Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-9" class="internal"><span class="codenumber">1.7</span> <span class="title">Let’s get started</span></a></div></li>
 </ul>
 </li></ul>
 </li>
@@ -315,7 +319,7 @@ window.MathJax = {
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7" class="internal"><span class="codenumber">5.4</span> <span class="title">Loops</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7-3" class="internal"><span class="codenumber">5.4.1</span> <span class="title">While Loops</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#sect-while-loop" class="internal"><span class="codenumber">5.4.1</span> <span class="title">While Loops</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7-4" class="internal"><span class="codenumber">5.4.2</span> <span class="title">Infinite Loops</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7-5" class="internal"><span class="codenumber">5.4.3</span> <span class="title">Debugging While Loops</span></a></div></li>
 </ul>
@@ -388,66 +392,67 @@ window.MathJax = {
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-number-theory.html" class="internal"><span class="codenumber">9</span> <span class="title">Number theory and Algorithm Development</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-3" class="internal"><span class="codenumber">9.1</span> <span class="title">Prime Numbers</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-4" class="internal"><span class="codenumber">9.2</span> <span class="title">Finding Primes</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-4" class="internal"><span class="codenumber">9.1</span> <span class="title">Prime Numbers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5" class="internal"><span class="codenumber">9.2</span> <span class="title">Finding Primes</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5" class="internal"><span class="codenumber">9.3</span> <span class="title">Perfect Numbers</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5-3" class="internal"><span class="codenumber">9.3.1</span> <span class="title">Timing the two functions and the <code class="code-inline tex2jax_ignore">BenchmarkTools</code> package</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6" class="internal"><span class="codenumber">9.3</span> <span class="title">Perfect Numbers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-3" class="internal"><span class="codenumber">9.3.1</span> <span class="title">Timing the two functions and the <code class="code-inline tex2jax_ignore">BenchmarkTools</code> package</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6" class="internal"><span class="codenumber">9.4</span> <span class="title">Happy Numbers</span></a></div>
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7" class="internal"><span class="codenumber">9.4</span> <span class="title">Happy Numbers</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-3" class="internal"><span class="codenumber">9.4.1</span> <span class="title">Computing Happy Numbers in Julia</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-4" class="internal"><span class="codenumber">9.4.2</span> <span class="title">Alternative forms</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-5" class="internal"><span class="codenumber">9.4.3</span> <span class="title">Finding Happy numbers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7-3" class="internal"><span class="codenumber">9.4.1</span> <span class="title">Computing Happy Numbers in Julia</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7-4" class="internal"><span class="codenumber">9.4.2</span> <span class="title">Alternative forms</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7-5" class="internal"><span class="codenumber">9.4.3</span> <span class="title">Finding Happy numbers</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7" class="internal"><span class="codenumber">9.5</span> <span class="title">Primes can be big!!</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8" class="internal"><span class="codenumber">9.5</span> <span class="title">Primes can be big!!</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8" class="internal"><span class="codenumber">9.6</span> <span class="title">Speeding up <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div>
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9" class="internal"><span class="codenumber">9.6</span> <span class="title">Speeding up <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-3" class="internal"><span class="codenumber">9.6.1</span> <span class="title">Speedup #1: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to stop earlier</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-4" class="internal"><span class="codenumber">9.6.2</span> <span class="title">Speedup #2: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to not check all integers as factors</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-5" class="internal"><span class="codenumber">9.6.3</span> <span class="title">Speedup #3: Don’t use <code class="code-inline tex2jax_ignore">findAllFactors</code> at all</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-6" class="internal"><span class="codenumber">9.6.4</span> <span class="title">Speedup #4: Don’t do unnecessary calculations</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-7" class="internal"><span class="codenumber">9.6.5</span> <span class="title">Speedup #5: check only primes as possible factors</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-3" class="internal"><span class="codenumber">9.6.1</span> <span class="title">Speedup #1: Use a For loop</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-4" class="internal"><span class="codenumber">9.6.2</span> <span class="title">Speedup #2: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to stop earlier</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-5" class="internal"><span class="codenumber">9.6.3</span> <span class="title">Speedup #3: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to not check all integers as factors</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-6" class="internal"><span class="codenumber">9.6.4</span> <span class="title">Speedup #4: Don’t use <code class="code-inline tex2jax_ignore">findAllFactors</code> at all</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-7" class="internal"><span class="codenumber">9.6.5</span> <span class="title">Speedup #5: Don’t do unnecessary calculations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-8" class="internal"><span class="codenumber">9.6.6</span> <span class="title">Speedup #6: check only primes as possible factors</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9" class="internal"><span class="codenumber">9.7</span> <span class="title">Summary of <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-10" class="internal"><span class="codenumber">9.8</span> <span class="title">Testing for Primes using the <code class="code-inline tex2jax_ignore">Primes</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-10" class="internal"><span class="codenumber">9.7</span> <span class="title">Summary of <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-11" class="internal"><span class="codenumber">9.8</span> <span class="title">Testing for Primes using the <code class="code-inline tex2jax_ignore">Primes</code></span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-algorithm-analysis.html" class="internal"><span class="codenumber">10</span> <span class="title">Algorithm Analysis</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-3" class="internal"><span class="codenumber">10.1</span> <span class="title">Big-O Notation</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4" class="internal"><span class="codenumber">10.1</span> <span class="title">Big-O Notation</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4" class="internal"><span class="codenumber">10.2</span> <span class="title">Polynomial Evaluation</span></a></div>
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5" class="internal"><span class="codenumber">10.2</span> <span class="title">Polynomial Evaluation</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#sect-horner" class="internal"><span class="codenumber">10.2.1</span> <span class="title">Horner’s Form</span></a></div></li>
 <li class="toc-item toc-subsection">
-<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4-4" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Benchmarking Polynomial Evaluation</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4-4-3" class="internal"><span class="codenumber">10.2.2.1</span> <span class="title">Horner’s Form</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5-4" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Benchmarking Polynomial Evaluation</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5-4-3" class="internal"><span class="codenumber">10.2.2.1</span> <span class="title">Horner’s Form</span></a></div></li></ul>
 </li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5" class="internal"><span class="codenumber">10.3</span> <span class="title">Interpreting big-O results</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-6" class="internal"><span class="codenumber">10.4</span> <span class="title">Using Data to determine Algorithm order</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-6" class="internal"><span class="codenumber">10.3</span> <span class="title">Interpreting big-O results</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-7" class="internal"><span class="codenumber">10.4</span> <span class="title">Using Data to determine Algorithm order</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-rootfinding.html" class="internal"><span class="codenumber">11</span> <span class="title">Solving Quadratics and Rootfinding</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-3" class="internal"><span class="codenumber">11.1</span> <span class="title">Absolute and Relative Errors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4" class="internal"><span class="codenumber">11.1</span> <span class="title">Absolute and Relative Errors</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4" class="internal"><span class="codenumber">11.2</span> <span class="title">Rounding Errors and the Quadratic Formula</span></a></div>
+<div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5" class="internal"><span class="codenumber">11.2</span> <span class="title">Rounding Errors and the Quadratic Formula</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-3" class="internal"><span class="codenumber">11.2.1</span> <span class="title">Investigating Errors with Code</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-4" class="internal"><span class="codenumber">11.2.2</span> <span class="title">Be skeptical of numerical answers</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-5" class="internal"><span class="codenumber">11.2.3</span> <span class="title">Can we ever be confident of answers?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-3" class="internal"><span class="codenumber">11.2.1</span> <span class="title">Investigating Errors with Code</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-4" class="internal"><span class="codenumber">11.2.2</span> <span class="title">Be skeptical of numerical answers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-5" class="internal"><span class="codenumber">11.2.3</span> <span class="title">Can we ever be confident of answers?</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5" class="internal"><span class="codenumber">11.3</span> <span class="title">Are We Sunk?  Reexamining the Quadratic Formula</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-6" class="internal"><span class="codenumber">11.3</span> <span class="title">Are We Sunk?  Reexamining the Quadratic Formula</span></a></div></li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton" class="internal"><span class="codenumber">11.4</span> <span class="title">Newton’s Method</span></a></div>
 <ul class="structural toc-item-list">
@@ -457,6 +462,7 @@ window.MathJax = {
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton-6" class="internal"><span class="codenumber">11.4.4</span> <span class="title">Adding an extra stopping condition</span></a></div></li>
 </ul>
 </li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-8" class="internal"><span class="codenumber">11.5</span> <span class="title">The Bisection Method</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
@@ -1079,7 +1085,7 @@ window.MathJax = {
 <li id="ch-boolean-loops-2-1-4"><div class="para" id="ch-boolean-loops-2-1-4-1">How to write a while loop and examine the troubles that can occur.</div></li>
 <li id="ch-boolean-loops-2-1-5"><div class="para" id="ch-boolean-loops-2-1-5-1">How to write a for loop and when to use it versus a while loop.</div></li>
 <li id="ch-boolean-loops-2-1-6"><div class="para" id="ch-boolean-loops-2-1-6-1">Introduction to ranges, which store linear sequences of numbers.</div></li>
-</ul></article><section class="introduction" id="ch-boolean-loops-3"><div class="para" id="ch-boolean-loops-3-1">The basic computer science structures of if statements, while and for loops are crucial in scientific computing. In this chapter, we cover the basics of these structures in Julia. We will see all of these in more context in later chapters, but here’s the syntax and basics.</div> <div class="para" id="ch-boolean-loops-3-2">Lastly, because of the syntax of a <code class="code-inline tex2jax_ignore">for</code> loop, we show details about ranges in julia, which is a compact way to write a set of numbers that are either sequential or sequential with skips in it.</div></section><section class="section" id="ch-boolean-loops-4"><h3 class="heading hide-type">
+</ul></article><section class="introduction" id="ch-boolean-loops-3"><div class="para" id="ch-boolean-loops-3-1">The basic computer science structures of if statements, while and for loops are crucial in scientific computing. In this chapter, we cover the basics of these structures in Julia. We will see all of these in more context in later chapters, but here’s the syntax and basics.</div> <div class="para" id="ch-boolean-loops-3-2">Lastly, because of the syntax of a <code class="code-inline tex2jax_ignore">for</code> loop, we show details about ranges in Julia, which is a compact way to write a set of numbers that are either sequential or sequential with skips in it.</div></section><section class="section" id="ch-boolean-loops-4"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">5.1</span><span class="space"> </span><span class="title">Boolean values and if statements</span>
 </h3>
 <section class="introduction" id="ch-boolean-loops-4-2"><div class="para" id="ch-boolean-loops-4-2-1">A boolean value is something that is either <code class="code-inline tex2jax_ignore">true</code> or <code class="code-inline tex2jax_ignore">false</code>. These are built-in constants in Julia. Sometimes we will want to know if a statement is true or false, but generally, we will use them in other structures.</div> <div class="para" id="ch-boolean-loops-4-2-2">We often use boolean to test various conditions. For each, testing equality using <code class="code-inline tex2jax_ignore">==</code>, or comparison of numbers we use <code class="code-inline tex2jax_ignore">&lt;,  &lt;=, &gt;, &gt;=</code> for less than, less than or equal, greater than and greater than or equal respectively.</div> <div class="para" id="ch-boolean-loops-4-2-3">If we set <code class="code-inline tex2jax_ignore">x=3</code> and then can just type <code class="code-inline tex2jax_ignore">x==3</code>, <code class="code-inline tex2jax_ignore">x &lt; 3 </code>, <code class="code-inline tex2jax_ignore">x &gt; 3</code> to test a variety of comparisons.</div> <div class="para" id="ch-boolean-loops-4-2-4">In addition, we can test if a boolean value does not have some value using the <code class="code-inline tex2jax_ignore">!=</code> and <code class="code-inline tex2jax_ignore">!</code> operators.  For example using the same example <code class="code-inline tex2jax_ignore">x=3</code> as above, then we can test that <code class="code-inline tex2jax_ignore">x</code> is not 4 with <code class="code-inline tex2jax_ignore">x != 4</code>.  If a variable is a boolean, like <code class="code-inline tex2jax_ignore">b = true</code>, the operator that changes <code class="code-inline tex2jax_ignore">true</code> to <code class="code-inline tex2jax_ignore">false</code> or vice versa with <code class="code-inline tex2jax_ignore">!b</code>.</div></section><section class="subsection" id="ch-boolean-loops-4-3"><h4 class="heading hide-type">
@@ -1169,7 +1175,7 @@ end
 </code></pre></div>
 <div class="para" id="ch-boolean-loops-5-3-4">and technically if you are on an axis, then you are not in a quadrant, so that is the reason for the last option.</div>
 <details id="ch-boolean-loops-5-3-5" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
-<span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">5.2</span><span class="period">.</span>
+<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">5.2</span><span class="period">.</span>
 </h5></summary><article class="exercise exercise-like knowl__content"><div class="introduction" id="ch-boolean-loops-5-3-5-1"><div class="para" id="ch-boolean-loops-5-3-5-1-1">Evaluate the function <code class="code-inline tex2jax_ignore">quadrant</code> at the following points and see if the results are as expected.</div></div>
 <article class="task exercise-like" id="ch-boolean-loops-5-3-5-2"><h6 class="heading"><span class="codenumber">(a)</span></h6>
 <div class="para" id="ch-boolean-loops-5-3-5-2-1-1"><span class="process-math">\((2,1)\)</span></div></article><article class="task exercise-like" id="ch-boolean-loops-5-3-5-3"><h6 class="heading"><span class="codenumber">(b)</span></h6>
@@ -1190,7 +1196,7 @@ end
 <div class="para" id="ch-boolean-loops-6-9">The <code class="code-inline tex2jax_ignore">ifelse</code> is not used in this book, preference goes to the <code class="code-inline tex2jax_ignore"> ? : </code> format instead--which is available in almost all modern languages as well.</div>
 <div class="para" id="ch-boolean-loops-6-10">The ternary <code class="code-inline tex2jax_ignore">if-then-else</code> is useful if you want to store a value that has a branching condition and that branch is relatively simple.  If you have more complicated logic or need to call a function, this is where a <code class="code-inline tex2jax_ignore">if-then</code> or <code class="code-inline tex2jax_ignore">if-then-else</code> statement would be used.</div>
 <details id="ch-boolean-loops-6-11" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
-<span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">5.3</span><span class="period">.</span>
+<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">5.3</span><span class="period">.</span>
 </h4></summary><article class="exercise exercise-like knowl__content"><div class="para" id="ch-boolean-loops-6-11-1">Write the recursive factorial function above using the ternary if-then-else.</div></article></details><div class="para" id="ch-boolean-loops-6-12">You can nest the ternary <code class="code-inline tex2jax_ignore">if-then-else</code>.  For example, the following will perform the same as the quadrant function above.</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function quadrant2(x::Real, y::Real)
   x &gt; 0 &amp;&amp; y &gt; 0 ? "I" :
@@ -1199,13 +1205,13 @@ end
     x &gt; 0 &amp;&amp; y &lt; 0 ? "IV" : "NONE"
 end
 </code></pre></div>
-<div class="para" id="ch-boolean-loops-6-14">Note that although this can be written on a single line (it is a single nested statement), it has been split on lines for clarity.  Also, the precendence order is that <code class="code-inline tex2jax_ignore">:</code> is higher that <code class="code-inline tex2jax_ignore">?</code> in order for this to evaluate as expected without parentheses.</div></section><section class="section" id="ch-boolean-loops-7"><h3 class="heading hide-type">
+<div class="para" id="ch-boolean-loops-6-14">Note that although this can be written on a single line (it is a single nested statement), it has been split on lines for clarity.  Also, the precedence order is that <code class="code-inline tex2jax_ignore">:</code> is higher that <code class="code-inline tex2jax_ignore">?</code> in order for this to evaluate as expected without parentheses.</div></section><section class="section" id="ch-boolean-loops-7"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">5.4</span><span class="space"> </span><span class="title">Loops</span>
 </h3>
-<section class="introduction" id="ch-boolean-loops-7-2"><div class="para" id="ch-boolean-loops-7-2-1">A <em class="emphasis">loop</em> is a series of statements that are repeated either a fixed number of times or until a condition occurs. They can be very helpful if a large number of operations need to be done in a predictable manner.</div></section><section class="subsection" id="ch-boolean-loops-7-3"><h4 class="heading hide-type">
+<section class="introduction" id="ch-boolean-loops-7-2"><div class="para" id="ch-boolean-loops-7-2-1">A <em class="emphasis">loop</em> is a series of statements that are repeated either a fixed number of times or until a condition occurs. They can be very helpful if a large number of operations need to be done in a predictable manner.</div></section><section class="subsection" id="sect-while-loop"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">5.4.1</span><span class="space"> </span><span class="title">While Loops</span>
 </h4>
-<div class="para" id="ch-boolean-loops-7-3-2">Another very common construction for programming is called a while loop. Basically, we want to run a few statements while some boolean statement is true. Here’s a simple, but uninteresting example:</div>
+<div class="para" id="sect-while-loop-2">Another very common construction for programming is called a while loop. Basically, we want to run a few statements while some boolean statement is true. Here’s a simple, but uninteresting example:</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">let
   local n=1
   while n &lt; 10
@@ -1214,8 +1220,8 @@ end
   end
 end
 </code></pre></div>
-<div class="para" id="ch-boolean-loops-7-3-4">and note that the expression <code class="code-inline tex2jax_ignore">n+=1</code> is shorthand for <code class="code-inline tex2jax_ignore">n=n+1</code>.  We are using the <code class="code-inline tex2jax_ignore">@show</code> macro which dumps the expression and its value to the screen.  Also, we are using a <code class="code-inline tex2jax_ignore">let</code> block to just encapsulate the variables.</div>
-<div class="para" id="ch-boolean-loops-7-3-5">A more practical example of a for loop will be the <a class="external" href="https://en.wikipedia.org/wiki/Bisection_method" target="_blank">Bisection Method</a><details class="ptx-footnote" aria-live="polite" id="ch-boolean-loops-7-3-5-2"><summary class="ptx-footnote__number" title="Footnote 5.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-boolean-loops-7-3-5-2"><code class="code-inline tex2jax_ignore">wikipedia</code></div></details> for finding a root.</div>
+<div class="para" id="sect-while-loop-4">and note that the expression <code class="code-inline tex2jax_ignore">n+=1</code> is shorthand for <code class="code-inline tex2jax_ignore">n=n+1</code>.  We are using the <code class="code-inline tex2jax_ignore">@show</code> macro which dumps the expression and its value to the screen.  Also, we are using a <code class="code-inline tex2jax_ignore">let</code> block to just encapsulate the variables.</div>
+<div class="para" id="sect-while-loop-5">A more practical example of a for loop will be the <a class="external" href="https://en.wikipedia.org/wiki/Bisection_method" target="_blank">Bisection Method</a><details class="ptx-footnote" aria-live="polite" id="sect-while-loop-5-2"><summary class="ptx-footnote__number" title="Footnote 5.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="sect-while-loop-5-2"><code class="code-inline tex2jax_ignore">wikipedia</code></div></details> for finding a root.</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function bisection(f::Function, a::Real, b::Real)
 	local c
 	while (b-a) &gt; 1e-6
@@ -1226,17 +1232,17 @@ end
 	c
 end
 </code></pre></div>
-<div class="para" id="ch-boolean-loops-7-3-7">In short, this method takes a function <span class="process-math">\(f\)</span> and an interval <span class="process-math">\([a,b]\)</span> and continually bisects it ensuring there is a root in the resulting interval.  It continues while the length of the interval is greater than <code class="code-inline tex2jax_ignore">1e-6</code> or <span class="process-math">\(10^{-6}\text{.}\)</span>  We use a tuple to handle the interval and on line 6, we have used a ternary <code class="code-inline tex2jax_ignore">if-then-else</code> to first test which interval to use and then return either the left or right hand subintervals.</div>
-<div class="para" id="ch-boolean-loops-7-3-8">To test it, consider</div>
-<div class="para logical" id="ch-boolean-loops-7-3-9"><pre class="code-display tex2jax_ignore">f(x) = x^2-2
+<div class="para" id="sect-while-loop-7">In short, this method takes a function <span class="process-math">\(f\)</span> and an interval <span class="process-math">\([a,b]\)</span> and continually bisects it ensuring there is a root in the resulting interval.  It continues while the length of the interval is greater than <code class="code-inline tex2jax_ignore">1e-6</code> or <span class="process-math">\(10^{-6}\text{.}\)</span>  We use a tuple to handle the interval and on line 6, we have used a ternary <code class="code-inline tex2jax_ignore">if-then-else</code> to first test which interval to use and then return either the left or right hand subintervals.</div>
+<div class="para" id="sect-while-loop-8">To test it, consider</div>
+<div class="para logical" id="sect-while-loop-9"><pre class="code-display tex2jax_ignore">f(x) = x^2-2
 </pre></div>
-<div class="para" id="ch-boolean-loops-7-3-10">which has a root of <span class="process-math">\(\sqrt{2}\text{.}\)</span>  The function call</div>
-<div class="para logical" id="ch-boolean-loops-7-3-11"><pre class="code-display tex2jax_ignore">bisection(f,1,2)
+<div class="para" id="sect-while-loop-10">which has a root of <span class="process-math">\(\sqrt{2}\text{.}\)</span>  The function call</div>
+<div class="para logical" id="sect-while-loop-11"><pre class="code-display tex2jax_ignore">bisection(f,1,2)
 </pre></div>
-<div class="para" id="ch-boolean-loops-7-3-12">returns <code class="code-inline tex2jax_ignore">1.4142141342163086</code>, which is approximately <span class="process-math">\(\sqrt{2}\text{.}\)</span>
+<div class="para" id="sect-while-loop-12">returns <code class="code-inline tex2jax_ignore">1.4142141342163086</code>, which is approximately <span class="process-math">\(\sqrt{2}\text{.}\)</span>
 </div>
-<div class="para" id="ch-boolean-loops-7-3-13">Note that we used a ternary if-then-else in the <code class="code-inline tex2jax_ignore">bisection</code> function in conjunction with a tuple to update both points in the interval.  This makes the function reasonably simple.  A standard <code class="code-inline tex2jax_ignore">if-then-else</code> statement can be used instead if desired.</div>
-<div class="para" id="ch-boolean-loops-7-3-14">This was used as a practical example and we will explore this and other rootfinding techniques in <a href="ch-rootfinding.html" class="internal" title="Chapter 11: Solving Quadratics and Rootfinding">Chapter 11</a>.</div></section><section class="subsection" id="ch-boolean-loops-7-4"><h4 class="heading hide-type">
+<div class="para" id="sect-while-loop-13">Note that we used a ternary if-then-else in the <code class="code-inline tex2jax_ignore">bisection</code> function in conjunction with a tuple to update both points in the interval.  This makes the function reasonably simple.  A standard <code class="code-inline tex2jax_ignore">if-then-else</code> statement can be used instead if desired.</div>
+<div class="para" id="sect-while-loop-14">This was used as a practical example and we will explore this and other rootfinding techniques in <a href="ch-rootfinding.html" class="internal" title="Chapter 11: Solving Quadratics and Rootfinding">Chapter 11</a>.</div></section><section class="subsection" id="ch-boolean-loops-7-4"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">5.4.2</span><span class="space"> </span><span class="title">Infinite Loops</span>
 </h4>
 <div class="para" id="ch-boolean-loops-7-4-2">It is common in a <code class="code-inline tex2jax_ignore">while</code> loop to keep running it forever. This occurs if there is some bug or you haven’t considered all cases.  For example, in the bisection method above, if the function doesn’t have a root (like <span class="process-math">\(f(x)=x^2+2\)</span>), then this will never stop.</div>
@@ -1272,13 +1278,13 @@ end
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">5.5</span><span class="space"> </span><span class="title">For loops</span>
 </h3>
 <section class="introduction" id="ch-boolean-loops-8-2"><div class="para" id="ch-boolean-loops-8-2-1">A for loop executes some code a fixed number of times and has a variable (called an index) that updates.  The next few examples are not practical, but are designed to illustrate the syntax and what is possible. The following is a simple for loop that prints out the numbers 1 to 10</div> <div class="para logical" id="ch-boolean-loops-8-2-2"><pre class="code-display tex2jax_ignore">for i=1:10
-  println(i)
+  @show i
 end
 </pre></div> <div class="para" id="ch-boolean-loops-8-2-3">If you want to skip numbers or count backwards, a range in the form <em class="emphasis">start</em>:<em class="emphasis">skip</em>:<em class="emphasis">stop</em> is used.  The following starts at 1 and skips by 2 up to 21:</div> <div class="para logical" id="ch-boolean-loops-8-2-4"><pre class="code-display tex2jax_ignore">for i=1:2:21
-  println(i)
+  @show i
 end
 </pre></div> <div class="para" id="ch-boolean-loops-8-2-5">and the following starts at 10, counting down to 1:</div> <div class="para logical" id="ch-boolean-loops-8-2-6"><pre class="code-display tex2jax_ignore">for i=10:-1:0
-  println(i)
+  @show i
 end
 </pre></div> <div class="para" id="ch-boolean-loops-8-2-7">We can use the <code class="code-inline tex2jax_ignore">for var in list</code> form to go through elements in a list or array (or tuple).  The following adds all numbers in the list (array) <code class="code-inline tex2jax_ignore">[1,5,7,11,20]</code>:</div> <div class="para logical" id="ch-boolean-loops-8-2-8"><pre class="code-display tex2jax_ignore">let
   local sum=0
@@ -1306,12 +1312,12 @@ end
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">5.6</span><span class="space"> </span><span class="title">Ranges</span>
 </h3>
 <section class="introduction" id="ch-boolean-loops-9-2"><div class="para" id="ch-boolean-loops-9-2-1">In a for loop with the syntax <code class="code-inline tex2jax_ignore">var=x:y:z</code>, such as</div> <div class="para logical" id="ch-boolean-loops-9-2-2"><pre class="code-display tex2jax_ignore">for i=1:4
-  println(i)
+  @show i
 end
 </pre></div> <div class="para" id="ch-boolean-loops-9-2-3">The syntax <code class="code-inline tex2jax_ignore">1:4</code> is called a <code class="code-inline tex2jax_ignore">Range</code> and is shorthand for all integer between 1 and 4 inclusively. Technically, this is called a <code class="code-inline tex2jax_ignore">UnitRange</code> because the skip size between numbers is 1.</div> <div class="para" id="ch-boolean-loops-9-2-4">If you type <code class="code-inline tex2jax_ignore">typeof(1:4)</code>, it will return <code class="code-inline tex2jax_ignore">UnitRange{Int64}</code>, a composite type which is a <code class="code-inline tex2jax_ignore">UnitRange</code> with integers. Note the difference using <code class="code-inline tex2jax_ignore">1.0:4.0</code>.  This is of type <code class="code-inline tex2jax_ignore">StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}</code>, and the details of this are skipped for now.  In short, it is Floating Point version of a <code class="code-inline tex2jax_ignore">UnitRange</code>.</div> <div class="para" id="ch-boolean-loops-9-2-5">The other ranges we say included <code class="code-inline tex2jax_ignore">1:2:11</code> and entering <code class="code-inline tex2jax_ignore">typeof(1:2:11)</code> results in <code class="code-inline tex2jax_ignore">StepRange{Int64, Int64}</code>.</div> <div class="para" id="ch-boolean-loops-9-2-6">We will see in <a href="ch-arrays.html" class="internal" title="Chapter 6: Arrays">Chapter 6</a> that there is a handy way of expanding this shorthand way of writing these sets of numbers to that of an entire list (or technically array) of numbers.</div></section><section class="subsection" id="sect-lin-range"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">5.6.1</span><span class="space"> </span><span class="title">Linear Ranges</span>
 </h4>
-<div class="para" id="sect-lin-range-2">As we see above, it easy to make ranges if we know the step between each pair. Another use would be to know the starting and ending value and the number of values. For example, if we want to start at 3 and end at 11 with 5 values, it’s not too hard to compute this, but julia has a built-in way to do it with the <code class="code-inline tex2jax_ignore">range</code> command. For example,</div>
+<div class="para" id="sect-lin-range-2">As we see above, it easy to make ranges if we know the step between each pair. Another use would be to know the starting and ending value and the number of values. For example, if we want to start at 3 and end at 11 with 5 values, it’s not too hard to compute this, but Julia has a built-in way to do it with the <code class="code-inline tex2jax_ignore">range</code> command. For example,</div>
 <div class="para logical" id="sect-lin-range-3"><pre class="code-display tex2jax_ignore">range(3,11,length=5)
 </pre></div>
 <div class="para" id="sect-lin-range-4">returns <code class="code-inline tex2jax_ignore">3.0:2.0:11.0</code> and note that even though all of the arguments were integers that the result is a floating point range.</div>

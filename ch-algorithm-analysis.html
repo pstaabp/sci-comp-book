@@ -116,12 +116,15 @@ window.MathJax = {
 #sect-fast-fibonacci-7-1-1 { counter-set: sect-fast-fibonacci-7-1-1 0; }
 #sect-fast-fibonacci-7-1-1 > li::marker { content: ""counter(sect-fast-fibonacci-7-1-1,decimal)"."; }
 #sect-fast-fibonacci-7-1-1 > li { counter-increment: sect-fast-fibonacci-7-1-1; }
-#ch-number-theory-6-2-2-1 { counter-set: ch-number-theory-6-2-2-1 0; }
-#ch-number-theory-6-2-2-1 > li::marker { content: ""counter(ch-number-theory-6-2-2-1,decimal)"."; }
-#ch-number-theory-6-2-2-1 > li { counter-increment: ch-number-theory-6-2-2-1; }
-#ch-number-theory-8-7-5-1 { counter-set: ch-number-theory-8-7-5-1 0; }
-#ch-number-theory-8-7-5-1 > li::marker { content: ""counter(ch-number-theory-8-7-5-1,decimal)"."; }
-#ch-number-theory-8-7-5-1 > li { counter-increment: ch-number-theory-8-7-5-1; }
+#ch-number-theory-7-2-2-1 { counter-set: ch-number-theory-7-2-2-1 0; }
+#ch-number-theory-7-2-2-1 > li::marker { content: ""counter(ch-number-theory-7-2-2-1,decimal)"."; }
+#ch-number-theory-7-2-2-1 > li { counter-increment: ch-number-theory-7-2-2-1; }
+#ch-number-theory-9-8-5-1 { counter-set: ch-number-theory-9-8-5-1 0; }
+#ch-number-theory-9-8-5-1 > li::marker { content: ""counter(ch-number-theory-9-8-5-1,decimal)"."; }
+#ch-number-theory-9-8-5-1 > li { counter-increment: ch-number-theory-9-8-5-1; }
+#alg-bisect-1-2-1 { counter-set: alg-bisect-1-2-1 0; }
+#alg-bisect-1-2-1 > li::marker { content: ""counter(alg-bisect-1-2-1,decimal)"."; }
+#alg-bisect-1-2-1 > li { counter-increment: alg-bisect-1-2-1; }
 #ch-probability-random-8-2-5-1 { counter-set: ch-probability-random-8-2-5-1 0; }
 #ch-probability-random-8-2-5-1 > li::marker { content: ""counter(ch-probability-random-8-2-5-1,decimal)"."; }
 #ch-probability-random-8-2-5-1 > li { counter-increment: ch-probability-random-8-2-5-1; }
@@ -202,8 +205,9 @@ window.MathJax = {
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-4" class="internal"><span class="codenumber">1.2</span> <span class="title">Modeling</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-5" class="internal"><span class="codenumber">1.3</span> <span class="title">Computing</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-6" class="internal"><span class="codenumber">1.4</span> <span class="title">Ideas needed to do Effective Scientific Computing</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-7" class="internal"><span class="codenumber">1.5</span> <span class="title">Writing Code for Scientific Computing</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-8" class="internal"><span class="codenumber">1.6</span> <span class="title">Let’s get started</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-7" class="internal"><span class="codenumber">1.5</span> <span class="title">Examples of Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-8" class="internal"><span class="codenumber">1.6</span> <span class="title">Writing Code for Scientific Computing</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-9" class="internal"><span class="codenumber">1.7</span> <span class="title">Let’s get started</span></a></div></li>
 </ul>
 </li></ul>
 </li>
@@ -315,7 +319,7 @@ window.MathJax = {
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7" class="internal"><span class="codenumber">5.4</span> <span class="title">Loops</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7-3" class="internal"><span class="codenumber">5.4.1</span> <span class="title">While Loops</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#sect-while-loop" class="internal"><span class="codenumber">5.4.1</span> <span class="title">While Loops</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7-4" class="internal"><span class="codenumber">5.4.2</span> <span class="title">Infinite Loops</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-boolean-loops.html#ch-boolean-loops-7-5" class="internal"><span class="codenumber">5.4.3</span> <span class="title">Debugging While Loops</span></a></div></li>
 </ul>
@@ -388,66 +392,67 @@ window.MathJax = {
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-number-theory.html" class="internal"><span class="codenumber">9</span> <span class="title">Number theory and Algorithm Development</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-3" class="internal"><span class="codenumber">9.1</span> <span class="title">Prime Numbers</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-4" class="internal"><span class="codenumber">9.2</span> <span class="title">Finding Primes</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-4" class="internal"><span class="codenumber">9.1</span> <span class="title">Prime Numbers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5" class="internal"><span class="codenumber">9.2</span> <span class="title">Finding Primes</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5" class="internal"><span class="codenumber">9.3</span> <span class="title">Perfect Numbers</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-5-3" class="internal"><span class="codenumber">9.3.1</span> <span class="title">Timing the two functions and the <code class="code-inline tex2jax_ignore">BenchmarkTools</code> package</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6" class="internal"><span class="codenumber">9.3</span> <span class="title">Perfect Numbers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-3" class="internal"><span class="codenumber">9.3.1</span> <span class="title">Timing the two functions and the <code class="code-inline tex2jax_ignore">BenchmarkTools</code> package</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6" class="internal"><span class="codenumber">9.4</span> <span class="title">Happy Numbers</span></a></div>
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7" class="internal"><span class="codenumber">9.4</span> <span class="title">Happy Numbers</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-3" class="internal"><span class="codenumber">9.4.1</span> <span class="title">Computing Happy Numbers in Julia</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-4" class="internal"><span class="codenumber">9.4.2</span> <span class="title">Alternative forms</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-6-5" class="internal"><span class="codenumber">9.4.3</span> <span class="title">Finding Happy numbers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7-3" class="internal"><span class="codenumber">9.4.1</span> <span class="title">Computing Happy Numbers in Julia</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7-4" class="internal"><span class="codenumber">9.4.2</span> <span class="title">Alternative forms</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7-5" class="internal"><span class="codenumber">9.4.3</span> <span class="title">Finding Happy numbers</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-7" class="internal"><span class="codenumber">9.5</span> <span class="title">Primes can be big!!</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8" class="internal"><span class="codenumber">9.5</span> <span class="title">Primes can be big!!</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8" class="internal"><span class="codenumber">9.6</span> <span class="title">Speeding up <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div>
+<div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9" class="internal"><span class="codenumber">9.6</span> <span class="title">Speeding up <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-3" class="internal"><span class="codenumber">9.6.1</span> <span class="title">Speedup #1: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to stop earlier</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-4" class="internal"><span class="codenumber">9.6.2</span> <span class="title">Speedup #2: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to not check all integers as factors</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-5" class="internal"><span class="codenumber">9.6.3</span> <span class="title">Speedup #3: Don’t use <code class="code-inline tex2jax_ignore">findAllFactors</code> at all</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-6" class="internal"><span class="codenumber">9.6.4</span> <span class="title">Speedup #4: Don’t do unnecessary calculations</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-8-7" class="internal"><span class="codenumber">9.6.5</span> <span class="title">Speedup #5: check only primes as possible factors</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-3" class="internal"><span class="codenumber">9.6.1</span> <span class="title">Speedup #1: Use a For loop</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-4" class="internal"><span class="codenumber">9.6.2</span> <span class="title">Speedup #2: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to stop earlier</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-5" class="internal"><span class="codenumber">9.6.3</span> <span class="title">Speedup #3: Rewrite <code class="code-inline tex2jax_ignore">findAllFactors</code> to not check all integers as factors</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-6" class="internal"><span class="codenumber">9.6.4</span> <span class="title">Speedup #4: Don’t use <code class="code-inline tex2jax_ignore">findAllFactors</code> at all</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-7" class="internal"><span class="codenumber">9.6.5</span> <span class="title">Speedup #5: Don’t do unnecessary calculations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9-8" class="internal"><span class="codenumber">9.6.6</span> <span class="title">Speedup #6: check only primes as possible factors</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-9" class="internal"><span class="codenumber">9.7</span> <span class="title">Summary of <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-10" class="internal"><span class="codenumber">9.8</span> <span class="title">Testing for Primes using the <code class="code-inline tex2jax_ignore">Primes</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-10" class="internal"><span class="codenumber">9.7</span> <span class="title">Summary of <code class="code-inline tex2jax_ignore">isPrime</code></span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-number-theory.html#ch-number-theory-11" class="internal"><span class="codenumber">9.8</span> <span class="title">Testing for Primes using the <code class="code-inline tex2jax_ignore">Primes</code></span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter active">
 <div class="toc-title-box"><a href="ch-algorithm-analysis.html" class="internal"><span class="codenumber">10</span> <span class="title">Algorithm Analysis</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-3" class="internal"><span class="codenumber">10.1</span> <span class="title">Big-O Notation</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4" class="internal"><span class="codenumber">10.1</span> <span class="title">Big-O Notation</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4" class="internal"><span class="codenumber">10.2</span> <span class="title">Polynomial Evaluation</span></a></div>
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5" class="internal"><span class="codenumber">10.2</span> <span class="title">Polynomial Evaluation</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#sect-horner" class="internal"><span class="codenumber">10.2.1</span> <span class="title">Horner’s Form</span></a></div></li>
 <li class="toc-item toc-subsection">
-<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4-4" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Benchmarking Polynomial Evaluation</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-4-4-3" class="internal"><span class="codenumber">10.2.2.1</span> <span class="title">Horner’s Form</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5-4" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Benchmarking Polynomial Evaluation</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5-4-3" class="internal"><span class="codenumber">10.2.2.1</span> <span class="title">Horner’s Form</span></a></div></li></ul>
 </li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-5" class="internal"><span class="codenumber">10.3</span> <span class="title">Interpreting big-O results</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-6" class="internal"><span class="codenumber">10.4</span> <span class="title">Using Data to determine Algorithm order</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-6" class="internal"><span class="codenumber">10.3</span> <span class="title">Interpreting big-O results</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-algorithm-analysis.html#ch-algorithm-analysis-7" class="internal"><span class="codenumber">10.4</span> <span class="title">Using Data to determine Algorithm order</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-rootfinding.html" class="internal"><span class="codenumber">11</span> <span class="title">Solving Quadratics and Rootfinding</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-3" class="internal"><span class="codenumber">11.1</span> <span class="title">Absolute and Relative Errors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4" class="internal"><span class="codenumber">11.1</span> <span class="title">Absolute and Relative Errors</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4" class="internal"><span class="codenumber">11.2</span> <span class="title">Rounding Errors and the Quadratic Formula</span></a></div>
+<div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5" class="internal"><span class="codenumber">11.2</span> <span class="title">Rounding Errors and the Quadratic Formula</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-3" class="internal"><span class="codenumber">11.2.1</span> <span class="title">Investigating Errors with Code</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-4" class="internal"><span class="codenumber">11.2.2</span> <span class="title">Be skeptical of numerical answers</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-4-5" class="internal"><span class="codenumber">11.2.3</span> <span class="title">Can we ever be confident of answers?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-3" class="internal"><span class="codenumber">11.2.1</span> <span class="title">Investigating Errors with Code</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-4" class="internal"><span class="codenumber">11.2.2</span> <span class="title">Be skeptical of numerical answers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-5" class="internal"><span class="codenumber">11.2.3</span> <span class="title">Can we ever be confident of answers?</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5" class="internal"><span class="codenumber">11.3</span> <span class="title">Are We Sunk?  Reexamining the Quadratic Formula</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-6" class="internal"><span class="codenumber">11.3</span> <span class="title">Are We Sunk?  Reexamining the Quadratic Formula</span></a></div></li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton" class="internal"><span class="codenumber">11.4</span> <span class="title">Newton’s Method</span></a></div>
 <ul class="structural toc-item-list">
@@ -457,6 +462,7 @@ window.MathJax = {
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton-6" class="internal"><span class="codenumber">11.4.4</span> <span class="title">Adding an extra stopping condition</span></a></div></li>
 </ul>
 </li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-8" class="internal"><span class="codenumber">11.5</span> <span class="title">The Bisection Method</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
@@ -1071,7 +1077,12 @@ window.MathJax = {
 <main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="chapter" id="ch-algorithm-analysis"><h2 class="heading">
 <span class="type">Chapter</span><span class="space"> </span><span class="codenumber">10</span><span class="space"> </span><span class="title">Algorithm Analysis</span>
 </h2>
-<section class="introduction" id="ch-algorithm-analysis-2"><div class="para" id="ch-algorithm-analysis-2-1">This chapter will be a brief introduction to the analysis of algorithms.  As we have already seen in the past couple of chapters, timing algorithms is a decent way to determining how well they run, however sometimes a more in-depth analysis is needed. We will cover what is called big-O notation and analysis a few algorithms here.</div></section><section class="section" id="ch-algorithm-analysis-3"><h3 class="heading hide-type">
+<article class="objectives goal-like" id="ch-algorithm-analysis-2"><h3 class="heading"><span class="type">Objectives</span></h3>
+<ul class="disc" id="ch-algorithm-analysis-2-1">
+<li id="ch-algorithm-analysis-2-1-1"><div class="para" id="ch-algorithm-analysis-2-1-1-1">Define the big-O notation and explain how it is used in analyzing algorithms.</div></li>
+<li id="ch-algorithm-analysis-2-1-2"><div class="para" id="ch-algorithm-analysis-2-1-2-1">Performing big-O analysis on some algorithms.</div></li>
+<li id="ch-algorithm-analysis-2-1-3"><div class="para" id="ch-algorithm-analysis-2-1-3-1">Using data tools to determine the order of an algorithm by running code for a set of different parameters.</div></li>
+</ul></article><section class="introduction" id="ch-algorithm-analysis-3"><div class="para" id="ch-algorithm-analysis-3-1">This chapter will be a brief introduction to the analysis of algorithms.  As we have already seen in the past couple of chapters, timing algorithms is a decent way to determining how well they run, however sometimes a more in-depth analysis is needed. We will cover what is called big-O notation and analyze a few algorithms here.</div></section><section class="section" id="ch-algorithm-analysis-4"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">10.1</span><span class="space"> </span><span class="title">Big-O Notation</span>
 </h3>
 <article class="definition definition-like" id="def-big-o"><h4 class="heading">
@@ -1086,33 +1097,33 @@ window.MathJax = {
 </div>
 <div class="para">for some <span class="process-math">\(0 &gt; C &gt; \infty\text{.}\)</span>
 </div>
-</div></article><div class="para" id="ch-algorithm-analysis-3-3">For example, let <span class="process-math">\(f(n) = 3n^2-2n+6\text{.}\)</span>  This function is <span class="process-math">\(O(n^2)\)</span> because</div>
-<div class="para logical" id="ch-algorithm-analysis-3-4"><div class="displaymath process-math">
+</div></article><div class="para" id="ch-algorithm-analysis-4-3">For example, let <span class="process-math">\(f(n) = 3n^2-2n+6\text{.}\)</span>  This function is <span class="process-math">\(O(n^2)\)</span> because</div>
+<div class="para logical" id="ch-algorithm-analysis-4-4"><div class="displaymath process-math">
 \begin{equation*}
 \lim_{n\rightarrow \infty} \frac{3n^2-2n+6}{n^2} = 3
 \end{equation*}
 </div></div>
-<div class="para" id="ch-algorithm-analysis-3-5">Generally, if a function is polynomial, the function is <span class="process-math">\(O(n^p)\)</span> where <span class="process-math">\(p\)</span> is the degree of polynomial.</div>
-<details id="ch-algorithm-analysis-3-6" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
-<span class="type">Checkpoint</span><span class="space"> </span><span class="codenumber">10.2</span><span class="period">.</span>
-</h4></summary><article class="exercise exercise-like knowl__content"><div class="introduction" id="ch-algorithm-analysis-3-6-1"><div class="para" id="ch-algorithm-analysis-3-6-1-1">For each of the following functions find <span class="process-math">\(O(g(n))\text{,}\)</span> that is find <span class="process-math">\(g(n)\text{:}\)</span>
+<div class="para" id="ch-algorithm-analysis-4-5">Generally, if a function is polynomial, the function is <span class="process-math">\(O(n^p)\)</span> where <span class="process-math">\(p\)</span> is the degree of polynomial.</div>
+<details id="ch-algorithm-analysis-4-6" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">10.2</span><span class="period">.</span>
+</h4></summary><article class="exercise exercise-like knowl__content"><div class="introduction" id="ch-algorithm-analysis-4-6-1"><div class="para" id="ch-algorithm-analysis-4-6-1-1">For each of the following functions find <span class="process-math">\(O(g(n))\text{,}\)</span> that is find <span class="process-math">\(g(n)\text{:}\)</span>
 </div></div>
-<article class="task exercise-like" id="ch-algorithm-analysis-3-6-2"><h5 class="heading"><span class="codenumber">(a)</span></h5>
-<div class="para" id="ch-algorithm-analysis-3-6-2-1-1"><span class="process-math">\(f(n) = n^2+e^n\)</span></div>
-<div class="solutions"><details id="ch-algorithm-analysis-3-6-2-2" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period">.</span></summary><div class="hint solution-like knowl__content"><div class="para" id="ch-algorithm-analysis-3-6-2-2-1">Hint: recall L’Hopital’s rule for derivatives and try to find the <em class="emphasis">largest</em> term of the given function.</div></div></details></div></article><article class="task exercise-like" id="ch-algorithm-analysis-3-6-3"><h5 class="heading"><span class="codenumber">(b)</span></h5>
-<div class="para" id="ch-algorithm-analysis-3-6-3-1-1"><span class="process-math">\(f(n) = 3n^2+e^{-n}\)</span></div></article><article class="task exercise-like" id="ch-algorithm-analysis-3-6-4"><h5 class="heading"><span class="codenumber">(c)</span></h5>
-<div class="para" id="ch-algorithm-analysis-3-6-4-1-1"><span class="process-math">\(f(n) = n + n \ln(n)\)</span></div></article></article></details></section><section class="section" id="ch-algorithm-analysis-4"><h3 class="heading hide-type">
+<article class="task exercise-like" id="ch-algorithm-analysis-4-6-2"><h5 class="heading"><span class="codenumber">(a)</span></h5>
+<div class="para" id="ch-algorithm-analysis-4-6-2-1-1"><span class="process-math">\(f(n) = n^2+e^n\)</span></div>
+<div class="solutions"><details id="ch-algorithm-analysis-4-6-2-2" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period">.</span></summary><div class="hint solution-like knowl__content"><div class="para" id="ch-algorithm-analysis-4-6-2-2-1">Hint: recall L’Hopital’s rule for derivatives and try to find the <em class="emphasis">largest</em> term of the given function.</div></div></details></div></article><article class="task exercise-like" id="ch-algorithm-analysis-4-6-3"><h5 class="heading"><span class="codenumber">(b)</span></h5>
+<div class="para" id="ch-algorithm-analysis-4-6-3-1-1"><span class="process-math">\(f(n) = 3n^2+e^{-n}\)</span></div></article><article class="task exercise-like" id="ch-algorithm-analysis-4-6-4"><h5 class="heading"><span class="codenumber">(c)</span></h5>
+<div class="para" id="ch-algorithm-analysis-4-6-4-1-1"><span class="process-math">\(f(n) = n + n \ln(n)\)</span></div></article></article></details></section><section class="section" id="ch-algorithm-analysis-5"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">10.2</span><span class="space"> </span><span class="title">Polynomial Evaluation</span>
 </h3>
-<section class="introduction" id="ch-algorithm-analysis-4-2"><div class="para" id="ch-algorithm-analysis-4-2-1">An example that we will see again in <a href="ch-comp-types.html" class="internal" title="Chapter 12: Creating New Data Types in Julia">Chapter 12</a>, it that of evaluating a polynomial. If</div> <div class="para logical" id="ch-algorithm-analysis-4-2-2"><div class="displaymath process-math" id="eq-poly">
+<section class="introduction" id="ch-algorithm-analysis-5-2"><div class="para" id="ch-algorithm-analysis-5-2-1">An example that we will see again in <a href="ch-comp-types.html" class="internal" title="Chapter 12: Creating New Data Types in Julia">Chapter 12</a>, it that of evaluating a polynomial. If</div> <div class="para logical" id="ch-algorithm-analysis-5-2-2"><div class="displaymath process-math" id="eq-poly">
 \begin{equation}
 p(x) = a_0 + a_1 x + a_2 x^2 + \cdots + a_n x^n\tag{10.1}
 \end{equation}
-</div></div> <div class="para" id="ch-algorithm-analysis-4-2-3">If we evaluate the polynomial as is counting powers as repeated multiplication, then the number of additions is <span class="process-math">\(n\)</span> and the number of multiplication is</div> <div class="para logical" id="ch-algorithm-analysis-4-2-4"><div class="displaymath process-math">
+</div></div> <div class="para" id="ch-algorithm-analysis-5-2-3">If we evaluate the polynomial as is counting powers as repeated multiplication, then the number of additions is <span class="process-math">\(n\)</span> and the number of multiplication is</div> <div class="para logical" id="ch-algorithm-analysis-5-2-4"><div class="displaymath process-math">
 \begin{equation*}
 M(n) = 1 + 2 + 3 + \cdots + n = \frac{n(n+1)}{2}
 \end{equation*}
-</div></div> <div class="para" id="ch-algorithm-analysis-4-2-5">This shows that polynomial evaluation is <span class="process-math">\(O(n^2)\)</span> since <span class="process-math">\(\lim_{n \rightarrow \infty} M(n)/n^2 = 1/2\text{.}\)</span>
+</div></div> <div class="para" id="ch-algorithm-analysis-5-2-5">This shows that polynomial evaluation is <span class="process-math">\(O(n^2)\)</span> since <span class="process-math">\(\lim_{n \rightarrow \infty} M(n)/n^2 = 1/2\text{.}\)</span>
 </div></section><section class="subsection" id="sect-horner"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">10.2.1</span><span class="space"> </span><span class="title">Horner’s Form</span>
 </h4>
@@ -1123,10 +1134,10 @@ p(x) = a_0 + x(a_1 + x(a_2 + x(a_3 \cdots + a_n x)))\tag{10.2}
 \end{equation}
 </div></div>
 <div class="para" id="sect-horner-4">In this case, there are <span class="process-math">\(n\)</span> additions and <span class="process-math">\(n\)</span> multiplications. So you could say that the total number of operations are <span class="process-math">\(c_1 n + c_2n\)</span> where <span class="process-math">\(c_1\)</span> and <span class="process-math">\(c_2\)</span> are constants related to addition and multiplication. Overall, this means that the order of polynomial evaluation using Horner’s method is <span class="process-math">\(O(n)\text{.}\)</span>
-</div></section><section class="subsection" id="ch-algorithm-analysis-4-4"><h4 class="heading hide-type">
+</div></section><section class="subsection" id="ch-algorithm-analysis-5-4"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">10.2.2</span><span class="space"> </span><span class="title">Benchmarking Polynomial Evaluation</span>
 </h4>
-<section class="introduction" id="ch-algorithm-analysis-4-4-2"><div class="para" id="ch-algorithm-analysis-4-4-2-1">Let’s actually see some actual data in this.  First, the polynomial evaluation can be written as</div> <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function poly1(coeffs::Vector{T}, x::S) where {T &lt;: Number, S &lt;: Number}
+<section class="introduction" id="ch-algorithm-analysis-5-4-2"><div class="para" id="ch-algorithm-analysis-5-4-2-1">Let’s actually see some actual data in this.  First, the polynomial evaluation can be written as</div> <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function poly1(coeffs::Vector{T}, x::S) where {T &lt;: Number, S &lt;: Number}
   local sum = zero(T)
   function pow(x::T,n::Int) where T &lt;: Number
     local prod = one(T)
@@ -1140,47 +1151,47 @@ p(x) = a_0 + x(a_1 + x(a_2 + x(a_3 \cdots + a_n x)))\tag{10.2}
   end
   sum
 end
-</code></pre></div> <div class="para" id="ch-algorithm-analysis-4-4-2-3">where the <code class="code-inline tex2jax_ignore">where {T &lt;: Number, S &lt;: Number}</code> will be explained in <a href="ch-adv-functions.html" class="internal" title="Chapter 20: Advanced Function Features of Julia">Chapter 20</a>, but this allows any subtype of Number to be taken.  Also, we have defined the power to be repeated multiplication using a for loop, since Julia’s power function is quite efficient--we want to show the results from above.</div> <div class="para" id="ch-algorithm-analysis-4-4-2-4">To test this, first we will use <code class="code-inline tex2jax_ignore">BigFloat</code>s as the coefficients to slow down the operations a bit, otherwise it is hard to measure the time.</div> <div class="para logical" id="ch-algorithm-analysis-4-4-2-5">
+</code></pre></div> <div class="para" id="ch-algorithm-analysis-5-4-2-3">where the <code class="code-inline tex2jax_ignore">where {T &lt;: Number, S &lt;: Number}</code> will be explained in <a href="ch-adv-functions.html" class="internal" title="Chapter 20: Advanced Function Features of Julia">Chapter 20</a>, but this allows any subtype of Number to be taken.  Also, we have defined the power to be repeated multiplication using a for loop, since Julia’s power function is quite efficient--we want to show the results from above.</div> <div class="para" id="ch-algorithm-analysis-5-4-2-4">To test this, first we will use <code class="code-inline tex2jax_ignore">BigFloat</code>s as the coefficients to slow down the operations a bit, otherwise it is hard to measure the time.</div> <div class="para logical" id="ch-algorithm-analysis-5-4-2-5">
 <div class="para">Let’s do some testing and we’ll need the <code class="code-inline tex2jax_ignore">BenchmarkTools</code> and <code class="code-inline tex2jax_ignore">CairoMakie</code> (for plotting). We also need <code class="code-inline tex2jax_ignore">Random</code> to set the seed and <code class="code-inline tex2jax_ignore">LsqFit</code> to fit the data we’ll generate to a curve.</div>
 <pre class="code-display tex2jax_ignore">using BenchmarkTools, CairoMakie, Random, LsqFit
 CairoMakie.activate!()
 Random.seed!(132)
 </pre>
-</div> <article class="remark remark-like" id="ch-algorithm-analysis-4-4-2-6"><h5 class="heading">
+</div> <article class="remark remark-like" id="ch-algorithm-analysis-5-4-2-6"><h5 class="heading">
 <span class="type">Remark</span><span class="space"> </span><span class="codenumber">10.3</span><span class="period">.</span>
 </h5>
-<div class="para" id="ch-algorithm-analysis-4-4-2-6-1">There are a few plots in this section and we will be using a package called <code class="code-inline tex2jax_ignore">Makie</code> to do the plots.  We will explore this in detail in <a href="ch-plotting-makie.html" class="internal" title="Chapter 14: Using Makie for Plots">Chapter 14</a>, however, copying the code to produce the plots is sufficient for this chapter.</div></article> <div class="para" id="ch-algorithm-analysis-4-4-2-7">The following will time using the <code class="code-inline tex2jax_ignore">@belasped</code> macro which returns the amount of time a function takes given in seconds. This is needed because we need to store the result. Note that in the previous chapters we’ve used the <code class="code-inline tex2jax_ignore">@btime</code> macro which times the function and gives additional information as well as the return value.  We are only interested in the amount of time in this section.</div> <div class="para logical" id="ch-algorithm-analysis-4-4-2-8"><pre class="code-display tex2jax_ignore">time = zeros(351)
+<div class="para" id="ch-algorithm-analysis-5-4-2-6-1">There are a few plots in this section and we will be using a package called <code class="code-inline tex2jax_ignore">Makie</code> to do the plots.  We will explore this in detail in <a href="ch-plotting-makie.html" class="internal" title="Chapter 14: Using Makie for Plots">Chapter 14</a>, however, copying the code to produce the plots is sufficient for this chapter.</div></article> <div class="para" id="ch-algorithm-analysis-5-4-2-7">The following will time using the <code class="code-inline tex2jax_ignore">@belasped</code> macro which returns the amount of time a function takes given in seconds. This is needed because we need to store the result. Note that in the previous chapters we’ve used the <code class="code-inline tex2jax_ignore">@btime</code> macro which times the function and gives additional information as well as the return value.  We are only interested in the amount of time in this section.</div> <div class="para logical" id="ch-algorithm-analysis-5-4-2-8"><pre class="code-display tex2jax_ignore">time = zeros(351)
 r = 1:50:351
 for i=r
   coeffs = rand(i+1)
   time[i] = @belapsed poly1($coeffs,1/3)
 end
-</pre></div> <div class="para" id="ch-algorithm-analysis-4-4-2-9">and let’s do a scatter plot with</div> <div class="para logical" id="ch-algorithm-analysis-4-4-2-10"><pre class="code-display tex2jax_ignore">fig, ax = scatter(r,time[r])
+</pre></div> <div class="para" id="ch-algorithm-analysis-5-4-2-9">which will take quite a bit time.  After this runs, if we create a scatter plot with</div> <div class="para logical" id="ch-algorithm-analysis-5-4-2-10"><pre class="code-display tex2jax_ignore">fig, ax = scatter(r,time[r])
 </pre></div> <figure class="figure figure-like" id="fig-poly-eval"><div class="image-box" style="width: 75%; margin-left: 12.5%; margin-right: 12.5%;"><img src="external/plots/algorithm-analysis/plot01.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.4<span class="period">.</span></span><span class="space"> </span></figcaption></figure> <div class="para" id="ch-algorithm-analysis-4-4-2-12">Hopefully visually you can see that it appears to be nonlinear and perhaps you can see that it is may be quadratic.  We will fit a quadratic to these points by first defining the model as a quadratic:</div> <div class="para logical" id="ch-algorithm-analysis-4-4-2-13"><pre class="code-display tex2jax_ignore">model(t, p) = p[1].+p[2].*t.+p[3].*t.^2
-</pre></div> <div class="para" id="ch-algorithm-analysis-4-4-2-14">where broadcasting that was explained in <a href="ch-arrays.html#sect-broadcasting" class="internal" title="Section 6.5: Element by Element Operations (Broadcasting)">Section 6.5</a> and then fit the data to the model with:</div> <div class="para logical" id="ch-algorithm-analysis-4-4-2-15"><pre class="code-display tex2jax_ignore">fit = curve_fit(model, r, time[r], [1e-8,1e-8,1e-8])
-</pre></div> <div class="para" id="ch-algorithm-analysis-4-4-2-16">and note that the output will not be particularlly helpful.  What we are looking for are the best-fit parameters and these can be found with <code class="code-inline tex2jax_ignore">fit.param</code> and the results are</div> <div class="para logical" id="ch-algorithm-analysis-4-4-2-17"><pre class="code-display tex2jax_ignore">3-element Vector{Float64}:
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.4<span class="period">.</span></span><span class="space"> </span></figcaption></figure> <div class="para" id="ch-algorithm-analysis-5-4-2-12">Hopefully visually you can see that it appears to be nonlinear and perhaps you can see that it is may be quadratic.  We will fit a quadratic to these points by first defining the model as a quadratic:</div> <div class="para logical" id="ch-algorithm-analysis-5-4-2-13"><pre class="code-display tex2jax_ignore">model(t, p) = @. p[1]+p[2]*t+p[3]*t^2
+</pre></div> <div class="para" id="ch-algorithm-analysis-5-4-2-14">where broadcasting using <code class="code-inline tex2jax_ignore">@.</code> that was explained in <a href="ch-arrays.html#sect-broadcasting" class="internal" title="Section 6.5: Element by Element Operations (Broadcasting)">Section 6.5</a> and then fit the data to the model with:</div> <div class="para logical" id="ch-algorithm-analysis-5-4-2-15"><pre class="code-display tex2jax_ignore">fit = curve_fit(model, r, time[r], [1e-8,1e-8,1e-8])
+</pre></div> <div class="para" id="ch-algorithm-analysis-5-4-2-16">and note that the output will not be particularlly helpful.  What we are looking for are the best-fit parameters and these can be found with <code class="code-inline tex2jax_ignore">fit.param</code> and the results are</div> <div class="para logical" id="ch-algorithm-analysis-5-4-2-17"><pre class="code-display tex2jax_ignore">3-element Vector{Float64}:
   6.636565666123923e-7
  -3.7652064597589e-8
   6.108561075647983e-10
-</pre></div> <div class="para" id="ch-algorithm-analysis-4-4-2-18">These are all small, however, the important thing to determine is if they are possibly zero.  We can use the confidence interval of each is found with <code class="code-inline tex2jax_ignore">confidence_interval(fit, 0.05)</code> which returns</div> <div class="para logical" id="ch-algorithm-analysis-4-4-2-19"><pre class="code-display tex2jax_ignore">3-element Vector{Tuple{Float64, Float64}}:
+</pre></div> <div class="para" id="ch-algorithm-analysis-5-4-2-18">These are all small, however, the important thing to determine is if they are possibly zero.  We can use the confidence interval of each is found with <code class="code-inline tex2jax_ignore">confidence_interval(fit, 0.05)</code> which returns</div> <div class="para logical" id="ch-algorithm-analysis-5-4-2-19"><pre class="code-display tex2jax_ignore">3-element Vector{Tuple{Float64, Float64}}:
   (-8.762753517690063e-7, 2.203588484993791e-6)
   (-5.8097027280678223e-8, -1.7207101914499782e-8)
   (5.549847084532201e-10, 6.667275066763765e-10)
-</pre></div> <div class="para" id="ch-algorithm-analysis-4-4-2-20">These show the 95\%-confidence intervals for the three parameters. We are looking for the largest non-zero term, which is the third one.  Since the above fits all three terms, we will redo the fit with only the third term as</div> <div class="para logical" id="ch-algorithm-analysis-4-4-2-21"><pre class="code-display tex2jax_ignore">model2(t,p) = p[1].*t.^2
-</pre></div> <div class="para logical" id="ch-algorithm-analysis-4-4-2-22">
+</pre></div> <div class="para" id="ch-algorithm-analysis-5-4-2-20">These show the 95%-confidence intervals for the three parameters. We are looking for the largest non-zero term, which is the third one.  Since the above fits all three terms, we will redo the fit with only the third term as</div> <div class="para logical" id="ch-algorithm-analysis-5-4-2-21"><pre class="code-display tex2jax_ignore">model2(t,p) = @. p[1]*t^2
+</pre></div> <div class="para logical" id="ch-algorithm-analysis-5-4-2-22">
 <div class="para">and then fit the data with</div>
 <pre class="code-display tex2jax_ignore">fit2 = curve_fit(model2, r, time[r], [1.0])
 </pre>
-</div> <div class="para logical" id="ch-algorithm-analysis-4-4-2-23">
+</div> <div class="para logical" id="ch-algorithm-analysis-5-4-2-23">
 <div class="para">We can add the curve to the plot above with:</div>
 <pre class="code-display tex2jax_ignore">lines!(ax, 0:225,t-&gt;fit2.param[1]*t^2)
 </pre>
-</div> <div class="para" id="ch-algorithm-analysis-4-4-2-24">which is the following plot</div> <figure class="figure figure-like" id="fig-poly-fit2"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/algorithm-analysis/plot02.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.5<span class="period">.</span></span><span class="space"> </span></figcaption></figure> <div class="para" id="ch-algorithm-analysis-4-4-2-26">and although it doesn’t look like a perfect fit, it does appear to be quadratic.</div></section><section class="subsubsection" id="ch-algorithm-analysis-4-4-3"><h5 class="heading hide-type">
+</div> <div class="para" id="ch-algorithm-analysis-5-4-2-24">which is the following plot</div> <figure class="figure figure-like" id="fig-poly-fit2"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/algorithm-analysis/plot02.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.5<span class="period">.</span></span><span class="space"> </span></figcaption></figure> <div class="para" id="ch-algorithm-analysis-5-4-2-26">and although it doesn’t look like a perfect fit, it does appear to be quadratic.</div></section><section class="subsubsection" id="ch-algorithm-analysis-5-4-3"><h5 class="heading hide-type">
 <span class="type">Subsubsection</span><span class="space"> </span><span class="codenumber">10.2.2.1</span><span class="space"> </span><span class="title">Horner’s Form</span>
 </h5>
-<div class="para" id="ch-algorithm-analysis-4-4-3-2">We will compare this to horner’s form, which we can write in julia as:</div>
+<div class="para" id="ch-algorithm-analysis-5-4-3-2">We will compare this to horner’s form, which we can write in julia as:</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function horner(coeffs::Vector{T},x::S) where {T &lt;: Number, S &lt;: Number}
   local result = coeffs[end]
   for i=length(coeffs)-1:-1:1
@@ -1189,7 +1200,7 @@ end
   result
 end
 </code></pre></div>
-<div class="para" id="ch-algorithm-analysis-4-4-3-4">and then similar to above, we will time this method for different lengths:</div>
+<div class="para" id="ch-algorithm-analysis-5-4-3-4">and then similar to above, we will time this method for different lengths:</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">htime = zeros(351)
 r = 1:50:351
 for i=r
@@ -1197,29 +1208,31 @@ for i=r
   htime[i] = @belapsed horner($coeffs,10/3)
 end
 </code></pre></div>
-<div class="para" id="ch-algorithm-analysis-4-4-3-6">and plot the results:</div>
-<div class="para logical" id="ch-algorithm-analysis-4-4-3-7"><pre class="code-display tex2jax_ignore">fig, ax = scatter(r,htime[r])
+<div class="para" id="ch-algorithm-analysis-5-4-3-6">and plot the results:</div>
+<div class="para logical" id="ch-algorithm-analysis-5-4-3-7"><pre class="code-display tex2jax_ignore">scatter(r,htime[r])
 </pre></div>
-<div class="para" id="ch-algorithm-analysis-4-4-3-8">which results in</div>
+<div class="para" id="ch-algorithm-analysis-5-4-3-8">which results in</div>
 <figure class="figure figure-like" id="fig-poly-fit3"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/algorithm-analysis/plot03.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.6<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-algorithm-analysis-4-4-3-10">and this look much more linear than the previous one.  For this model, we’ll fit a linear function.</div>
-<div class="para logical" id="ch-algorithm-analysis-4-4-3-11"><pre class="code-display tex2jax_ignore">fit3 = curve_fit((t,p) -&gt; p[1].*t, r, htime[r], [1e-8])
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.6<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-algorithm-analysis-5-4-3-10">and this look much more linear than the previous one.  For this model, we’ll fit a linear function.</div>
+<div class="para logical" id="ch-algorithm-analysis-5-4-3-11"><pre class="code-display tex2jax_ignore">fit3 = curve_fit((t,p) -&gt; p[1].*t, r, htime[r], [1e-8])
 </pre></div>
-<div class="para" id="ch-algorithm-analysis-4-4-3-12">and if you’re interested in the value of the parameter (slope of the line), <code class="code-inline tex2jax_ignore">fit3.param</code> returns <code class="code-inline tex2jax_ignore">1.8253874361922209e-9</code>.  Looking at it visually, let’s add the plot of the line to the scatter plot above with</div>
-<div class="para logical" id="ch-algorithm-analysis-4-4-3-13"><pre class="code-display tex2jax_ignore">lines!(ax, 1:360, t-&gt;fit3.params[1]*t)
+<div class="para" id="ch-algorithm-analysis-5-4-3-12">and if you’re interested in the value of the parameter (slope of the line), <code class="code-inline tex2jax_ignore">fit3.param</code> returns <code class="code-inline tex2jax_ignore">1.8253874361922209e-9</code>.  Looking at it visually, let’s add the plot of the line to the scatter plot above with</div>
+<div class="para logical" id="ch-algorithm-analysis-5-4-3-13"><pre class="code-display tex2jax_ignore">lines!(ax, 1:360, t-&gt;fit3.params[1]*t)
 </pre></div>
-<div class="para" id="ch-algorithm-analysis-4-4-3-14">and this results in the following plot:</div>
+<div class="para" id="ch-algorithm-analysis-5-4-3-14">and this results in the following plot:</div>
 <figure class="figure figure-like" id="fig-poly-fit4"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/algorithm-analysis/plot04.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.7<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-algorithm-analysis-4-4-3-16">Overall, these results show that the time taken to evaluate a polynomial using Horner’s form, is <span class="process-math">\(O(n)\text{.}\)</span>  This evidence shows that horner’s form of the polynomial is much faster and putting these two scatter plots together with:</div>
-<div class="para logical" id="ch-algorithm-analysis-4-4-3-17"><pre class="code-display tex2jax_ignore">fig, ax =  scatter(r, time[r])
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.7<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-algorithm-analysis-5-4-3-16">Overall, these results show that the time taken to evaluate a polynomial using Horner’s form, is <span class="process-math">\(O(n)\text{.}\)</span>  This evidence shows that horner’s form of the polynomial is much faster and putting these two scatter plots together with:</div>
+<div class="para logical" id="ch-algorithm-analysis-5-4-3-17"><pre class="code-display tex2jax_ignore">fig, ax =  scatter(r, time[r])
 scatter!(ax, r, htime[r])
 fig
 </pre></div>
-<div class="para" id="ch-algorithm-analysis-4-4-3-18">and the results are</div></section></section></section><section class="section" id="ch-algorithm-analysis-5"><h3 class="heading hide-type">
+<div class="para" id="ch-algorithm-analysis-5-4-3-18">and the results are</div>
+<figure class="figure figure-like" id="fig-compare-to-horner"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/algorithm-analysis/plot05.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.8<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section></section></section><section class="section" id="ch-algorithm-analysis-6"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">10.3</span><span class="space"> </span><span class="title">Interpreting big-O results</span>
 </h3>
-<div class="para" id="ch-algorithm-analysis-5-2">Typically algorithms grows as some function of  <span class="process-math">\(n\text{,}\)</span> which is a measure of the size of the problem.  Determining the order of the algorithm can be tricky although we can use numerics like above to find the timing of algorithms for various sizes of the problem.  Then doing some datafitting, we can often find the order of the algorithm.  We’ll see another example of this in the next section.</div>
-<div class="para" id="ch-algorithm-analysis-5-3">Understanding different orders is helpful and this means understanding how functions grow.  Here are a bunch of standard algorithm functions and their plots:</div>
+<div class="para" id="ch-algorithm-analysis-6-2">Typically algorithms grows as some function of  <span class="process-math">\(n\text{,}\)</span> which is a measure of the size of the problem.  Determining the order of the algorithm can be tricky although we can use numerics like above to find the timing of algorithms for various sizes of the problem.  Then doing some datafitting, we can often find the order of the algorithm.  We’ll see another example of this in the next section.</div>
+<div class="para" id="ch-algorithm-analysis-6-3">Understanding different orders is helpful and this means understanding how functions grow.  Here are a bunch of standard algorithm functions and their plots:</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">fig = Figure()
 ax = Axis(fig[1,1])
 pl1 = lines!(ax, 1:0.05:10, x-&gt;log(x))
@@ -1234,16 +1247,14 @@ axislegend(ax,
 )
 fig
 </code></pre></div>
-<div class="para" id="ch-algorithm-analysis-5-5">And the result is</div>
+<div class="para" id="ch-algorithm-analysis-6-5">And the result is</div>
 <figure class="figure figure-like" id="fig-o-of-n-compare"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/algorithm-analysis/plot06.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.8<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-algorithm-analysis-5-7">This would basically show that if there are choices of algorithms, to use an algorithm with a lower order in that for large values of problem size will run faster.</div></section><section class="section" id="ch-algorithm-analysis-6"><h3 class="heading hide-type">
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.9<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-algorithm-analysis-6-7">This would basically show that if there are choices of algorithms, to use an algorithm with a lower order in that for large values of problem size will run faster.</div></section><section class="section" id="ch-algorithm-analysis-7"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">10.4</span><span class="space"> </span><span class="title">Using Data to determine Algorithm order</span>
 </h3>
-<div class="para" id="ch-algorithm-analysis-6-2">Typically, the best way to analyze an algorithm is to determine the number of operations as a function of <span class="process-math">\(n\text{,}\)</span> however, let’s look at this as a data analysis problem.  As an example, we’ll look at this as the Fast Fourier Transform, discussed in Chapter \ref{ch:complex}.  This is a classic example of improving an algorithm to change the order.  For this we need the <code class="code-inline tex2jax_ignore">FFTW</code> package, which you probably need to add and</div>
-<div class="para logical" id="ch-algorithm-analysis-6-3"><pre class="code-display tex2jax_ignore">
-			using FFTW
-			</pre></div>
-<div class="para" id="ch-algorithm-analysis-6-4">Let’s first build up a set of times similar to above with</div>
+<div class="para" id="ch-algorithm-analysis-7-2">Typically, the best way to analyze an algorithm is to determine the number of operations as a function of <span class="process-math">\(n\text{,}\)</span> however, let’s look at this as a data analysis problem.  As an example, we’ll look at this as the Fast Fourier Transform, discussed in Chapter \ref{ch:complex}.  This is a classic example of improving an algorithm to change the order.  For this we need the <code class="code-inline tex2jax_ignore">FFTW</code> package, which you probably need to add and</div>
+<div class="para logical" id="ch-algorithm-analysis-7-3"><pre class="code-display tex2jax_ignore"> using FFTW </pre></div>
+<div class="para" id="ch-algorithm-analysis-7-4">Let’s first build up a set of times similar to above with</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">times3 = Float64[]
 sizes3 = [2^n for n=10:18]
 for size in sizes3
@@ -1252,37 +1263,35 @@ for size in sizes3
   push!(times3,t)
 end
 </code></pre></div>
-<div class="para" id="ch-algorithm-analysis-6-6">which calculates the FFT for sizes <code class="code-inline tex2jax_ignore">2^10</code> to <code class="code-inline tex2jax_ignore">2^18</code> and stores the results in the variable <code class="code-inline tex2jax_ignore">times</code>. Then, let’s plot the results with</div>
-<div class="para logical" id="ch-algorithm-analysis-6-7"><pre class="code-display tex2jax_ignore">scatter(sizes3,times3, legend = false)
+<div class="para" id="ch-algorithm-analysis-7-6">which calculates the FFT for sizes <code class="code-inline tex2jax_ignore">2^10</code> to <code class="code-inline tex2jax_ignore">2^18</code> and stores the results in the variable <code class="code-inline tex2jax_ignore">times</code>. Then, let’s plot the results with</div>
+<div class="para logical" id="ch-algorithm-analysis-7-7"><pre class="code-display tex2jax_ignore">scatter(sizes3,times3, legend = false)
 </pre></div>
-<div class="para" id="ch-algorithm-analysis-6-8">which results in the plot</div>
+<div class="para" id="ch-algorithm-analysis-7-8">which results in the plot</div>
 <figure class="figure figure-like" id="fig-fft"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/algorithm-analysis/fftw.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.9<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-algorithm-analysis-6-10">Since it appears to be growing more that linearly, let’s try the functions <code class="code-inline tex2jax_ignore">t*log(t)</code> and <code class="code-inline tex2jax_ignore">t^2</code>.  Fitting a curve to both of these is</div>
-<div class="para logical" id="ch-algorithm-analysis-6-11"><pre class="code-display tex2jax_ignore">fit_fft = curve_fit((t,p) -&gt; p[1].*t.*log.(t)+p[2].*t.^2,sizes3, times3, [1e-4,1e-4])
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.10<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-algorithm-analysis-7-10">Since it appears to be growing more that linearly, let’s try the functions <code class="code-inline tex2jax_ignore">t*log(t)</code> and <code class="code-inline tex2jax_ignore">t^2</code>.  Fitting a curve to both of these is</div>
+<div class="para logical" id="ch-algorithm-analysis-7-11"><pre class="code-display tex2jax_ignore">fit_fft = curve_fit((t,p) -&gt; p[1].*t.*log.(t)+p[2].*t.^2,sizes3, times3, [1e-4,1e-4])
 </pre></div>
-<div class="para" id="ch-algorithm-analysis-6-12">and a confidence interval of the parameters are found with <code class="code-inline tex2jax_ignore">confidence_interval(fit_fft)</code> resulting in</div>
-<div class="para logical" id="ch-algorithm-analysis-6-13"><pre class="code-display tex2jax_ignore">2-element Vector{Tuple{Float64, Float64}}:
+<div class="para" id="ch-algorithm-analysis-7-12">and a confidence interval of the parameters are found with <code class="code-inline tex2jax_ignore">confidence_interval(fit_fft)</code> resulting in</div>
+<div class="para logical" id="ch-algorithm-analysis-7-13"><pre class="code-display tex2jax_ignore">2-element Vector{Tuple{Float64, Float64}}:
   (6.879894218252294e-10, 7.990430330357398e-10)
   (2.557195884568105e-15, 8.361319348915151e-15)
 </pre></div>
-<div class="para" id="ch-algorithm-analysis-6-14">Although both are exclusively positive, the second interval is nearly zero--values near <span class="process-math">\(10^{-15}\)</span> are often actually 0 and just due to roundoff error.  Therefore, we will only use the first term in the model or <span class="process-math">\(t*log(t)\text{.}\)</span>  Trying a new function fit with</div>
-<div class="para logical" id="ch-algorithm-analysis-6-15"><pre class="code-display tex2jax_ignore">fit_fft2 = curve_fit((t,p) -&gt; p[1]*t.*log.(t), sizes3, times3, [1e-4])
-			
+<div class="para" id="ch-algorithm-analysis-7-14">Although both are exclusively positive, the second interval is nearly zero--values near <span class="process-math">\(10^{-15}\)</span> are often actually 0 and just due to roundoff error.  Therefore, we will only use the first term in the model or <span class="process-math">\(t*log(t)\text{.}\)</span>  Trying a new function fit with</div>
+<div class="para logical" id="ch-algorithm-analysis-7-15"><pre class="code-display tex2jax_ignore">fit_fft2 = curve_fit((t,p) -&gt; @. p[1]*t*log(t), sizes3, times3, [1e-4]) 
 </pre></div>
-<div class="para" id="ch-algorithm-analysis-6-16">The confidence interval of the parameters is found with <code class="code-inline tex2jax_ignore">confidence_interval(fit3)</code> and the results are</div>
-<div class="para logical" id="ch-algorithm-analysis-6-17"><pre class="code-display tex2jax_ignore">1-element Vector{Tuple{Float64, Float64}}:
-			(8.197426904649365e-10, 8.695061786080083e-10)
+<div class="para" id="ch-algorithm-analysis-7-16">The confidence interval of the parameters is found with <code class="code-inline tex2jax_ignore">confidence_interval(fit3)</code> and the results are</div>
+<div class="para logical" id="ch-algorithm-analysis-7-17"><pre class="code-display tex2jax_ignore">1-element Vector{Tuple{Float64, Float64}}: (8.197426904649365e-10, 8.695061786080083e-10)
 </pre></div>
-<div class="para" id="ch-algorithm-analysis-6-18">Lastly, we plot the data and the best fit function found above with</div>
-<div class="para logical" id="ch-algorithm-analysis-6-19"><pre class="code-display tex2jax_ignore">fig, ax = scatter(sizes3, times3)
+<div class="para" id="ch-algorithm-analysis-7-18">Lastly, we plot the data and the best fit function found above with</div>
+<div class="para logical" id="ch-algorithm-analysis-7-19"><pre class="code-display tex2jax_ignore">fig, ax = scatter(sizes3, times3)
 lines!(ax, 0:10^4:3*10^5, x-&gt;fit_fft2.param[1]*x*log(x))
 fig
 </pre></div>
-<div class="para logical" id="ch-algorithm-analysis-6-20"><pre class="code-display tex2jax_ignore">plot!(t-&gt;fit3.param[1]*t*log(t),first(sizes3),last(sizes3))
+<div class="para logical" id="ch-algorithm-analysis-7-20"><pre class="code-display tex2jax_ignore">plot!(t-&gt;fit3.param[1]*t*log(t),first(sizes3),last(sizes3))
 </pre></div>
-<div class="para" id="ch-algorithm-analysis-6-21">And the resulting plot is:</div>
-<figure class="figure figure-like" id="ch-algorithm-analysis-6-22"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/algorithm-analysis/best-fit-fft.png" class="contained"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.10<span class="period">.</span></span><span class="space"> </span>Find a point on a line that minimizes distance</figcaption></figure><div class="para" id="ch-algorithm-analysis-6-23">This shows using some data analysis that matrix-vector product is <span class="process-math">\(O(n \ln n)\text{,}\)</span> which can also be shown use analysis of the algorithm, but requires knowledge of how the algorithm works.</div></section></section></div>
+<div class="para" id="ch-algorithm-analysis-7-21">And the resulting plot is:</div>
+<figure class="figure figure-like" id="ch-algorithm-analysis-7-22"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/algorithm-analysis/best-fit-fft.png" class="contained"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">10.11<span class="period">.</span></span><span class="space"> </span>Find a point on a line that minimizes distance</figcaption></figure><div class="para" id="ch-algorithm-analysis-7-23">This shows using some data analysis that the FFT is <span class="process-math">\(O(n \ln n)\text{,}\)</span> which can also be shown use analysis of the algorithm, but requires knowledge of how the algorithm works.</div></section></section></div>
 <div class="ptx-content-footer">
 <a class="previous-button button" href="ch-number-theory.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-rootfinding.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
 </div></main>
