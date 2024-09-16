@@ -52,7 +52,7 @@
 
 				<li>
 					<p>
-						In the contagious disease models, there is usually some please of differential equations (the SIR model is a simple version) and some probability modelling. We will discuss both of these in this text.
+						In the contagious disease models, there is usually some please of differential equations (the SIR model is a simple version) and some probability modeling. We will discuss both of these in this text.
 					</p>
 				</li>
 			</ul>
@@ -90,23 +90,29 @@
 			<ul>
 				<li>
 					<p>
-						\textbf{Find/develop code that runs quickly.} Everyone wants the answer as soon as possible. However, if you write some code that doesn't take long to develop and returns the correct answer in a few seconds, it probably doesn't matter how efficient the algorithm is. However, if it takes a few hours to run, you probably want to investigate your solution algorithm.
+						<em>Find/develop code that runs quickly.</em> Everyone wants the answer as soon as possible. However, if you write some code that doesn't take long to develop and returns the correct answer in a few seconds, it probably doesn't matter how efficient the algorithm is. However, if it takes a few hours to run, you probably want to investigate your solution algorithm.
 					</p>
 				</li>
 
 				<li>
 					<p>
-						\textbf{Find/develop code that uses an appropriate amount of memory.} Another important aspect is that of memory consumption. It's not hard to find datasets these days that are 1TB or more in size, however few desktop/laptop machines have more than 16 or 32Gb of RAM, so you can't load the entire file into memory. Such a dataset would need to be processed in chunks.
+						<em>Find/develop code that uses an appropriate amount of memory.</em> Another important aspect is that of memory consumption. It's not hard to find datasets these days that are 1TB or more in size, however few desktop/laptop machines have more than 16 or 32Gb of RAM, so you can't load the entire file into memory. Such a dataset would need to be processed in chunks.
 					</p>
 				</li>
 
 				<li>
 					<p>
-						\textbf{Make sure you have known solutions/unit tests} How do you know that your solution is correct? It is important to have relatively simple cases that you can test your code on before solving more complex things.
+						<em>Make sure you have known solutions/unit tests</em> How do you know that your solution is correct? It is important to have relatively simple cases that you can test your code on before solving more complex things.
 					</p>
 				</li>
 			</ul>
-			\hypertarget{examples-of-scientific-computing}{% \section{Examples of Scientific Computing}\label{examples-of-scientific-computing}}
+		</p>
+	</section>
+
+	<section>
+		<title>Examples of Scientific Computing</title>
+
+		<p>
 			<ul>
 				<li>
 					<p>
@@ -141,7 +147,7 @@
 		</p>
 
 		<p>
-			One of the best languages for scientific computing has been Matlab over the past 3 or 4 decades. It is used extensively in engineering firms throughout the world (and the headquarters is in nearby Natick, MA). We won't be using Matlab here though. One of the nice things about taking a class is exploring new languages. Here we will use <url href="http://julialang.org" visual="julialang.org">Julia</url>, which is a very new language that a lot of people in scientific computing are excited about. We will give examples using Julia, but the ideas here should be applicable to other languages. Julia was designed as a scientific computing language, but in short is a modern language. There are number of aspects that makes julia a good language for this. Julia is
+			One of the best languages for scientific computing has been Matlab over the past 3 or 4 decades. It is used extensively in engineering firms throughout the world (and the headquarters is in nearby Natick, MA). We won't be using Matlab here though. One of the nice things about taking a class is exploring new languages. Here we will use <url href="http://julialang.org" visual="julialang.org">Julia</url>, which is a very new language that a lot of people in scientific computing are excited about. We will give examples using Julia, but the ideas here should be applicable to other languages. Julia was designed as a scientific computing language, but in short is a modern language. There are number of aspects that makes Julia a good language for this. Julia is
 		</p>
 
 		<p>
@@ -158,7 +164,7 @@
 				<title>a language with just-in-time compilation</title>
 
 				<p>
-					Most of the time scripting languages are slow, however with modern under-the-hood tools, languages can be compiled on the fly to create very fast runtimes. There is a <url href="https://www.julialang.org/benchmarks/">webpage on benchmarks</url> comparing julia to other standard languages.
+					Most of the time scripting languages are slow, however with modern under-the-hood tools, languages can be compiled on the fly to create very fast runtimes. There is a <url href="https://www.julialang.org/benchmarks/">webpage on benchmarks</url> comparing Julia to other standard languages.
 				</p>
 			</li>
 
@@ -174,7 +180,7 @@
 				<title>easy to use</title>
 
 				<p>
-					The syntax of julia is similar to that of python, a very popular language, and is often intuitive.
+					The syntax of Julia is similar to that of python, a very popular language, and is often intuitive.
 				</p>
 			</li>
 
@@ -193,11 +199,11 @@
 		<title>Let's get started</title>
 
 		<p>
-			You can start by just reading the book, but to get the most out of this, make sure that you have a computer with access to julia. If you already have this, great. If not, see <xref ref="ch-getting-started"/> which will show you a few way to get the code up and running.
+			You can start by just reading the book, but to get the most out of this, make sure that you have a computer with access to Julia. If you already have this, great. If not, see <xref ref="ch-getting-started"/> which will show you a few way to get the code up and running.
 		</p>
 
 		<p>
-			Solving Scientific Computing problems ultimately boils down to manipulating data and at the most basic is that of strings and numbers. We begin with understanding these data types and how to store values in them. We also show some of julia syntax, which looks like other languages (like python). Hopefully you have some basic knowledge of computing, but no assumption of any particular language is necessary.
+			Solving Scientific Computing problems ultimately boils down to manipulating data and at the most basic is that of strings and numbers. We begin with understanding these data types and how to store values in them. We also show some of Julia syntax, which looks like other languages (like python). Hopefully you have some basic knowledge of computing, but no assumption of any particular language is necessary.
 		</p>
 	</section>
 </chapter>

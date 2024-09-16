@@ -19,7 +19,7 @@
 
       <li>
         <p>
-          Comparing recursive and nonrecursive code in terms of number of function evaluations.
+          Comparing recursive and non-recursive code in terms of number of function evaluations.
         </p>
       </li>
     </ul>
@@ -39,7 +39,7 @@
     </p>
 
 
-    <program language="julia" line-numbers="yes">
+    <program language="Julia" line-numbers="yes">
       <input>
 function sum1(n::Int)
   local arr = collect(1:n)
@@ -53,11 +53,7 @@ end
     </program>
 
     <p>
-      On my laptop: <c>@time sum1(1_000_000)</c>.
-    </p>
-
-    <p>
-      returns
+      On my laptop: <c>@time sum1(1_000_000)</c> returns
     </p>
 
     <p>
@@ -69,7 +65,7 @@ end
     </p>
 
     <p>
-      The <c>@time</c> is called a macro, which is similar to a function, however is more flexible. The first line clearly has the time, but also the array allocations and memory allocated. The second line of the macro returns the value of the function.
+      The <c>@time</c> is called a macro (note the "@" symbol that starts this), which is similar to a function, however is more flexible. The first line clearly has the time, but also the array allocations and memory allocated. The second line of the macro returns the value of the function.
     </p>
 
     <p>
@@ -96,7 +92,7 @@ end
     </p>
 
     <p>
-      Allocating memory is a time-expensive endeavor.  Also, even though the machine that I ran this on has 16 gigabytes, perhaps it couldn't get all 7.5 GiB it needed for this operation at once.  This is shown with the 7.30% gc time, which mean garbage collection.  In short, there was some time needed to handling so much memory.  Garbage collection is a way to clean up allocated memory that is no longer needed.  It's complicated, but the percentage of gc can reveal why a calcuation may be taking longer than expected.
+      Allocating memory is a time-expensive endeavor.  Also, even though the machine that I ran this on has 16 gigabytes, perhaps it couldn't get all 7.5 GiB it needed for this operation at once.  This is shown with the 7.30% gc time, which mean garbage collection.  In short, there was some time needed to handling so much memory.  Garbage collection is a way to clean up allocated memory that is no longer needed.  It's complicated, but the percentage of gc can reveal why a calculation may be taking longer than expected.
     </p>
 
     <p>
@@ -112,7 +108,7 @@ end
     </p>
 
 
-    <program language="julia" line-numbers="yes">
+    <program language="Julia" line-numbers="yes">
       <input>
 function sum2(n::Integer)
   local sum = 0
@@ -149,7 +145,7 @@ end
     </p>
 
 
-    <program language="julia" line-numbers="yes">
+    <program language="Julia" line-numbers="yes">
       <input>
 function sum3(n::Int)
   local sum = big(0)
@@ -208,7 +204,7 @@ end
     </p>
 
 
-    <program language="julia" line-numbers="yes">
+    <program language="Julia" line-numbers="yes">
       <input>
 function sum4(n::Int)
     reduce(+,1:big(n))
@@ -245,15 +241,11 @@ end
     </p>
 
     <p>
-      returns: <c>display(@time sum4(10_000_000))</c> \printpythontex[verbatim]
-    </p>
-
-    <p>
       which is about 10 times slower that the previous one, and still about twice the speed of <c>sum3</c> for the same number <c>n</c>.
     </p>
 
     <p>
-      Also notice that the number and size of the allocations have increased by a factor of 10, which should not be surprising.  However, notice that they are quite large. For the second sum, there was nearly 1 Gb of allocation despite no array.  This is due to the BigInt which allocates quite a bit of memory.  It appears that julia allocates memory for every BigInt created (and there are 10 million in this example).
+      Also notice that the number and size of the allocations have increased by a factor of 10, which should not be surprising.  However, notice that they are quite large. For the second sum, there was nearly 1 Gb of allocation despite no array.  This is due to the BigInt which allocates quite a bit of memory.  It appears that Julia allocates memory for every BigInt created (and there are 10 million in this example).
     </p>
   </section>
 
@@ -336,7 +328,7 @@ end
 
         <li>
           <p>
-            <em>Sometimes julia is super smart about some operations.</em>  In both Attempt #2 and Attempt #5, we got much shorter times than expected.  In both, you would expect summing 1000 times more numbers would take 1000 times longer, but this isn't true. In both cases, julia recognizes that integers are begin summed and is probably using the formula,
+            <em>Sometimes Julia is super smart about some operations.</em>  In both Attempt #2 and Attempt #5, we got much shorter times than expected.  In both, you would expect summing 1000 times more numbers would take 1000 times longer, but this isn't true. In both cases, Julia recognizes that integers are begin summed and is probably using the formula,
           </p>
 
           <p>
@@ -429,7 +421,7 @@ end
       </p>
 
 
-      <program language="julia" line-numbers="yes">
+      <program language="Julia" line-numbers="yes">
         <input>
 function fibonacciEval(n::Integer)
   global num_evals
@@ -495,7 +487,7 @@ end
       </p>
 
 
-      <program language="julia" line-numbers="yes">
+      <program language="Julia" line-numbers="yes">
         <input>
 function fibonacci2(n::Integer)
   local x,y = (1,1)

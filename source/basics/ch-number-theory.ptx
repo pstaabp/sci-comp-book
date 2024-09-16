@@ -1,57 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <chapter xml:id="ch-number-theory">
 	<title>Number theory and Algorithm Development</title>
+
+	<objectives>
+		<ul>
+			<li>
+				<p>
+					Introduction to prime numbers and development of related algorithms.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					How and why to benchmark functions in algorithmic development.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Incremental development of the isPrime function using benchmarking.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Using the Primes package to find primes.
+				</p>
+			</li>
+		</ul>
+	</objectives>
+
 	<introduction>
 		<p>
-			This chapter investigates some aspects of Number Theory, which is the study
-			of the integers. Prime numbers are one of the most important aspects of Number Theory.
-			We will use this topic as an example of scientific computing. We will look at
-			examples of computational number theory throughout this chapter and then spend some
-			time investigating the efficiency of the code here.
+			This chapter investigates some aspects of Number Theory, which is the study of the integers. Prime numbers are the building blocks of the integers and play a huge role in other fields, like cryptography.  We will use this topic as an example of scientific computing. We will look at examples of computational number theory throughout this chapter and then spend some time investigating the efficiency of the code here by formally benchmarking functions.
 		</p>
 	</introduction>
 
 	<section>
 		<title>Prime Numbers</title>
+
 		<p>
-			Recall that a prime number is an integer greater than 1 whose only factors
-			are 1 and itself. Most languages have built-in versions of testing for primes,
-			and julia has a package for this, and we will see it toward the end of this chapter.
-			However, we will start by writing our own versions.
+			Recall that a prime number is an integer greater than 1 whose only factors are 1 and itself. Most languages have built-in versions of testing for primes, and Julia has a package for this, and we will see it toward the end of this chapter. However, we will start by writing our own versions.
 		</p>
 
 		<p>
-			Based on the definition, if we can find the factors of an integer, then we can
-			use it to determine if the number is prime.  The following function returns all of
-			the factors of a given integer:
+			Based on the definition, if we can find the factors of an integer, then we can use it to determine if the number is prime. Also, recall that a number <c>k</c> is a factor of <c>n</c> if <c>mod(n,k)</c> or <c>n % k</c> is 0.  For example, 4 is a factor of 24 because <c>mod(24,4)</c> is 0.   Thus we can check all integers between 2 and <c>n-1</c> are factors. Because we are trying to find a subset of all numbers in <c>1</c> to <c>n</c>, we will use the filter command seen in <xref ref="ch-arrays"/>.
 		</p>
 
-
-		<program language="julia" line-numbers="yes">
-			<input>
-function findAllFactors(n::Integer)
-  factors = [1]
-  for i=2:n-1
-    if mod(n,i)==0
-      push!(factors,i)
-    end
-  end
-  push!(factors,n) # n is always a factor of itself
-end
-			</input>
-		</program>
-
 		<p>
-			This function starts with an array (list) consisting of only the number 1 (line 2).
-			It then checks all numbers between 1 and n to see if each is a factor
-			(the <c>mod(n,i)==0</c> on line 4). If it finds a factor, add it to the list with
-			the <c>push</c> function.<fn>If you read carefully in <xref ref="ch-functional-programming"/>,
-			there was an emphasis on not using loops and using other functional-programming
-			ideas instead.  You may ask yourself, why didn't we use a <c>map</c> or <c>reduce</c>
-			function. The answer is that in this case, an integer is passed in and an array is returned.
-			This doesn't fit either of these.  You could create an array of <c>collect(1:n)</c> to
-			create an array, but the resulting array is smaller in sized.  The <c>map</c> command
-			always returns in an array of the same size.  In short, a loop is needed for this.</fn>
+			<cd>
+			<cline>findAllFactors(n::Integer) = filter(k -&gt; n % k == 0, 1:n)</cline>
+			</cd>
 		</p>
 
 		<exercise>
@@ -67,9 +67,7 @@ end
 			<task>
 				<statement>
 					<p>
-						Use the function above to write a function <c>isPrime</c> that returns true or false
-						depending on if the input is prime. Hint: recall the definition of prime
-						and use that with the <c>findAllFactors</c> function to determine primeness.
+						Use the function above to write a function <c>isPrime</c> that returns true or false depending on if the input is prime.
 					</p>
 				</statement>
 
@@ -85,26 +83,39 @@ end
 						<cline>end</cline>
 						</cd>
 					</p>
+
+					<p>
+						And recall the definition of prime and use that with the <c>findAllFactors</c> function to determine primeness.
+					</p>
 				</hint>
+
+				<solution>
+					<p>
+						We basically want to know if the factors is length 2, thus we can use the following:
+					</p>
+
+					<p>
+						<cd>
+						<cline>isPrime(n::Integer) = length(findAllFactors(n)) == 2</cline>
+						</cd>
+					</p>
+				</solution>
 			</task>
 		</exercise>
 	</section>
 
 	<section>
 		<title>Finding Primes</title>
+
 		<p>
-			We'll now try to find a prime number. Many languages have a function
-			called <c>nextPrime</c> that takes a number as an input and returns
-			a prime number greater than that.  Before presenting the code, here's some things
-			to think about:
+			Now that we have a method that determines whether a number is prime or not, we'll turn to finding prime numbers.  Many languages have a function called <c>nextPrime</c> that takes a number as an input and returns a prime number greater than that.  Also, you will need to have the <c>isPrime</c> function that you were asked to write in the exercise above.  If you haven't done that get the solution above.  Before presenting the code, here's some things to think about:
 		</p>
 
 		<p>
 			<ul>
 				<li>
 					<p>
-						What is the template for the function.  We want a function that takes in
-						an integer and returns an integer.  Here's a good template for that:
+						Since we want a function that takes in an integer and returns an integer, here's a good template for our function:
 					</p>
 
 					<p>
@@ -130,7 +141,7 @@ end
 
 				<li>
 					<p>
-						One way to approach this is a loop (probably a while loop because we don't know how many step to do before finding a prime), but this is another great example of a recursive function.
+						One way to approach this is a loop (probably a while loop because we don't know how many steps to do before finding a prime), but this is another great example of a recursive function.
 					</p>
 				</li>
 			</ul>
@@ -147,8 +158,7 @@ end
 		</p>
 
 		<p>
-			where again, we have used a ternary <c>if-then-else</c>.  This first checks
-			if <c>n+1</c> is prime. If it is return it, if not call <c>nextPrime</c> on the next integer.
+			where again, we have used a ternary <c>if-then-else</c>.  This first checks if <c>n+1</c> is prime. If it is return it, if not call <c>nextPrime</c> on the next integer.
 		</p>
 
 		<exercise>
@@ -158,6 +168,12 @@ end
 						Test this function on some numbers that are less than 100 to see if it is working.
 					</p>
 				</statement>
+
+				<solution>
+					<p>
+						Examples may include <c>nextPrime(16)</c> which returns <c>17</c> and <c>nextPrime(26)</c> which returns <c>29</c>
+					</p>
+				</solution>
 			</task>
 
 
@@ -167,14 +183,19 @@ end
 						Find the smallest prime less than 1 million.
 					</p>
 				</statement>
+
+				<solution>
+					<p>
+						This is found by entering <c>nextPrime(1_000_000)</c> and returns <c>1000003</c>.
+					</p>
+				</solution>
 			</task>
 
 
 			<task>
 				<statement>
 					<p>
-						Write a function that produces the first <c>n</c> prime numbers and returns
-						those numbers as an array.
+						Write a function that produces the first <c>n</c> prime numbers and returns those numbers as an array.
 					</p>
 				</statement>
 
@@ -190,20 +211,46 @@ end
 						<cline>end</cline>
 						</cd>
 					</p>
+
+					<p>
+						and there are many ways to accomplish this.  One includes using <c>filter</c> on the numbers <c>2:n</c>. Secondly, one might start with the empty array <c>[]</c> and using a while loop, call <c>nextPrime</c> until an index reaches <c>n</c>.
+					</p>
 				</hint>
+				<solution>
+					<p>
+						Using the <c>filter</c> method on the numbers <c>2:n</c> is straightforward in that we can do
+					</p>
+					<p>
+						<cd>
+							<cline>filter(isPrime, 2:n)</cline>
+						</cd>
+					</p>
+					<p>The <c>while</c> looks is more challenging.  We will use an index <c>k</c> and set it to 1 initially and every time through the loop call <c>nextPrime(k)</c> to get the next one.  The following function finds the primes:</p>
+
+					<program language="Julia" line-numbers="yes">
+						<input>
+function getPrimes2(n::Integer)
+  local primes = Int[]
+  local k = 2
+  while k &lt; n
+    push!(primes, k)
+    k = nextPrime(k)
+  end
+  primes
+end
+</input>
+</program>
+				</solution>
 			</task>
 		</exercise>
 	</section>
 
 	<section>
 		<title>Perfect Numbers</title>
+
 		<introduction>
 			<p>
-				A <term>perfect number</term> is an integer, <c>n</c> which has the sum of
-				the factors (except itself) equal to <c>n</c>. For example, 28 is a
-				perfect number because the factors are 1,2,4,7,14,28. The sum of the
-				factors (except itself) is 1+2+4+7+14=28 A nice function would be to
-				check if a number is perfect. Here's a shell:
+				A <term>perfect number</term> is an integer, <c>n</c> which has the sum of the factors (except itself) equal to <c>n</c>. For example, 28 is a perfect number because the factors are 1,2,4,7,14,28. The sum of the factors (except itself) is <m>1+2+4+7+14=28</m>.  A nice function would be to check if a number is perfect. Here's a template:
 			</p>
 
 			<p>
@@ -215,14 +262,11 @@ end
 			</p>
 
 			<p>
-				The following will go through the steps to look at this.  And we will use the function
-				<c>findAllFactors</c> that we wrote above.
+				The following will go through the steps to look at this.  And we will use the function <c>findAllFactors</c> that we wrote above.
 			</p>
 
 			<p>
-				First, entering <c>findAllFactors(28)</c> returns the array <c>[1 2 4 7 14 28]</c>.
-				To use the definition of a perfect number, we need to exclude the last element of the array above.
-				One way to do this is to use the <c>pop!</c> function.  If we define
+				First, entering <c>findAllFactors(28)</c> returns the array <c>[1 2 4 7 14 28]</c>. To use the definition of a perfect number, we need to exclude the last element of the array above. One way to do this is to use the <c>pop!</c> function.  If we define
 			</p>
 
 			<p>
@@ -234,8 +278,7 @@ end
 			</p>
 
 			<p>
-				then the result is <c>[1 2 4 7 14]</c>.  Then we can test if the sum is 28
-				by <c>sum(A)==28</c>.
+				then the result is <c>[1 2 4 7 14]</c>.  Then we can test if the sum is 28 by <c>sum(A)==28</c>.
 			</p>
 
 			<p>
@@ -243,7 +286,7 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function isPerfect(n::Integer)
   A=findAllFactors(n)
@@ -254,17 +297,11 @@ end
 			</program>
 
 			<p>
-				We should also test this.  We know that 6 and 28 are perfect, so <c>isPerfect(6)</c>
-				returns <c>true</c>and <c>isPerfect(28)</c> returns <c>true</c>.
-				Many other integers are not perfect, so <c>isPerfect(10)</c> and <c>isPerfect(100)</c>
-				both return <c>false</c>.
+				We should also test this.  We know that 6 and 28 are perfect, so <c>isPerfect(6)</c> returns <c>true</c>and <c>isPerfect(28)</c> returns <c>true</c>. Many other integers are not perfect, so <c>isPerfect(10)</c> and <c>isPerfect(100)</c> both return <c>false</c>.
 			</p>
 
 			<p>
-				Although there is nothing wrong with the above function, we can shorten it a bit
-				by not removing the last element of the array.  Note that if we sum all of the
-				factors of a perfect number <m>n</m>, the sum will be <m>2n</m>.  The following is alternative
-				way to do this.
+				Although there is nothing wrong with the above function, we can shorten it a bit by not removing the last element of the array.  Note that if we sum all of the factors of a perfect number <m>n</m>, the sum will be <m>2n</m>.  The following is alternative way to do this.
 			</p>
 
 			<p>
@@ -274,18 +311,16 @@ end
 			</p>
 
 			<p>
-				Note that in the function at the end is <c>2n</c>, which has a implicit multiply in there.
-				If you multiply any variable on the left with a numerical literal (that is a number,
-				not a variable that is a number), then multiply is implied.
+				Note that in the function at the end is <c>2n</c>, which has a implicit multiply in there. If you multiply any variable on the left with a numerical literal (that is a number, not a variable that is a number), then multiply is implied.
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>Timing the two functions and the <c>BenchmarkTools</c> package</title>
+
 			<p>
-				An objective way to determine which of the two functions is better is to test if one is faster.
-				Let's test if 10,000 is perfect or not.  Using <c>@time</c> on both of these.  First,
-				<c>@time isPerfect(100_000)</c> returns
+				An objective way to determine which of the two functions is better is to test if one is faster. Let's test if 10,000 is perfect or not.  Using <c>@time</c> on both of these.  First, <c>@time isPerfect(100_000)</c> returns
 			</p>
 
 			<p>
@@ -297,7 +332,7 @@ end
 			</p>
 
 			<p>
-				And running <c>@time isPerfect(100_000)</c> returns
+				And running <c>@time isPerfect2(100_000)</c> returns
 			</p>
 
 			<p>
@@ -309,15 +344,11 @@ end
 			</p>
 
 			<p>
-				These both seem to return about the same time, but trying running each of these a
-				number of times.  You'll notice that since the time is fairly short, the results
-				bounce around quite a time.  This is common for functions that don't take much time.
+				These both seem to return about the same time, but trying running each of these a number of times.  You'll notice that since the time is fairly short, the results bounce around quite a time.  This is common for functions that don't take much time.
 			</p>
 
 			<p>
-				We'll examine the <c>BenchmarkTools</c> package.  Recall that you need to add
-				it using the package manager decribed in <xref ref="ch-packages"/>.
-				Once you have added the package, we'll need to tell julia that we're using it by
+				We'll examine the <c>BenchmarkTools</c> package.  Recall that you need to add it using the package manager described in <xref ref="ch-packages"/>. Once you have added the package, we'll need to tell Julia that we're using it by
 			</p>
 
 			<p>
@@ -327,15 +358,12 @@ end
 			</p>
 
 			<p>
-				And this package has the macro <c>@btime</c>, which is much like the <c>@time</c> macro,
-				however is much more accurate in that it runs the code a few times, reporting the
-				average results.  Running <c>@btime isPerfect(100_000)</c> takes a few seconds then
-				reports
+				And this package has the macro <c>@btime</c>, which is much like the <c>@time</c> macro, however is much more accurate in that it runs the code a few times, reporting the average results.  Running <c>@btime isPerfect(100_000)</c> takes a few seconds then reports
 			</p>
 
 			<p>
 				<cd>
-				<cline>108.542 μs (4 allocations: 528 bytes)</cline>
+				<cline>180.292 μs (4 allocations: 528 bytes)</cline>
 				<cline/>
 				<cline>false</cline>
 				</cd>
@@ -351,33 +379,28 @@ end
 
 			<p>
 				<cd>
-				<cline>108.666 μs (4 allocations: 528 bytes)</cline>
+				<cline>181.000 μs (4 allocations: 528 bytes)</cline>
 				<cline></cline>
 				<cline>false</cline>
 				</cd>
 			</p>
 
 			<p>
-				Note that the <m>\mu s</m> is microseconds where 1 <m>\mu s</m> is <m>1/10^6</m> seconds.
-				If you rerun each of these a few times, you'll get consistent results and times.
-				That's the point of the package <c>BenchmarkTools</c>.  It runs the code many times
-				and returns an average time.
+				Note that the <m>\mu s</m> is microseconds where 1 <m>\mu s</m> is one-millionth of a second or <m>10^{-6}</m> seconds. If you rerun each of these a few times, you'll get consistent results and times. That's the point of the package <c>BenchmarkTools</c>.  It runs the code many times and returns an average time.
 			</p>
 
 			<p>
-				About the results, since both versions of the <c>isPerfect</c> function are nearly
-				identical, you may want to check a wider range of numbers (try this for numbers in
-				the millions) to see if there is a difference.
+				About the results, since both versions of the <c>isPerfect</c> function are nearly identical, you may want to check a wider range of numbers (try this for numbers in the millions) to see if there is a difference.  If you find there is virtually no difference between the functions, typically go with the one is that easier to understand (this is often the shorter one, but not always).
 			</p>
 		</subsection>
 	</section>
 
 	<section>
 		<title>Happy Numbers</title>
+
 		<introduction>
 			<p>
-				Here's another fun example. A positive integer <m>n</m> is called <em>happy</em>
-				if you perform the following steps:
+				Here's another fun example. A positive integer <m>n</m> is called <em>happy</em> if you perform the following steps:
 			</p>
 
 			<p>
@@ -403,10 +426,7 @@ end
 			</p>
 
 			<p>
-				Note: it's also helpful that if this process results in the number 4,
-				then you can never result in a sequence that reaches 1. You can call
-				these number <em>unhappy</em>.
-				Here's some examples:
+				Note: it's also helpful that if this process results in the number 4, then you can never result in a sequence that reaches 1. You can call these number <em>unhappy</em>. Here's some examples:
 			</p>
 
 			<p>
@@ -419,9 +439,7 @@ end
 
 					<li>
 						<p>
-							The number 19 is also a happy number  because <m>1^{2}+9^{2}=1+81=82</m>,
-							then <m>8^{2}+2^{2}=64+4=68</m>, then <m>6^{2}+8^{2}=36+64=100</m>,
-							then <m>1^{2}+0^{2}+0^{2}=1</m>.
+							The number 19 is also a happy number  because <m>1^{2}+9^{2}=1+81=82</m>, then <m>8^{2}+2^{2}=64+4=68</m>, then <m>6^{2}+8^{2}=36+64=100</m>, then <m>1^{2}+0^{2}+0^{2}=1</m>.
 						</p>
 					</li>
 
@@ -483,40 +501,31 @@ end
 						</p>
 
 						<p>
-							and since we have returned to 4, this will continue cycling, so we stop
-							and say 4 is <em>unhappy</em>. Any number in this sequence is unhappy as well.
-							(It has been proven that any unhappy number will eventually hit this cycle.)
+							and since we have returned to 4, this will continue cycling, so we stop and say 4 is <em>unhappy</em>. Any number in this sequence is unhappy as well. (It has been proven that any unhappy number will eventually hit this cycle.)
 						</p>
 					</li>
 				</ul>
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>Computing Happy Numbers in Julia</title>
+
 			<p>
-				Julia has a built-in function to take a number and split the digits
-				called <c>digits</c>.  For example <c>digits(1234)</c> returns <c>[4 3 2 1]</c>,
-				where the position in the array is the digit in the corresponding place in the number.
-				For example, the 4 in the first slot in the array is the ones digit and the
-				1 is the thousands digit (since it is element 4 of the array).
+				Julia has a built-in function to take a number and split the digits called <c>digits</c>.  For example <c>digits(1234)</c> returns <c>[4 3 2 1]</c>, where the position in the array is the digit in the corresponding place in the number. For example, the 4 in the first slot in the array is the ones digit and the 1 is the thousands digit (since it is element 4 of the array).
 			</p>
 
 			<p>
-				Next, let's write a function called <c>isHappy</c> which determines
-				if a number <c>n</c> is happy. The function should be recursive and
-				return true if it is 1, return false if it is 4 and do the steps above
-				otherwise.
+				Next, let's write a function called <c>isHappy</c> which determines if a number <c>n</c> is happy. The function should be recursive and return true if it is 1, return false if it is 4 and do the steps above otherwise.
 			</p>
 
 			<p>
-				We will find a function that takes in a single integer and outputs a boolean.
-				Our first attempt will be with a loop.  We need to go through the digits,
-				square the numbers and find the sum.  We can do this as
+				We will find a function that takes in a single integer and outputs a boolean. Our first attempt will be with a loop.  We need to go through the digits, square the numbers and find the sum.  We can do this as
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function isHappy(n::Integer)
   if n==1
@@ -574,14 +583,16 @@ end
 			</exercise>
 		</subsection>
 
+
 		<subsection>
 			<title>Alternative forms</title>
+
 			<p>
 				We can shorten the last block of code into the following:
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function isHappy2(n::Integer)
   if n==1
@@ -600,35 +611,41 @@ end
 			</p>
 
 			<p>
-				Lastly, we can write this as a one-liner again using the ternary <c>if-then-else</c>
-				(but in this case, it is nested as
+				Lastly, we can write this as a one-liner again using the ternary <c>if-then-else</c> (but in this case, it is nested as
 			</p>
 
-
-			<program language="julia" line-numbers="yes">
-				<input>
-isHappy3(n::Integer) = n == 1 ? true : (n == 4 ? false : isHappy3(sum(x-&gt;x^2,digits(n))))
-				</input>
-			</program>
+			<p>
+				<cd>
+				<cline>isHappy3(n::Integer) = n == 1 ? true : n == 4 ? false : isHappy3(sum(x-&gt;x^2,digits(n)))</cline>
+				</cd>
+			</p>
 
 			<p>
-				and unless you're strange (like me) and like such if-then-else statements, this is
-				much less readable.
+				and unless you're strange (like me) and like such if-then-else statements, this is much less readable.
 			</p>
 
 			<exercise>
-				<p>
-					Test the three versions of <c>isHappy</c> presented here using the macro <c>@btime</c>
-					from the package <c>BenchmarkTools</c> to see if there is a difference in speed.
-				</p>
+				<statement>
+					<p>
+						Test the three versions of <c>isHappy</c> presented here using the macro <c>@btime</c> from the package <c>BenchmarkTools</c> to see if there is a difference in speed.
+					</p>
+				</statement>
+
+				<solution>
+					<p>
+						For all of these we use (somewhat arbitrarily) <c>n=1_234</c>. <c>@btime isHappy(n)</c> returns <c>901.786 ns</c>, <c>@btime isHappy3(n)</c> returns <c>890.957 ns</c> and <c>@btime isHappy3</c> returns <c>892.196 ns</c>. These are all within 0.5% of each other, so basically identical.
+					</p>
+
+				</solution>
 			</exercise>
 		</subsection>
 
+
 		<subsection>
 			<title>Finding Happy numbers</title>
+
 			<p>
-				One way to find happy numbers then is check a range of integers using
-				the function you wrote above. For example, you can type
+				One way to find happy numbers then is check a range of integers using the function you wrote above. For example, you can type
 			</p>
 
 			<p>
@@ -638,14 +655,11 @@ isHappy3(n::Integer) = n == 1 ? true : (n == 4 ? false : isHappy3(sum(x-&gt;x^2,
 			</p>
 
 			<p>
-				which will return an array of true/false if the number is happy or not.  Try running it.
+				which will return an array of true/false if the number is happy or not.  Try running it.  Note that if you have an array of booleans, Julia returns 0 as false and 1 as true.
 			</p>
 
 			<p>
-				This isn't so helpful.  If your look down through the list, it's hard to tell
-				which numbers are happy and which are not.  A better way to do this is to use
-				julia's built-in function <c>filter</c> that we saw in <xref ref="ch-arrays"/>.
-				For example,
+				This isn't so helpful.  If your look down through the list, it's hard to tell which numbers are happy and which are not.  A better way to do this is to use Julia's built-in function <c>filter</c> that we saw in <xref ref="ch-arrays"/>. For example,
 			</p>
 
 			<p>
@@ -655,30 +669,24 @@ isHappy3(n::Integer) = n == 1 ? true : (n == 4 ? false : isHappy3(sum(x-&gt;x^2,
 			</p>
 
 			<p>
-				returns all integers between 1 and 100 that are happy or the array
-				<c>[1 7 10 13 19 23 28 31 32 44 49 68 70 79 82 86 91 94 97 100]</c>
+				returns all integers between 1 and 100 that are happy or the array <c>[1 7 10 13 19 23 28 31 32 44 49 68 70 79 82 86 91 94 97 100]</c>
 			</p>
 
 			<p>
-				We saw the <c>filter</c> command with an array, but you can also use it with a
-				range as shown above.
+				We saw the <c>filter</c> command with an array, but you can also use it with a range as shown above.
 			</p>
 		</subsection>
 	</section>
 
 	<section>
 		<title>Primes can be big!!</title>
+
 		<p>
-			According to Wikipedia
-			<fn>See <url href="https://en.wikipedia.org/wiki/Largest_known_prime_number" visual="wikipedia.org">https://en.wikipedia.org/wiki/Largest\_known\_prime\_number</url>.</fn>,
-			the largest prime number as of May 2022 has 24,862,048 digits. Let's not go that big.
+			According to Wikipedia <fn>See <url href="https://en.wikipedia.org/wiki/Largest_known_prime_number" visual="wikipedia.org">https://en.wikipedia.org/wiki/Largest\_known\_prime\_number</url>.</fn>, the largest prime number has 24,862,048 digits and was found in 2018. The prime is <m>2^{82,589,933}-1</m><fn>It is interesting in that as of writing this (September 2024), this is still the largest.  I'm sure people are looking for larger ones, but haven't found one in 6 years.</fn>.
 		</p>
 
 		<p>
-			The number <m>2^{89}-1</m> is prime. However, if we type <c>2^89-1</c> into julia,
-			we get <c>-1</c>.  Does this imply that <m>2^{89}=0</m>? Recall that the
-			problem with this is that <m>2^{89}</m> does not fit into <c>Int64</c>
-			and we are getting an overflow error without being informed. You would need at least 89 bits to store this number, so it could be stored as a <c>Int128</c>.
+			The number <m>2^{89}-1</m> is prime. However, if we type <c>2^89-1</c> into Julia, we get <c>-1</c>.  Does this imply that <m>2^{89}=0</m>? Recall that the problem with this is that <m>2^{89}</m> does not fit into <c>Int64</c> and we are getting an overflow error without being informed. You would need at least 89 bits to store this number, so it could be stored as a <c>Int128</c>.
 		</p>
 
 		<p>
@@ -692,19 +700,16 @@ isHappy3(n::Integer) = n == 1 ? true : (n == 4 ? false : isHappy3(sum(x-&gt;x^2,
 		</p>
 
 		<p>
-			will give <c>618970019642690137449562111</c>. However, don't throw
-			this at your <c>isPrime</c> function because it will not complete
-			this because we have used a fairly bad algorithm for finding factors or
-			testing for primality.
+			will give <c>618970019642690137449562111</c>. However, don't throw this at your <c>isPrime</c> function because it will not complete this because we have used a fairly bad algorithm for finding factors or testing for primality.  We spend most of the rest of this chapter improving our algorithm to find primes.
 		</p>
 	</section>
 
 	<section>
 		<title>Speeding up <c>isPrime</c></title>
+
 		<introduction>
 			<p>
-				Let's time the <c>isPrime</c> function that you wrote above on a reasonable-sized number.
-				With
+				Let's time the <c>isPrime</c> function that you wrote above on a reasonable-sized number. With
 				<cd>
 				<cline>isPrime(n::Integer)= length(findAllFactors(n))==2</cline>
 				</cd>
@@ -717,32 +722,67 @@ isHappy3(n::Integer) = n == 1 ? true : (n == 4 ? false : isHappy3(sum(x-&gt;x^2,
 			</p>
 
 			<p>
-				and the results show that it takes <c>1.088 ms </c> to complete.
+				and the results show that it takes <c>1.098 ms </c> to complete.
 			</p>
 
 			<p>
-				Although this may not seem slow, 1 million is small if you are studying prime
-				numbers and as we saw in the previous section, they get large fast.
-				The reason this is slower is because <c>isPrime</c> relies on the
-				<c>findAllFactors</c> function which checks every every number between 2 and
-				<m>n-1</m> to see if it is a factor. This is very inefficient, so we will try some
-				ways to speed things up.
+				Although this may not seem slow, 1 million is small if you are studying prime numbers and as we saw in the previous section, they get large fast. The reason this is slower is because <c>isPrime</c> relies on the <c>findAllFactors</c> function which checks every every number between 2 and <m>n-1</m> to see if it is a factor. This is very inefficient, so we will try some ways to speed things up.
 			</p>
 		</introduction>
 
+
 		<subsection>
-			<title>Speedup #1: Rewrite <c>findAllFactors</c> to stop earlier</title>
+			<title>Speedup #1: Use a For loop</title>
+
 			<p>
-				In the function <c>findAllFactors</c> we go to <m>n-1</m> to check for a factor.  There's actually no reason to do this.  For example, consider <m>n=100</m>, the factors are (and you can check this) are <m>1,2,4,5,10,20,25,50,100</m>.  The second largest factor is at most half of the value <m>n</m>.  Let's consider then the following
+				When we wrote <c>findAllFactors</c> above, we used the <c>filter</c> command, however, that may not have been the most efficient.  Sometimes writing a for loop is faster.  Let's try.  First, we know that both <c>1</c> and <c>n</c> are already factors, so we don't need to check those so within the for loop, we will test if all numbers between 2 and <m>n-1</m> are factors in the following function.
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function findAllFactors2(n::Integer)
-  factors = [1]
-  for i=2:div(n,2)
-    if mod(n,i)==0
+  local factors = [1]
+  for i=2:n-1
+    if n % i ==0
+      push!(factors,i)
+    end
+  end
+  push!(factors,n) # n is always a factor of itself
+end
+				</input>
+			</program>
+
+			<p>
+				Although above, we were testing the speed of <c>isPrime</c>, let's compare the speed of <c>findAllFactors</c> versus <c>findAllFactors2</c> on a reasonably large number.  <c>@btime findAllFactors(49_000_000)</c> returns <c>55.202 ms</c> and <c>@btime findAllFactors2(49_000_000)</c> returns <c>30.688</c> about 45% faster.  Therefore, this seems like a good move and let's write a new <c>isPrime</c> function based on this.
+			</p>
+
+			<p>
+				<cd>
+				<cline>isPrime2(n::Integer) = length(findAllFactors2(n)) == 2</cline>
+				</cd>
+			</p>
+
+			<p>
+				and if we time it with the same input as above as <c>@btime isPrime2(1_000_003)</c> we get <c>624.208 μs</c>, which is about 45% faster than <c>isPrime</c> for this number.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Speedup #2: Rewrite <c>findAllFactors</c> to stop earlier</title>
+
+			<p>
+				In the function <c>findAllFactors2</c> we go to <m>n-1</m> to check for a factor.  There's actually no reason to do this.  For example, consider <m>n=100</m>, the factors are (and you can check this) are <m>1,2,4,5,10,20,25,50,100</m>.  The second largest factor is at most half of the value <m>n</m>.  Let's consider then the following
+			</p>
+
+
+			<program language="Julia" line-numbers="yes">
+				<input>
+function findAllFactors3(n::Integer)
+  local factors = [1]
+  for i=2:n÷2
+    if n % i ==0
       push!(factors,i)
     end
   end
@@ -752,83 +792,15 @@ end
 			</program>
 
 			<p>
-				where <c>div(n,2)</c> is integer division.  You will see in an exercise that
-				doing <c>n/2</c> results in slowing down the function.  This is because doing
-				<c>n/2</c> results in a floating point, and all operations with floating points
-				are slower than integers.
+				where <c>n÷2</c> is integer division.  You will see in an exercise why we don't do <c>n/2</c>.
 			</p>
 
 			<p>
-				To show that this works, <c>@btime findAllFactors(100_000)</c>
-				takes <c>108.708 μs</c> to return the array, where as
-				<c>@btime findAllFactors2(100_000);</c> takes <c>54.375 μs</c>.  Note that this is precisely
-				half the time.  Although this example is fast, if it take half the time and this is repeated many
-				times, like many algorithms may include, then this will be quite helpful.
+				To check the efficiency of this method <c>@btime findAllFactors3(49_000_000)</c> takes <c>15.312 ms</c> to return the array, which is about 50% faster than <c>findAllFactors2</c> for the same input.  Note that this is precisely half the time because we are checking half of the numbers.  Although this example is fast, if it take half the time and this is repeated many times, like many algorithms may include, then this will be quite helpful.
 			</p>
 
 			<p>
 				We could then define a new <c>isPrime</c> function to use this instead.
-			</p>
-
-			<p>
-				<cd>
-				<cline>isPrime2(n::Integer) = length(findAllFactors2(n))==2</cline>
-				</cd>
-			</p>
-
-			<p>
-				If we run <c>@btime isPrime2(1_000_003)</c> we get this completing in
-				<c>544.125 μs </c> which runs in about 50% faster than our original <c>isPrime</c> function.
-			</p>
-		</subsection>
-
-		<subsection>
-			<title>Speedup #2: Rewrite <c>findAllFactors</c> to not check all integers as factors</title>
-			<p>
-				Notice that in both of the cases, we go through of the integers up to
-				<m>n-1</m> or <m>n \div 2</m>, whereas that isn't necessary because most of
-				the time, factors come in pairs.  Consider <m>n=200</m>, We can write the
-				factors in the following way:
-			</p>
-
-			<tabular>
-				<row>
-				<cell>1</cell><cell>2</cell><cell>4</cell><cell>5</cell><cell>8</cell><cell>10</cell>
-				</row>
-				<row>
-				<cell>200</cell><cell>100</cell><cell>50</cell><cell>40</cell><cell>25</cell><cell>20</cell>
-				</row>
-			</tabular>
-
-			<p>
-				and there are pairs of factors and unless the number is a perfect square, they
-				always occur in pairs.(Check <m>n=100</m> as an example).  We will go through integers, but can stop at <m>\sqrt{n}</m>.  The following will compute this:
-			</p>
-
-
-			<program language="julia" line-numbers="yes">
-				<input>
-function findAllFactors3(n::Integer)
-  local x = round(Int,sqrt(n)) # closest integer to sqrt(n)
-  local factors = [1,n]
-  local j=2 # keep track where to insert elements
-  for k=2:x
-    if n%k==0
-      # insert the new factors in the middle of the factors array
-      splice!(factors,j:(j-1),[k,div(n,k)])
-      j+=1
-    end
-  end
-  unique(factors)  ## if there is a perfect square, there are extra factors.
-end
-				</input>
-			</program>
-
-			<p>
-				and notice that if we try to evaluate time this with <c>@btime findAllFactors3(100_000)</c>
-				the function finishes in <c>1.125 μs</c>, about 50 times faster than the
-				<c>findAllFactors3</c> function.  Also, xince we really want to test the speed
-				of an <c>isPrime</c> function, let's write:
 			</p>
 
 			<p>
@@ -838,36 +810,116 @@ end
 			</p>
 
 			<p>
-				and
+				If we run <c>@btime isPrime3(1_000_003)</c> we get this completing in <c>312.083 μs</c> which runs in about 50% faster than the <c>isPrime2</c> function.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Speedup #3: Rewrite <c>findAllFactors</c> to not check all integers as factors</title>
+
+			<p>
+				Notice that in both of the cases, we go through of the integers up to <m>n-1</m> or <m>n \div 2</m>, whereas that isn't necessary because most of the time, factors come in pairs.  Consider <m>n=200</m>, We can write the factors in the following way:
+			</p>
+
+			<tabular>
+				<row>
+					<cell>1</cell>
+					<cell>2</cell>
+					<cell>4</cell>
+					<cell>5</cell>
+					<cell>8</cell>
+					<cell>10</cell>
+				</row>
+
+				<row>
+					<cell>200</cell>
+					<cell>100</cell>
+					<cell>50</cell>
+					<cell>40</cell>
+					<cell>25</cell>
+					<cell>20</cell>
+				</row>
+			</tabular>
+
+			<p>
+				and there are pairs of factors and unless the number is a perfect square, they always occur in pairs. For example, when <m>n=100</m>, the factors are
+			</p>
+
+			<tabular>
+				<row>
+					<cell>1</cell>
+					<cell>2</cell>
+					<cell>4</cell>
+					<cell>5</cell>
+					<cell>10</cell>
+				</row>
+
+				<row>
+					<cell>100</cell>
+					<cell>50</cell>
+					<cell>25</cell>
+					<cell>20</cell>
+				</row>
+			</tabular>
+
+			<p>
+				and the factor <c>10</c> doesn't have a pair.
+			</p>
+
+
+			<program language="Julia" line-numbers="yes">
+				<input>
+function findAllFactors4(n::Integer)
+  local x = round(Int,sqrt(n)) # closest integer to sqrt(n)
+  local factors = [1,n]
+  local j=2 # keep track where to insert elements
+  for k=2:x
+    if n%k==0
+      # Insert the new factors in the middle of the factors array.
+      # If k^2 is n, just add k, otherwise add the pairs.
+      splice!(factors,j:(j-1),k^2 == n ? [k] : [k,div(n,k)])
+      j+=1
+    end
+  end
+  factors
+end
+				</input>
+			</program>
+
+			<p>
+				and notice that if we try to evaluate time this with <c>@btime findAllFactors4(49_000_000)</c> the function finishes in <c>7.375 μs</c>, more than 1000 times faster than the <c>findAllFactors3</c> function.  Because the loop goes up to <m>\sqrt{n}</m>, instead of <m>n/2</m>, then for a number like 49 million, you get a huge speed increase.
+			</p>
+
+			<p>
+				Since we really want to test the speed of an <c>isPrime</c> function, let's write:
 			</p>
 
 			<p>
 				<cd>
-				<cline>@btime isPrime3(1_000_003)</cline>
+				<cline>isPrime4(n::Integer) = length(findAllFactors4(n))==2</cline>
 				</cd>
 			</p>
 
 			<p>
-				returns <c>717.696 ns</c> and to compare to the original that we did above,
-				this is about 1000 times faster and about 700 times faster than version 2.
+				and now <c>@btime isPrime4(1_000_003)</c> returns <c>632.396 ns</c> where <c>ns</c> is nanoseconds.  Comparing this to the original <c>isPrime</c>, this is about 2000 times faster and about 500 times faster than version 2.
 			</p>
 		</subsection>
 
+
 		<subsection>
-			<title>Speedup #3: Don't use <c>findAllFactors</c> at all</title>
+			<title>Speedup #4: Don't use <c>findAllFactors</c> at all</title>
+
 			<p>
-				If we are only interested with determining if a number is prime or not,
-				we don't really need to calculate all of the factors.  Let's start with the
-				<c>findAllFactors3</c> function, which seems fast, but we will get rid of
-				the array. Consider the following:
+				If we are only interested with determining if a number is prime or not, we don't really need to calculate all of the factors.  Let's start with the <c>findAllFactors4</c> function, which seems fast, but we will get rid of the array. Consider the following:
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
-function isPrime4(n::Integer)
+function isPrime5(n::Integer)
   for k=2:floor(Int,sqrt(n)) # integer nearest sqrt(n)
-    if n%k==0
+    if n%k==0 # if k is a factor of n
       return false
     end
   end
@@ -877,27 +929,22 @@ end
 			</program>
 
 			<p>
-				In short, this function goes through all integers between 2 and <m>\sqrt{n}</m>.  If
-				it finds a factor, it just returns false.  If instead, no integers were factors, it returns true.
-				Timing this function with <c>@btime isPrime4(1_000_003)</c> results in finishing
-				in <c>644.707 ns</c>.  This is just a slight speed up from <c>isPrime3</c>.
+				In short, this function goes through all integers between 2 and <m>\sqrt{n}</m>.  If it finds a factor, it just returns false.  If instead, no integers were factors, it returns true. Timing this function with <c>@btime isPrime4(1_000_003)</c> results in finishing in <c>644.707 ns</c>.  This is just a slight speed up from <c>isPrime4</c>, but a speed up nonetheless.
 			</p>
 		</subsection>
 
+
 		<subsection>
-			<title>Speedup #4: Don't do unnecessary calculations</title>
+			<title>Speedup #5: Don't do unnecessary calculations</title>
+
 			<p>
-				One thing I noticed while writing this function is that the for loops goes
-				through all numbers up to <m>\sqrt{n}</m>.  A quick way to eliminate many of
-				these is to check 2 then all odds between 3 and <m>\sqrt{n}</m>.  This is because
-				if <m>2</m> isn't a factor of <m>n</m>, then any even cannot be either.  Here's a
-				way to do that.
+				One thing I noticed while writing this function is that the for loops goes through all numbers up to <m>\sqrt{n}</m>.  A quick way to eliminate many of these is to check 2 then all odds between 3 and <m>\sqrt{n}</m>.  This is because if <m>2</m> isn't a factor of <m>n</m>, then any even cannot be either.  Here's a way to do that.
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
-function isPrime5(n::Integer)
+function isPrime6(n::Integer)
   if n == 1
   	return false
   elseif n == 2
@@ -916,27 +963,24 @@ end
 			</program>
 
 			<p>
-				and checking the time on this with <c>@btime isPrime5(1_000_003)</c> results in a time
-				of <c>321.970 ns</c>, about twice as fast as <c>isPrime4</c>, which is expected since
-				it only checks half of the numbers.
+				and checking the time on this with <c>@btime isPrime6(1_000_003)</c> results in a time of <c>311.029 ns</c>, about twice as fast as <c>isPrime5</c>, which is expected since it only checks half of the numbers.
 			</p>
 		</subsection>
 
+
 		<subsection>
-			<title>Speedup #5: check only primes as possible factors</title>
+			<title>Speedup #6: check only primes as possible factors</title>
+
 			<p>
-				We can continue the thought of the previous algorithm in that the only factors we
-				need to check are prime numbers.
+				We can continue the thought of the previous algorithm in that the only factors we need to check are prime numbers.
 			</p>
 
 			<p>
-				However, there's a bit of circular reasoning here that we are checking to see if
-				a number is prime and we would use primes to check this, but here goes.
+				However, there's a bit of circular reasoning here that we are checking to see if a number is prime and we would use primes to check this, but here goes.
 			</p>
 
 			<p>
-				An exercise above asked to generated a list of primes up to some number.
-				The <url href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes" visual="wikipedia.org">Sieve of Eratosthenes</url> is one that generates a list of primes up to a number <m>m</m> in the following way.
+				An exercise above asked to generated a list of primes up to some number. The <url href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes" visual="wikipedia.org">Sieve of Eratosthenes</url> is one that generates a list of primes up to a number <m>m</m> in the following way.
 			</p>
 
 			<p>
@@ -984,11 +1028,11 @@ end
 			</p>
 
 			<p>
-				Here's a julia version of this algorithm:
+				Here's a Julia version of this algorithm:
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function getPrimes(m::Integer) ## return all primes up to n using
   # the sieve of Eratosthenes
@@ -996,7 +1040,7 @@ function getPrimes(m::Integer) ## return all primes up to n using
   local k=2
   while k &lt; sqrt(m)
     is_prime[2*k:k:m] .= false # all multiples of k are not prime
-    k = findnext(is_prime,k+1) # find the next prime after k
+    k = nextPrime(k+ (k==2 ? k=1 : k+2)) # find the next prime after k and they will all be odd after k= 2
   end
   findall(is_prime)[2:end]
 end
@@ -1004,8 +1048,7 @@ end
 			</program>
 
 			<p>
-				and for example, <c>getPrimes(100)</c> returns the array
-				<c>[2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97]</c>
+				and for example, <c>getPrimes(100)</c> returns the array <c>[2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97]</c>
 			</p>
 
 			<p>
@@ -1013,9 +1056,9 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
-function isPrime6(n::Integer)
+function isPrime7(n::Integer)
   if n==1
     return false
   end
@@ -1036,65 +1079,79 @@ end
 
 			<p>
 				<cd>
-				<cline>@btime isPrime6(1_000_003)</cline>
+				<cline>@btime isPrime7(1_000_003)</cline>
 				</cd>
 			</p>
 
 			<p>
-				which takes <c>3.547 μs</c> and is about 10 times slower than <c>isPrime5</c>.
-				This probably has to do with the fact that the first number of primes must be
-				generated.  Below we will test with a larger number to see if this pays off for
-				testing larger primes.
+				which takes <c>3.453 μs</c> and is about 10 times slower than <c>isPrime6</c>. This probably has to do with the fact that the first number of primes must be generated.  Below we will test with a larger number to see if this pays off for testing larger primes.
 			</p>
 		</subsection>
 	</section>
 
 	<section>
 		<title>Summary of <c>isPrime</c></title>
+
 		<p>
-			Since this was all a lot to take in, let's summarize all of these functions.
-			We'll stick with <c>n=1_000_000_007</c>, which is a prime number
+			Since this was all a lot to take in, let's summarize all of these functions. We'll stick with <c>n=1_000_000_007</c>, which is a prime number
 		</p>
 
 		<table>
 			<title>Summary of <c>isPrime</c> timing</title>
+
 			<tabular>
 				<row>
-				<cell>command</cell><cell>time</cell>
+					<cell>command</cell>
+					<cell>time</cell>
 				</row>
+
 				<row>
-				<cell><c>@btime isPrime(n)</c></cell><cell><c>1.121 s</c></cell>
+					<cell><c>@btime isPrime(n)</c></cell>
+					<cell><c>1.132 s</c></cell>
 				</row>
+
 				<row>
-				<cell><c>@btime isPrime2(n)</c></cell><cell><c>557.359 ms</c></cell>
+					<cell><c>@btime isPrime2(n)</c></cell>
+					<cell><c>631.973 ms</c></cell>
 				</row>
+
 				<row>
-				<cell><c>@btime isPrime3(n)</c></cell><cell><c>20.500 μs</c></cell>
+					<cell><c>@btime isPrime3(n)</c></cell>
+					<cell><c>315.827 ms</c></cell>
 				</row>
+
 				<row>
-				<cell><c>@btime isPrime4(n)</c></cell><cell><c>20.416 μs</c></cell>
+					<cell><c>@btime isPrime4(n)</c></cell>
+					<cell><c>20.167 μs</c></cell>
 				</row>
+
 				<row>
-				<cell><c>@btime isPrime5(n)</c></cell><cell><c>10.166 μs</c></cell>
+					<cell><c>@btime isPrime5(n)</c></cell>
+					<cell><c>19.750 μs</c></cell>
 				</row>
+
 				<row>
-				<cell><c>@btime isPrime6(n)</c></cell><cell><c>116.666 μs</c></cell>
+					<cell><c>@btime isPrime6(n)</c></cell>
+					<cell><c>9.833 μs</c></cell>
+				</row>
+
+				<row>
+					<cell><c>@btime isPrime7(n)</c></cell>
+					<cell><c>112.959 μs</c></cell>
 				</row>
 			</tabular>
 		</table>
 
 		<p>
-			It appears that <c>isPrime5</c> is the fastest of the algorithms we developed here.
-			Note that this just checks for a single number, whereas, the values may
-			change as one increases the value of n.
+			It appears that <c>isPrime6</c> is the fastest of the algorithms we developed here. Note that this just checks for a single number, whereas, the values may change as one increases the value of n.
 		</p>
 	</section>
 
 	<section>
 		<title>Testing for Primes using the <c>Primes</c></title>
+
 		<p>
-			Load the <c>Primes</c> library (and if you haven't added it yet, do
-			so):
+			Load the <c>Primes</c> library (and if you haven't added it yet, do so):
 		</p>
 
 		<p>
@@ -1104,19 +1161,17 @@ end
 		</p>
 
 		<p>
-			The <c>Primes</c> library has the <c>isprime</c> function to test
-			for primality. Let's test a few examples.
+			The <c>Primes</c> library has the <c>isprime</c> function to test for primality. Let's test a few examples.
 		</p>
 
 		<p>
 			<cd>
-			<cline>@btime isprime(1_000_003)</cline>
+			<cline>@btime isprime(1_000_000_007)</cline>
 			</cd>
 		</p>
 
 		<p>
-			returns the answer in <c>727.156 ns</c>	and this is about twice as fast as our algorithm,
-			<c>isPrime5</c>.  Note that the time is given in ns or nanoseconds and 1000 nanoseconds is 1 <m>\mu</m>s.
+			returns the answer in <c>702.833 ns</c>	and this is about ten times faster than our fastest algorithm, <c>isPrime6</c>.  Note that the time is given in ns or nanoseconds and 1000 nanoseconds is 1 <m>\mu</m>s.
 		</p>
 
 		<p>
@@ -1130,8 +1185,7 @@ end
 		</p>
 
 		<p>
-			returns the answer in <c>10.000 μs</c>.  I tried to run <c>isPrime5</c> on
-			<m>2^{89}-1</m> and it ran overnight and didn't finish.
+			returns the answer in <c>9.875 μs</c>.  I tried to run <c>isPrime6</c> on <m>2^{89}-1</m> and it ran overnight and didn't finish.
 		</p>
 	</section>
 </chapter>

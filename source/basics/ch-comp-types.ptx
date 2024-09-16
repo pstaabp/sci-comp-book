@@ -103,7 +103,7 @@
 			</p>
 
 			<p>
-				where the suits are the unicode characters<fn>See <url href="http://docs.julialang.org/en/latest/manual/unicode-input/" visual="julialang.org">the julia documentation on unicode</url>.</fn> for the suits. (Note: <c>ranks</c> and <c>suits</c> are arrays of characters (not strings). This is because they use single quotes.).  The following datatype:
+				where the suits are the unicode characters<fn>See <url href="http://docs.Julialang.org/en/latest/manual/unicode-input/" visual="Julialang.org">the Julia documentation on unicode</url>.</fn> for the suits. (Note: <c>ranks</c> and <c>suits</c> are arrays of characters (not strings). This is because they use single quotes.).  The following datatype:
 			</p>
 
 			<p>
@@ -134,7 +134,7 @@
 			</p>
 
 			<p>
-				where the arguments of <c>Base.show</c> should be of type <c>IO</c> and then the datatype. The output from <c>Base.show</c> should call <c>print</c> as above. The result will be the concatenation of the characters corresponding to the rank and suit of the card.  Any of the forms in <xref ref="ch-variables"/> that do string concatentation will work, I'm a fan of string interpolation. Try this out by typing <c>c</c> and you should get <c>3♡</c>.
+				where the arguments of <c>Base.show</c> should be of type <c>IO</c> and then the datatype. The output from <c>Base.show</c> should call <c>print</c> as above. The result will be the concatenation of the characters corresponding to the rank and suit of the card.  Any of the forms in <xref ref="ch-variables"/> that do string concatenation will work, I'm a fan of string interpolation. Try this out by typing <c>c</c> and you should get <c>3♡</c>.
 			</p>
 
 			<p>
@@ -147,7 +147,7 @@
 			<title>Constructors of new data types</title>
 
 			<p>
-				When julia calls <c>Card(3,2)</c>, actually, it executes a special function called a constructor, which creates an instance of the type, which we have called an object. Although Julia creates the basic constructor--that is the one that fills the fields of the type in the order defined, we may want some additional features.  For example if we call <c>Card(-10,78)</c>, then julia returns
+				When Julia calls <c>Card(3,2)</c>, actually, it executes a special function called a constructor, which creates an instance of the type, which we have called an object. Although Julia creates the basic constructor--that is the one that fills the fields of the type in the order defined, we may want some additional features.  For example if we call <c>Card(-10,78)</c>, then Julia returns
 			</p>
 
 			<p>
@@ -165,7 +165,7 @@
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 struct Card
   rank::Int
@@ -228,7 +228,7 @@ end
 
 					<li>
 						<p>
-							Inside the the contructor, line 8 is <c>new(r,s)</c>.  This assigns the member <c>rank</c> the value <c>r</c> and <c>suit</c> the value <c>s</c>.
+							Inside the the constructor, line 8 is <c>new(r,s)</c>.  This assigns the member <c>rank</c> the value <c>r</c> and <c>suit</c> the value <c>s</c>.
 						</p>
 					</li>
 				</ul>
@@ -239,7 +239,7 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 struct Card
   rank::Int
@@ -297,7 +297,7 @@ end
 				</p>
 
 				<p>
-					If you do use a constructor, define it as a function with the same name as the type (the case must be the same as well). The last line in contructor function must be the <c>new</c> function that fills the member fields in the same order as listed in the struct. See <url href="https://docs.julialang.org/en/latest/manual/constructors/\#man-constructors-1" visual="julialang.org">additional information about constructors in the Julia Documentation</url>
+					If you do use a constructor, define it as a function with the same name as the type (the case must be the same as well). The last line in constructor function must be the <c>new</c> function that fills the member fields in the same order as listed in the struct. See <url href="https://docs.Julialang.org/en/latest/manual/constructors/\#man-constructors-1" visual="Julialang.org">additional information about constructors in the Julia Documentation</url>
 				</p>
 			</remark>
 		</subsection>
@@ -399,7 +399,7 @@ end
 			</p>
 
 			<p>
-				Let's say that we want to construct methods to add, subtract, multiply two polynomials and peform a scalar multiply as well. However, if we want to allow Polynomials with coefficients other than integer coefficients, such as rational or real or complex, then we would need to write a set of functions to do this for each datatype, which is 1) painfully dull, 2) hard to maintain since there are many copies of the same function and 3) unnecessary because Julia has a nice feature called a parametric type.
+				Let's say that we want to construct methods to add, subtract, multiply two polynomials and perform a scalar multiply as well. However, if we want to allow Polynomials with coefficients other than integer coefficients, such as rational or real or complex, then we would need to write a set of functions to do this for each datatype, which is 1) painfully dull, 2) hard to maintain since there are many copies of the same function and 3) unnecessary because Julia has a nice feature called a parametric type.
 			</p>
 
 			<p>
@@ -490,7 +490,7 @@ end
 
 					<li>
 						<p>
-							The string consists of four parts, <c>$str</c> is the current value of the string.  This is basically string concatenation. <c>$((n==1) ? "" : "+")</c> puts a "+" in front of each coefficent except the first one and <c>$(p.coeffs[n])</c> is the coefficients and <c>x^$(n-1)</c> is the power of x.
+							The string consists of four parts, <c>$str</c> is the current value of the string.  This is basically string concatenation. <c>$((n==1) ? "" : "+")</c> puts a "+" in front of each coefficient except the first one and <c>$(p.coeffs[n])</c> is the coefficients and <c>x^$(n-1)</c> is the power of x.
 						</p>
 					</li>
 
@@ -629,7 +629,7 @@ end
 			</p>
 
 			<p>
-				We have used <c>reduce</c> for each of these evalution methods. Let's dive into these a bit more
+				We have used <c>reduce</c> for each of these evaluation methods. Let's dive into these a bit more
 			</p>
 
 			<p>
@@ -674,7 +674,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 using ForwardDiff
 function newton(f::Function, x0::Number)
@@ -700,7 +700,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 struct Root
   root::Float64    #  approximate value of the root
@@ -718,7 +718,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 function newton(f::Function, x0::Number)
   local dx = 1
@@ -747,7 +747,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 function Base.show(io::IO,r::Root)
   str = r.converged ? """The root is approximately x̂ = $(r.root)

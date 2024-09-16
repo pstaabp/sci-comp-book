@@ -49,7 +49,7 @@
 		</p>
 
 		<p>
-			Lastly, because of the syntax of a <c>for</c> loop, we show details about ranges in julia, which is a compact way to write a set of numbers that are either sequential or sequential with skips in it.
+			Lastly, because of the syntax of a <c>for</c> loop, we show details about ranges in Julia, which is a compact way to write a set of numbers that are either sequential or sequential with skips in it.
 		</p>
 	</introduction>
 
@@ -191,7 +191,7 @@
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function absValue(x::Real)
   if x &gt;= 0
@@ -211,7 +211,7 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function absValue(x::Real)
   if x &gt;= 0
@@ -228,7 +228,7 @@ end
 			</p>
 
 			<p>
-				The absolute value function is quite important in mathematics and thus is built-in to julia as <c>abs</c>.
+				The absolute value function is quite important in mathematics and thus is built-in to Julia as <c>abs</c>.
 			</p>
 		</introduction>
 
@@ -241,7 +241,7 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 					function quadrant(x::Real,y::Real)
 					if x &gt; 0 &amp;&amp; y &gt; 0
@@ -356,7 +356,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 function quadrant2(x::Real, y::Real)
   x &gt; 0 &amp;&amp; y &gt; 0 ? "I" :
@@ -368,7 +368,7 @@ end
 		</program>
 
 		<p>
-			Note that although this can be written on a single line (it is a single nested statement), it has been split on lines for clarity.  Also, the precendence order is that <c>:</c> is higher that <c>?</c> in order for this to evaluate as expected without parentheses.
+			Note that although this can be written on a single line (it is a single nested statement), it has been split on lines for clarity.  Also, the precedence order is that <c>:</c> is higher that <c>?</c> in order for this to evaluate as expected without parentheses.
 		</p>
 	</section>
 
@@ -382,7 +382,7 @@ end
 		</introduction>
 
 
-		<subsection>
+		<subsection xml:id="sect-while-loop">
 			<title>While Loops</title>
 
 			<p>
@@ -390,7 +390,7 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 let
   local n=1
@@ -411,7 +411,7 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function bisection(f::Function, a::Real, b::Real)
 	local c
@@ -539,7 +539,7 @@ end
 
 			<p>The following update to the <c>bisection</c> method will now stop if we go too many times:</p>
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function bisection(f::Function, a::Real, b::Real)
   local c
@@ -568,7 +568,7 @@ end
 			<p>
 				<cd>
 				<cline>for i=1:10</cline>
-				<cline>  println(i)</cline>
+				<cline>  @show i</cline>
 				<cline>end</cline>
 				</cd>
 			</p>
@@ -580,7 +580,7 @@ end
 			<p>
 				<cd>
 				<cline>for i=1:2:21</cline>
-				<cline>  println(i)</cline>
+				<cline>  @show i</cline>
 				<cline>end</cline>
 				</cd>
 			</p>
@@ -592,7 +592,7 @@ end
 			<p>
 				<cd>
 				<cline>for i=10:-1:0</cline>
-				<cline>  println(i)</cline>
+				<cline>  @show i</cline>
 				<cline>end</cline>
 				</cd>
 			</p>
@@ -618,7 +618,7 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function theMean(x::Number...) local sum=0
   for val in x
@@ -675,7 +675,7 @@ end
 			<p>
 				<cd>
 				<cline>for i=1:4</cline>
-				<cline>  println(i)</cline>
+				<cline>  @show i</cline>
 				<cline>end</cline>
 				</cd>
 			</p>
@@ -702,7 +702,7 @@ end
 			<title>Linear Ranges</title>
 
 			<p>
-				As we see above, it easy to make ranges if we know the step between each pair. Another use would be to know the starting and ending value and the number of values. For example, if we want to start at 3 and end at 11 with 5 values, it's not too hard to compute this, but julia has a built-in way to do it with the <c>range</c> command. For example,
+				As we see above, it easy to make ranges if we know the step between each pair. Another use would be to know the starting and ending value and the number of values. For example, if we want to start at 3 and end at 11 with 5 values, it's not too hard to compute this, but Julia has a built-in way to do it with the <c>range</c> command. For example,
 			</p>
 
 			<p>

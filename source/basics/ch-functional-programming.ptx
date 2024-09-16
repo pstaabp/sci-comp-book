@@ -325,7 +325,7 @@
 		<title>The <c>mapreduce</c> function</title>
 
 		<p>
-			The <url href="http://docs.julialang.org/en/release-0.5/stdlib/collections/#Base.mapreduce" visual="julialang.org"> <c>mapreduce</c></url> function is perhaps more helpful than <c>reduce</c>. For example, if we want to sum the squares of each number in an array, then <c>mapreduce</c> can do this easily.
+			The <url href="http://docs.Julialang.org/en/release-0.5/stdlib/collections/#Base.mapreduce" visual="Julialang.org"> <c>mapreduce</c></url> function is perhaps more helpful than <c>reduce</c>. For example, if we want to sum the squares of each number in an array, then <c>mapreduce</c> can do this easily.
 		</p>
 
 		<p>
@@ -335,7 +335,7 @@
 		</p>
 
 		<p>
-			is a short-hand way to do <m>1^2+2^2+3^2=14</m>.  For <c>mapreduce</c>, the first argument is a function of one variable (unary) that is applied to every element of array.  The second argument is a binary element that is used for the reduce part. Note: julia also has a version of the <c>sum</c> function that can apply a function.  For example, <c>sum(x-&gt;x^2,[1,2,3])</c> returns the sum of <c>14</c>.
+			is a short-hand way to do <m>1^2+2^2+3^2=14</m>.  For <c>mapreduce</c>, the first argument is a function of one variable (unary) that is applied to every element of array.  The second argument is a binary element that is used for the reduce part. Note: Julia also has a version of the <c>sum</c> function that can apply a function.  For example, <c>sum(x-&gt;x^2,[1,2,3])</c> returns the sum of <c>14</c>.
 		</p>
 
 		<p>

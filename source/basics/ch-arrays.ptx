@@ -13,7 +13,7 @@
 
 			<li>
 				<p>
-					There are numerous methods including direct entry and comprehensions to contruct an array.
+					There are numerous methods including direct entry and comprehensions to construct an array.
 				</p>
 			</li>
 
@@ -31,7 +31,7 @@
 
 			<li>
 				<p>
-					Understanding how to sort vectors either numerically, lexiographically or by applying another function first.
+					Understanding how to sort vectors either numerically, lexicographically or by applying another function first.
 				</p>
 			</li>
 
@@ -59,7 +59,7 @@
 		</p>
 
 		<p>
-			then we get a 1-dimensional array of length 3. Note that when returned, julia says <c>3-element Vector{Int64}:</c> which means
+			then we get a 1-dimensional array of length 3. Note that when returned, Julia says <c>3-element Vector{Int64}:</c> which means
 		</p>
 
 		<p>
@@ -243,7 +243,7 @@
 		<exercise>
 			<statement>
 				<p>
-					Using the techniques in this section, create the following arrays in julia:
+					Using the techniques in this section, create the following arrays in Julia:
 				</p>
 
 				<p>
@@ -396,7 +396,7 @@
 		</p>
 
 		<p>
-			There are a number of different ways to return subarrays. See <url href="https://docs.julialang.org/en/latest/manual/arrays/#man-array-indexing-1" visual="julialang.org"> the Julia matrices documentation</url> for more information.
+			There are a number of different ways to return subarrays. See <url href="https://docs.Julialang.org/en/latest/manual/arrays/#man-array-indexing-1" visual="Julialang.org"> the Julia matrices documentation</url> for more information.
 		</p>
 	</section>
 
@@ -536,6 +536,14 @@
 		<p>
 			returns <c>(5, 7, 9)</c>. And if we want to add 10 to every element of a matrix, we can use this syntax as well.  <c>[1, 2, 3, 4] .+ 10</c> returns <c>[11, 12, 13, 14]</c>.  Note that having broadcasting simplifies a lot of operations with arrays.  Without this, typically a for loop would be needed to be written, which is not difficult, but more more complicated than a single operation.
 		</p>
+
+		<p>
+			There is also a macro that can apply broadcasting.  Let's say that we are applying the function <m>f(x) = x \sin(x) + e^{x^2}</m> on an array <c>x = collect(-3:3)</c>.  To write this operation element by element: one must do <c>x .* sin.(x)+exp.(x.^2)</c> and also that isn't too difficult, there is a bit of an easier way using the <c>@.</c> macro.  If we add this in front of a non-broadcasting expression, it will apply all functions an operations in the right way.  You should notice that <c>@. x*sin(x) + exp(x^2)</c> returns the same array.
+		</p>
+
+		<p>
+			We will use both forms of broadcasting in the rest of this book.  Often, it broadcasting is relatively simple, we'll use the non-macro version, but for more complicated ones, we'll use the macro.
+		</p>
 	</section>
 
 	<section>
@@ -598,7 +606,7 @@
 		</p>
 
 		<p>
-			If an array element type is a <c>String</c>, then it is sorted lexiographically (similar to alphabetical).  If
+			If an array element type is a <c>String</c>, then it is sorted lexicographically (similar to alphabetical).  If
 		</p>
 
 		<p>
@@ -628,7 +636,7 @@
 		</p>
 
 		<p>
-			Check out the <url href="https://docs.julialang.org/en/v1/base/sort" visual="julialang.org">Julia docs on sorting and sorting algorithms</url> for more details on how Julia does sorting.
+			Check out the <url href="https://docs.Julialang.org/en/v1/base/sort" visual="Julialang.org">Julia docs on sorting and sorting algorithms</url> for more details on how Julia does sorting.
 		</p>
 	</section>
 
@@ -636,7 +644,7 @@
 		<title>Push and Pop; Array as a Stack</title>
 
 		<p>
-			There is a computer science data structure called a <url href="https://en.wikipedia.org/wiki/Stack\_(abstract\_data\_type)" visual="julialang.org">stack</url> which acts like a stack of things (paper, dishes, pokemon cards) and there are two operations on it: 1) put something on top of the stack or 2) take something off the top of the stack.  Many languages including julia don't have a separate data structure but use an array like one with two operations, <c>push</c> and <c>pop</c>. In julia these have ! at the end to indicate that the operations change the array. If <c>A=collect(1:5)</c> then
+			There is a computer science data structure called a <url href="https://en.wikipedia.org/wiki/Stack\_(abstract\_data\_type)" visual="Julialang.org">stack</url> which acts like a stack of things (paper, dishes, Pokémon cards) and there are two operations on it: 1) put something on top of the stack or 2) take something off the top of the stack.  Many languages including Julia don't have a separate data structure but use an array like one with two operations, <c>push</c> and <c>pop</c>. In Julia these have ! at the end to indicate that the operations change the array. If <c>A=collect(1:5)</c> then
 		</p>
 
 		<p>
@@ -787,7 +795,7 @@
 					</p>
 
 					<p>
-						then the function returns <c>Int64[]</c>.  This is an empty array of type <c>Int64</c>.  The result is empty because nothing was removed in the process.  The array <c>A</c> is now <c>[1, 3, 11, 12, 13, 14, 5, 7, 9, 11]</c>. A few things to note about this.  The second argument is a bit strange in that you insert <c>3:2</c> which is a range in which the last element is smaller than the first. This will let julia know that you don't want to remove any elements, unlike either a single number or a range with the first element smaller than the last.
+						then the function returns <c>Int64[]</c>.  This is an empty array of type <c>Int64</c>.  The result is empty because nothing was removed in the process.  The array <c>A</c> is now <c>[1, 3, 11, 12, 13, 14, 5, 7, 9, 11]</c>. A few things to note about this.  The second argument is a bit strange in that you insert <c>3:2</c> which is a range in which the last element is smaller than the first. This will let Julia know that you don't want to remove any elements, unlike either a single number or a range with the first element smaller than the last.
 					</p>
 				</li>
 
@@ -795,7 +803,7 @@
 					<title>Replacing elements from an array</title>
 
 					<p>
-						We say <c>splice!</c> is the swiss army knife, because it does even more!! (Now, how much would you pay?).  This last section shows that we can both remove and insert elements into an array at the same time.
+						We say <c>splice!</c> is the Swiss army knife, because it does even more!! (Now, how much would you pay?).  This last section shows that we can both remove and insert elements into an array at the same time.
 					</p>
 
 					<p>
@@ -827,7 +835,7 @@
 			<title>Filtering Arrays</title>
 
 			<p>
-				A very handle array method, is <url href="https://docs.julialang.org/en/v1/base/collections/#Base.filter" visual="julialang.org"> <c>filter</c></url> which takes an array and returns only the elements that satisfy some condition.
+				A very handle array method, is <url href="https://docs.Julialang.org/en/v1/base/collections/#Base.filter" visual="Julialang.org"> <c>filter</c></url> which takes an array and returns only the elements that satisfy some condition.
 			</p>
 
 			<p>
@@ -879,7 +887,7 @@
 	</section>
 
 	<section xml:id="sect-join-split">
-		<title>Joining Arrays and Spliting Strings</title>
+		<title>Joining Arrays and Splitting Strings</title>
 
 		<p>
 			There are a couple of related functions that involve arrays, that of joining an array to get a string and splitting a string to get an array.  We show a few examples here.
@@ -920,7 +928,7 @@
 		</p>
 
 		<p>
-			Additionally, julia has the ability to split a string into an array of substrings.  For example if
+			Additionally, Julia has the ability to split a string into an array of substrings.  For example if
 		</p>
 
 		<p>
@@ -956,7 +964,7 @@
 		</p>
 
 		<p>
-			where the <c>map</c> function from <xref ref="ch-functional-programming"/> is used.  This returns the integer array <c>[1, 2, 3, 4, 5, 6]</c>. See the <url href="https://docs.julialang.org/en/v1/base/strings/#Base.split" visual="julialang.org">Julia documentation on <c>split</c></url> for more information and options.
+			where the <c>map</c> function from <xref ref="ch-functional-programming"/> is used.  This returns the integer array <c>[1, 2, 3, 4, 5, 6]</c>. See the <url href="https://docs.Julialang.org/en/v1/base/strings/#Base.split" visual="Julialang.org">Julia documentation on <c>split</c></url> for more information and options.
 		</p>
 	</section>
 
@@ -964,7 +972,7 @@
 		<title>Arrays as a Collection</title>
 
 		<p>
-			An array is one example of a <em>Collection</em> in Julia.  We will cover these in more details in <xref ref="ch-collections"/> and it is helpful to have knowledge of the more abtract idea when handling arrays.
+			An array is one example of a <em>Collection</em> in Julia.  We will cover these in more details in <xref ref="ch-collections"/> and it is helpful to have knowledge of the more abstract idea when handling arrays.
 		</p>
 	</section>
 </chapter>

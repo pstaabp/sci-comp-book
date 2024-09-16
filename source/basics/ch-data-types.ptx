@@ -25,7 +25,7 @@
 
 			<li>
 				<p>
-					Introduction to BigFloats, extended versions of floating point nubmers.
+					Introduction to BigFloats, extended versions of floating point numbers.
 				</p>
 			</li>
 
@@ -49,7 +49,7 @@
 
 			<li>
 				<p>
-					Defintion and uses of a tuple.
+					Definition and uses of a tuple.
 				</p>
 			</li>
 		</ul>
@@ -79,7 +79,7 @@
 			</p>
 
 			<p>
-				In julia, the datatypes for unsigned integers are <c>UInt8, UInt16, UIint32, UInt64</c> and <c>UInt128</c>.  We can get the smallest and largest value for these with the <c>typemin</c> and <c>typemax</c> functions. <c>Int(typemin(UInt8))</c> and <c>Int(typemax(UInt8))</c> return <c>0</c> and <c>255</c> respectively. Note: the functions <c>typemin</c> and <c>typemax</c> on unsigned integers return values in hexadecimal.   The function <c>Int</c> converts to a decimal integer.
+				In Julia, the datatypes for unsigned integers are <c>UInt8, UInt16, UInt32, UInt64</c> and <c>UInt128</c>.  We can get the smallest and largest value for these with the <c>typemin</c> and <c>typemax</c> functions. <c>Int(typemin(UInt8))</c> and <c>Int(typemax(UInt8))</c> return <c>0</c> and <c>255</c> respectively. Note: the functions <c>typemin</c> and <c>typemax</c> on unsigned integers return values in hexadecimal.   The function <c>Int</c> converts to a decimal integer.
 			</p>
 
 			<p>
@@ -87,7 +87,7 @@
 			</p>
 
 			<p>
-				In julia, we can use the <c>bitstring</c> function to give the binary representation of integers and floating points.  For example
+				In Julia, we can use the <c>bitstring</c> function to give the binary representation of integers and floating points.  For example
 				<cd>
 				<cline>bitstring(UInt8(18))</cline>
 				</cd>
@@ -117,11 +117,11 @@
 			<title>Signed Integers</title>
 
 			<p>
-				In julia, the signed integers are <c>Int8, Int16, Int32, Int64</c> and <c>Int128</c>. Also, there is a integer type <c>Int</c> which defaults to the sized integer of the typical integer size on your machine.  This is generally <c>Int64</c>.
+				In Julia, the signed integers are <c>Int8, Int16, Int32, Int64</c> and <c>Int128</c>. Also, there is a integer type <c>Int</c> which defaults to the sized integer of the typical integer size on your machine.  This is generally <c>Int64</c>.
 			</p>
 
 			<p>
-				Let's look in detail about 8-bit signed integers.  The largest and smallest values that can be stored with <c>Int8</c> can be found with <c>typemin(Int8)</c> and <c>typemax(Int8)</c>, which returns <c>-128</c> and <c>127</c> respectively.  Bascially the number between 0 and 127 are identical	between <c>Int8</c> and <c>UInt8</c>.
+				Let's look in detail about 8-bit signed integers.  The largest and smallest values that can be stored with <c>Int8</c> can be found with <c>typemin(Int8)</c> and <c>typemax(Int8)</c>, which returns <c>-128</c> and <c>127</c> respectively.  Basically the number between 0 and 127 are identical	between <c>Int8</c> and <c>UInt8</c>.
 			</p>
 		</subsection>
 
@@ -138,7 +138,7 @@
 			</p>
 
 			<p>
-				What just happened?  If you want to know why the value of <c>-91</c> arose, dig into the details in <xref ref="ch-num-rep"/>, but the reason why there was no overflow error is that julia does not automatically check for such errors, due to the fact that there is overhead in checking, which will slow down operations.
+				What just happened?  If you want to know why the value of <c>-91</c> arose, dig into the details in <xref ref="ch-num-rep"/>, but the reason why there was no overflow error is that Julia does not automatically check for such errors, due to the fact that there is overhead in checking, which will slow down operations.
 			</p>
 
 			<p>
@@ -149,7 +149,7 @@
 			</p>
 
 			<p>
-				Go to <url href="https://docs.julialang.org/en/v1/base/math/#Base.Checked.checked_add" visual="docs.julialang.org">julia's documentation on <c>checked_add</c></url> which starts a list of functions that will check for over and underflow. If there is any chance of overflow/underflow errors, then the results may be wrong.  Keep this in mind as in <xref ref="ch-modules"/> we will write tests for code.
+				Go to <url href="https://docs.Julialang.org/en/v1/base/math/#Base.Checked.checked_add" visual="docs.Julialang.org">Julia's documentation on <c>checked_add</c></url> which starts a list of functions that will check for over and underflow. If there is any chance of overflow/underflow errors, then the results may be wrong.  Keep this in mind as in <xref ref="ch-modules"/> we will write tests for code.
 			</p>
 		</subsection>
 	</section>
@@ -192,7 +192,7 @@
 		</p>
 
 		<p>
-			We can using the <c>bitstring</c> function in julia to find the binary representation. Notice that
+			We can using the <c>bitstring</c> function in Julia to find the binary representation. Notice that
 			<cd>
 			<cline>bitstring(Float16(8.625))</cline>
 			</cd>
@@ -200,7 +200,7 @@
 		</p>
 
 		<p>
-			Unlike integers, most numbers cannot be stored exactly with a floating-point number. For example, <m>1/3</m> divides 1 by 3 and results in the floating-point number closest to the fraction <m>\frac{1}{3}</m>.  In julia this is <c>print(1/3)</c> and also note that <c>bitstring(1/3)</c> results in
+			Unlike integers, most numbers cannot be stored exactly with a floating-point number. For example, <m>1/3</m> divides 1 by 3 and results in the floating-point number closest to the fraction <m>\frac{1}{3}</m>.  In Julia this is <c>print(1/3)</c> and also note that <c>bitstring(1/3)</c> results in
 			<cd>
 			<cline>"0011111111010101010101010101010101010101010101010101010101010101"</cline>
 			</cd>
@@ -403,7 +403,7 @@
 			<title>The Rational Type</title>
 
 			<p>
-				If you enter <c>typeof(1//2)</c>, note that julia returns <c>Rational{Int64}</c> and this is called a <url href="https://docs.julialang.org/en/stable/manual/types/\#Parametric-Composite-Types-1" visual="docs.julialang.org"> Parametric Composite Type</url>, which will be talked about later. In this particular case, this is a rational type, but inside it (the numerator and denominator), they are type <c>Int64</c>. For example, to make a different type of rational you need to declare a different integer type inside, enter
+				If you enter <c>typeof(1//2)</c>, note that Julia returns <c>Rational{Int64}</c> and this is called a <url href="https://docs.Julialang.org/en/stable/manual/types/\#Parametric-Composite-Types-1" visual="docs.Julialang.org"> Parametric Composite Type</url>, which will be talked about later. In this particular case, this is a rational type, but inside it (the numerator and denominator), they are type <c>Int64</c>. For example, to make a different type of rational you need to declare a different integer type inside, enter
 				<cd>
 				<cline>Int16(1)//Int16(2)</cline>
 				</cd>
@@ -462,11 +462,11 @@
 		<title>Complex Numbers</title>
 
 		<p>
-			Recall that the imaginary number <m>i</m> is defined as <m>\sqrt{-1}</m>. A complex number is a number of the form <m>a+bi</m> for <m>a</m> and <m>b</m> in general real numbers.  In julia, there is a built-in constant <c>im</c>, which can be used to create complex numbers. For example <c>z=1+2im</c> has type <c>Complex{Int64}</c>, which is a composite type with the values of the numbers <m>a</m> and <m>b</m> are <c>Int64</c>.
+			Recall that the imaginary number <m>i</m> is defined as <m>\sqrt{-1}</m>. A complex number is a number of the form <m>a+bi</m> for <m>a</m> and <m>b</m> in general real numbers.  In Julia, there is a built-in constant <c>im</c>, which can be used to create complex numbers. For example <c>z=1+2im</c> has type <c>Complex{Int64}</c>, which is a composite type with the values of the numbers <m>a</m> and <m>b</m> are <c>Int64</c>.
 		</p>
 
 		<p>
-			Complex numbers play a huge role in many aspects of scientific computing and in some cases, formulating a problem using complex numbers can make calculations faster and easier to program.  This includes the very important algorithm, fast-fourier transforms or better known as FFTs.  This and other examples are explained in <xref ref="ch-complex"/>.
+			Complex numbers play a huge role in many aspects of scientific computing and in some cases, formulating a problem using complex numbers can make calculations faster and easier to program.  This includes the very important algorithm, fast-Fourier transforms or better known as FFTs.  This and other examples are explained in <xref ref="ch-complex"/>.
 		</p>
 	</section>
 
@@ -538,7 +538,7 @@
 			</p>
 
 			<p>
-				See a bare-bones description of all of <url href="https://docs.julialang.org/en/v1/base/numbers/" visual="docs.julialang.org"> Julia's standard number types</url>.
+				See a bare-bones description of all of <url href="https://docs.Julialang.org/en/v1/base/numbers/" visual="docs.Julialang.org"> Julia's standard number types</url>.
 			</p>
 		</subsection>
 

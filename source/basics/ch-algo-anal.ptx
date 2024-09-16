@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <chapter xml:id="ch-algorithm-analysis">
 	<title>Algorithm Analysis</title>
+
+	<objectives>
+		<ul>
+			<li>
+				<p>
+					Define the big-O notation and explain how it is used in analyzing algorithms.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Performing big-O analysis on some algorithms.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Using data tools to determine the order of an algorithm by running code for a set of different parameters.
+				</p>
+			</li>
+		</ul>
+	</objectives>
+
 	<introduction>
 		<p>
-			This chapter will be a brief introduction to the analysis of algorithms.  As we have already
-			seen in the past couple of chapters, timing algorithms is a decent way to determining
-			how well they run, however sometimes a more in-depth analysis is needed.
-			We will cover what is called big-O notation and analysis a few algorithms here.
+			This chapter will be a brief introduction to the analysis of algorithms.  As we have already seen in the past couple of chapters, timing algorithms is a decent way to determining how well they run, however sometimes a more in-depth analysis is needed. We will cover what is called big-O notation and analyze a few algorithms here.
 		</p>
 	</introduction>
 
 	<section>
 		<title>Big-O Notation</title>
+
 		<definition xml:id="def-big-o">
 			<statement>
 				<p>
-					Consider two functions <m>f</m> and <m>g</m>, We say that <m>f(n)</m>
-					is <m>O(g(n))</m> or ``big-O'' of <m>g(n)</m> if
+					Consider two functions <m>f</m> and <m>g</m>, We say that <m>f(n)</m> is <m>O(g(n))</m> or ``big-O'' of <m>g(n)</m> if
 					<me>
 						\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = C
 					</me>
@@ -36,8 +57,7 @@
 		</p>
 
 		<p>
-			Generally, if a function is polynomial, the function is <m>O(n^p)</m> where <m>p</m>
-			is the degree of polynomial.
+			Generally, if a function is polynomial, the function is <m>O(n^p)</m> where <m>p</m> is the degree of polynomial.
 		</p>
 
 		<exercise>
@@ -57,8 +77,7 @@
 
 				<hint>
 					<p>
-						Hint: recall L'Hopital's rule for derivatives and try to find the <em>largest</em>
-						term of the given function.
+						Hint: recall L'Hopital's rule for derivatives and try to find the <em>largest</em> term of the given function.
 					</p>
 				</hint>
 			</task>
@@ -85,10 +104,10 @@
 
 	<section>
 		<title>Polynomial Evaluation</title>
+
 		<introduction>
 			<p>
-				An example that we will see again in <xref ref="ch-comp-types"/>, it that of
-				evaluating a polynomial. If
+				An example that we will see again in <xref ref="ch-comp-types"/>, it that of evaluating a polynomial. If
 			</p>
 
 			<p>
@@ -98,8 +117,7 @@
 			</p>
 
 			<p>
-				If we evaluate the polynomial as is counting powers as repeated multiplication,
-				then the number of additions is <m>n</m> and the number of multiplication is
+				If we evaluate the polynomial as is counting powers as repeated multiplication, then the number of additions is <m>n</m> and the number of multiplication is
 			</p>
 
 			<p>
@@ -109,13 +127,14 @@
 			</p>
 
 			<p>
-				This shows that polynomial evaluation is <m>O(n^2)</m> since
-				<m>\lim_{n \rightarrow \infty} M(n)/n^2 = 1/2</m>.
+				This shows that polynomial evaluation is <m>O(n^2)</m> since <m>\lim_{n \rightarrow \infty} M(n)/n^2 = 1/2</m>.
 			</p>
 		</introduction>
 
+
 		<subsection xml:id="sect-horner">
 			<title>Horner's Form</title>
+
 			<p>
 				We can rewrite <xref ref="eq-poly"/> as
 			</p>
@@ -127,23 +146,21 @@
 			</p>
 
 			<p>
-				In this case, there are <m>n</m> additions and <m>n</m> multiplications.
-				So you could say that the total number of operations are <m>c_1 n + c_2n</m>
-				where <m>c_1</m> and <m>c_2</m> are constants related to addition and multiplication.
-				Overall, this means that the order of polynomial evaluation using Horner's
-				method is <m>O(n)</m>.
+				In this case, there are <m>n</m> additions and <m>n</m> multiplications. So you could say that the total number of operations are <m>c_1 n + c_2n</m> where <m>c_1</m> and <m>c_2</m> are constants related to addition and multiplication. Overall, this means that the order of polynomial evaluation using Horner's method is <m>O(n)</m>.
 			</p>
 		</subsection>
 
+
 		<subsection>
 			<title>Benchmarking Polynomial Evaluation</title>
+
 			<introduction>
 				<p>
 					Let's actually see some actual data in this.  First, the polynomial evaluation can be written as
 				</p>
 
 
-				<program language="julia" line-numbers="yes">
+				<program language="Julia" line-numbers="yes">
 					<input>
 function poly1(coeffs::Vector{T}, x::S) where {T &lt;: Number, S &lt;: Number}
   local sum = zero(T)
@@ -163,22 +180,15 @@ end
 				</program>
 
 				<p>
-					where the <c>where {T &lt;: Number, S &lt;: Number}</c> will be explained in <xref ref="ch-adv-functions"/>,
-					but this allows any subtype of Number to be taken.  Also, we have defined the power
-					to be repeated multiplication using a for loop, since Julia's power function is
-					quite efficient--we want to show the results from above.
+					where the <c>where {T &lt;: Number, S &lt;: Number}</c> will be explained in <xref ref="ch-adv-functions"/>, but this allows any subtype of Number to be taken.  Also, we have defined the power to be repeated multiplication using a for loop, since Julia's power function is quite efficient--we want to show the results from above.
 				</p>
 
 				<p>
-					To test this, first we will use <c>BigFloat</c>s as the coefficients to slow down the
-					operations a bit, otherwise it is hard to measure the time.
+					To test this, first we will use <c>BigFloat</c>s as the coefficients to slow down the operations a bit, otherwise it is hard to measure the time.
 				</p>
 
 				<p>
-					Let's do some testing and we'll need the <c>BenchmarkTools</c> and <c>CairoMakie</c>
-					(for plotting). We also
-					need <c>Random</c> to set the seed and <c>LsqFit</c> to fit the data we'll generate
-					to a curve.
+					Let's do some testing and we'll need the <c>BenchmarkTools</c> and <c>CairoMakie</c> (for plotting). We also need <c>Random</c> to set the seed and <c>LsqFit</c> to fit the data we'll generate to a curve.
 					<cd>
 					<cline>using BenchmarkTools, CairoMakie, Random, LsqFit</cline>
 					<cline>CairoMakie.activate!()</cline>
@@ -188,19 +198,12 @@ end
 
 				<remark>
 					<p>
-						There are a few plots in this section and we will be using a package called
-						<c>Makie</c> to do the plots.  We will explore this in detail in
-						<xref ref="ch-plotting-makie"/>, however, copying the code to produce
-						the plots is sufficient for this chapter.
+						There are a few plots in this section and we will be using a package called <c>Makie</c> to do the plots.  We will explore this in detail in <xref ref="ch-plotting-makie"/>, however, copying the code to produce the plots is sufficient for this chapter.
 					</p>
 				</remark>
 
 				<p>
-					The following will time using the <c>@belasped</c> macro which returns the amount of
-					time a function takes given in seconds. This is needed because we need to store the result.
-					Note that in the previous chapters we've used the <c>@btime</c> macro which times the
-					function and gives additional information as well as the return value.  We are only
-					interested in the amount of time in this section.
+					The following will time using the <c>@belapsed</c> macro which returns the amount of time a function takes given in seconds. This is needed because we need to store the result. Note that in the previous chapters we've used the <c>@btime</c> macro which times the function and gives additional information as well as the return value.  We are only interested in the amount of time in this section.
 				</p>
 
 				<p>
@@ -215,7 +218,7 @@ end
 				</p>
 
 				<p>
-					and let's do a scatter plot with
+					which will take quite a bit time.  After this runs, if we create a scatter plot with
 				</p>
 
 				<p>
@@ -227,25 +230,24 @@ end
 				<figure xml:id="fig-poly-eval">
 					<caption></caption>
 					<image width="75%" source="plots/algorithm-analysis/plot01.png">
-						<shortdescription>(for accessibility)</shortdescription>
+						<shortdescription>
+							(for accessibility)
+						</shortdescription>
 					</image>
 				</figure>
 
 				<p>
-					Hopefully visually you can see that it appears to be nonlinear and perhaps you
-					can see that it is may be quadratic.  We will fit a quadratic to these points by
-					first defining the model as a quadratic:
+					Hopefully visually you can see that it appears to be nonlinear and perhaps you can see that it is may be quadratic.  We will fit a quadratic to these points by first defining the model as a quadratic:
 				</p>
 
 				<p>
 					<cd>
-					<cline>model(t, p) = p[1].+p[2].*t.+p[3].*t.^2</cline>
+					<cline>model(t, p) = @. p[1]+p[2]*t+p[3]*t^2</cline>
 					</cd>
 				</p>
 
 				<p>
-					where broadcasting that was explained in <xref ref="sect-broadcasting"/>
-					and then fit the data to the model with:
+					where broadcasting using <c>@.</c> that was explained in <xref ref="sect-broadcasting"/> and then fit the data to the model with:
 				</p>
 
 				<p>
@@ -255,9 +257,7 @@ end
 				</p>
 
 				<p>
-					and note that the output will not be particularlly helpful.  What we are
-					looking for are the best-fit parameters and these can be found with <c>fit.param</c>
-					and the results are
+					and note that the output will not be particularly helpful.  What we are looking for are the best-fit parameters and these can be found with <c>fit.param</c> and the results are
 				</p>
 
 				<p>
@@ -270,9 +270,7 @@ end
 				</p>
 
 				<p>
-					These are all small, however, the important thing to determine is if they are
-					possibly zero.  We can use the confidence interval of each is found with
-					<c>confidence_interval(fit, 0.05)</c> which returns
+					These are all small, however, the important thing to determine is if they are possibly zero.  We can use the confidence interval of each is found with <c>confidence_interval(fit, 0.05)</c> which returns
 				</p>
 
 				<p>
@@ -285,14 +283,12 @@ end
 				</p>
 
 				<p>
-					These show the 95\%-confidence intervals for the three parameters.
-					We are looking for the largest non-zero term, which is the third one.  Since the above
-					fits all three terms, we will redo the fit with only the third term as
+					These show the 95%-confidence intervals for the three parameters. We are looking for the largest non-zero term, which is the third one.  Since the above fits all three terms, we will redo the fit with only the third term as
 				</p>
 
 				<p>
 					<cd>
-					<cline>model2(t,p) = p[1].*t.^2</cline>
+					<cline>model2(t,p) = @. p[1]*t^2</cline>
 					</cd>
 				</p>
 
@@ -317,7 +313,9 @@ end
 				<figure xml:id="fig-poly-fit2">
 					<caption></caption>
 					<image source="plots/algorithm-analysis/plot02.png">
-						<shortdescription>(for accessibility)</shortdescription>
+						<shortdescription>
+							(for accessibility)
+						</shortdescription>
 					</image>
 				</figure>
 
@@ -328,12 +326,13 @@ end
 
 			<subsubsection>
 				<title>Horner's Form</title>
+
 				<p>
-					We will compare this to horner's form, which we can write in julia as:
+					We will compare this to Horner's form, which we can write in Julia as:
 				</p>
 
 
-				<program language="julia" line-numbers="yes">
+				<program language="Julia" line-numbers="yes">
 					<input>
 function horner(coeffs::Vector{T},x::S) where {T &lt;: Number, S &lt;: Number}
   local result = coeffs[end]
@@ -350,7 +349,7 @@ end
 				</p>
 
 
-				<program language="julia" line-numbers="yes">
+				<program language="Julia" line-numbers="yes">
 					<input>
 htime = zeros(351)
 r = 1:50:351
@@ -367,7 +366,7 @@ end
 
 				<p>
 					<cd>
-					<cline>fig, ax = scatter(r,htime[r])</cline>
+					<cline>scatter(r,htime[r])</cline>
 					</cd>
 				</p>
 
@@ -378,13 +377,14 @@ end
 				<figure xml:id="fig-poly-fit3">
 					<caption></caption>
 					<image source="plots/algorithm-analysis/plot03.png">
-						<shortdescription>(for accessibility)</shortdescription>
+						<shortdescription>
+							(for accessibility)
+						</shortdescription>
 					</image>
 				</figure>
 
 				<p>
-					and this look much more linear than the previous one.  For this model, we'll
-					fit a linear function.
+					and this look much more linear than the previous one.  For this model, we'll fit a linear function.
 				</p>
 
 				<p>
@@ -394,9 +394,7 @@ end
 				</p>
 
 				<p>
-					and if you're interested in the value of the parameter (slope of the line),
-					<c>fit3.param</c> returns <c>1.8253874361922209e-9</c>.  Looking at it
-					visually, let's add the plot of the line to the scatter plot above with
+					and if you're interested in the value of the parameter (slope of the line), <c>fit3.param</c> returns <c>1.8253874361922209e-9</c>.  Looking at it visually, let's add the plot of the line to the scatter plot above with
 				</p>
 
 				<p>
@@ -412,15 +410,14 @@ end
 				<figure xml:id="fig-poly-fit4">
 					<caption></caption>
 					<image source="plots/algorithm-analysis/plot04.png">
-						<shortdescription>(for accessibility)</shortdescription>
+						<shortdescription>
+							(for accessibility)
+						</shortdescription>
 					</image>
 				</figure>
 
 				<p>
-					Overall, these results show that the time taken to evaluate a polynomial
-					using Horner's form, is <m>O(n)</m>.  This evidence shows that horner's
-					form of the polynomial is much faster and putting these two scatter plots
-					together with:
+					Overall, these results show that the time taken to evaluate a polynomial using Horner's form, is <m>O(n)</m>.  This evidence shows that Horner's form of the polynomial is much faster and putting these two scatter plots together with:
 				</p>
 
 				<p>
@@ -434,27 +431,32 @@ end
 				<p>
 					and the results are
 				</p>
+
+				<figure xml:id="fig-compare-to-horner">
+					<caption></caption>
+					<image source="plots/algorithm-analysis/plot05.png">
+						<shortdescription>
+							(for accessibility)
+						</shortdescription>
+					</image>
+				</figure>
 			</subsubsection>
 		</subsection>
 	</section>
 
 	<section>
 		<title>Interpreting big-O results</title>
+
 		<p>
-			Typically algorithms grows as some function of  <m>n</m>, which is a measure of the
-			size of the problem.  Determining the order of the algorithm can be tricky
-			although we can use numerics like above to find the timing of algorithms for
-			various sizes of the problem.  Then doing some datafitting, we can often find
-			the order of the algorithm.  We'll see another example of this in the next section.
+			Typically algorithms grows as some function of  <m>n</m>, which is a measure of the size of the problem.  Determining the order of the algorithm can be tricky although we can use numerics like above to find the timing of algorithms for various sizes of the problem.  Then doing some data-fitting, we can often find the order of the algorithm.  We'll see another example of this in the next section.
 		</p>
 
 		<p>
-			Understanding different orders is helpful and this means understanding how
-			functions grow.  Here are a bunch of standard algorithm functions and their plots:
+			Understanding different orders is helpful and this means understanding how functions grow.  Here are a bunch of standard algorithm functions and their plots:
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 fig = Figure()
 ax = Axis(fig[1,1])
@@ -479,26 +481,26 @@ fig
 		<figure xml:id="fig-o-of-n-compare">
 			<caption></caption>
 			<image source="plots/algorithm-analysis/plot06.png">
-				<shortdescription>(for accessibility)</shortdescription>
+				<shortdescription>
+					(for accessibility)
+				</shortdescription>
 			</image>
 		</figure>
 
 		<p>
-			This would basically show that if there are choices of algorithms, to use an
-			algorithm with a lower order in that for large values of problem size will run faster.
+			This would basically show that if there are choices of algorithms, to use an algorithm with a lower order in that for large values of problem size will run faster.
 		</p>
 	</section>
 
 	<section>
 		<title>Using Data to determine Algorithm order</title>
+
 		<p>
 			Typically, the best way to analyze an algorithm is to determine the number of operations as a function of <m>n</m>, however, let's look at this as a data analysis problem.  As an example, we'll look at this as the Fast Fourier Transform, discussed in Chapter \ref{ch:complex}.  This is a classic example of improving an algorithm to change the order.  For this we need the <c>FFTW</c> package, which you probably need to add and
 		</p>
 
 		<p>
-			<cd>
-			using FFTW
-			</cd>
+			<cd> using FFTW </cd>
 		</p>
 
 		<p>
@@ -506,7 +508,7 @@ fig
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 times3 = Float64[]
 sizes3 = [2^n for n=10:18]
@@ -519,8 +521,7 @@ end
 		</program>
 
 		<p>
-			which calculates the FFT for sizes <c>2^10</c> to <c>2^18</c>
-			and stores the results in the variable <c>times</c>. Then, let's plot the results with
+			which calculates the FFT for sizes <c>2^10</c> to <c>2^18</c> and stores the results in the variable <c>times</c>. Then, let's plot the results with
 		</p>
 
 		<p>
@@ -536,13 +537,14 @@ end
 		<figure xml:id="fig-fft">
 			<caption></caption>
 			<image source="plots/algorithm-analysis/fftw.png">
-				<shortdescription>(for accessibility)</shortdescription>
+				<shortdescription>
+					(for accessibility)
+				</shortdescription>
 			</image>
 		</figure>
 
 		<p>
-			Since it appears to be growing more that linearly, let's try the functions
-			<c>t*log(t)</c> and <c>t^2</c>.  Fitting a curve to both of these is
+			Since it appears to be growing more that linearly, let's try the functions <c>t*log(t)</c> and <c>t^2</c>.  Fitting a curve to both of these is
 		</p>
 
 		<p>
@@ -552,8 +554,7 @@ end
 		</p>
 
 		<p>
-			and a confidence interval of the parameters are found with <c>confidence_interval(fit_fft)</c>
-			resulting in
+			and a confidence interval of the parameters are found with <c>confidence_interval(fit_fft)</c> resulting in
 		</p>
 
 		<p>
@@ -565,27 +566,22 @@ end
 		</p>
 
 		<p>
-			Although both are exclusively positive, the second interval is nearly zero--values near <m>10^{-15}</m>
-			are often actually 0 and just due to roundoff error.  Therefore, we will only use the first
-			term in the model or <m>t*log(t)</m>.  Trying a new function fit with
+			Although both are exclusively positive, the second interval is nearly zero--values near <m>10^{-15}</m> are often actually 0 and just due to roundoff error.  Therefore, we will only use the first term in the model or <m>t*log(t)</m>.  Trying a new function fit with
 		</p>
 
 		<p>
 			<cd>
-			<cline>fit_fft2 = curve_fit((t,p) -&gt; p[1]*t.*log.(t), sizes3, times3, [1e-4])
-			</cline>
+			<cline>fit_fft2 = curve_fit((t,p) -&gt; @. p[1]*t*log(t), sizes3, times3, [1e-4]) </cline>
 			</cd>
 		</p>
 
 		<p>
-			The confidence interval of the parameters is found with <c>confidence_interval(fit3)</c> and
-			the results are
+			The confidence interval of the parameters is found with <c>confidence_interval(fit3)</c> and the results are
 		</p>
 
 		<p>
 			<cd>
-			<cline>1-element Vector{Tuple{Float64, Float64}}:
-			(8.197426904649365e-10, 8.695061786080083e-10)</cline>
+			<cline>1-element Vector{Tuple{Float64, Float64}}: (8.197426904649365e-10, 8.695061786080083e-10)</cline>
 			</cd>
 		</p>
 
@@ -612,18 +608,13 @@ end
 		</p>
 
 		<figure>
-			<caption>
-			Find a point on a line that minimizes distance
-			</caption>
-
+			<caption> Find a point on a line that minimizes distance </caption>
 			<image width="90%" source="plots/algorithm-analysis/best-fit-fft.png">
 			</image>
 		</figure>
 
 		<p>
-			This shows using some data analysis that matrix-vector product is <m>O(n \ln n)</m>,
-			which can also be shown use analysis of the algorithm, but requires knowledge
-			of how the algorithm works.
+			This shows using some data analysis that the FFT is <m>O(n \ln n)</m>, which can also be shown use analysis of the algorithm, but requires knowledge of how the algorithm works.
 		</p>
 	</section>
 </chapter>

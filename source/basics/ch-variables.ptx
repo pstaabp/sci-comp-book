@@ -40,7 +40,7 @@
 		</p>
 
 		<p>
-			We also show some of julia syntax, which looks like other languages (like python). If you have some basic knowledge of computing, it is helpful, but no particular language is needed.  We will see many standard programming structures in this book with a emphasis on those relevant to solving scientific computing problems.
+			We also show some of Julia syntax, which looks like other languages (like python). If you have some basic knowledge of computing, it is helpful, but no particular language is needed.  We will see many standard programming structures in this book with a emphasis on those relevant to solving scientific computing problems.
 		</p>
 	</introduction>
 
@@ -52,7 +52,7 @@
 		</p>
 
 		<p>
-			Julia also has a rational data type for numbers commonly though of as fractions like <m>-\frac{2}{3}</m>or <m>\frac{22}{7}</m>.  Recall that typically <m>i</m> represents <m>\sqrt{-1}</m>, the base imaginary number. Complex numbers like <m>2+3i</m> are also native to julia, however instead of <m>i</m>, julia uses <c>im</c>.  We will explore both rational and complex numbers in greater depth in <xref ref="ch-data-types"/> and have an entire chapter on complex numbers in <xref ref="ch-complex"/>.
+			Julia also has a rational data type for numbers commonly though of as fractions like <m>-\frac{2}{3}</m>or <m>\frac{22}{7}</m>.  Recall that typically <m>i</m> represents <m>\sqrt{-1}</m>, the base imaginary number. Complex numbers like <m>2+3i</m> are also native to Julia, however instead of <m>i</m>, Julia uses <c>im</c>.  We will explore both rational and complex numbers in greater depth in <xref ref="ch-data-types"/> and have an entire chapter on complex numbers in <xref ref="ch-complex"/>.
 		</p>
 	</section>
 
@@ -79,7 +79,7 @@
 			</p>
 
 			<p>
-				Variables in julia, much like other languages are primarily sequences of alphanumeric characters as well as an underscore <c>_</c>.  Primarily, a variable needs to start with a alphabetic character or <c>_</c> and after the first character can contain numbers.  A variable cannot have a space in the name.
+				Variables in Julia, much like other languages are primarily sequences of alphanumeric characters as well as an underscore <c>_</c>.  Primarily, a variable needs to start with a alphabetic character or <c>_</c> and after the first character can contain numbers.  A variable cannot have a space in the name.
 			</p>
 
 			<p>
@@ -205,7 +205,7 @@
 
 					<li>
 						<p>
-							To access the first element of the string, type <c>first(str)</c>, the last is found by <c>last(str)</c> and the 3rd character for example is <c>str[3]</c>.  In julia, string indexing starts at 1.
+							To access the first element of the string, type <c>first(str)</c>, the last is found by <c>last(str)</c> and the 3rd character for example is <c>str[3]</c>.  In Julia, string indexing starts at 1.
 						</p>
 					</li>
 
@@ -223,7 +223,7 @@
 			<title>String Operations</title>
 
 			<p>
-				We saw how to access elements of a string.  Another helpful operation is that of concatentation, or the merging of two strings. If
+				We saw how to access elements of a string.  Another helpful operation is that of concatenation, or the merging of two strings. If
 			</p>
 
 			<p>
@@ -301,7 +301,7 @@
 			<title>Other String Functions</title>
 
 			<p>
-				There are many other string functions, which are generally used for manipulating a string.  The <url href="https://docs.julialang.org/en/v1/base/strings/" visual="julialang.org">string chapter</url> of the julia documentation is a good place to look.
+				There are many other string functions, which are generally used for manipulating a string.  The <url href="https://docs.Julialang.org/en/v1/base/strings/" visual="Julialang.org">string chapter</url> of the Julia documentation is a good place to look.
 			</p>
 
 			<p>
@@ -327,15 +327,15 @@
 		</p>
 
 		<p>
-			In short, writing things in julia will consist of writing expressions (and slightly more complicated structures).
+			In short, writing things in Julia will consist of writing expressions (and slightly more complicated structures).
 		</p>
 	</section>
 
 	<section xml:id="sect-oper-precedence">
-		<title>Operator Precendence</title>
+		<title>Operator Precedence</title>
 
 		<p>
-			When we type out an expression like <c>11+2*(4+3)^3</c>, it is important to understand the order in which operators are performed. For mathematics, the PEMDAS pnemonic is helpful to rememember in that the order is:
+			When we type out an expression like <c>11+2*(4+3)^3</c>, it is important to understand the order in which operators are performed. For mathematics, the PEMDAS mnemonic is helpful to remember in that the order is:
 		</p>
 
 		<p>
@@ -371,7 +371,7 @@
 		</p>
 
 		<p>
-			Details on all this can be found on the <url href="https://docs.julialang.org/en/v1/manual/mathematical-operations/index.html#Operator-Precedence-and-Associativity-1" visual="docs.julialang.org">Julia documentation page on operator precedence</url>.
+			Details on all this can be found on the <url href="https://docs.Julialang.org/en/v1/manual/mathematical-operations/index.html#Operator-Precedence-and-Associativity-1" visual="docs.Julialang.org">Julia documentation page on operator precedence</url>.
 		</p>
 	</section>
 
@@ -383,11 +383,11 @@
 		</p>
 
 		<p>
-			In julia, a comment is anything to the right of a <c>#</c>, pound sign or hash tag. For example:
+			In Julia, a comment is anything to the right of a <c>#</c>, pound sign or hash tag. For example:
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 # This calculates the area of a circle
 r = 3

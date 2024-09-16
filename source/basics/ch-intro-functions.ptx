@@ -57,7 +57,7 @@
 
 	<introduction>
 		<p>
-			In any language, the function is one of the most important ideas and this chapter covers the introduction of functions with examples in julia. There are four main purposes of functions in scientific computation.
+			In any language, the function is one of the most important ideas and this chapter covers the introduction of functions with examples in Julia. There are four main purposes of functions in scientific computation.
 		</p>
 
 		<p>
@@ -82,7 +82,7 @@
 
 				<li>
 					<p>
-						Functions allow separation of code.  If there is a large code and a section of it does a specific task, making it a function will separate code resulting in simplication.
+						Functions allow separation of code.  If there is a large code and a section of it does a specific task, making it a function will separate code resulting in simplification.
 					</p>
 				</li>
 			</ol>
@@ -93,7 +93,7 @@
 		<title>Simple example</title>
 
 		<p>
-			A simple example of a julia function is
+			A simple example of a Julia function is
 			<cd>
 			<cline>function sq(x)</cline>
 			<cline>  x*x</cline>
@@ -154,7 +154,7 @@
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
       function isOdd(n)
         if mod(n,2)==1
@@ -275,7 +275,7 @@
 			</p>
 
 			<p>
-				Depending on the number of arguments, julia will call the appropriate function. This is an example of <url href="https://en.wikipedia.org/wiki/Multiple_dispatch" visual="wikipedia.org"> Multiple Dispatch</url>, in which either the number or type of arguments determine the actual function call.
+				Depending on the number of arguments, Julia will call the appropriate function. This is an example of <url href="https://en.wikipedia.org/wiki/Multiple_dispatch" visual="wikipedia.org"> Multiple Dispatch</url>, in which either the number or type of arguments determine the actual function call.
 			</p>
 
 			<p>
@@ -285,9 +285,9 @@
 			<p>
 				<cd>
 				<cline># 3 methods for generic function theMean from Main:</cline>
-				<cline>	theMean(x::Real, y::Real) in Main at /Users/XXXXX/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
-				<cline>	theMean(x, y) in Main at /Users/XXXXX/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
-				<cline>	theMean(x::Real, y::Real, z::Real) in Main at /Users/XXXXX/code/sci-comp-book/julia-output/intro-functions.ipynb:1</cline>
+				<cline>	theMean(x::Real, y::Real) in Main at /Users/XXXXX/code/sci-comp-book/Julia-output/intro-functions.ipynb:1</cline>
+				<cline>	theMean(x, y) in Main at /Users/XXXXX/code/sci-comp-book/Julia-output/intro-functions.ipynb:1</cline>
+				<cline>	theMean(x::Real, y::Real, z::Real) in Main at /Users/XXXXX/code/sci-comp-book/Julia-output/intro-functions.ipynb:1</cline>
 				</cd>
 			</p>
 
@@ -323,27 +323,27 @@
 			<title>Multiple Dispatch of built-in functions</title>
 
 			<p>
-				Multiple dispatch allows julia to be quite nice.  For example, the <c>+</c> function allows code to be written with the plus symbol and execute different code.  Type <c>methods(+)</c> and the top of the results should be similar to
+				Multiple dispatch allows Julia to be quite nice.  For example, the <c>+</c> function allows code to be written with the plus symbol and execute different code.  Type <c>methods(+)</c> and the top of the results should be similar to
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 					# 197 methods for generic function + from Base:
-					+(B::BitMatrix, J::LinearAlgebra.UniformScaling) in LinearAlgebra at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/LinearAlgebra/src/uniformscaling.jl:151
+					+(B::BitMatrix, J::LinearAlgebra.UniformScaling) in LinearAlgebra at /Users/XXXXX/.Julia/Juliaup/Julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/Julia/stdlib/v1.11/LinearAlgebra/src/uniformscaling.jl:151
 					+(x::Bool, z::Complex{Bool}) in Base at complex.jl:308
 					+(x::Bool, y::Bool) in Base at bool.jl:166
 					+(x::Bool) in Base at bool.jl:163
 					+(x::Bool, z::Complex) in Base at complex.jl:315
 					+(x::Real, z::Complex{Bool}) in Base at complex.jl:322
 					+(x::Bool, y::T) where T&gt;:AbstractFloat in Base at bool.jl:173
-					+(x::Dates.CompoundPeriod, y::Dates.CompoundPeriod) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:335
-					+(x::Dates.CompoundPeriod, y::Dates.Period) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:333
-					+(x::Dates.CompoundPeriod, y::Dates.TimeType) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/periods.jl:363
-					+(dt::Dates.DateTime, y::Dates.Year) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:25
-					+(dt::Dates.DateTime, z::Dates.Month) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:49
-					+(x::Dates.DateTime, y::Dates.Quarter) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:77
-					+(x::Dates.DateTime, y::Dates.Period) in Dates at /Users/XXXXX/.julia/juliaup/julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/julia/stdlib/v1.11/Dates/src/arithmetic.jl:83
+					+(x::Dates.CompoundPeriod, y::Dates.CompoundPeriod) in Dates at /Users/XXXXX/.Julia/Juliaup/Julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/Julia/stdlib/v1.11/Dates/src/periods.jl:335
+					+(x::Dates.CompoundPeriod, y::Dates.Period) in Dates at /Users/XXXXX/.Julia/Juliaup/Julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/Julia/stdlib/v1.11/Dates/src/periods.jl:333
+					+(x::Dates.CompoundPeriod, y::Dates.TimeType) in Dates at /Users/XXXXX/.Julia/Juliaup/Julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/Julia/stdlib/v1.11/Dates/src/periods.jl:363
+					+(dt::Dates.DateTime, y::Dates.Year) in Dates at /Users/XXXXX/.Julia/Juliaup/Julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/Julia/stdlib/v1.11/Dates/src/arithmetic.jl:25
+					+(dt::Dates.DateTime, z::Dates.Month) in Dates at /Users/XXXXX/.Julia/Juliaup/Julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/Julia/stdlib/v1.11/Dates/src/arithmetic.jl:49
+					+(x::Dates.DateTime, y::Dates.Quarter) in Dates at /Users/XXXXX/.Julia/Juliaup/Julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/Julia/stdlib/v1.11/Dates/src/arithmetic.jl:77
+					+(x::Dates.DateTime, y::Dates.Period) in Dates at /Users/XXXXX/.Julia/Juliaup/Julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/Julia/stdlib/v1.11/Dates/src/arithmetic.jl:83
 					+(z::Complex{Bool}, x::Bool) in Base at complex.jl:309
 					+(z::Complex{Bool}, x::Real) in Base at complex.jl:323
 				</input>
@@ -391,7 +391,7 @@
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
   function theMean(x::Real...)
     local sum=0
@@ -464,7 +464,7 @@
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
   function fact(n::Integer)
     local prod=1
@@ -535,11 +535,11 @@
 		</p>
 
 		<p>
-			We can write the julia version of the factorial in the following:
+			We can write the Julia version of the factorial in the following:
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 				function factr(n::Integer)
 				  if n == 0
@@ -576,11 +576,11 @@
 		<title>Variable Scope</title>
 
 		<p>
-			If you are using the command line julia (also called the REPL) or in a notebook, then entering <c>x=6</c> will create <c>x</c> as a global variable, even without saying so explicitly. If we consider the factorial function above:
+			If you are using the command line Julia (also called the REPL) or in a notebook, then entering <c>x=6</c> will create <c>x</c> as a global variable, even without saying so explicitly. If we consider the factorial function above:
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 function fact(n::Integer)
   prod=1
@@ -597,7 +597,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 function fact(n::Integer)
   local prod=1
@@ -610,7 +610,7 @@ end
 		</program>
 
 		<p>
-			The variable <c>prod</c> is not defined or visible outside the function. If we type <c>2*prod</c> outside the function for example, an error will occur saying that <c>prod</c> is not defined.  It is acutally a good thing that variables inside a function is only visible inside the function (that is has local scope), because this encapusulates the code inside a function in  that the function doesn't affect anything outside of it.
+			The variable <c>prod</c> is not defined or visible outside the function. If we type <c>2*prod</c> outside the function for example, an error will occur saying that <c>prod</c> is not defined.  It is actually a good thing that variables inside a function is only visible inside the function (that is has local scope), because this encapsulates the code inside a function in  that the function doesn't affect anything outside of it.
 		</p>
 
 		<p>
@@ -618,7 +618,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 x=3
 function f()
@@ -638,7 +638,7 @@ f()
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 x=3
 function g()
@@ -661,7 +661,7 @@ end
 		</p>
 
 		<p>
-			<url href="http://docs.julialang.org/en/latest/manual/functions/" visual="docs.julialang.org"> Julia documentation on functions</url> is a has additional information on functions and we will cover some advanced features of functions in <xref ref="ch-functional-programming"/> and <xref ref="ch-adv-functions"/>.
+			<url href="http://docs.Julialang.org/en/latest/manual/functions/" visual="docs.Julialang.org"> Julia documentation on functions</url> is a has additional information on functions and we will cover some advanced features of functions in <xref ref="ch-functional-programming"/> and <xref ref="ch-adv-functions"/>.
 		</p>
 	</section>
 </chapter>

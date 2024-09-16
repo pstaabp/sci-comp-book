@@ -3,6 +3,46 @@
 <chapter xml:id="ch-rootfinding">
 	<title>Solving Quadratics and Rootfinding</title>
 
+	<objectives>
+		<ul>
+			<li>
+				<p>
+					Definition of absolute and relative errors.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Definition of a root of a function and the quadratic equation for finding roots of quadratic functions.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Where roundoff errors often occur and how to minimize these in the quadratic formula.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Using Newton's method to find roots.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Using automatic differentiation to simplify Newton's method.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Use the Bisection method to find roots.
+				</p>
+			</li>
+		</ul>
+	</objectives>
+
 	<introduction>
 		<p>
 			Solving an equation is something that is needed throughout scientific computing and is difficult to do in general.  For example, if we have an equation like <m>x^2-1=0</m>, this can be solved exactly using the quadratic formula, however the relatively simple equation <m>x=\sin(x)</m> has no analytic solution.  In this chapter, we discuss how to find roots of both quadratic functions and general functions, but also use this to discuss both errors in a algorithm as well as round off error, which occurs often when solving problems.
@@ -11,10 +51,14 @@
 		<definition xml:id="def-root">
 			<statement>
 				<p>
-					A <term>root</term> of an equation is a number <m>x^{\star}</m>, such that <m>f(x^{\star})=0</m>.  For example, if <m>f(x)=x^2-4</m>, then both <m>x=2</m> and <m>x=-2</m> are roots of the equation.
+					A <term>root</term> of an equation is a number <m>x^{\star}</m>, such that <m>f(x^{\star})=0</m>.
 				</p>
 			</statement>
 		</definition>
+
+		<p>
+			For example, if <m>f(x)=x^2-4</m>, then both <m>x=2</m> and <m>x=-2</m> are roots of the equation.
+		</p>
 
 		<p>
 			The definition about saying that a root is a value where <m>f(x)=0</m> and an equation like <m>x=\sin(x)</m> doesn't fit this form, but recall that the equation can be algebraically manipulated to get to be a root as <m>f(x) = x-\sin(x)</m> or <m>f(x)=\sin(x) -x</m>.
@@ -50,7 +94,7 @@
 				</p>
 
 				<p>
-					We can do this is julia with
+					We can do this is Julia with
 				</p>
 
 				<p>
@@ -119,7 +163,7 @@
 			</p>
 
 			<p>
-				We are going to solve this using the quadratic formula in julia.  To study rounding effects we're going to solve these using both 16-bit and 64-bit floating point numbers.  We'll assume that the 64-numbers are the actual answers in determining errors.
+				We are going to solve this using the quadratic formula in Julia.  To study rounding effects we're going to solve these using both 16-bit and 64-bit floating point numbers.  We'll assume that the 64-numbers are the actual answers in determining errors.
 			</p>
 		</introduction>
 
@@ -128,7 +172,7 @@
 			<title>Investigating Errors with Code</title>
 
 			<p>
-				First, consider the quadratic formula as a julia function:
+				First, consider the quadratic formula as a Julia function:
 			</p>
 
 			<p>
@@ -141,7 +185,7 @@
 			</p>
 
 			<p>
-				where we have two values returned as a tuple (note the comman between the values).  We can solve the quadratic in <xref ref="eq-quad"/> with
+				where we have two values returned as a tuple (note the comma between the values).  We can solve the quadratic in <xref ref="eq-quad"/> with
 			</p>
 
 			<p>
@@ -274,11 +318,11 @@
 		</p>
 
 		<p>
-			and there is a similar solution if the <m>-</m> root is taken above. Note that we have changed the sign of the <m>b</m> term in the top of the standard formula.  Basically, this has switched a subtraction (which is prone to roundoff errors) to an addition (which is not prone to roundoff). In julia, the alternative quadratic formula is:
+			and there is a similar solution if the <m>-</m> root is taken above. Note that we have changed the sign of the <m>b</m> term in the top of the standard formula.  Basically, this has switched a subtraction (which is prone to roundoff errors) to an addition (which is not prone to roundoff). In Julia, the alternative quadratic formula is:
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 function qSol2(a::Real,b::Real,c::Real)
   d=sqrt(b^2-4*a*c)
@@ -337,7 +381,7 @@ end
 					</shortdescription>
 				</image>
 			</figure>
-			<!-- \begin{jlcode}[root] f(x)=15x^3-143x^2+226x+280 plot([f,x-&gt;0],-2,10,label=["f(x)" "x-axis"]) \end{jlcode} \begin{center} \pgfplotsset{scale=0.7} \plot{plots/rootfinding/plot03.tex}{root} \end{center} -->
+
 			<p>
 				and the three intersection points between the red curve (<m>x</m>-axis) and the blue line (the function, <m>y=f(x)</m>) are the three roots.
 			</p>
@@ -436,7 +480,7 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function newton(f::Function, df::Function, x0::Number)
   x1 = x0 - f(x0)/df(x0)
@@ -468,7 +512,7 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function newton(f::Function, df::Function, x0::Number)
   local dx = f(x0)/df(x0)
@@ -483,7 +527,7 @@ end
 			</program>
 
 			<p>
-				First, we need to define <c>dx</c> first to determine if we need to go into the loop.  We just set it to some value to get it started. We have also used the operator <c>-=</c>. The line <c>x0 -= dx</c> is shorthand for <c>x0 = x0 - dx</c>
+				First, we need to define <c>dx</c> first to determine if we need to go into the loop.  We just set it to some value to get it started. We have also used the operator <c>-=</c>. Line 6 above or  <c>x1 -= dx</c> is shorthand for <c>x1 = x1 - dx</c>
 			</p>
 
 			<p>
@@ -549,7 +593,7 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function newton(f::Function, x0::Number)
   local dx = f(x0)/ForwardDiff.derivative(f,x0)
@@ -610,7 +654,7 @@ end
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
 function newton(f::Function, x0::Number)
   local dx = f(x0)/ForwardDiff.derivative(f,x0)
@@ -644,5 +688,89 @@ end
 				Now, this still isn't perfect because when we run it, we only get a single number out. In this case, the value is not a root, but how do you know?  We will see in <xref ref="ch-comp-types"/> how to develop a new type which stores information about the root and if a solution was reached.
 			</p>
 		</subsection>
+	</section>
+
+	<section>
+		<title>The Bisection Method</title>
+
+		<p>
+			In <xref ref="sect-while-loop"/>, we saw the bisection method and just presented it as an example of using a while loop. We return to this to further explain the method.  If we have a function like <m>f(x) = x^2-2</m> and seek to find a root of this<fn>Yes, I realize this is an example where we know the answer using algebra, but go with it.</fn>. The graph of this on <m>[0,2]</m> is
+		</p>
+
+		<figure xml:id="fig-root-xsq">
+			<caption></caption>
+			<image source="plots/rootfinding/xsq.png">
+				<shortdescription>
+					(for accessibility)
+				</shortdescription>
+			</image>
+		</figure>
+
+		<p>
+			and note that we are seeking where the curve crosses the <m>x</m>-axis.  The bisection method requires that we start with an interval that contains the root.  In this case, we will use <m>[a_0,b_0]=[1,2]</m>. We know that there is a root of this from the intermediate value theorem which states that a continuous function takes on all values between <m>f(a)</m> and <m>f(b)</m>, where <m>a</m> and <m>b</m> are the endpoints of the interval.  Since we are seeking a value <m>x^{\star}</m> where <m>f(x^{\star})=0</m>, the endpoints must have opposite signs which can be tested by multiplying the values and testing for a negative number or <m>f(a)f(b) &lt; 0</m>.
+		</p>
+
+		<algorithm xml:id="alg-bisect">
+			<statement>
+				<p>
+					Let <c>a</c> and <c>b</c> be an interval <m>[a,b]</m> such that <c>f(a)*f(b) &lt; 0 </c>.  The following uses the bisection method to find a root to within <c>ϵ</c> of the true value <m>x^{\star}</m>.
+				</p>
+
+				<p>
+					<ol>
+						<li>
+							<p>
+								Test if <c>b-a &lt; ϵ</c>. If so exit the algorithm with the current values of <c>a</c> and <c>b</c>.
+							</p>
+						</li>
+
+						<li>
+							<p>
+								Find <c>m=(a+b)/2</c>, the midpoint of the current interval.
+							</p>
+						</li>
+
+						<li>
+							<p>
+								If <c>f(a)*f(m) &lt; 0</c>, then the new interval should be <m>[a,m]</m> or let <c>b=m</c>.  Otherwise, the new interval should be <m>[m,b]</m> so let <c>a=m</c>.
+							</p>
+						</li>
+
+						<li>
+							<p>
+								Goto step 1.
+							</p>
+						</li>
+					</ol>
+				</p>
+			</statement>
+		</algorithm>
+
+		<p>
+			As we showed in <xref ref="sect-while-loop"/>, this can be written in Julia as
+		</p>
+
+
+		<program language="Julia" line-numbers="yes">
+			<input>
+function bisection(f::Function, a::Real, b::Real)
+  local c
+  while (b-a) &gt; 1e-6
+    c = 0.5*(a+b)  # find the midpoint
+    # test if f(a) and f(c) have opposite signs to determine the new interval
+    (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
+  end
+  c
+end
+			</input>
+		</program>
+
+		<p>
+			where we have hard coded <c>ϵ</c> to be <c>1e-6</c>.  Note also that we have used a tuple to store the interval and have updated the entire interval instead of just one endpoint as the algorithm above states.  This is mainly for code clarity. Also, we will update this code to handle other values of <c>ϵ</c> in <xref ref="ch-adv-functions"/>.  Also in that chapter we will test to ensure that the original interval contains the root.
+		</p>
+
+		<p>
+			Running the code with <c>x0 = bisect(x -&gt; x^2-2, 1, 2)</c> returns <c>1.4142141342163086</c> and <c>absErr(x0, sqrt(2))</c> returns <c>5.718432134482754e-7</c> showing that in fact the error is with <m>10^{-6}</m>.
+		</p>
 	</section>
 </chapter>
