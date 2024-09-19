@@ -231,7 +231,7 @@ window.MathJax = {
 </ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-7" class="internal"><span class="codenumber">2.4</span> <span class="title">Expressions</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#sect-oper-precedence" class="internal"><span class="codenumber">2.5</span> <span class="title">Operator Precendence</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#sect-oper-precedence" class="internal"><span class="codenumber">2.5</span> <span class="title">Operator Precedence</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-9" class="internal"><span class="codenumber">2.6</span> <span class="title">Comments</span></a></div></li>
 </ul>
 </li>
@@ -355,7 +355,7 @@ window.MathJax = {
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-12-7" class="internal"><span class="codenumber">6.9.5</span> <span class="title">Removing Duplicate Elements</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Spliting Strings</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Splitting Strings</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-14" class="internal"><span class="codenumber">6.11</span> <span class="title">Arrays as a Collection</span></a></div></li>
 </ul>
 </li>
@@ -468,12 +468,12 @@ window.MathJax = {
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-comp-types.html" class="internal"><span class="codenumber">12</span> <span class="title">Creating New Data Types in Julia</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-3" class="internal"><span class="codenumber">12.1</span> <span class="title">Basics of Julia’s Composite Datatype</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4" class="internal"><span class="codenumber">12.1</span> <span class="title">Basics of Julia’s Composite Datatype</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4" class="internal"><span class="codenumber">12.2</span> <span class="title">A Card datatype</span></a></div>
+<div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5" class="internal"><span class="codenumber">12.2</span> <span class="title">A Card datatype</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4-3" class="internal"><span class="codenumber">12.2.1</span> <span class="title">Constructors of new data types</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4-4" class="internal"><span class="codenumber">12.2.2</span> <span class="title">Creating a Hand datatype</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5-3" class="internal"><span class="codenumber">12.2.1</span> <span class="title">Constructors of new data types</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5-4" class="internal"><span class="codenumber">12.2.2</span> <span class="title">Creating a Hand datatype</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-section">
@@ -483,7 +483,7 @@ window.MathJax = {
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#sect-poly-parametric-4" class="internal"><span class="codenumber">12.3.2</span> <span class="title">Evaluating the polynomial</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-6" class="internal"><span class="codenumber">12.4</span> <span class="title">A Rootfinding datatype</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-7" class="internal"><span class="codenumber">12.4</span> <span class="title">A Rootfinding datatype</span></a></div></li>
 </ul>
 </li>
 </ul>
@@ -1080,13 +1080,13 @@ window.MathJax = {
 <article class="objectives goal-like" id="ch-arrays-2"><h3 class="heading"><span class="type">Objectives</span></h3>
 <ul class="disc" id="ch-arrays-2-1">
 <li id="ch-arrays-2-1-1"><div class="para" id="ch-arrays-2-1-1-1">Learn that arrays are ordered collections of things that can be accessed and updated.</div></li>
-<li id="ch-arrays-2-1-2"><div class="para" id="ch-arrays-2-1-2-1">There are numerous methods including direct entry and comprehensions to contruct an array.</div></li>
+<li id="ch-arrays-2-1-2"><div class="para" id="ch-arrays-2-1-2-1">There are numerous methods including direct entry and comprehensions to construct an array.</div></li>
 <li id="ch-arrays-2-1-3"><div class="para" id="ch-arrays-2-1-3-1">There are many methods on arrays including some arithmetic ones on both vectors and matrices as well as the sum and product of numeric vectors.</div></li>
 <li id="ch-arrays-2-1-4"><div class="para" id="ch-arrays-2-1-4-1">There are numerous methods to extract, delete, insert and append elements to vectors.</div></li>
-<li id="ch-arrays-2-1-5"><div class="para" id="ch-arrays-2-1-5-1">Understanding how to sort vectors either numerically, lexiographically or by applying another function first.</div></li>
+<li id="ch-arrays-2-1-5"><div class="para" id="ch-arrays-2-1-5-1">Understanding how to sort vectors either numerically, lexicographically or by applying another function first.</div></li>
 <li id="ch-arrays-2-1-6"><div class="para" id="ch-arrays-2-1-6-1">The join method takes an array and returns a string and similarly a split method, takes a string and splits into an array.</div></li>
 </ul></article><section class="introduction" id="ch-arrays-3"><div class="para" id="ch-arrays-3-1">Arrays are a fundamental data structure for nearly every computer language and it is a crucial for scientific computing as that it is an efficient way of handling large amount of the same datatype.  Additionally, arrays are the computing version of mathematical vectors and matrices.</div> <div class="para" id="ch-arrays-3-2">In short an array is a collection of data of (typically) the same type under the same name. We have seen arrays before. For example, if we say</div> <div class="para logical" id="ch-arrays-3-3"><pre class="code-display tex2jax_ignore">arr = [1,2,3]
-</pre></div> <div class="para" id="ch-arrays-3-4">then we get a 1-dimensional array of length 3. Note that when returned, julia says <code class="code-inline tex2jax_ignore">3-element Vector{Int64}:</code> which means</div> <div class="para logical" id="ch-arrays-3-5"><ul class="disc" id="ch-arrays-3-5-1">
+</pre></div> <div class="para" id="ch-arrays-3-4">then we get a 1-dimensional array of length 3. Note that when returned, Julia says <code class="code-inline tex2jax_ignore">3-element Vector{Int64}:</code> which means</div> <div class="para logical" id="ch-arrays-3-5"><ul class="disc" id="ch-arrays-3-5-1">
 <li id="ch-arrays-3-5-1-1"><div class="para" id="ch-arrays-3-5-1-1-1">it is length 3 (since it is a 3-element)</div></li>
 <li id="ch-arrays-3-5-1-2"><div class="para" id="ch-arrays-3-5-1-2-1">The internal type is <code class="code-inline tex2jax_ignore">Int64</code>.</div></li>
 <li id="ch-arrays-3-5-1-3"><div class="para" id="ch-arrays-3-5-1-3-1">The <code class="code-inline tex2jax_ignore">Vector</code> indicates it is 1-dimensional.</div></li>
@@ -1159,7 +1159,7 @@ window.MathJax = {
 </pre></div>
 <details id="sect-comprehensions-8" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
 <span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">6.1</span><span class="period">.</span>
-</h4></summary><article class="exercise exercise-like knowl__content"><div class="para" id="sect-comprehensions-8-1-1">Using the techniques in this section, create the following arrays in julia:</div> <div class="para logical" id="sect-comprehensions-8-1-2"><ol class="decimal" id="sect-comprehensions-8-1-2-1">
+</h4></summary><article class="exercise exercise-like knowl__content"><div class="para" id="sect-comprehensions-8-1-1">Using the techniques in this section, create the following arrays in Julia:</div> <div class="para logical" id="sect-comprehensions-8-1-2"><ol class="decimal" id="sect-comprehensions-8-1-2-1">
 <li id="sect-comprehensions-8-1-2-1-1"><div class="para logical" id="sect-comprehensions-8-1-2-1-1-1"><div class="displaymath process-math">
 \begin{equation*}
 \begin{bmatrix} 3 \\ 6 \\ 9 \\ 12 \\ 15 \\ 18 \\ 21 \\ 24 \end{bmatrix}
@@ -1224,7 +1224,7 @@ window.MathJax = {
 6  4  3
 7  5  4
 </pre></div>
-<div class="para" id="sect-accessing-arrays-20">There are a number of different ways to return subarrays. See <a class="external" href="https://docs.julialang.org/en/latest/manual/arrays/#man-array-indexing-1" target="_blank">the Julia matrices documentation</a><details class="ptx-footnote" aria-live="polite" id="sect-accessing-arrays-20-2"><summary class="ptx-footnote__number" title="Footnote 6.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="sect-accessing-arrays-20-2"><code class="code-inline tex2jax_ignore">julialang.org</code></div></details> for more information.</div></section><section class="section" id="ch-arrays-7"><h3 class="heading hide-type">
+<div class="para" id="sect-accessing-arrays-20">There are a number of different ways to return subarrays. See <a class="external" href="https://docs.Julialang.org/en/latest/manual/arrays/#man-array-indexing-1" target="_blank">the Julia matrices documentation</a><details class="ptx-footnote" aria-live="polite" id="sect-accessing-arrays-20-2"><summary class="ptx-footnote__number" title="Footnote 6.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="sect-accessing-arrays-20-2"><code class="code-inline tex2jax_ignore">Julialang.org</code></div></details> for more information.</div></section><section class="section" id="ch-arrays-7"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">6.4</span><span class="space"> </span><span class="title">Common Operations on Arrays</span>
 </h3>
 <div class="para" id="ch-arrays-7-2">There are a number of operations on array. For each <code class="code-inline tex2jax_ignore">+</code> and <code class="code-inline tex2jax_ignore">-</code> adds and subtracts two arrays of the same size in an element by element manner. For example if</div>
@@ -1272,7 +1272,7 @@ window.MathJax = {
 <div class="para logical" id="sect-broadcasting-10"><pre class="code-display tex2jax_ignore">(1,2,3) .+ (4,5,6)
 </pre></div>
 <div class="para" id="sect-broadcasting-11">returns <code class="code-inline tex2jax_ignore">(5, 7, 9)</code>. And if we want to add 10 to every element of a matrix, we can use this syntax as well.  <code class="code-inline tex2jax_ignore">[1, 2, 3, 4] .+ 10</code> returns <code class="code-inline tex2jax_ignore">[11, 12, 13, 14]</code>.  Note that having broadcasting simplifies a lot of operations with arrays.  Without this, typically a for loop would be needed to be written, which is not difficult, but more more complicated than a single operation.</div>
-<div class="para" id="sect-broadcasting-12">There is also a macro that can apply broadcatings.  Let’s say that we are applying the funtion <span class="process-math">\(f(x) = x \sin(x) + e^{x^2}\)</span> on an array <code class="code-inline tex2jax_ignore">x = collect(-3:3)</code>.  To write this operation element by element: one must do <code class="code-inline tex2jax_ignore">x .* sin.(x)+exp.(x.^2)</code> and also that isn’t too difficult, there is a bit of an easier way using the <code class="code-inline tex2jax_ignore">@.</code> macro.  If we add this in front of a non-broadcasting expression, it will apply all functions an operations in the right way.  You should notice that <code class="code-inline tex2jax_ignore">@. x*sin(x) + exp(x^2)</code> returns the same array.</div>
+<div class="para" id="sect-broadcasting-12">There is also a macro that can apply broadcasting.  Let’s say that we are applying the function <span class="process-math">\(f(x) = x \sin(x) + e^{x^2}\)</span> on an array <code class="code-inline tex2jax_ignore">x = collect(-3:3)</code>.  To write this operation element by element: one must do <code class="code-inline tex2jax_ignore">x .* sin.(x)+exp.(x.^2)</code> and also that isn’t too difficult, there is a bit of an easier way using the <code class="code-inline tex2jax_ignore">@.</code> macro.  If we add this in front of a non-broadcasting expression, it will apply all functions an operations in the right way.  You should notice that <code class="code-inline tex2jax_ignore">@. x*sin(x) + exp(x^2)</code> returns the same array.</div>
 <div class="para" id="sect-broadcasting-13">We will use both forms of broadcasting in the rest of this book.  Often, it broadcasting is relatively simple, we’ll use the non-macro version, but for more complicated ones, we’ll use the macro.</div></section><section class="section" id="ch-arrays-9"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">6.6</span><span class="space"> </span><span class="title">Other Operations on Arrays</span>
 </h3>
@@ -1293,7 +1293,7 @@ window.MathJax = {
 <div class="para logical" id="ch-arrays-10-6"><pre class="code-display tex2jax_ignore">sort(A,rev=true)
 </pre></div>
 <div class="para" id="ch-arrays-10-7">results in <code class="code-inline tex2jax_ignore">[8 6 5 4 3 2 1]</code>.</div>
-<div class="para" id="ch-arrays-10-8">If an array element type is a <code class="code-inline tex2jax_ignore">String</code>, then it is sorted lexiographically (similar to alphabetical).  If</div>
+<div class="para" id="ch-arrays-10-8">If an array element type is a <code class="code-inline tex2jax_ignore">String</code>, then it is sorted lexicographically (similar to alphabetical).  If</div>
 <div class="para logical" id="ch-arrays-10-9"><pre class="code-display tex2jax_ignore">B = ["This","is","a","string","array"]
 sort(B)
 </pre></div>
@@ -1303,10 +1303,10 @@ sort(B)
 sort(C, by = x -&gt; x % 3)
 </pre></div>
 <div class="para" id="ch-arrays-10-13">where <code class="code-inline tex2jax_ignore">C</code> is the array from 1 to 9 and before sorting, the mod is taken. The <code class="code-inline tex2jax_ignore">by</code> is a keyword argument that takes a function.  in this case, we have used an <em class="emphasis">anonymous function</em>, which is a function without a name and is often used inside of other functions.  We will explore these in more detail in <a href="ch-functional-programming.html" class="internal" title="Chapter 7: Functional Programming">Chapter 7</a>.  The result of the sort function is <code class="code-inline tex2jax_ignore">[3,6,9,1,4,7,2,5,8]</code>, where the mod of the first 3 are 0, the next three are 1 and the last three are 2.</div>
-<div class="para" id="ch-arrays-10-14">Check out the <a class="external" href="https://docs.julialang.org/en/v1/base/sort" target="_blank">Julia docs on sorting and sorting algorithms</a><details class="ptx-footnote" aria-live="polite" id="ch-arrays-10-14-2"><summary class="ptx-footnote__number" title="Footnote 6.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-arrays-10-14-2"><code class="code-inline tex2jax_ignore">julialang.org</code></div></details> for more details on how Julia does sorting.</div></section><section class="section" id="ch-arrays-11"><h3 class="heading hide-type">
+<div class="para" id="ch-arrays-10-14">Check out the <a class="external" href="https://docs.Julialang.org/en/v1/base/sort" target="_blank">Julia docs on sorting and sorting algorithms</a><details class="ptx-footnote" aria-live="polite" id="ch-arrays-10-14-2"><summary class="ptx-footnote__number" title="Footnote 6.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-arrays-10-14-2"><code class="code-inline tex2jax_ignore">Julialang.org</code></div></details> for more details on how Julia does sorting.</div></section><section class="section" id="ch-arrays-11"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">6.8</span><span class="space"> </span><span class="title">Push and Pop; Array as a Stack</span>
 </h3>
-<div class="para" id="ch-arrays-11-2">There is a computer science data structure called a <a class="external" href="https://en.wikipedia.org/wiki/Stack%5C_(abstract%5C_data%5C_type)" target="_blank">stack</a><details class="ptx-footnote" aria-live="polite" id="ch-arrays-11-2-2"><summary class="ptx-footnote__number" title="Footnote 6.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="ch-arrays-11-2-2"><code class="code-inline tex2jax_ignore">julialang.org</code></div></details> which acts like a stack of things (paper, dishes, pokemon cards) and there are two operations on it: 1) put something on top of the stack or 2) take something off the top of the stack.  Many languages including julia don’t have a separate data structure but use an array like one with two operations, <code class="code-inline tex2jax_ignore">push</code> and <code class="code-inline tex2jax_ignore">pop</code>. In julia these have ! at the end to indicate that the operations change the array. If <code class="code-inline tex2jax_ignore">A=collect(1:5)</code> then</div>
+<div class="para" id="ch-arrays-11-2">There is a computer science data structure called a <a class="external" href="https://en.wikipedia.org/wiki/Stack%5C_(abstract%5C_data%5C_type)" target="_blank">stack</a><details class="ptx-footnote" aria-live="polite" id="ch-arrays-11-2-2"><summary class="ptx-footnote__number" title="Footnote 6.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="ch-arrays-11-2-2"><code class="code-inline tex2jax_ignore">Julialang.org</code></div></details> which acts like a stack of things (paper, dishes, Pokémon cards) and there are two operations on it: 1) put something on top of the stack or 2) take something off the top of the stack.  Many languages including Julia don’t have a separate data structure but use an array like one with two operations, <code class="code-inline tex2jax_ignore">push</code> and <code class="code-inline tex2jax_ignore">pop</code>. In Julia these have ! at the end to indicate that the operations change the array. If <code class="code-inline tex2jax_ignore">A=collect(1:5)</code> then</div>
 <div class="para logical" id="ch-arrays-11-3"><pre class="code-display tex2jax_ignore">push!(A,7)
 </pre></div>
 <div class="para" id="ch-arrays-11-4">returns the array <code class="code-inline tex2jax_ignore">[1 2 3 4 5 7]</code>.  And multiple values can be pushed.</div>
@@ -1358,11 +1358,11 @@ append!(A,[4,5,6])
 <div class="para logical" id="ch-arrays-12-5-3-1-2-3"><pre class="code-display tex2jax_ignore"> A = collect(1:2:11) </pre></div>
 <div class="para" id="ch-arrays-12-5-3-1-2-4">then to insert elements in the 3rd position (and shifting everything else to the right), we can enter</div>
 <div class="para logical" id="ch-arrays-12-5-3-1-2-5"><pre class="code-display tex2jax_ignore"> B=splice!(A,3:2,[11,12,13,14]) </pre></div>
-<div class="para" id="ch-arrays-12-5-3-1-2-6">then the function returns <code class="code-inline tex2jax_ignore">Int64[]</code>.  This is an empty array of type <code class="code-inline tex2jax_ignore">Int64</code>.  The result is empty because nothing was removed in the process.  The array <code class="code-inline tex2jax_ignore">A</code> is now <code class="code-inline tex2jax_ignore">[1, 3, 11, 12, 13, 14, 5, 7, 9, 11]</code>. A few things to note about this.  The second argument is a bit strange in that you insert <code class="code-inline tex2jax_ignore">3:2</code> which is a range in which the last element is smaller than the first. This will let julia know that you don’t want to remove any elements, unlike either a single number or a range with the first element smaller than the last.</div>
+<div class="para" id="ch-arrays-12-5-3-1-2-6">then the function returns <code class="code-inline tex2jax_ignore">Int64[]</code>.  This is an empty array of type <code class="code-inline tex2jax_ignore">Int64</code>.  The result is empty because nothing was removed in the process.  The array <code class="code-inline tex2jax_ignore">A</code> is now <code class="code-inline tex2jax_ignore">[1, 3, 11, 12, 13, 14, 5, 7, 9, 11]</code>. A few things to note about this.  The second argument is a bit strange in that you insert <code class="code-inline tex2jax_ignore">3:2</code> which is a range in which the last element is smaller than the first. This will let Julia know that you don’t want to remove any elements, unlike either a single number or a range with the first element smaller than the last.</div>
 </dd>
 <dt id="ch-arrays-12-5-3-1-3">Replacing elements from an array</dt>
 <dd>
-<div class="para" id="ch-arrays-12-5-3-1-3-2">We say <code class="code-inline tex2jax_ignore">splice!</code> is the swiss army knife, because it does even more!! (Now, how much would you pay?).  This last section shows that we can both remove and insert elements into an array at the same time.</div>
+<div class="para" id="ch-arrays-12-5-3-1-3-2">We say <code class="code-inline tex2jax_ignore">splice!</code> is the Swiss army knife, because it does even more!! (Now, how much would you pay?).  This last section shows that we can both remove and insert elements into an array at the same time.</div>
 <div class="para" id="ch-arrays-12-5-3-1-3-3">If <code class="code-inline tex2jax_ignore">A=collect(1:2:11)</code>, then</div>
 <div class="para logical" id="ch-arrays-12-5-3-1-3-4"><pre class="code-display tex2jax_ignore"> x = splice!(A,3,4) </pre></div>
 <div class="para" id="ch-arrays-12-5-3-1-3-5">returns <code class="code-inline tex2jax_ignore">5</code> and replaces the 3rd position with the number 4. The result is <code class="code-inline tex2jax_ignore">[1, 3, 4, 7, 9, 11]</code>. If <code class="code-inline tex2jax_ignore">A=collect(1:2:11)</code>, then replacing the 3rd element with <code class="code-inline tex2jax_ignore">[-1,-2,-3]</code> by</div>
@@ -1372,7 +1372,7 @@ append!(A,[4,5,6])
 </dl></div></section><section class="subsection" id="ch-arrays-12-6"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">6.9.4</span><span class="space"> </span><span class="title">Filtering Arrays</span>
 </h4>
-<div class="para" id="ch-arrays-12-6-2">A very handle array method, is <a class="external" href="https://docs.julialang.org/en/v1/base/collections/#Base.filter" target="_blank"><code class="code-inline tex2jax_ignore">filter</code></a><details class="ptx-footnote" aria-live="polite" id="ch-arrays-12-6-2-2"><summary class="ptx-footnote__number" title="Footnote 6.5"><sup> 5 </sup></summary><div class="ptx-footnote__contents" id="ch-arrays-12-6-2-2"><code class="code-inline tex2jax_ignore">julialang.org</code></div></details> which takes an array and returns only the elements that satisfy some condition.</div>
+<div class="para" id="ch-arrays-12-6-2">A very handle array method, is <a class="external" href="https://docs.Julialang.org/en/v1/base/collections/#Base.filter" target="_blank"><code class="code-inline tex2jax_ignore">filter</code></a><details class="ptx-footnote" aria-live="polite" id="ch-arrays-12-6-2-2"><summary class="ptx-footnote__number" title="Footnote 6.5"><sup> 5 </sup></summary><div class="ptx-footnote__contents" id="ch-arrays-12-6-2-2"><code class="code-inline tex2jax_ignore">Julialang.org</code></div></details> which takes an array and returns only the elements that satisfy some condition.</div>
 <div class="para" id="ch-arrays-12-6-3">If <code class="code-inline tex2jax_ignore">A=collect(1:20)</code>, then</div>
 <div class="para logical" id="ch-arrays-12-6-4"><pre class="code-display tex2jax_ignore"> filter(n -&gt; n%2==0, A) </pre></div>
 <div class="para" id="ch-arrays-12-6-5">returns all elements that satisfy that the mod 2 is 0 (or even numbers) or <code class="code-inline tex2jax_ignore">[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]</code>.  The first argument is a function and we use an anonymous function for this.</div>
@@ -1388,7 +1388,7 @@ append!(A,[4,5,6])
 <div class="para" id="ch-arrays-12-7-3">If <code class="code-inline tex2jax_ignore">A=[1,2,3,2,3,4,3,4,5,4,3,2,1]</code> then</div>
 <div class="para logical" id="ch-arrays-12-7-4"><pre class="code-display tex2jax_ignore"> unique(A) </pre></div>
 <div class="para" id="ch-arrays-12-7-5">returns <code class="code-inline tex2jax_ignore">[1,2,3,4,5]</code>. And if you want to update the original array, use the <code class="code-inline tex2jax_ignore">unique!</code> function instead.</div></section></section><section class="section" id="sect-join-split"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">6.10</span><span class="space"> </span><span class="title">Joining Arrays and Spliting Strings</span>
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">6.10</span><span class="space"> </span><span class="title">Joining Arrays and Splitting Strings</span>
 </h3>
 <div class="para" id="sect-join-split-2">There are a couple of related functions that involve arrays, that of joining an array to get a string and splitting a string to get an array.  We show a few examples here.</div>
 <div class="para" id="sect-join-split-3">Let’s say that we have the vector formed by <code class="code-inline tex2jax_ignore">x=collect(1:6)</code>.  If we want to create a string in which all of the elements are joined, consider</div>
@@ -1401,7 +1401,7 @@ append!(A,[4,5,6])
 <div class="para logical" id="sect-join-split-8"><pre class="code-display tex2jax_ignore">"Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday"
 </pre></div>
 <div class="para" id="sect-join-split-9">notice that the first 6 elements are separated by <code class="code-inline tex2jax_ignore">", "</code> and the last one with <code class="code-inline tex2jax_ignore">" and "</code>.</div>
-<div class="para" id="sect-join-split-10">Additionally, julia has the ability to split a string into an array of substrings.  For example if</div>
+<div class="para" id="sect-join-split-10">Additionally, Julia has the ability to split a string into an array of substrings.  For example if</div>
 <div class="para logical" id="sect-join-split-11"><pre class="code-display tex2jax_ignore">str = "1; 2; 3; 4; 5; 6"
 </pre></div>
 <div class="para" id="sect-join-split-12">then <code class="code-inline tex2jax_ignore">split(str, "; ")</code> returns the array</div>
@@ -1416,10 +1416,10 @@ append!(A,[4,5,6])
 <div class="para" id="sect-join-split-14">and notice that this is an array elements of type <code class="code-inline tex2jax_ignore">Substring{String}</code>.  This type is used as an efficiency to show where in the original string the substring occurs.  If it is desirable to extract the integer representations of the strings, then use the <code class="code-inline tex2jax_ignore">parse</code> function explained in <a href="ch-data-types.html#sect-convert-numbers" class="internal" title="Section 3.8: Converting numbers">Section 3.8</a>.  The integers can be extracted with</div>
 <div class="para logical" id="sect-join-split-15"><pre class="code-display tex2jax_ignore">map(s-&gt; parse(Int,s), split(str, "; "))
 </pre></div>
-<div class="para" id="sect-join-split-16">where the <code class="code-inline tex2jax_ignore">map</code> function from <a href="ch-functional-programming.html" class="internal" title="Chapter 7: Functional Programming">Chapter 7</a> is used.  This returns the integer array <code class="code-inline tex2jax_ignore">[1, 2, 3, 4, 5, 6]</code>. See the <a class="external" href="https://docs.julialang.org/en/v1/base/strings/#Base.split" target="_blank">Julia documentation on <code class="code-inline tex2jax_ignore">split</code></a><details class="ptx-footnote" aria-live="polite" id="sect-join-split-16-5"><summary class="ptx-footnote__number" title="Footnote 6.6"><sup> 6 </sup></summary><div class="ptx-footnote__contents" id="sect-join-split-16-5"><code class="code-inline tex2jax_ignore">julialang.org</code></div></details> for more information and options.</div></section><section class="section" id="ch-arrays-14"><h3 class="heading hide-type">
+<div class="para" id="sect-join-split-16">where the <code class="code-inline tex2jax_ignore">map</code> function from <a href="ch-functional-programming.html" class="internal" title="Chapter 7: Functional Programming">Chapter 7</a> is used.  This returns the integer array <code class="code-inline tex2jax_ignore">[1, 2, 3, 4, 5, 6]</code>. See the <a class="external" href="https://docs.Julialang.org/en/v1/base/strings/#Base.split" target="_blank">Julia documentation on <code class="code-inline tex2jax_ignore">split</code></a><details class="ptx-footnote" aria-live="polite" id="sect-join-split-16-5"><summary class="ptx-footnote__number" title="Footnote 6.6"><sup> 6 </sup></summary><div class="ptx-footnote__contents" id="sect-join-split-16-5"><code class="code-inline tex2jax_ignore">Julialang.org</code></div></details> for more information and options.</div></section><section class="section" id="ch-arrays-14"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">6.11</span><span class="space"> </span><span class="title">Arrays as a Collection</span>
 </h3>
-<div class="para" id="ch-arrays-14-2">An array is one example of a <em class="emphasis">Collection</em> in Julia.  We will cover these in more details in <a href="ch-collections.html" class="internal" title="Chapter 21: Collections, Sets and Dictionaries">Chapter 21</a> and it is helpful to have knowledge of the more abtract idea when handling arrays.</div></section></section></div>
+<div class="para" id="ch-arrays-14-2">An array is one example of a <em class="emphasis">Collection</em> in Julia.  We will cover these in more details in <a href="ch-collections.html" class="internal" title="Chapter 21: Collections, Sets and Dictionaries">Chapter 21</a> and it is helpful to have knowledge of the more abstract idea when handling arrays.</div></section></section></div>
 <div class="ptx-content-footer">
 <a class="previous-button button" href="ch-boolean-loops.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-functional-programming.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
 </div></main>

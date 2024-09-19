@@ -231,7 +231,7 @@ window.MathJax = {
 </ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-7" class="internal"><span class="codenumber">2.4</span> <span class="title">Expressions</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#sect-oper-precedence" class="internal"><span class="codenumber">2.5</span> <span class="title">Operator Precendence</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#sect-oper-precedence" class="internal"><span class="codenumber">2.5</span> <span class="title">Operator Precedence</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-9" class="internal"><span class="codenumber">2.6</span> <span class="title">Comments</span></a></div></li>
 </ul>
 </li>
@@ -355,7 +355,7 @@ window.MathJax = {
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-12-7" class="internal"><span class="codenumber">6.9.5</span> <span class="title">Removing Duplicate Elements</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Spliting Strings</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Splitting Strings</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-14" class="internal"><span class="codenumber">6.11</span> <span class="title">Arrays as a Collection</span></a></div></li>
 </ul>
 </li>
@@ -468,12 +468,12 @@ window.MathJax = {
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-comp-types.html" class="internal"><span class="codenumber">12</span> <span class="title">Creating New Data Types in Julia</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-3" class="internal"><span class="codenumber">12.1</span> <span class="title">Basics of Julia’s Composite Datatype</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4" class="internal"><span class="codenumber">12.1</span> <span class="title">Basics of Julia’s Composite Datatype</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4" class="internal"><span class="codenumber">12.2</span> <span class="title">A Card datatype</span></a></div>
+<div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5" class="internal"><span class="codenumber">12.2</span> <span class="title">A Card datatype</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4-3" class="internal"><span class="codenumber">12.2.1</span> <span class="title">Constructors of new data types</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4-4" class="internal"><span class="codenumber">12.2.2</span> <span class="title">Creating a Hand datatype</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5-3" class="internal"><span class="codenumber">12.2.1</span> <span class="title">Constructors of new data types</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5-4" class="internal"><span class="codenumber">12.2.2</span> <span class="title">Creating a Hand datatype</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-section">
@@ -483,7 +483,7 @@ window.MathJax = {
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#sect-poly-parametric-4" class="internal"><span class="codenumber">12.3.2</span> <span class="title">Evaluating the polynomial</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-6" class="internal"><span class="codenumber">12.4</span> <span class="title">A Rootfinding datatype</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-7" class="internal"><span class="codenumber">12.4</span> <span class="title">A Rootfinding datatype</span></a></div></li>
 </ul>
 </li>
 </ul>
@@ -1082,7 +1082,7 @@ window.MathJax = {
 </h3>
 <section class="introduction" id="ch-regexp-3-2"><div class="para" id="ch-regexp-3-2-1">Let’s start with some examples of pattern matching.  If we want to determine if a string matches a pattern, we can use the exact string.  For example, let’s see if a string matches <code class="code-inline tex2jax_ignore">"cat"</code>.  We can do this with the <code class="code-inline tex2jax_ignore">occursin</code> function like:</div> <div class="para logical" id="ch-regexp-3-2-2"><pre class="code-display tex2jax_ignore">occursin("cat","cat")
 </pre></div> <div class="para" id="ch-regexp-3-2-3">which will return <code class="code-inline tex2jax_ignore">true</code>. Of course, we don’t need to use <code class="code-inline tex2jax_ignore">occursin</code> to test that two strings are equal,</div> <div class="para logical" id="ch-regexp-3-2-4"><pre class="code-display tex2jax_ignore">"cat"=="cat"
-</pre></div> <div class="para" id="ch-regexp-3-2-5">will do this. The <code class="code-inline tex2jax_ignore">occursin</code> command will just determine if there is the first string somewhere inside the second string.  So <code class="code-inline tex2jax_ignore">occursin("cat", "scatter")</code> will return <code class="code-inline tex2jax_ignore">true</code>, but <code class="code-inline tex2jax_ignore">occursin("cat", "cottage")</code> will return <code class="code-inline tex2jax_ignore">false</code>.</div> <div class="para" id="ch-regexp-3-2-6">We haven’t used a regular expression yet.  In julia, we can make a regular expression by prepending a string with an <code class="code-inline tex2jax_ignore">r</code>. For example, let’s say that we want to a string to start with the string <code class="code-inline tex2jax_ignore">"cat"</code>.  We can do this with</div> <div class="para logical" id="ch-regexp-3-2-7"><pre class="code-display tex2jax_ignore">occursin(r"^cat", "catalog")
+</pre></div> <div class="para" id="ch-regexp-3-2-5">will do this. The <code class="code-inline tex2jax_ignore">occursin</code> command will just determine if there is the first string somewhere inside the second string.  So <code class="code-inline tex2jax_ignore">occursin("cat", "scatter")</code> will return <code class="code-inline tex2jax_ignore">true</code>, but <code class="code-inline tex2jax_ignore">occursin("cat", "cottage")</code> will return <code class="code-inline tex2jax_ignore">false</code>.</div> <div class="para" id="ch-regexp-3-2-6">We haven’t used a regular expression yet.  In Julia, we can make a regular expression by prepending a string with an <code class="code-inline tex2jax_ignore">r</code>. For example, let’s say that we want to a string to start with the string <code class="code-inline tex2jax_ignore">"cat"</code>.  We can do this with</div> <div class="para logical" id="ch-regexp-3-2-7"><pre class="code-display tex2jax_ignore">occursin(r"^cat", "catalog")
 </pre></div> <div class="para" id="ch-regexp-3-2-8">which returns <code class="code-inline tex2jax_ignore">true</code>, however <code class="code-inline tex2jax_ignore">occursin(r"^cat", "scatter")</code> will return <code class="code-inline tex2jax_ignore">false</code>.  The <code class="code-inline tex2jax_ignore">^</code> at the beginning of the regular expression indicates that the following characters must start the string.   Before going on, note that regular expressions are strings that are interpreted in a particular way.  With this example, we have seen that there are two types of characters, <dfn class="terminology">special characters</dfn> like <code class="code-inline tex2jax_ignore">^</code> and <dfn class="terminology">regular characters</dfn>, like the letters of the latin alphabet.   The special characters have a meaning associated with them and regular characters do not have anything special.</div> <div class="para" id="ch-regexp-3-2-9">Another special character is the <code class="code-inline tex2jax_ignore">$</code> which means to match the end of the string.  So <code class="code-inline tex2jax_ignore">occursin(r"cat$", "tigercat")</code> will return true, whereas <code class="code-inline tex2jax_ignore">occursin(r"cat$", "catalog")</code> will return <code class="code-inline tex2jax_ignore">false</code>.</div></section><section class="subsection" id="ch-regexp-3-3"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">24.1.1</span><span class="space"> </span><span class="title">Optional matches</span>
 </h4>
@@ -1104,7 +1104,10 @@ occursin(r"^[^a-f]","zebra")
 occursin(r"c.t","yacht")
 occursin(r"c.t","tact")
 </pre></div>
-<div class="para" id="ch-regexp-3-3-12">the first 2 return true and the last is false.</div></section><section class="subsection" id="ch-regexp-3-4"><h4 class="heading hide-type">
+<div class="para" id="ch-regexp-3-3-12">the first 2 return true and the last is false.</div>
+<details id="ch-regexp-3-3-13" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
+<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">24.1</span><span class="period">.</span>
+</h5></summary><article class="exercise exercise-like knowl__content"><div class="para" id="ch-regexp-3-3-13-1-1">Write a regular expression that tests for four-letter words that have "oo" or "ee" in the middle like <code class="code-inline tex2jax_ignore">fool</code> or <code class="code-inline tex2jax_ignore">seen</code>.  Test on these words as well as ones that aren’t four letters and don’t have the double "o" or "e".</div></article></details></section><section class="subsection" id="ch-regexp-3-4"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">24.1.2</span><span class="space"> </span><span class="title">Digits and alphabetic characters</span>
 </h4>
 <div class="para" id="ch-regexp-3-4-2">Using the technique in the previous section, we can match a digit with the regular expression <code class="code-inline tex2jax_ignore">r"[0-9]"</code>.  For example,</div>
@@ -1113,7 +1116,7 @@ occursin(r"c.t","tact")
 <div class="para" id="ch-regexp-3-4-4">returns <code class="code-inline tex2jax_ignore">true</code>. However since matching digits is a common occurrence, <code class="code-inline tex2jax_ignore">\d</code> can be used to match digits.  Therefore,</div>
 <div class="para logical" id="ch-regexp-3-4-5"><pre class="code-display tex2jax_ignore">occursin(r"^\d","1234")
 </pre></div>
-<div class="para" id="ch-regexp-3-4-6">returns <code class="code-inline tex2jax_ignore">true</code> as well. To match alphabetic characters, there are a couple of options.  If you are looking for precisely the 26 latin characters then <code class="code-inline tex2jax_ignore">[a-z]</code> is the best way to do this.  However, there are many characters (such as letters with accents) or unicode characters that are alphabetic and there is a <code class="code-inline tex2jax_ignore">[[:alpha:]]</code>.  Some examples are:</div>
+<div class="para" id="ch-regexp-3-4-6">returns <code class="code-inline tex2jax_ignore">true</code> as well. To match alphabetic characters, there are a couple of options.  If you are looking for precisely the 26 lowercase latin characters then <code class="code-inline tex2jax_ignore">[a-z]</code> is the best way to do this.  However, there are many characters (such as letters with accents) or unicode characters that are alphabetic and there is a <code class="code-inline tex2jax_ignore">[[:alpha:]]</code>.  Some examples are:</div>
 <div class="para logical" id="ch-regexp-3-4-7"><pre class="code-display tex2jax_ignore">occursin(r"^[a-z],["apple", "zebra", "1234"])
 </pre></div>
 <div class="para" id="ch-regexp-3-4-8">returns true for the first two and false for the third. To use the broader <code class="code-inline tex2jax_ignore">[:alpha:]</code> class of characters, as an example</div>
@@ -1124,12 +1127,19 @@ occursin(r"c.t","tact")
 <div class="para logical" id="ch-regexp-3-4-12"><pre class="code-display tex2jax_ignore">map(s -&gt; occursin(r"\w\w\w", s), ["r2c", "ww_c", "i a"])
 </pre></div>
 <div class="para" id="ch-regexp-3-4-13">which returns true, true and false.  The last one because the 2nd character is a space.</div>
-<div class="para" id="ch-regexp-3-4-14">White space is also something to detect. Although, it can be used with <code class="code-inline tex2jax_ignore">occursin</code>, a more practical way to use this is with <code class="code-inline tex2jax_ignore">split</code>, which takes a string and splits it.   For example,</div>
-<div class="para logical" id="ch-regexp-3-4-15"><pre class="code-display tex2jax_ignore">split( "The dog jumps over the log", r"\s")
+<div class="para" id="ch-regexp-3-4-14">White space is also something to detect. Although, it can be used with <code class="code-inline tex2jax_ignore">occursin</code>, a more practical way to use this is with <code class="code-inline tex2jax_ignore">split</code>, which takes a string and splits it.  We saw this in <a href="ch-arrays.html#sect-join-split" class="internal" title="Section 6.10: Joining Arrays and Splitting Strings">Section 6.10</a>, but in that section only specific strings were allowed.   For example,</div>
+<div class="para logical" id="ch-regexp-3-4-15"><pre class="code-display tex2jax_ignore">split("The dog jumps over	the log", r"\s")
 </pre></div>
-<div class="para" id="ch-regexp-3-4-16">returns the array</div>
+<div class="para" id="ch-regexp-3-4-16">where some of the spaces are tabs and others are a space character.  This returns the array</div>
 <div class="para logical" id="ch-regexp-3-4-17"><pre class="code-display tex2jax_ignore">["The", "dog", "jumps", "over", "the", "log"]
-</pre></div></section><section class="subsection" id="ch-regexp-3-5"><h4 class="heading hide-type">
+</pre></div>
+<div class="para" id="ch-regexp-3-4-18">Another example would be</div>
+<div class="para logical" id="ch-regexp-3-4-19"><pre class="code-display tex2jax_ignore">split("1.0,2.0,3.0;4.5,7.9;-10", r"[,;]")
+</pre></div>
+<div class="para" id="ch-regexp-3-4-20">which returns <code class="code-inline tex2jax_ignore">[1.0, 2.0, 3.0, 4.5, 7.9, -10]</code> and recall that the regular expression is basically <code class="code-inline tex2jax_ignore">,</code> or <code class="code-inline tex2jax_ignore">;</code>.</div>
+<details id="exer-four-letter" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
+<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">24.2</span><span class="period">.</span>
+</h5></summary><article class="exercise exercise-like knowl__content"><div class="para" id="exer-four-letter-1-1">Write a regular expression to match five-letter words (which may be useful for solving Wordle). Start first with the lower-case latin characters and then allow other characters like the greek letters.  Test against 4, 5 and 6 letter words that should and should not match.</div></article></details></section><section class="subsection" id="ch-regexp-3-5"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">24.1.3</span><span class="space"> </span><span class="title">Quantifiers</span>
 </h4>
 <div class="para" id="ch-regexp-3-5-2">We often want to know if a character is repeated some number of times.  For example, if we want to check that <code class="code-inline tex2jax_ignore">c</code> is repeated three times, we can use <code class="code-inline tex2jax_ignore">r"ccc"</code>, however, we can also write this as <code class="code-inline tex2jax_ignore">r"c{3}"</code>, which is actually longer, but sometimes easier to read.  If we want to test if there are between 2 and 4 consecutive <code class="code-inline tex2jax_ignore">c</code>s, then we can use <code class="code-inline tex2jax_ignore">r"c{2,4}"</code>.  As an example, consider:</div>
@@ -1147,7 +1157,10 @@ occursin(r"c.t","tact")
 <div class="para" id="ch-regexp-3-5-10">will match zero or more <code class="code-inline tex2jax_ignore">c</code> at the beginning of the string.  All five of the above match.  In contrast if we use <code class="code-inline tex2jax_ignore">r"^c+a"</code>, then</div>
 <div class="para logical" id="ch-regexp-3-5-11"><pre class="code-display tex2jax_ignore">map(s -&gt; occursin(r"^c+a",s),["a","ca","cca","ccca","cccca"])
 </pre></div>
-<div class="para" id="ch-regexp-3-5-12">then the first one does not match, but the others do.  The last example of this is the regular expression <code class="code-inline tex2jax_ignore">.*</code>, which matches any character 0 or more times.  At first glance this doesn’t seem useful</div></section></section><section class="section" id="ch-regexp-4"><h3 class="heading hide-type">
+<div class="para" id="ch-regexp-3-5-12">then the first one does not match, but the others do.  The last example of this is the regular expression <code class="code-inline tex2jax_ignore">.*</code>, which matches any character 0 or more times.  At first glance this doesn’t seem useful</div>
+<details id="ch-regexp-3-5-13" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
+<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">24.3</span><span class="period">.</span>
+</h5></summary><article class="exercise exercise-like knowl__content"><div class="para" id="ch-regexp-3-5-13-1-1">Rewrite the regular expression finds four-letter words that you did above in <a href="ch-regexp.html#exer-four-letter" class="xref" data-knowl="./knowl/xref/exer-four-letter.html" data-reveal-label="Reveal" data-close-label="Close" title="Check Your Understanding 24.2">Check Your Understanding 24.2</a> to use quantifiers.</div></article></details></section></section><section class="section" id="ch-regexp-4"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">24.2</span><span class="space"> </span><span class="title">Matching integers and decimals</span>
 </h3>
 <div class="para" id="ch-regexp-4-2">Examples below will parse integers and decimals from a string and we’ll use regular expressions to do this work.  As we saw above, to match a digit, we will use <code class="code-inline tex2jax_ignore">\d</code> and if we want more than one decimal, we can follow that with the <code class="code-inline tex2jax_ignore">+</code>.  For a positive integer, the regular expression can match with <code class="code-inline tex2jax_ignore">r"\d+"</code>.   For example,</div>
@@ -1175,7 +1188,10 @@ map(s-&gt; occursin(int_re,s),["1234", "+1234", "-1234"])
 <div class="para" id="ch-regexp-4-15">and we’ll test it with the previous test or</div>
 <div class="para logical" id="ch-regexp-4-16"><pre class="code-display tex2jax_ignore">map(s -&gt; occursin(int_or_dec_re, s),["-1.3", "-1.", "14.0343", "14", "-15"])
 </pre></div>
-<div class="para" id="ch-regexp-4-17">which returns all true.</div></section><section class="section" id="ch-regexp-5"><h3 class="heading hide-type">
+<div class="para" id="ch-regexp-4-17">which returns all true.</div>
+<details id="ch-regexp-4-18" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">24.4</span><span class="period">.</span>
+</h4></summary><article class="exercise exercise-like knowl__content"><div class="para" id="ch-regexp-4-18-1-1">Recall that floating point numbers that are written in scientific notation like <code class="code-inline tex2jax_ignore">1.234e-4</code> which represents <span class="process-math">\(1.234 \times 10^{-4}\text{.}\)</span> Update the regular expression above to handle these type of numbers, recalling that the front is just a decimal, so you can just handle the <code class="code-inline tex2jax_ignore">e-4</code> above.  Make this part optional.</div></article></details></section><section class="section" id="ch-regexp-5"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">24.3</span><span class="space"> </span><span class="title">Matching and Capture Groups</span>
 </h3>
 <div class="para" id="ch-regexp-5-2">Generally, it is desirable to pull out a substring from a string and regular expression are good at this.  For example, we may want to pass along a string and pull out an integer or decimal for parsing to a <code class="code-inline tex2jax_ignore">Int</code> or <code class="code-inline tex2jax_ignore">Float</code>.</div>
@@ -1193,7 +1209,7 @@ map(s-&gt; occursin(int_re,s),["1234", "+1234", "-1234"])
 </pre></div>
 <div class="para" id="ch-regexp-5-11">which is an object (struct) that captures information about the match.  The first argument is the string that matches the regular expression, which is the full string.  The next two are the two capture groups.  We can access these with <code class="code-inline tex2jax_ignore">m1[1]</code> and <code class="code-inline tex2jax_ignore">m1[2]</code>.</div>
 <details id="ch-regexp-5-12" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
-<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">24.1</span><span class="period">.</span>
+<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">24.5</span><span class="period">.</span>
 </h4></summary><article class="exercise exercise-like knowl__content"><div class="para" id="ch-regexp-5-12-1">Update the regular expression above to handle a point of two integers or floating point numbers.  Test your regular expression with the <code class="code-inline tex2jax_ignore">match</code> command.</div></article></details></section><section class="section" id="ch-regexp-6"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">24.4</span><span class="space"> </span><span class="title">Replacing substrings with regular expressions.</span>
 </h3>
@@ -1216,7 +1232,7 @@ map(s-&gt; occursin(int_re,s),["1234", "+1234", "-1234"])
 <div class="para" id="ch-regexp-6-13">returns <code class="code-inline tex2jax_ignore">"Is the kid still in the pond?  Is the adult sitting on the beach?"</code>.  First, notice that we have multiple replacements. Also, on the replacements, we have a regular expression with a capture group (with parentheses) and we have a substitution string <code class="code-inline tex2jax_ignore">s" \1 "</code> which starts with an <code class="code-inline tex2jax_ignore">s</code>.  Note that the substitution string has a <code class="code-inline tex2jax_ignore">\1</code>, which will be the matched capture group.  This allow us to replace both <code class="code-inline tex2jax_ignore">adults</code> and <code class="code-inline tex2jax_ignore">kids</code>.</div></section><section class="section" id="ch-regexp-7"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">24.5</span><span class="space"> </span><span class="title">Parsing a Polynomial</span>
 </h3>
-<section class="introduction" id="ch-regexp-7-2"><div class="para" id="ch-regexp-7-2-1">We now turn to an example of parsing a string to interpret as a polynomial.  A goal will be to add a contructor to our <code class="code-inline tex2jax_ignore">Polynomial</code> module that will take a string and if it can be written as a polynomial, to parse it and store it as a polynomial.  For example, here are some examples</div> <div class="para logical" id="ch-regexp-7-2-2"><pre class="code-display tex2jax_ignore">5x-10
+<section class="introduction" id="ch-regexp-7-2"><div class="para" id="ch-regexp-7-2-1">We now turn to an example of parsing a string to interpret as a polynomial.  A goal will be to add a constructor to our <code class="code-inline tex2jax_ignore">Polynomial</code> module that will take a string and if it can be written as a polynomial, to parse it and store it as a polynomial.  For example, here are some examples</div> <div class="para logical" id="ch-regexp-7-2-2"><pre class="code-display tex2jax_ignore">5x-10
 3x^2-7x+11
 -5.6x^11+7.349x^5+x
 </pre></div> <div class="para" id="ch-regexp-7-2-3">Although we hope to eventually do general polynomials, let’s start with a linear function, like the top one above. Also for simplicity, we’ll assume that the coefficients are integers and that the variable is <code class="code-inline tex2jax_ignore">x</code>.  To start, let’s build a regular expression that will start with an integer (to be captured) followed by an <code class="code-inline tex2jax_ignore">x</code> followed by another integer (to be captured). The following will do this</div> <div class="para logical" id="ch-regexp-7-2-4"><pre class="code-display tex2jax_ignore">lin = r"([+-]?\d+)x([+-]\d+)"
@@ -1224,7 +1240,7 @@ map(s-&gt; occursin(int_re,s),["1234", "+1234", "-1234"])
 <li id="ch-regexp-7-2-6-1-1"><div class="para" id="ch-regexp-7-2-6-1-1-1">Although we typically don’t append a <code class="code-inline tex2jax_ignore">+</code> to a positive integer, but it is a valid way to write one, so so the <code class="code-inline tex2jax_ignore">[+-]</code> handles this.</div></li>
 <li id="ch-regexp-7-2-6-1-2"><div class="para" id="ch-regexp-7-2-6-1-2-1">The <code class="code-inline tex2jax_ignore">[+-]</code> doesn’t need to be there (we assume it is positive if missing), so we append a <code class="code-inline tex2jax_ignore">?</code> on this.</div></li>
 <li id="ch-regexp-7-2-6-1-3"><div class="para" id="ch-regexp-7-2-6-1-3-1">The <code class="code-inline tex2jax_ignore">\d+</code> matches any length sequence of digits, so this is the integer without the sign.</div></li>
-<li id="ch-regexp-7-2-6-1-4"><div class="para" id="ch-regexp-7-2-6-1-4-1">The sign and the digits are surrouned by <code class="code-inline tex2jax_ignore">()</code>, so this is our first capture group.  This will be parsed as our first coefficient.</div></li>
+<li id="ch-regexp-7-2-6-1-4"><div class="para" id="ch-regexp-7-2-6-1-4-1">The sign and the digits are surrounded by <code class="code-inline tex2jax_ignore">()</code>, so this is our first capture group.  This will be parsed as our first coefficient.</div></li>
 <li id="ch-regexp-7-2-6-1-5"><div class="para" id="ch-regexp-7-2-6-1-5-1">The second capture group is the same as the first except that the sign is not optional.</div></li>
 </ul></div></section><section class="subsection" id="ch-regexp-7-3"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">24.5.1</span><span class="space"> </span><span class="title">Testing the regular expression</span>
@@ -1241,7 +1257,7 @@ end
 <div class="para" id="ch-regexp-7-3-5">Since we want to include the <code class="code-inline tex2jax_ignore">*</code> character as optional between the coefficient and the <code class="code-inline tex2jax_ignore">x</code> and also the constant coefficient, we will append a <code class="code-inline tex2jax_ignore">?</code> to each of these as</div>
 <div class="para logical" id="ch-regexp-7-3-6"><pre class="code-display tex2jax_ignore">lin = r"([-+]?\d+)\*?x([-+]?\d+)?"
 </pre></div>
-<div class="para" id="ch-regexp-7-3-7">noting that <code class="code-inline tex2jax_ignore">*</code> is a special character so needs to be esacped as <code class="code-inline tex2jax_ignore">\*</code>. Now the test set:</div>
+<div class="para" id="ch-regexp-7-3-7">noting that <code class="code-inline tex2jax_ignore">*</code> is a special character so needs to be escaped as <code class="code-inline tex2jax_ignore">\*</code>. Now the test set:</div>
 <div class="para logical" id="ch-regexp-7-3-8"><pre class="code-display tex2jax_ignore">@testset "Linear Functions" begin
   @test match(lin, "5x-10") !== nothing
   @test match(lin, "-5x-10") !== nothing
@@ -1257,11 +1273,11 @@ end
 <div class="para" id="ch-regexp-7-4-2">As we saw above, we have a regular expression to handle decimal coefficients. This is</div>
 <div class="para logical" id="ch-regexp-7-4-3"><pre class="code-display tex2jax_ignore">dec = r"^([-+]?\d+(\.\d*)?)$"
 </pre></div>
-<div class="para" id="ch-regexp-7-4-4">We can update our linear function to include decimals for the coefficents by replacing the integer coefficent regular expression with that of the one above.</div>
+<div class="para" id="ch-regexp-7-4-4">We can update our linear function to include decimals for the coefficients by replacing the integer coefficient regular expression with that of the one above.</div>
 <div class="para logical" id="ch-regexp-7-4-5"><pre class="code-display tex2jax_ignore">lin_dec = r"([-+]?\d+(\.\d*)?)\*?x([-+]?\d+(\.\d*)?)?"
 </pre></div>
 <div class="para" id="ch-regexp-7-4-6">the above set of sets can be updated to use this instead. (Try it!) and also include a new set of tests with decimal coefficients:</div>
-<div class="para logical" id="ch-regexp-7-4-7"><pre class="code-display tex2jax_ignore">@testset "Linear Functions with decimal coefficents" begin
+<div class="para logical" id="ch-regexp-7-4-7"><pre class="code-display tex2jax_ignore">@testset "Linear Functions with decimal coefficients" begin
   @test match(lin_dec, "5.0x-10.5") !== nothing
   @test match(lin_dec, "-5.9x-10.2") !== nothing
   @test match(lin_dec, "5.3x+10.4") !== nothing
@@ -1274,7 +1290,7 @@ end
 </h4>
 <div class="para" id="ch-regexp-7-5-2">With the success of parsing a linear function, we could next generate a quadratic polynomial, however, we would like to parse a general polynomial and since a term could have any power (that is, the degree of the polynomial could be any positive integer), this isn’t practical to generate this way.</div>
 <div class="para" id="ch-regexp-7-5-3">Instead, we will split up the polynomial into terms.  For an example, let’s start with <span class="process-math">\(4x^3-2x^2+6\)</span> which we will write as the string <code class="code-inline tex2jax_ignore">4x^3-2x^2+6</code>.  To split the polynomial, there is a <code class="code-inline tex2jax_ignore">split</code> function that we can split on either a <code class="code-inline tex2jax_ignore">+</code> or <code class="code-inline tex2jax_ignore">-</code>, however that sign is not saved. Instead, the following will do what we want:</div>
-<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">  function splitPoly(p::String)
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function splitPoly(p::String)
   local terms = String[]
   # if the first character is a +/-, start the index at 2
   local ind1 = occursin(r"^[+-]",p) ? 2 : 1
@@ -1325,7 +1341,7 @@ end
 <div class="para" id="ch-regexp-7-6-6">which returns</div>
 <div class="para logical" id="ch-regexp-7-6-7"><pre class="code-display tex2jax_ignore">RegexMatch("4x^3", 1="4", 2="x^3", 3="^3", 4="3")
 </pre></div>
-<div class="para" id="ch-regexp-7-6-8">and you should notice that <code class="code-inline tex2jax_ignore">m[1]</code> will be the coeficient and <code class="code-inline tex2jax_ignore">m[4]</code> will be the power. If we test the next term with</div>
+<div class="para" id="ch-regexp-7-6-8">and you should notice that <code class="code-inline tex2jax_ignore">m[1]</code> will be the coefficient and <code class="code-inline tex2jax_ignore">m[4]</code> will be the power. If we test the next term with</div>
 <div class="para logical" id="ch-regexp-7-6-9"><pre class="code-display tex2jax_ignore">m2 = match(poly_re, "-2x")
 </pre></div>
 <div class="para" id="ch-regexp-7-6-10">this returns</div>
@@ -1341,7 +1357,7 @@ end
 <div class="para" id="ch-regexp-7-6-17">Although this looks good, thinking a bit ahead, if we have a polynomial term like <code class="code-inline tex2jax_ignore">-x^2</code>, this will not parse this. Try</div>
 <div class="para logical" id="ch-regexp-7-6-18"><pre class="code-display tex2jax_ignore">match(poly_re, "-x^2")
 </pre></div>
-<div class="para" id="ch-regexp-7-6-19">returns nothing.  We will tweat the regular expression above to allow a + or - with no number in front of the <code class="code-inline tex2jax_ignore">x</code> term.</div>
+<div class="para" id="ch-regexp-7-6-19">returns nothing.  We will tweak the regular expression above to allow a + or - with no number in front of the <code class="code-inline tex2jax_ignore">x</code> term.</div>
 <div class="para logical" id="ch-regexp-7-6-20"><pre class="code-display tex2jax_ignore">poly_re = r"^([+-]?)(\d+)?(x(\^(\d+))?)?$"
 </pre></div>
 <div class="para" id="ch-regexp-7-6-21">and now rerunning the line above results in</div>

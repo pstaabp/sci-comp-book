@@ -231,7 +231,7 @@ window.MathJax = {
 </ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-7" class="internal"><span class="codenumber">2.4</span> <span class="title">Expressions</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#sect-oper-precedence" class="internal"><span class="codenumber">2.5</span> <span class="title">Operator Precendence</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#sect-oper-precedence" class="internal"><span class="codenumber">2.5</span> <span class="title">Operator Precedence</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-variables.html#ch-variables-9" class="internal"><span class="codenumber">2.6</span> <span class="title">Comments</span></a></div></li>
 </ul>
 </li>
@@ -355,7 +355,7 @@ window.MathJax = {
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-12-7" class="internal"><span class="codenumber">6.9.5</span> <span class="title">Removing Duplicate Elements</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Spliting Strings</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Splitting Strings</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-14" class="internal"><span class="codenumber">6.11</span> <span class="title">Arrays as a Collection</span></a></div></li>
 </ul>
 </li>
@@ -468,12 +468,12 @@ window.MathJax = {
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-comp-types.html" class="internal"><span class="codenumber">12</span> <span class="title">Creating New Data Types in Julia</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-3" class="internal"><span class="codenumber">12.1</span> <span class="title">Basics of Julia’s Composite Datatype</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4" class="internal"><span class="codenumber">12.1</span> <span class="title">Basics of Julia’s Composite Datatype</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4" class="internal"><span class="codenumber">12.2</span> <span class="title">A Card datatype</span></a></div>
+<div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5" class="internal"><span class="codenumber">12.2</span> <span class="title">A Card datatype</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4-3" class="internal"><span class="codenumber">12.2.1</span> <span class="title">Constructors of new data types</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-4-4" class="internal"><span class="codenumber">12.2.2</span> <span class="title">Creating a Hand datatype</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5-3" class="internal"><span class="codenumber">12.2.1</span> <span class="title">Constructors of new data types</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-5-4" class="internal"><span class="codenumber">12.2.2</span> <span class="title">Creating a Hand datatype</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-section">
@@ -483,7 +483,7 @@ window.MathJax = {
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-comp-types.html#sect-poly-parametric-4" class="internal"><span class="codenumber">12.3.2</span> <span class="title">Evaluating the polynomial</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-6" class="internal"><span class="codenumber">12.4</span> <span class="title">A Rootfinding datatype</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-comp-types.html#ch-comp-types-7" class="internal"><span class="codenumber">12.4</span> <span class="title">A Rootfinding datatype</span></a></div></li>
 </ul>
 </li>
 </ul>
@@ -1165,10 +1165,10 @@ map(f,arr)
 </ul></div></article></details></section><section class="section" id="section-mapreduce"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">7.3</span><span class="space"> </span><span class="title">The <code class="code-inline tex2jax_ignore">mapreduce</code> function</span>
 </h3>
-<div class="para" id="section-mapreduce-2">The <a class="external" href="http://docs.julialang.org/en/release-0.5/stdlib/collections/#Base.mapreduce" target="_blank"><code class="code-inline tex2jax_ignore">mapreduce</code></a><details class="ptx-footnote" aria-live="polite" id="section-mapreduce-2-2"><summary class="ptx-footnote__number" title="Footnote 7.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="section-mapreduce-2-2"><code class="code-inline tex2jax_ignore">julialang.org</code></div></details> function is perhaps more helpful than <code class="code-inline tex2jax_ignore">reduce</code>. For example, if we want to sum the squares of each number in an array, then <code class="code-inline tex2jax_ignore">mapreduce</code> can do this easily.</div>
+<div class="para" id="section-mapreduce-2">The <a class="external" href="http://docs.Julialang.org/en/release-0.5/stdlib/collections/#Base.mapreduce" target="_blank"><code class="code-inline tex2jax_ignore">mapreduce</code></a><details class="ptx-footnote" aria-live="polite" id="section-mapreduce-2-2"><summary class="ptx-footnote__number" title="Footnote 7.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="section-mapreduce-2-2"><code class="code-inline tex2jax_ignore">Julialang.org</code></div></details> function is perhaps more helpful than <code class="code-inline tex2jax_ignore">reduce</code>. For example, if we want to sum the squares of each number in an array, then <code class="code-inline tex2jax_ignore">mapreduce</code> can do this easily.</div>
 <div class="para logical" id="section-mapreduce-3"><pre class="code-display tex2jax_ignore">mapreduce(x-&gt;x^2,+,[1,2,3],init=0)
 </pre></div>
-<div class="para" id="section-mapreduce-4">is a short-hand way to do <span class="process-math">\(1^2+2^2+3^2=14\text{.}\)</span>  For <code class="code-inline tex2jax_ignore">mapreduce</code>, the first argument is a function of one variable (unary) that is applied to every element of array.  The second argument is a binary element that is used for the reduce part. Note: julia also has a version of the <code class="code-inline tex2jax_ignore">sum</code> function that can apply a function.  For example, <code class="code-inline tex2jax_ignore">sum(x-&gt;x^2,[1,2,3])</code> returns the sum of <code class="code-inline tex2jax_ignore">14</code>.</div>
+<div class="para" id="section-mapreduce-4">is a short-hand way to do <span class="process-math">\(1^2+2^2+3^2=14\text{.}\)</span>  For <code class="code-inline tex2jax_ignore">mapreduce</code>, the first argument is a function of one variable (unary) that is applied to every element of array.  The second argument is a binary element that is used for the reduce part. Note: Julia also has a version of the <code class="code-inline tex2jax_ignore">sum</code> function that can apply a function.  For example, <code class="code-inline tex2jax_ignore">sum(x-&gt;x^2,[1,2,3])</code> returns the sum of <code class="code-inline tex2jax_ignore">14</code>.</div>
 <div class="para" id="section-mapreduce-5">Another example that we will see later is how to write a polynomial using its coefficients.  For example, if <code class="code-inline tex2jax_ignore">coeffs = [-2,4,5,7]</code>, then we want to create a way to produce the polynomial <code class="code-inline tex2jax_ignore">"-2 x^0 + 4 x^1  + 5 x^2  + 7 x^3"</code>.  This is a clear candidate for either a reduce or mapreduce because we have an array and reduce a single thing (in this case a string).  We will use <code class="code-inline tex2jax_ignore">mapreduce</code> in this case because there is a transformation of each element which produces the polynomial term and then the reduce is a concatenation.</div>
 <div class="para" id="section-mapreduce-6">Although it seems like we should use the array itself, we are going to use the array (technically the range), <code class="code-inline tex2jax_ignore">1:length(coeffs)</code>, so we can produce the powers in each of the term.  Therefore the mapping function will be</div>
 <div class="para logical" id="section-mapreduce-7"><pre class="code-display tex2jax_ignore">i -&gt; "$(coeffs[i])x^($i-1)"
