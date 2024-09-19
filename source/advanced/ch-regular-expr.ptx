@@ -42,7 +42,7 @@
       </p>
 
       <p>
-        We haven't used a regular expression yet.  In julia, we can make a regular expression by prepending a string with an <c>r</c>. For example, let's say that we want to a string to start with the string <c>"cat"</c>.  We can do this with
+        We haven't used a regular expression yet.  In Julia, we can make a regular expression by prepending a string with an <c>r</c>. For example, let's say that we want to a string to start with the string <c>"cat"</c>.  We can do this with
       </p>
 
       <p>
@@ -119,6 +119,14 @@
       <p>
         the first 2 return true and the last is false.
       </p>
+
+      <exercise>
+        <statement>
+          <p>
+            Write a regular expression that tests for four-letter words that have "oo" or "ee" in the middle like <c>fool</c> or <c>seen</c>.  Test on these words as well as ones that aren't four letters and don't have the double "o" or "e".
+          </p>
+        </statement>
+      </exercise>
     </subsection>
 
 
@@ -146,7 +154,7 @@
       </p>
 
       <p>
-        returns <c>true</c> as well. To match alphabetic characters, there are a couple of options.  If you are looking for precisely the 26 latin characters then <c>[a-z]</c> is the best way to do this.  However, there are many characters (such as letters with accents) or unicode characters that are alphabetic and there is a <c>[[:alpha:]]</c>.  Some examples are:
+        returns <c>true</c> as well. To match alphabetic characters, there are a couple of options.  If you are looking for precisely the 26 lowercase latin characters then <c>[a-z]</c> is the best way to do this.  However, there are many characters (such as letters with accents) or unicode characters that are alphabetic and there is a <c>[[:alpha:]]</c>.  Some examples are:
       </p>
 
       <p>
@@ -184,17 +192,17 @@
       </p>
 
       <p>
-        White space is also something to detect. Although, it can be used with <c>occursin</c>, a more practical way to use this is with <c>split</c>, which takes a string and splits it.   For example,
+        White space is also something to detect. Although, it can be used with <c>occursin</c>, a more practical way to use this is with <c>split</c>, which takes a string and splits it.  We saw this in <xref ref="sect-join-split"/>, but in that section only specific strings were allowed.   For example,
       </p>
 
       <p>
         <cd>
-        <cline>split( "The dog jumps over the log", r"\s")</cline>
+        <cline>split("The dog jumps over	the log", r"\s")</cline>
         </cd>
       </p>
 
       <p>
-        returns the array
+        where some of the spaces are tabs and others are a space character.  This returns the array
       </p>
 
       <p>
@@ -202,6 +210,28 @@
         <cline>["The", "dog", "jumps", "over", "the", "log"]</cline>
         </cd>
       </p>
+
+      <p>
+        Another example would be
+      </p>
+
+      <p>
+        <cd>
+        <cline>split("1.0,2.0,3.0;4.5,7.9;-10", r"[,;]")</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns <c>[1.0, 2.0, 3.0, 4.5, 7.9, -10]</c> and recall that the regular expression is basically <c>,</c> or <c>;</c>.
+      </p>
+
+      <exercise xml:id="exer-four-letter">
+        <statement>
+          <p>
+            Write a regular expression to match five-letter words (which may be useful for solving Wordle). Start first with the lower-case latin characters and then allow other characters like the greek letters.  Test against 4, 5 and 6 letter words that should and should not match.
+          </p>
+        </statement>
+      </exercise>
     </subsection>
 
 
@@ -261,6 +291,14 @@
       <p>
         then the first one does not match, but the others do.  The last example of this is the regular expression <c>.*</c>, which matches any character 0 or more times.  At first glance this doesn't seem useful
       </p>
+
+      <exercise>
+        <statement>
+          <p>
+            Rewrite the regular expression finds four-letter words that you did above in <xref ref="exer-four-letter"/> to use quantifiers.
+          </p>
+        </statement>
+      </exercise>
     </subsection>
   </section>
 
@@ -355,6 +393,14 @@
     <p>
       which returns all true.
     </p>
+
+    <exercise>
+      <statement>
+        <p>
+          Recall that floating point numbers that are written in scientific notation like <c>1.234e-4</c> which represents <m>1.234 \times 10^{-4}</m>. Update the regular expression above to handle these type of numbers, recalling that the front is just a decimal, so you can just handle the <c>e-4</c> above.  Make this part optional.
+        </p>
+      </statement>
+    </exercise>
   </section>
 
   <section>
@@ -482,7 +528,7 @@
 
     <introduction>
       <p>
-        We now turn to an example of parsing a string to interpret as a polynomial.  A goal will be to add a contructor to our <c>Polynomial</c> module that will take a string and if it can be written as a polynomial, to parse it and store it as a polynomial.  For example, here are some examples
+        We now turn to an example of parsing a string to interpret as a polynomial.  A goal will be to add a constructor to our <c>Polynomial</c> module that will take a string and if it can be written as a polynomial, to parse it and store it as a polynomial.  For example, here are some examples
       </p>
 
       <p>
@@ -529,7 +575,7 @@
 
           <li>
             <p>
-              The sign and the digits are surrouned by <c>()</c>, so this is our first capture group.  This will be parsed as our first coefficient.
+              The sign and the digits are surrounded by <c>()</c>, so this is our first capture group.  This will be parsed as our first coefficient.
             </p>
           </li>
 
@@ -551,7 +597,7 @@
       </p>
 
 
-      <program language="julia" line-numbers="yes">
+      <program language="Julia" line-numbers="yes">
         <input>
 @testset "Linear Functions" begin
   @test match(lin, "5x-10") !== nothing
@@ -577,7 +623,7 @@ end
       </p>
 
       <p>
-        noting that <c>*</c> is a special character so needs to be esacped as <c>\*</c>. Now the test set:
+        noting that <c>*</c> is a special character so needs to be escaped as <c>\*</c>. Now the test set:
       </p>
 
       <p>
@@ -613,7 +659,7 @@ end
       </p>
 
       <p>
-        We can update our linear function to include decimals for the coefficents by replacing the integer coefficent regular expression with that of the one above.
+        We can update our linear function to include decimals for the coefficients by replacing the integer coefficient regular expression with that of the one above.
       </p>
 
       <p>
@@ -628,7 +674,7 @@ end
 
       <p>
         <cd>
-        <cline>@testset "Linear Functions with decimal coefficents" begin</cline>
+        <cline>@testset "Linear Functions with decimal coefficients" begin</cline>
         <cline>  @test match(lin_dec, "5.0x-10.5") !== nothing</cline>
         <cline>  @test match(lin_dec, "-5.9x-10.2") !== nothing</cline>
         <cline>  @test match(lin_dec, "5.3x+10.4") !== nothing</cline>
@@ -653,9 +699,9 @@ end
       </p>
 
 
-      <program language="julia" line-numbers="yes">
+      <program language="Julia" line-numbers="yes">
         <input>
-          function splitPoly(p::String)
+        function splitPoly(p::String)
           local terms = String[]
           # if the first character is a +/-, start the index at 2
           local ind1 = occursin(r"^[+-]",p) ? 2 : 1
@@ -794,7 +840,7 @@ end
       </p>
 
       <p>
-        and you should notice that <c>m[1]</c> will be the coeficient and <c>m[4]</c> will be the power. If we test the next term with
+        and you should notice that <c>m[1]</c> will be the coefficient and <c>m[4]</c> will be the power. If we test the next term with
       </p>
 
       <p>
@@ -848,7 +894,7 @@ end
       </p>
 
       <p>
-        returns nothing.  We will tweat the regular expression above to allow a + or - with no number in front of the <c>x</c> term.
+        returns nothing.  We will tweak the regular expression above to allow a + or - with no number in front of the <c>x</c> term.
       </p>
 
       <p>

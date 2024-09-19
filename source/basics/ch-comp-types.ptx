@@ -3,6 +3,40 @@
 <chapter xml:id="ch-comp-types">
 	<title>Creating New Data Types in Julia</title>
 
+	<objectives>
+		<ul>
+			<li>
+				<p>
+					One can create a new user-define data type or <c>struct</c>.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Creation of a <c>Card</c> and <c>Hand</c> data type to model a playing card.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					When creating a new data type, use the <c>new</c> command in constructors.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Displaying a Data Type with the <c>show</c> command for clarity.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Developing a Polynomial and Root datatype and applying existing methods like addition and subtraction on a user-defined type.
+				</p>
+			</li>
+		</ul>
+	</objectives>
+
 	<introduction>
 		<p>
 			Although there are many standard Julia data types that are useful for Scientific Computing, we can make new types called a composite data type.  We will start with developing a <c>PlayingCard</c> type that simplifies the poker hand simulations that we will see in <xref ref="ch-poker"/>.  We will also look at a <c>Polynomial</c> data type and finally create a <c>Root</c> type that will help with the rootfinding from <xref ref="ch-rootfinding"/>.
@@ -26,7 +60,7 @@
 		</p>
 
 		<p>
-			which has the two fields <c>num</c> and <c>str</c>. We are using the standard naming convention of a struct starting with a capital letter.  We can create an object<fn>Although a Julia struct is not an object in the sense of an object-oriented language, the terminology is pervasive in the Julia community.</fn> of type <c>Mystruct</c> by
+			which has the two fields <c>num</c> and <c>str</c>. We are using the standard naming convention of a struct in Pascal case, which starts with a capital letter and and other words capitalized.   We can create an object<fn>Although a Julia struct is not an object in the sense of an object-oriented language, the terminology is pervasive in the Julia community.</fn> of type <c>Mystruct</c> by
 		</p>
 
 		<p>
