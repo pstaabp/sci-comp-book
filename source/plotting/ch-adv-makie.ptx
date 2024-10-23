@@ -3,114 +3,235 @@
 <chapter xml:id="ch-makie-adv">
   <title>Advanced Plotting in Makie</title>
 
+  <introduction>
+    <p>
+      There are a few advanced plotting techniques to discuss.  This includes how to create a Plot Recipe to easily plot new objects.  In this chapter we will show how to plot the Polynomial object that we created in <xref ref="sect-poly-parametric"/>.
+    </p>
+  </introduction>
+
   <section>
-    <title>Plotting the Polynomial</title>
+    <title>Creating a Type Recipe for the Polynomial using Makie</title>
 
-    <introduction>
-      <p>
-        MOVE THIS SECTION
-      </p>
+    <p>
+      Recall that we created a Polynomial in <xref ref="sect-poly-parametric"/>.  The following defines the Polynomial
+    </p>
 
-      <p>
-        Recall that using the <c>Plots</c> package, one can consider plotting the polynomial by creating a function that pulls out the coefficients.  However, the <c>Plots</c> package has a related package called <c>RecipesBase</c> that allows one to create a plotting recipe.  That is if <c>p</c> is a <c>Polynomial</c>, then we can write <c>plot(p)</c> and it will plot the polynomial.  Let's see how and don't forget to add the package and then enter <c>using RecipesBase</c>.
-      </p>
+    <p>
+      <cd>
+      <cline>struct Polynomial{T &lt;: Number}</cline>
+      <cline>  coeffs::Vector{T}</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
 
-      <p>
-        The package <c>RecipesBase</c> includes the macro <c>@recipe</c> and although the documentation is sparse, <url href="https://github.com/JuliaPlots/RecipesBase.jl" visual="">this page</url> is helpful in the background.  The basic idea on a plot recipe is to do the following:
-      </p>
+    <p>
+      and we will use the following <c>Base.show</c> to improve the appearance:
+    </p>
 
-      <p>
-        <cd>
-        <cline>@recipe f(t::TheType,...)</cline>
-        <cline>end</cline>
-        </cd>
-      </p>
+    <p>
+      <cd>
+      <cline>Base.show(io::IO, p::Polynomial) = print(io, mapreduce(n -&gt; "$(p.coeffs[n]) x^$(n-1)", (str, term) -&gt; "$str $term", 1:length(p.coeffs)))</cline>
+      </cd>
+    </p>
 
-      <p>
-        where <c>TheType</c> is any datatype (either built-in or user defined).  The recipe needs to return some number of vectors of points (depending on if it is 1D, 2D or a 3D plot). A simple version of this for type  <c>Polynomial</c> is
-      </p>
+    <p>
+      And lastly, we'll make a simple polynomial <c>p = Polynomial([1,2,3])</c>.
+    </p>
 
+    <p>
+      We will also benefit from the <c>eval</c> method that evaluations the polynomial.  This one uses Horner's method
+    </p>
 
-      <program language="julia" line-numbers="yes">
-        <input>
-@recipe function f(poly::Polynomial,xmin::Number=-2,xmax::Number=2)
-xpts = LinRange(xmin,xmax,200)
-ypts = map(x-&gt;eval(poly,x),xpts)
-xpts,ypts
-end
-        </input>
-      </program>
+    <p>
+      <cd>
+      <cline>eval(poly::Polynomial, x::Number) = reduce((val,c) -&gt; x*val+c, reverse(poly.coeffs))</cline>
+      </cd>
+    </p>
 
-      <p>
-        where line 2 creates an array of x values of length 200, then line 3 creates the y values for each x value.  Line 4 returns a tuple of the pairs of points. We can now use this to plot a polynomial and we will need to <c>using Plots</c> to:
-      </p>
+    <p>
+      In this section we will make a <term>type recipe</term> which is a way to plot a particular type (usually a user-defined one) using an existing plotting function (line <c>lines</c>).  To determine which Makie function that we will use, the <c>Plottype</c> function is used.  For example:
+    </p>
 
-      <p>
-        <cd>
-        <cline>plot(poly1)</cline>
-        </cd>
-      </p>
+    <p>
+      <cd>
+      <cline>Makie.plottype(::Polynomial) = Makie.Lines</cline>
+      </cd>
+    </p>
 
-      <p>
-        and since we defaulted the plot range from -2 to 2, we get the following plot: \begin{center} \pgfplotsset{scale=0.6} \plot{plots/comp-type/plot01.tex}{poly} \end{center}
-      </p>
+    <p>
+      where the only argument of <c>plottype</c> is the type.  Note that since the argument is not explicitly used, we only give the type with <c>::</c> followed by the type.  The plottype is then set to an existing Makie type (note that capitalization).
+    </p>
 
-      <p>
-        and if we want to specify the plotting range:
-      </p>
+    <p>
+      The conversion of the user-defined type to a type of (in this case) lines is also needed.  For this example, we need to take a Polynomial and convert it to a pair of vectors that will be the <m>x</m>- and <m>y</m>-points on the curve.  The following is a simple way to do this
+    </p>
 
-      <p>
-        <cd> plot(poly1,0,4) </cd>
-      </p>
+    <p>
+      <cd>
+      <cline>Makie.convert_arguments(S::Type{&lt;:Lines}, p::Polynomial, domain = -5..5) = Makie.convert_arguments(S, domain, x-&gt;eval(p,x))</cline>
+      </cd>
+    </p>
 
-      <p>
-        we get \begin{center} \pgfplotsset{scale=0.6} \plot{plots/comp-type/plot02.tex}{poly} \end{center}
-      </p>
-    </introduction>
+    <p>
+      A few comments about this function.
+    </p>
 
+    <p>
+      <ul>
+        <li>
+          <p>
+            The first argument is the type of the conversion.  The argument <c>S</c> is a <c>Type</c>, we haven't seen this before and the type must be of type <c>Lines</c>.  This is how Makie know when the <c>lines</c> method is called to use this function.
+          </p>
+        </li>
 
-    <subsection>
-      <title>Changing other parameters</title>
+        <li>
+          <p>
+            The second argument is the user-defined type, in this case <c>Polynomial</c>. Unlike above, the argument needs a name.
+          </p>
+        </li>
 
-      <p>
-        But wait... There's more... One of the fantastic things about using <c>RecipesBase</c> is that we can still use all of the other parameters associated with plot as we normally would. For example:
-      </p>
+        <li>
+          <p>
+            The third argument is called <c>domain</c> and we give it a default value of the <c>ClosedInterval</c> type of <c>-5..5</c>.
+          </p>
+        </li>
 
-      <p>
-        <cd>
-        <cline>plot(poly1,0,4,linecolor=:orange,title="A quadratic", lw=2, legend=false)</cline>
-        </cd>
-      </p>
+        <li>
+          The right hand side is the conversion process.  The first argument of this is the type, <c>S</c> and then the other two arguments are what is passed to the <c>lines</c> method.  Although there are a number of ways to do this for <c>lines</c>, since a polynomial is a mathematical function, the easiest way to accomplish this is the plotting domain and a function.  The domain is the argument passed in and the function is the <c>eval</c>.
+        </li>
+      </ul>
+    </p>
 
-      <p>
-        produces the plot: % \begin{center} \pgfplotsset{scale=0.5} \plot{plots/comp-type/plot03.tex}{poly} \end{center}
-      </p>
-    </subsection>
+    <p>
+      Now with this type recipe in place, we can plot with the following
+    </p>
 
+    <p>
+      <cd>
+      <cline>lines(poly1, -3..3)</cline>
+      </cd>
+    </p>
 
-    <subsection>
-      <title>Setting Default parameters</title>
+    <p>
+      and the result is the following plot
+    </p>
 
-      <p>
-        Recipes also allow to set default parameters. Let's say that if we want to always plot a polynomial green without a legend that we can put these default parameters in the recipe:
-      </p>
+    <figure xml:id="fig-poly-recipe1">
+      <caption></caption>
+      <image source="plots/makie/plot-recipe1.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
 
+    <p>
+      This gives the expected plot of the polynomial on the domain <m>[-3,3]</m>. Since we added a default plotting domain, if we also can plot with
+    </p>
 
-      <program language="julia" line-numbers="yes">
-        <input>
-@recipe function f(poly::Polynomial,xmin::Number=-2,xmax::Number=2)
-legend --&gt; false
-linecolor --&gt; :green
-xpts = LinRange(xmin,xmax,200)
-ypts = map(x-&gt;eval(poly,x),xpts)
-xpts,ypts
-end
-        </input>
-      </program>
+    <p>
+      <cd>
+      <cline>lines(poly1)</cline>
+      </cd>
+    </p>
 
-      <p>
-        If we have this definition then <c>plot(poly1,0,4)</c> produces the following plot: \begin{center} \pgfplotsset{scale=0.5} \plot{plots/comp-type/plot04.tex}{poly} \end{center}
-      </p>
-    </subsection>
+    <p>
+      resulting in the following plot
+    </p>
+
+    <figure xml:id="fig-poly-recipe2">
+      <caption></caption>
+      <image source="plots/makie/plot-recipe2.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      and notice that we didn't put in the plotting domain, however the default one of <c>-5..5</c> was used.
+    </p>
+  </section>
+
+  <section>
+    <title>Another Type Recipe</title>
+
+    <p>
+      If we have an object that is a triangle that is defined as 3 tuples like:
+    </p>
+
+    <p>
+      <cd>
+      <cline>struct Triangle{T &lt;: Real}</cline>
+      <cline>  pt1::Tuple{T,T}</cline>
+      <cline>  pt2::Tuple{T,T}</cline>
+      <cline>  pt3::Tuple{T,T}</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      This will create a triangle using 3 tuples (of size 2).  There are better ways to do this in general, but this will illustrate another way to build a type recipe.   The main problem is that when creating the Triangle, all numbers within the tuples have to be the same type and
+    </p>
+
+    <p>
+      We will also use the following <c>Base.show</c> to help the printed version of the triangle:
+    </p>
+
+    <p>
+      <cd>
+      <cline>Base.show(io::IO, tri::Triangle) = print(io, "Δ[$(tri.pt1), $(tri.pt2), $(tri.pt3)]")</cline>
+      </cd>
+    </p>
+
+    <p>
+      And now we can make a Triangle with <c>tri = Triangle((0,0),(0,3),(4,0))</c> as an example.  The result is
+    </p>
+
+    <p>
+      <cd>
+      <cline>Δ[(0, 0), (0,3), (4, 0)]</cline>
+      </cd>
+    </p>
+
+    <p>
+      In this section we wish to show how to create a type recipe for a Triangle.  First, we need to define the <c>plottype</c> which will allow Makie to use one it's existing plotting routines to plot a <c>Triangle</c>.  Since we just want a `Line` plot, the following will do this:
+    </p>
+
+    <p>
+      <cd>
+      <cline>Makie.plottype(::Triangle) = Makie.Lines</cline>
+      </cd>
+    </p>
+
+    <p>
+      And like above, we don't need to give the argument a name (because we never use the name in the function), only the type.
+    </p>
+
+    <p>
+      And the other step is to use the <c>convert_arguments</c> method to take an object of type <c>Triangle</c> and convert them to something that <c>lines</c> understands. Here's a function that will do this:
+    </p>
+
+    <p>
+      <cd>
+      <cline>function Makie.convert_arguments(S::Type{&lt;:Lines}, tri::Triangle)</cline>
+      <cline>  xpts = [tri.pt1[1], tri.pt2[1], tri.pt3[1], tri.pt1[1]]</cline>
+      <cline>  ypts = [tri.pt1[2], tri.pt2[2], tri.pt3[2], tri.pt1[2]]</cline>
+      <cline>  Makie.convert_arguments(S, xpts, ypts)</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      What this function basically does is create the <c>x</c> and <c>y</c> points of the triangle and stores them in a Vector.  Then the last line passes this to a <c>Lines</c> plot with the two vectors <c>xpts</c> and <c>ypts</c>.
+    </p>
+  </section>
+
+  <section>
+    <title>Plot Recipes</title>
+
+    <p>
+      To be finished: explain and show examples of Plot recipes and how they differ from type recipes.
+    </p>
   </section>
 </chapter>

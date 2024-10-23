@@ -493,7 +493,7 @@ end
 			<p>
 				<cd>
 				<cline>function Base.show(io::IO, p::Polynomial)</cline>
-				<cline>  print(io, mapreduce(i -&gt; "$(coeffs[i]) x^$(i-1)", (str, term) -&gt; str * " + $term " , 1:length(coeffs)))</cline>
+				<cline>  print(io, mapreduce(i -&gt; "$(coeffs[i]) x^$(i-1)", (str, term) -&gt; "$str + $term " , 1:length(coeffs)))</cline>
 				<cline>end</cline>
 				</cd>
 			</p>

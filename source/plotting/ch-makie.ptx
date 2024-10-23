@@ -13,7 +13,7 @@
     <title>Basic Plotting</title>
 
     <p>
-      Before plotting, make sure that you have the packages <c>Makie</c> and <c>CairoMakie</c> installed.  The package <c>CairoMakie</c> is the backend package that does the plotting using the common interface (API) in the <c>Makie</c> package.  To get started enter
+      Before plotting, make sure that you have the packages <c>Makie</c> and <c>CairoMakie</c> installed.  The package <c>CairoMakie</c> is the backend package that does the plotting using the common interface (API) in the <c>Makie</c> package.  Once the <c>CairoMakie</c> package is install, to set this to the Makie backend enter:
     </p>
 
     <p>
@@ -25,14 +25,12 @@
     </p>
 
     <p>
-      and to get a plot, we can use the <c>scatter</c> command and let's first define the arrays:
+      where the 3rd line above will allow the plots to appear inside a notebook interface instead of as a separate window. As an example, we'll the <c>scatter</c> command on a pair of vectors.
     </p>
 
     <p>
       <cd>
-      <cline>x=1:10</cline>
-      <cline>y=[3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9]</cline>
-      <cline>scatter(x,y)</cline>
+      <cline>scatter(1:10, 3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9])</cline>
       </cd>
     </p>
 
@@ -44,7 +42,7 @@
       <caption>Scatter plot of some sample data</caption>
       <image source="plots/plots/makie-scatter.png" width="90%">
         <shortdescription>
-          Scatter plot of points with x between 1 and 10 and y between -5 and 8.
+          Scatter plot of points with x values between 1 and 10 and y values between -5 and 8.
         </shortdescription>
       </image>
     </figure>
@@ -55,7 +53,7 @@
 
     <p>
       <cd>
-      <cline>lines(x,y)</cline>
+      <cline>lines(1:10, 3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9])</cline>
       </cd>
     </p>
 
@@ -83,7 +81,7 @@
     </p>
 
     <p>
-      and if the prescence of <c>sin</c> by itself in the function, one can use <c>lines(0..2pi, x -&gt; sin(x))</c> instead.  The result is
+      and if the presence of <c>sin</c> by itself in the function seems odd to you, one can use <c>lines(0..2pi, x -&gt; sin(x))</c> that is an anonymous function notation instead.  The first argument is a plotting range explained below. The result is
     </p>
 
     <figure xml:id="fig-makie-function">
@@ -118,7 +116,11 @@
     <title>Figures and Grid Layout in Makie</title>
 
     <p>
-      Before delving into more of the plotting types in Makie, we will first look at layout and axes, a strength of this package and also shows how to build a plot step by step.  First, a plot need a <c>Figure</c> container and this can be created with:
+      Before delving into more of the plotting types in Makie, we will first look at layout and axes, a strength of this package and also shows how to build a plot step by step.  Note: for simple plots, we can generally just call the plotting routine, however adding multiple plots or changing axis labels, it is easier to build a plot as explained here.
+    </p>
+
+    <p>
+      First, a plot needs a <c>Figure</c> container and this can be created with:
     </p>
 
     <p>
@@ -128,7 +130,7 @@
     </p>
 
     <p>
-      And upon running this, you will get a blank/empty Figure.  This is not so interesting, but important.  There are many things that happen when creating a figure, but most importantly, there is a grid layout that is created.  To place items in the grid, typically plots need to occur on axes, so we will place axes in a layout with row/column indexing.  For example
+      And upon running this, you will see an empty figure (white square) that we need to add things to.  Although this is not so interesting, it is important.  There are many things that happen when creating a figure, but most importantly, there is a grid layout that is created.  To place items in the grid, typically plots need to occur on axes, so we will place axes in a layout with row/column indexing.  For example
     </p>
 
     <p>
@@ -143,7 +145,7 @@
     </p>
 
     <p>
-      and the output of this is
+      Overall the output of this is
     </p>
 
     <figure xml:id="fig-makie-layout">
@@ -156,7 +158,7 @@
     </figure>
 
     <p>
-      and you should notice many things.  We can add a Axis to a plot (or four of them) without any plot within them.  We will learn how to add a plot to an axis below.  Above, the axes were placed by adding a row and column to the <c>fig</c> (Figure) above.  For example, the Axis labeled as <c>Axis 2</c> is placed in the second row and first column.  Also, the default plotting window (limits) for an Axis is between 0 and 10.
+      and you should notice many things.  We can add a Axis to a plot (or four of them) without any plot within them.  We will learn how to add a plot to an axis below.  Above, the axes were placed by adding a row and column to the <c>fig</c> (Figure) above  where the row and column is used in an array like notation.  Notice that <c>fig[1,2]</c> places the axis in the first row, second column.  Also, the default plotting window (limits) for an Axis is between 0 and 10.
     </p>
 
     <p>
@@ -212,10 +214,10 @@
     </p>
 
     <figure xml:id="fig-xylabels">
-      <caption>An empty plot with values for the title, xlable and ylabel.</caption>
+      <caption>An empty plot with values for the title, xlabel and ylabel.</caption>
       <image source="plots/makie/xylabels.png" width="90%">
         <shortdescription>
-          An empty plot with title "My Plot", xlabel of "x label" and ylable as "y label".
+          An empty plot with title "My Plot", xlabel of "x label" and ylabel as "y label".
         </shortdescription>
       </image>
     </figure>
@@ -226,12 +228,14 @@
 
     <p>
       <cd>
-      <cline>fig = Figure() ax = Axis(fig[1,1], limits = (-5,5,0,20)) fig</cline>
+      <cline>fig = Figure()</cline>
+      <cline>ax = Axis(fig[1,1], limits = (-5,5,0,20))</cline>
+      <cline>fig</cline>
       </cd>
     </p>
 
     <p>
-      produces the following
+      and notice the last line above or <c>fig</c> will show the figure.  Nothing will be shown if this isn't there. The result is
     </p>
 
     <figure xml:id="fig-limits">
@@ -248,156 +252,135 @@
     </p>
 
     <p>
-      There are plenty of other options available for an <c>Axis</c>.  See the <url href="https://docs.makie.org/stable/reference/blocks/axis">documentation on Axis</url> for more information.  One big this to note is the separation of axis options (anything that isn't a plot) should be done to the <c>Axis</c> option, whereas as we will see below, changes to the plot will go on the individual plotting function.
+      There are plenty of other options available for an <c>Axis</c>.  See the <url href="https://docs.makie.org/stable/reference/blocks/axis">documentation on Axis</url> for more information.  One big thing to note is the separation of axis options (anything that isn't a plot) should be done to the <c>Axis</c> object, whereas as we will see below, changes to the plot will go on the individual plotting function.  We will see other examples of this below.
     </p>
   </section>
 
   <section>
     <title>Adding Plots to Axes</title>
 
-    <p>
-      Even though we can do some elaborate layout of axes, we haven't done any plotting on them.  In fact, there are two ways to plot via Makie.  First, as we saw above, we can use plotting functions like <c>lines</c> or <c>scatter</c> to make plots.  This is fine for relatively simple plots or just for a quick plot using defaults.  Secondly, we will create <c>Figure</c>s and <c>Axis</c> objects and the add plots to them with commands like <c>lines!</c> or <c>scatter!</c> (note the !).  Recall that convention in Julia is if an argument is being modified that the name should end in a <c>!</c>.
-    </p>
+    <introduction>
+      <p>
+        Even though we can do some elaborate layout of axes, we haven't done any plotting on them.  In fact, there are two ways to plot via Makie.  First, as we saw above, we can use plotting functions like <c>lines</c> or <c>scatter</c> to make plots.  This is fine for relatively simple plots or just for a quick plot using defaults.  If we desire additional features to a plot, generally we will create <c>Figure</c>s and <c>Axis</c> objects and the add plots to them with commands like <c>lines!</c> or <c>scatter!</c> (note the !).  Recall that convention in Julia is if an argument is being modified that the name should end in a <c>!</c>.
+      </p>
 
-    <p>
-      Let's repeat the scatter plot at the top of this chapter.  If we do:
-    </p>
+      <p>
+        Let's repeat the scatter plot at the top of this chapter.  If we do:
+      </p>
 
-    <p>
-      <cd>
-      <cline>y = [3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9]</cline>
-      <cline>fig = Figure()</cline>
-      <cline>ax = Axis(fig[1,1], limits = (0,11,-10,10))</cline>
-      <cline>scatter!(ax, x, y)</cline>
-      <cline>fig</cline>
-      </cd>
-    </p>
+      <p>
+        <cd>
+        <cline>y = [3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9]</cline>
+        <cline>fig = Figure()</cline>
+        <cline>ax = Axis(fig[1,1], limits = (0,11,-10,10))</cline>
+        <cline>scatter!(ax, x, y)</cline>
+        <cline>fig</cline>
+        </cd>
+      </p>
 
-    <p>
-      where we have set the limits to make them symmetric above and below the <m>x</m>-axis.
-    </p>
+      <p>
+        where we have set the limits to make them symmetric above and below the <m>x</m>-axis.
+      </p>
 
-    <figure xml:id="fig-scatter2">
-      <caption>A scatter plot with sample data in which the limits have been updated. </caption>
-      <image source="plots/makie/scatter2.png" width="90%">
-        <shortdescription>
-          A scatter plot with sample data in which the limits are from 0 to 11 in the x-direction and from -10 to 10 in the y-direction.
-        </shortdescription>
-      </image>
-    </figure>
+      <figure xml:id="fig-scatter2">
+        <caption>A scatter plot with sample data in which the limits have been updated. </caption>
+        <image source="plots/makie/scatter2.png" width="90%">
+          <shortdescription>
+            A scatter plot with sample data in which the limits are from 0 to 11 in the x-direction and from -10 to 10 in the y-direction.
+          </shortdescription>
+        </image>
+      </figure>
 
-    <p>
-      This is the way to include either multiple function plot or a scatter and function plot on the same axes.  Consider the scatter plot from <xref ref="ch-plotting-basics"/> which is the data from CO₂ levels.  We can add an exponential function to them as well in the following way.<fn>The data is available <url href="https://gml.noaa.gov/aftp/products/trends/co2/co2_annmean_mlo.csv">at this NOAA webpage</url> and should be downloaded and saved in the same directory as your julia notebook. </fn>.
-    </p>
+      <p>
+        This is the way to include either multiple function plot or a scatter and function plot on the same axes.  Consider the scatter plot from <xref ref="ch-plotting-basics"/> which is the data from CO₂ levels.  We can add an exponential function to them as well in the following way.<fn>The data is available <url href="https://gml.noaa.gov/aftp/products/trends/co2/co2_annmean_mlo.csv">at this NOAA webpage</url> and should be downloaded and saved in the same directory as your Julia notebook. </fn>.
+      </p>
 
 
-    <program language="julia" line-numbers="yes">
-      <input>
+      <program language="julia" line-numbers="yes">
+        <input>
           fig = Figure()
           ax = Axis(fig[1,1])
           scatter!(ax, co2.year, co2.mean)
           lines!(ax, 1959..2023,t -&gt; exp(5.735 + 0.00454*(t-1959)), color = :green)
           fig
-      </input>
-    </program>
+        </input>
+      </program>
 
-    <p>
-      resulting in the following.
-    </p>
-
-    <figure xml:id="fig-co2-fit">
-      <caption>A scatter plot of CO₂ data and an exponential fit. </caption>
-      <image source="plots/makie/co2-scatter-fit.png" width="90%">
-        <shortdescription>
-          (for accessibility)
-        </shortdescription>
-      </image>
-    </figure>
-
-    <p>
-      The exponential was found in a way similar to that of fitting curves in <xref ref="ch-algorithm-analysis"/>.
-    </p>
-  </section>
-
-  <section>
-    <title>Plotting Data</title>
-
-    <introduction>
       <p>
-        Many of the examples above have involved plotting functions.  This section gives some overview of how to think about data.  In particular, recall that data is generally either discrete (that is there are either a finite or countable number of possibilities) like categories or numerical data that can be counted or continuous like data that is measured with real numbers (inches of rain, heights of people, etc.)  It's important to understand the difference to understand plots.
+        resulting in the following.
+      </p>
+
+      <figure xml:id="fig-co2-fit">
+        <caption>A scatter plot of CO₂ data and an exponential fit. </caption>
+        <image source="plots/makie/co2-scatter-fit.png" width="90%">
+          <shortdescription>
+            A scatter plot with an exponential increase from 320 ppm in 1960 to 420 in 2023 together with an exponential function that closely follows the points.
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>
+        The exponential was found in a way similar to that of fitting curves in <xref ref="ch-algorithm-analysis"/>.
       </p>
     </introduction>
 
 
     <subsection>
-      <title>Plotting Continuous Data</title>
+      <title>Placing plots on different axes</title>
 
       <p>
-        We have already seen examples of plotting continuous data with the CO₂ data above.  This data is the mean CO₂ level over each year and although the year seems like a discrete variable, time is actually continuous.  Because of this, a scatter plot is a good way to present this data.
+        Above, we saw adding different axes to a Figure by placing Axis objects in a grid.  We can add plots to these axes using the <c>scatter!</c> or <c>lines!</c> methods where the first argument is the axis number where we wish to place the plot.  As an example:
       </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+fig = Figure()
+ax1 = Axis(fig[1,1], title="Axis 1")
+ax2 = Axis(fig[2,1][1,1], title = "Axis 2")
+ax3 = Axis(fig[2,1][1,2], title = "Axis 3")
+lines!(ax1, 0..10,sin)
+lines!(ax2, 0..10, t-&gt; 10*exp(-t))
+scatter!(ax3,0:10,10*rand(11))
+fig
+        </input>
+      </program>
+
+      <p>
+        and the result is
+      </p>
+
+      <figure xml:id="fig-multi-plot">
+        <caption></caption>
+        <image source="plots/makie/multi-plots.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
     </subsection>
 
 
     <subsection>
-      <title>Plotting Discrete Data</title>
+      <title>Alternative for Layout</title>
 
       <p>
-        In contrast, let's look at discrete data.  I have done a lot of research recently using sports data and one project involved scoring in the National Basketball Association (NBA).  Consider a season and looking at the number of points every team has scored.   For the 2023-2024 season, if we consider the home and visiting teams, then here is the first few games:
-      </p>
-
-      <p>
-        To plot every score (which is discrete), let's consider a bar plot in which the height of a bar at a given score is the number of games with that score.  To generate this, we load in the <c>nba2024.csv</c> file.  Note you will need to download/install <c>CSV</c> and <c>DataFrames</c>.
+        In some cases, creating a Figure and an Axis object is overkill to do some things that we wish.  If we are plotting two functions on the same axes, we will see that we can get the needed information to plot additional plots.  Consider
       </p>
 
       <p>
         <cd>
-        <cline>using CSV, DataFrames</cline>
-        <cline>nba_scores = CSV.read("nba.csv", DataFrame)</cline>
+        <cline>fig, ax = lines(0..2pi,sin)</cline>
         </cd>
       </p>
 
       <p>
-        and this lists about 15 rows of the file.  The top of the file looks like:
+        which will produce the following plot:
       </p>
 
-      <p>
-        <cd>
-        <cline>1319×5 DataFrame     1294 rows omitted</cline>
-        <cline>  Row   DATE        HOME_TEAM              HOME_SCORE  VISITOR_NAME        VISITOR_SCORE</cline>
-        <cline>        Date        String31               Int64       String31            Int64</cline>
-        <cline>  1     2023-10-24  Denver Nuggets         119         Los Angeles Lakers  107</cline>
-        <cline>  2     2023-10-24  Golden State Warriors  104         Phoenix Suns        108</cline>
-        <cline>  3     2023-10-25  Orlando Magic          116         Houston Rockets     86</cline>
-        </cd>
-      </p>
-
-      <p>
-        We won't go into what a DataFrame is, but in short it is a common data structure for working with data that comes in columns with common types.  These work well with spreadsheets.  The details of a <c>DataFrame</c> is presented starting in <xref ref="ch-data"/>. To plot the number of home games with a given score (also called the score distribution), we use the <c>counts</c> function in the <c>StatsBase</c> package (so install it) and perform <c>using StatsBase</c>.
-      </p>
-
-      <p>
-        <cd>
-        <cline>home_dist = counts(nba_scores.HOME_SCORE,70:160)</cline>
-        </cd>
-      </p>
-
-      <p>
-        which returns a vector of the number of games with the score 70, 71, ..., 160.  We can then plot the results with <c>barplot</c> using
-      </p>
-
-      <p>
-        <cd>
-        <cline>barplot(70:160,home_dist)</cline>
-        </cd>
-      </p>
-
-      <p>
-        which results in the plot
-      </p>
-
-      <figure xml:id="fig-nba-home">
+      <figure xml:id="fig-poly-sine">
         <caption></caption>
-        <image source="plots/makie/nba_home.png" width="90%">
+        <image source="plots/makie/sine.png" width="90%">
           <shortdescription>
             (for accessibility)
           </shortdescription>
@@ -405,28 +388,24 @@
       </figure>
 
       <p>
-        Another interesting plot is to place bars side by side for the home and visitor scores.  This is a little but possible with the <c>barplot</c> command.  We just need to include all of the data together and then including a vector of grouping.  The following is the code to do this:
+        The left hand side of the assignment operator is <c>fig, ax</c>, which returns the created Figure and Axis objects when making a plot.  This allows us to add other plots to the same axes without explicitly making an axis object. Adding another plot to the one above is now relatively easy:
       </p>
 
       <p>
         <cd>
-        <cline>colors = Makie.wong_colors()</cline>
-        <cline>barplot(</cline>
-        <cline>  repeat(70:160,2), </cline>
-        <cline>  vcat(home_dist,visitor_dist), </cline>
-        <cline>  dodge = repeat(1:2,inner=91), </cline>
-        <cline>  color = repeat([:orange, :darkgreen],inner=91)</cline>
-        <cline>)</cline>
+        <cline>fig, ax = lines(0..2pi,sin)</cline>
+        <cline>lines!(ax, 0..2pi,cos)</cline>
+        <cline>fig</cline>
         </cd>
       </p>
 
       <p>
-        where this is one command but split onto lines for readibility.  The 2nd line is the horizontal axis which is just the same as the plot above except that we need to repeat it twice.  The third line concatenates vertically (<c>vcat</c>) the two distributions.  The fourth line explain how to group the data (<c>dodge</c> is used to include it side by side or <c>stack</c> is to stack it vertically). The color attribute (line 5) sets the color for each bar--again, this is needed to be a repeated vector.  The result of this is
+        and recall that you need to echo <c>fig</c> to get the plot to show. The result is
       </p>
 
-      <figure xml:id="fig-nba-compare">
+      <figure xml:id="fig-poly-sine-cosine">
         <caption></caption>
-        <image source="plots/makie/nba-compare.png" width="90%">
+        <image source="plots/makie/sine-cosine.png" width="90%">
           <shortdescription>
             (for accessibility)
           </shortdescription>
@@ -434,28 +413,34 @@
       </figure>
 
       <p>
-        An easier example of this is with the following code:
+        There is also an example using this technique below to add a colorbar to a filled contour plot.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sect-makie-legend">
+      <title>Adding a Legend</title>
+
+      <p>
+        The example above with the sine and cosine curves beg the question of how to add a legend to a plot, which is usually a given when there are multiple plots on a given set of axes.   We can do this with the example above by giving each curve a label and then adding a Legend to the Figure.  The following will do this:
       </p>
 
       <p>
         <cd>
-        <cline>colors =Makie.wong_colors()</cline>
-        <cline></cline>
-        <cline>h = [2, 3, 6, 8, 3, 5, 7, 9]</cline>
-        <cline>x = [1, 1, 2, 2, 3, 3, 4, 4]</cline>
-        <cline>v = repeat([1,2],4)</cline>
-        <cline></cline>
-        <cline>barplot(x, h, dodge = v, color = colors[v] )</cline>
+        <cline>fig, ax = lines(0..2pi, sin, label="sin(x)")</cline>
+        <cline>lines!(ax,0..2pi, cos, label="cos(x)")</cline>
+        <cline>Legend(fig[1,2], ax)</cline>
+        <cline>fig</cline>
         </cd>
       </p>
 
       <p>
-        which results in
+        where first notice that we have added a <c>label</c> to each curve as a string and then the 3rd line will create a Figure and place it to the right of the plot (because of the <c>fig[1,2]</c>).  The resulting plot is
       </p>
 
-      <figure xml:id="fig-simple-barplot">
+      <figure xml:id="fig-legend01">
         <caption></caption>
-        <image source="plots/makie/simple-barplot.png" width="90%">
+        <image source="plots/makie/legend01.png" width="90%">
           <shortdescription>
             (for accessibility)
           </shortdescription>
@@ -463,7 +448,18 @@
       </figure>
 
       <p>
-        More examples of plotting data can be found in <xref ref="ch-data"/> and other chapters in <xref ref="part-data-analysis"/>, which uses larger datasets and investigates how to gain insights into data from visualization.
+        We can still use the method of creating Figures and Axis objects above to create this as well.  The following will produce the same plot:
+      </p>
+
+      <p>
+        <cd>
+        <cline>fig = Figure()</cline>
+        <cline>ax = Axis(fig[1,1])</cline>
+        <cline>lines!(ax, 0..2pi, sin, label="sin(x)")</cline>
+        <cline>lines!(ax, 0..2pi, cos, label="cos(x)")</cline>
+        <cline>Legend(fig[1,2],ax)</cline>
+        <cline>fig</cline>
+        </cd>
       </p>
     </subsection>
   </section>
@@ -477,7 +473,7 @@
 
     <p>
       <me>
-        f(x,y) = \sin\biggl(\frac{1}{2}x^2-\frac{1}{4}y^2+2\biggr)\cos(x+y)
+        f(x,y) = \sin\left(\frac{1}{2}x^2-\frac{1}{4}y^2+2\right)\cos(x+y)
       </me>
     </p>
 
@@ -584,6 +580,14 @@
         </shortdescription>
       </image>
     </figure>
+  </section>
+
+  <section>
+    <title>Vector Field and Stream plots</title>
+
+    <p>
+      There are a number of types of plots that display the direction of flow of a function.  This section goes over a few of these.
+    </p>
   </section>
 
   <section>

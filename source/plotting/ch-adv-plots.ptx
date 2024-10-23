@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-adv-plots" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Advanced Plotting using the Plots Package</title>
+
+  <introduction>
+    <p>
+      Recall that using the <c>Makie</c> package, one can consider plotting the polynomial by creating a function that pulls out the coefficients.  However, the <c>Plots</c> package has a related package called <c>RecipesBase</c> that allows one to create a plotting recipe.  That is if <c>p</c> is a <c>Polynomial</c>, then we can write <c>plot(p)</c> and it will plot the polynomial.  Let's see how and don't forget to add the package and then enter <c>using RecipesBase</c>.
+    </p>
+
+    <p>
+      The package <c>RecipesBase</c> includes the macro <c>@recipe</c> and although the documentation is sparse, <url href="https://github.com/JuliaPlots/RecipesBase.jl" visual="">this page</url> is helpful in the background.  The basic idea on a plot recipe is to do the following:
+    </p>
+
+    <p>
+      <cd>
+      <cline>@recipe f(t::TheType,...)</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      where <c>TheType</c> is any datatype (either built-in or user defined).  The recipe needs to return some number of vectors of points (depending on if it is 1D, 2D or a 3D plot). A simple version of this for type  <c>Polynomial</c> is
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+@recipe function f(poly::Polynomial,xmin::Number=-2,xmax::Number=2)
+xpts = LinRange(xmin,xmax,200)
+ypts = map(x-&gt;eval(poly,x),xpts)
+xpts,ypts
+end
+      </input>
+    </program>
+
+    <p>
+      where line 2 creates an array of x values of length 200, then line 3 creates the y values for each x value.  Line 4 returns a tuple of the pairs of points. We can now use this to plot a polynomial and we will need to <c>using Plots</c> to:
+    </p>
+
+    <p>
+      <cd>
+      <cline>plot(poly1)</cline>
+      </cd>
+    </p>
+
+    <p>
+      and since we defaulted the plot range from -2 to 2, we get the following plot: \begin{center} \pgfplotsset{scale=0.6} \plot{plots/comp-type/plot01.tex}{poly} \end{center}
+    </p>
+
+    <p>
+      and if we want to specify the plotting range:
+    </p>
+
+    <p>
+      <cd> plot(poly1,0,4) </cd>
+    </p>
+
+    <p>
+      we get
+    </p>
+  </introduction>
+
+  <section>
+    <title>Changing other parameters</title>
+
+    <p>
+      But wait... There's more... One of the fantastic things about using <c>RecipesBase</c> is that we can still use all of the other parameters associated with plot as we normally would. For example:
+    </p>
+
+    <p>
+      <cd>
+      <cline>plot(poly1,0,4,linecolor=:orange,title="A quadratic", lw=2, legend=false)</cline>
+      </cd>
+    </p>
+
+    <p>
+      produces the plot: % \begin{center} \pgfplotsset{scale=0.5} \plot{plots/comp-type/plot03.tex}{poly} \end{center}
+    </p>
+  </section>
+
+  <section>
+    <title>Setting Default parameters</title>
+
+    <p>
+      Recipes also allow to set default parameters. Let's say that if we want to always plot a polynomial green without a legend that we can put these default parameters in the recipe:
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+@recipe function f(poly::Polynomial,xmin::Number=-2,xmax::Number=2)
+legend --&gt; false
+linecolor --&gt; :green
+xpts = LinRange(xmin,xmax,200)
+ypts = map(x-&gt;eval(poly,x),xpts)
+xpts,ypts
+end
+      </input>
+    </program>
+
+    <p>
+      If we have this definition then <c>plot(poly1,0,4)</c> produces the following plot: \begin{center} \pgfplotsset{scale=0.5} \plot{plots/comp-type/plot04.tex}{poly} \end{center}
+    </p>
+  </section>
+</chapter>

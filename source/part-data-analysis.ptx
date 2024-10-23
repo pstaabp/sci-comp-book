@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <part xml:id="part-data-analysis" xmlns:xi="http://www.w3.org/2001/XInclude">
 	<title>Data Analysis</title>
+
 	<!-- include chapters -->
+	<xi:include href="data-analysis/ch-plotting-data.ptx" />
 	<xi:include href="data-analysis/ch-intro-data-analysis.ptx" />
 	<xi:include href="data-analysis/ch-manipulating-data.ptx" />
 	<xi:include href="data-analysis/ch-census.ptx" />

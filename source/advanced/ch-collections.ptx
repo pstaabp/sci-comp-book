@@ -13,13 +13,13 @@
 
       <li>
         <p>
-          Create a Set, a Julia type that is similar to a mathematical set, which is a collection of things without an order to them.
+          Create and use a Set, a Julia type that is similar to a mathematical set, which is a collection of things without an order to them.
         </p>
       </li>
 
       <li>
         <p>
-          Create a Dictionary, which is a collection of key/value pairs and tasks to perform on them.
+          Create and use a Dictionary, which is a collection of key/value pairs and tasks to perform on them.
         </p>
       </li>
 
@@ -101,7 +101,31 @@
     </p>
 
     <p>
-      will show each of the elements in the array.
+      and finally, the other abstract collection we have see so far is a tuple (either named or unnamed).  We can iterate over those like
+    </p>
+
+    <p>
+      <cd>
+      <cline>for i in (x=3, y=4.5, z=7)</cline>
+      <cline>  @show i</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      which results in
+    </p>
+
+    <p>
+      <cd>
+      <cline>i = 3</cline>
+      <cline>i = 4.5</cline>
+      <cline>i = 7</cline>
+      </cd>
+    </p>
+
+    <p>
+      Although this seems quite simple, we will see that what is going on under the hood is that anything that is a collection has a method to go through the elements one at a time in order.  This is called an <em>iterator</em>.
     </p>
   </section>
 
@@ -182,7 +206,7 @@
     </p>
 
     <p>
-      An getter/accessor is similar to that of an array.  <c>d["a"]</c> will return <c>1</c>, the value of the key correpsonding to <c>"a"</c>. And one can set a value in the same way.  <c>d["a"] = 10</c> will update the value associated with the key "a" to be 10.
+      An getter/accessor is similar to that of an array.  <c>d["a"]</c> will return <c>1</c>, the value of the key corresponding to <c>"a"</c>. And one can set a value in the same way.  <c>d["a"] = 10</c> will update the value associated with the key "a" to be 10.
     </p>
 
     <p>
@@ -246,6 +270,7 @@ homer = Dict(
     <p>
       and as you can see, the keys are all strings, but the corresponding values differ.  There are two strings, an array (of strings) and two <c>Dict</c>s.   Although this is more complex, we can still access things in a similar way.  For example <c>homer["work_address"]["street"]</c> will return <c>"10 Power Plant Lane"</c>.
     </p>
+
     <p>
       There are other methods that we can use with Dictionaries and <url href="https://docs.julialang.org/en/v1/base/collections/#Dictionaries">the Julia documentation on dictionaries</url> is a good source.  Additionally in <xref ref="ch-api"/>, we will examine how to interact with a webserver that returns JSON strings which are parsed as dictionaries.  This is a common format on the internet and we will see how to handle such things in Julia.
     </p>
@@ -268,7 +293,7 @@ homer = Dict(
 struct Fibonnacci
   n::Integer
   function Fibonnacci(n)
-    n &gt;= 0 || throw(ArgumentError("This must be called with a positive integer"))
+    n &gt;= 0 || throw(ArgumentError("This must be called with a nonnegative integer"))
     new(n)
   end
 end
@@ -276,7 +301,7 @@ end
     </program>
 
     <p>
-      where a constructor has been used to check that only positive integers are used.  As is, this is just a struct with a single field called <c>n</c>. To make this an interator we need to implement some of the functions associated with an iterator.  We will first implement the functions <c>isempty</c> and <c>length</c> and define them as
+      where a constructor has been used to check that only nonnegative integers are used.  As is, this is just a struct with a single field called <c>n</c>. To make this an iterator we need to implement some of the functions associated with an iterator.  We will first implement the functions <c>isempty</c> and <c>length</c> and define them as
     </p>
 
     <p>
@@ -291,7 +316,7 @@ end
     </p>
 
     <p>
-      This doesn't see to do anything related to the fibonacci numbers, but by defining the <c>iterator</c> function we can get the functionality that we desire.  If
+      So far this doesn't see to do anything related to the fibonacci numbers, but by defining the <c>iterator</c> function we can get the functionality that we desire.  If
     </p>
 
 
@@ -311,7 +336,7 @@ end
     </program>
 
     <p>
-      where the arguments of the <c>iterate</c> function is a object of the type in question and a variable <c>state</c> which acts like an index.  The function should return <c>nothing</c> if the iteration is done and otherwise, return a tuple with the next value and increment the index/state.  Note in our case above, we have used the faster (non recurvise) version of fibonacci in <xref ref="sect-fast-fibonacci"/>.
+      where the arguments of the <c>iterate</c> function is a object of the type in question and a variable <c>state</c> which acts like an index.  The function should return <c>nothing</c> if the iteration is done and otherwise, return a tuple with the next value and increment the index/state.  Note in our case above, we have used the faster (non recursive) version of fibonacci in <xref ref="sect-fast-fibonacci"/>.
     </p>
 
     <p>
@@ -327,7 +352,15 @@ end
     </p>
 
     <p>
-      will produce the first 10 fibonacci numbers.  Also, <c>collect(Fibonacci(10))</c> will create an array of length 10 with the Fibonacci numbers.
+      will produce the first 10 fibonacci numbers.  Also, <c>collect(Fibonacci(10))</c> will create an array of length 10 with the Fibonacci numbers or <c>[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]</c>.
+    </p>
+  </section>
+
+  <section>
+    <title>Summary of Abstract Collections</title>
+
+    <p>
+      We have seen objects like arrays, ranges and tuples have a common structure that allows one to iterate over its elements.  We have also seen other objects like Sets and Dictionaries that fall into abstract collections as well.  Finally, we saw an example how to write our own abstract collection by defining a struct as well as defining functions of that struct that make it act like an iterator.
     </p>
   </section>
 </chapter>

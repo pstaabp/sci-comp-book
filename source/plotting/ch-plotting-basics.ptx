@@ -9,7 +9,7 @@
 		</p>
 
 		<p>
-			Also, as is common with open systems, like Julia, both Makie and Plots are user grown systems that are evolving separate from each other.  Both have advantages and philosophies associated with them.  We will cover them each in depth in the next two chapters.
+			Also, as is common with open systems, like Julia, both Makie and Plots are user-developed systems that are evolving separate from each other.  Both have advantages and philosophies associated with them.  We will cover them each in depth in the next two chapters.
 		</p>
 	</introduction>
 
@@ -99,7 +99,7 @@
 			<caption>Example Animated plot using the Plots package</caption>
 			<image source="plots/plots/plots-example.gif">
 				<shortdescription>
-					(for accessibility)
+					An animated plot of the Lorenz attractor, which shows points being added in time.
 				</shortdescription>
 			</image>
 		</figure>
@@ -109,7 +109,7 @@
 		<title>Plotting is Hard</title>
 
 		<p>
-			As the title says "Plotting is hard".  For scientific computing software, often plotting is what takes the most CPU/GPU cycles. In fact, the team of developers that have been working on Julia have given this issue the acronym TTFP (time to first plot), which is the amount of time from starting julia to getting a plot rendered.  Recently a lot of work has been done to reduce this.
+			Why is plotting hard?  Often plotting is what takes the most CPU/GPU cycles in a project. In fact, the team of developers that have been working on Julia have given this issue the acronym TTFP (time to first plot), which is the amount of time from starting Julia to getting a plot rendered.  Recently a lot of work has been done to reduce this.
 		</p>
 
 		<p>
@@ -131,14 +131,14 @@
 			<title>Scatter Plots</title>
 
 			<p>
-				A <term>scatter plot</term> is a plot of points in 2D or 3D in which each point represents a piece of data.  Although we will usually think of them in terms of x, y and z axes, the two or three axes can represent anything. The following is the graph of carbon dioxide levels in Hawaii from 1959  to 2023.
+				A <term>scatter plot</term> is a plot of points in 2D or 3D in which each point represents a piece of data.  Although we will usually think of them in terms of x, y and z axes, the two or three axes can represent anything. The following is the graph of carbon dioxide levels in Hawaii from 1959 to 2023.
 			</p>
 
 			<figure xml:id="fig-co2-scatter">
-				<caption></caption>
+				<caption>A scatter plot of <m>CO_2</m> concentration in Hawaii between 1959 and 2023.</caption>
 				<image source="plots/intro-plots/co2-scatter.png" width="90%">
 					<shortdescription>
-						(for accessibility)
+						A scatter plot with an exponential increase from 320 ppm in 1960 to 420 in 2023.
 					</shortdescription>
 				</image>
 			</figure>
@@ -153,10 +153,10 @@
 			</p>
 
 			<figure xml:id="fig-sine-curve">
-				<caption></caption>
+				<caption>An example of a function plot: sine curve on <m>[-2\pi,2\pi]</m></caption>
 				<image source="plots/plots/sine-curve.png" width="90%">
 					<shortdescription>
-						(for accessibility)
+						A sine curve depicting two full cycles.
 					</shortdescription>
 				</image>
 			</figure>
@@ -167,14 +167,14 @@
 			<title>Parametric Plots</title>
 
 			<p>
-				Additionally, a function plot can be created for a parametric curve defined as <m>\langle x(t), y(t) </m> for functions <m>x</m> and <m>y</m>. For example the spiral:
+				Additionally, a function plot can be created for a parametric curve defined as <m>\langle x(t), y(t) \rangle </m> for functions <m>x</m> and <m>y</m>. For example the spiral:
 			</p>
 
 			<figure xml:id="fig-spiral-curve">
-				<caption></caption>
+				<caption>A plot of a spiral, an example of a parametric curve.</caption>
 				<image source="plots/plots/makie-spiral.png" width="90%">
 					<shortdescription>
-						(for accessibility)
+						A plot of a spiral, an example of a parametric curve.
 					</shortdescription>
 				</image>
 			</figure>
@@ -189,14 +189,14 @@
 				<me>
 					\langle x(t), y(t), z(t) \rangle
 				</me>
-				where each function gives the <m>x</m>, <m>y</m> or <m>z</m> coordinate at a time <m>t</m>.  Examples of this are in
+				where each function gives the <m>x</m>, <m>y</m> or <m>z</m> coordinate at a time <m>t</m>.  An example of this is the parametric function <m>\langle \cos 2t \cos t, \cos 5t \cos t, \sin 3t \rangle</m>.
 			</p>
 
 			<figure xml:id="fig-parametric-3d">
-				<caption></caption>
+				<caption>An example of a 3D parametric plot that is a curve that is connected. </caption>
 				<image source="plots/plots/parametric3d.png" width="90%">
 					<shortdescription>
-						(for accessibility)
+						A 3D parametric curve that looks like a stranded of connected spaghetti.
 					</shortdescription>
 				</image>
 			</figure>
@@ -211,9 +211,9 @@
 			</p>
 
 			<figure xml:id="fig-surface">
-				<caption></caption>
+				<caption>An example surface plot.</caption>
 				<image source="plots/plots/surface.png" width="90%">
-					<shortdescription>(for accessibility)</shortdescription>
+					<shortdescription>A surface plot that looks like an egg carton with many max and mins.</shortdescription>
 				</image>
 			</figure>
 		</subsection>
@@ -223,7 +223,7 @@
 			<title>Implicit Curves</title>
 
 			<p>
-				An implcit curve is the set of points <m>(x,y)</m> in which <m>f(x,y)=C</m> for some constant <m>C</m>.  The classic example is the circle
+				An implicit curve is the set of points <m>(x,y)</m> in which <m>f(x,y)=C</m> for some constant <m>C</m>.  The classic example is the circle
 				<me>
 					x^2 + y^2 = 1
 				</me>
@@ -231,10 +231,10 @@
 			</p>
 
 			<figure xml:id="fig-implicit-circle">
-				<caption></caption>
+				<caption>A plot of the circle, an implicit curve. </caption>
 				<image source="plots/plots/implicit-circle.png" width="90%">
 					<shortdescription>
-						(for accessibility)
+						A plot of a circle of radius 1.
 					</shortdescription>
 				</image>
 			</figure>
@@ -250,7 +250,7 @@
 
 			<p>
 				<me>
-					f(x,y) = \sin\biggl(\frac{1}{2}x^2-\frac{1}{4}y^2+2\biggr)\cos(x+y)
+					f(x,y) = \sin\left(\frac{1}{2}x^2-\frac{1}{4}y^2+2\right)\cos(x+y)
 				</me>
 			</p>
 
@@ -259,10 +259,10 @@
 			</p>
 
 			<figure xml:id="fig-contour-ex">
-				<caption></caption>
+				<caption>An example of a contour plot of the function <m>f(x,y)</m>.</caption>
 				<image source="plots/plots/contour.png" width="90%">
 					<shortdescription>
-						(for accessibility)
+						A contour plot that looks like concentric curves (warped circles) centered about (1.1, 2) and (2.3,0.4)
 					</shortdescription>
 				</image>
 			</figure>

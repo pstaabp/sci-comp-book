@@ -3,9 +3,49 @@
 <chapter xml:id="ch-adv-functions">
 	<title>Advanced Function Features of Julia</title>
 
+	<objectives>
+		<ul>
+			<li>
+				<p>
+					How and why to test arguments of functions.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Adding optional arguments to functions.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Handling other conditions, like possible errors.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Using keyword arguments.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					How and why to use parametric methods.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Understanding function arguments at a deeper level.
+				</p>
+			</li>
+		</ul>
+	</objectives>
+
 	<introduction>
 		<p>
-			This chapter covers a bit more on functions in julia.  These feature allow the ability to write code that easier to use, read and debug.  We will perform error checking for arguments to ensure that only valid arguments are considered.  Additionally, to make functions more robust, we'll use option arguments and keyword arguments.
+			This chapter covers a bit more on functions in Julia.  These feature allow the ability to write code that is easier to use, read and debug.  We will perform error checking for arguments to ensure that only valid arguments are considered.  Additionally, to make functions more robust, we'll use optional arguments and keyword arguments.
 		</p>
 	</introduction>
 
@@ -23,7 +63,7 @@
 		</p>
 
 		<p>
-			We saw before that if we call this with a non-integer number like 3.2 that we will get an error, but what if we include a negative number? If you run <c>fact(-5)</c> you will see ??????.
+			We saw before that if we call this with a non-integer number like 3.2 that we will get an error, because <c>3.2</c> does not match the argument type of <c>Integer</c> but what if we include a negative number? If you run <c>fact(-5)</c> you will see:
 		</p>
 
 		<p>
@@ -32,7 +72,7 @@
 			<cline>	</cline>
 			<cline>  Stacktrace:</cline>
 			<cline>   [1] fact(n::Int64) (repeats 2 times)</cline>
-			<cline>   @ Main ~/code/sci-comp-book/julia-output/adv-functions.ipynb:1</cline>
+			<cline>   @ Main ~/code/sci-comp-book/Julia-output/adv-functions.ipynb:1</cline>
 			</cd>
 		</p>
 
@@ -41,7 +81,7 @@
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 function fact(n::Integer)
 	n&gt;=0 || throw(ArgumentError("The argument must be a nonnegative integer."))
@@ -55,7 +95,23 @@ end
 		</p>
 
 		<p>
-			Using this newer version of <c>fact</c>, if we call <c>fact(-5)</c>,  we get
+			An astute reader will ask, "Why not just use an if statement?"  And of course the answer is, "you may".  That is the first line of the function (line 2 in the block above) can be replaced with:
+		</p>
+
+		<p>
+			<cd>
+			<cline>if n &lt; 0</cline>
+			<cline>  throw(ArgumentError("The argument must be a nonnegative integer.")) </cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the same result will occur.  We'll use the style of the one-line version because it is shorter and is common in the Julia packages, however everyone's style is their own.
+		</p>
+
+		<p>
+			If we use this newer version of <c>fact</c> by calling <c>fact(-5)</c>,  we get
 		</p>
 
 		<p>
@@ -65,7 +121,7 @@ end
 		</p>
 
 		<p>
-			which is a more helpful error.
+			which is a much more helpful error than the Stack Overflow error.
 		</p>
 
 		<exercise>
@@ -83,7 +139,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 using ForwardDiff
 function newton(f::Function, x0::Number)
@@ -109,7 +165,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 function newton(f::Function, x0::Number, tol = 1e-6, max_steps = 10)
   local x1 = x0
@@ -126,11 +182,11 @@ end
 		</program>
 
 		<p>
-			You may notice that we didn't give the new arguments types.  This wasn't an error, but julia will interpret the type from the default value.  In this case, <c>tol</c> will be a <c>Float64</c> and <c>max_steps</c> will be an <c>Int64</c>.
+			You may notice that we didn't give the new arguments types.  This wasn't an error, but Julia will interpret the type from the default value.  In this case, <c>tol</c> will be a <c>Float64</c> and <c>max_steps</c> will be an <c>Int64</c>.
 		</p>
 
 		<p>
-			Note that when entering this, it says there are 3 methods with the name <c>newton</c>.  This is because julia will build three different function signatures.  One with 2 arguments (and both <c>tol</c> and <c>max_steps</c> use the default values), one with 3 arguments (and <c>max_steps</c> using it's default value) and one with all 4 arguments. Also remember that <c>1e-6</c> means <m>10^{-6}</m>, which is the default tolerance.
+			Note that when entering this, it says there are 3 methods with the name <c>newton</c>.  This is because Julia will build three different function signatures.  One with 2 arguments (and both <c>tol</c> and <c>max_steps</c> use the default values), one with 3 arguments (and <c>max_steps</c> using it's default value) and one with all 4 arguments. Also remember that <c>1e-6</c> means <m>10^{-6}</m>, which is the default tolerance.
 		</p>
 
 		<p>
@@ -176,7 +232,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
   function newton(f::Function, x0::Number,tol=1e-6,max_steps=10)
     tol &gt; 0 || throw(ArgumentError("The parameter tol must be positive"))
@@ -208,7 +264,7 @@ end
 			<task>
 				<statement>
 					<p>
-						Recall that a root of <m>f(x)=x^2-10</m> is the square root of 10.  Use the function above to find <m>\sqrt{10}</m> with a tolerance of <m>10^{-10}</m>.
+						Recall that the positive root of <m>f(x)=x^2-10</m> is <m>\sqrt{10}</m>.  Use the function above to find <m>\sqrt{10}</m> with a tolerance of <m>10^{-10}</m>.
 					</p>
 				</statement>
 			</task>
@@ -242,8 +298,7 @@ end
 
 		<p>
 			<cd>
-			<cline>f(x)=x^2+1</cline>
-			<cline>root=newton(f,2)</cline>
+			<cline>root=newton(x -&gt; x^2+1,2)</cline>
 			</cd>
 		</p>
 
@@ -282,7 +337,7 @@ end
 				<ol>
 					<li>
 						<p>
-							If you want to change one optional argument without the others, we may not be able to.  In the Newton's method example, if we want to change <c>max_steps</c>, which is the 4th argument without changing the 3rd argument, we can't just put in the value of <c>max_step</c>.
+							If you want to change one optional argument without the others, we may not be able to.  In the Newton's method example, if we want to change <c>max_steps</c>, which is the 4th argument without changing the 3rd argument, we can't just put in the value of <c>max_steps</c>.
 						</p>
 					</li>
 
@@ -295,11 +350,11 @@ end
 			</p>
 
 			<p>
-				Using keyword arguments can solving both of these problems and We can rewrite newton's method as
+				Using keyword arguments can solving both of these problems and we can rewrite newton's method as
 			</p>
 
 
-			<program language="julia" line-numbers="yes">
+			<program language="Julia" line-numbers="yes">
 				<input>
   function newton(f::Function, x0::Number; tol=1e-6, max_steps=10)
     tol &gt; 0 || throw(ArgumentError("The parameter tol much be positive"))
@@ -357,17 +412,17 @@ end
 			</p>
 
 			<p>
-				This was just a quick introduction to this and for further information, look at the <url href="https://docs.julialang.org/en/v1/manual/functions/#Keyword-Arguments-1" visual=""> julia documentation on keyword arguments</url>.
+				This was just a quick introduction to this and for further information, look at the <url href="https://docs.Julialang.org/en/v1/manual/functions/#Keyword-Arguments-1" visual=""> Julia documentation on keyword arguments</url>.
 			</p>
 
 			<exercise>
 				<introduction>
 					<p>
-						In <xref ref="ch-num-int"/>, we'll see the <url href="https://en.wikipedia.org/wiki/Trapezoidal_rule" visual=""> trapezoid rule</url>, which is used for numerical integration or area under a curve. The technique subdivides the interval <m>[a,b]</m> into <m>n</m> equal pieces and approximates the area under the curve with the area of a trapezoid.  In julia this is
+						In <xref ref="ch-num-int"/>, we'll see the <url href="https://en.wikipedia.org/wiki/Trapezoidal_rule" visual=""> trapezoid rule</url>, which is used for numerical integration or area under a curve. The technique subdivides the interval <m>[a,b]</m> into <m>n</m> equal pieces and approximates the area under the curve with the area of a trapezoid.  In Julia this is
 					</p>
 
 
-					<program language="julia" line-numbers="yes">
+					<program language="Julia" line-numbers="yes">
 						<input>
 function trapRule(f::Function,a::Number,b::Number)
   local h = (b-a)/10
@@ -452,7 +507,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 function findMax(nums::Real...)
 	local max = -Inf
@@ -471,7 +526,7 @@ end
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 function findMax(arr::Vector{Real})
 	local max = -Inf
@@ -505,11 +560,11 @@ end
 		</p>
 
 		<p>
-			Instead, we will use something in julia called a <url href="https://docs.julialang.org/en/latest/manual/methods/\#Parametric-Methods-1" visual="julialang.org">parametric function</url> which allows us to write a single function that works on a set of different types. To do this with the <c>findMax</c> function, we will write:
+			Instead, we will use something in Julia called a <url href="https://docs.Julialang.org/en/latest/manual/methods/\#Parametric-Methods-1" visual="Julialang.org">parametric function</url> which allows us to write a single function that works on a set of different types. To do this with the <c>findMax</c> function, we will write:
 		</p>
 
 
-		<program language="julia" line-numbers="yes">
+		<program language="Julia" line-numbers="yes">
 			<input>
 function findMax(arr::Vector{T}) where T &lt;: Real
 	local max = -Inf
@@ -563,12 +618,12 @@ end
 
 				<p>
 					<cd>
-					<cline>local sum = one(T)</cline>
+					<cline>local prod = one(T)</cline>
 					</cd>
 				</p>
 
 				<p>
-					which creates the <c>sum</c> variable as the number 1 with type <c>T</c>, so depending on the data type the array is, it will have the appropriate product data type.
+					which creates the <c>prod</c> variable as the number 1 with type <c>T</c>, so depending on the data type the array is, it will have the appropriate product data type.
 				</p>
 
 				<p>
@@ -618,7 +673,7 @@ end
 		<title>Function Arguments</title>
 
 		<p>
-			As described in the <url href="https://docs.julialang.org/en/v1/manual/functions/#man-argument-passing">Julia documentation on functions</url>,  arguments follow what is called "pass-by-sharing", which means that values are not copied when they are passed to functions.  Instead, the argument is a local variable that is passed the value when the function is called.  Consider
+			As described in the <url href="https://docs.Julialang.org/en/v1/manual/functions/#man-argument-passing">Julia documentation on functions</url>,  arguments follow what is called "pass-by-sharing", which means that values are not copied when they are passed to functions.  Instead, the argument is a local variable that is passed the value when the function is called.  Consider
 		</p>
 
 		<p>
@@ -677,13 +732,13 @@ end
 		<p>
 			<cd>
 			<cline>function change3!(A::Vector{T}) where T &lt;: Number</cline>
-			<cline>	A[3] *= 2</cline>
+			<cline>  A[3] *= 2</cline>
 			<cline>end</cline>
 			</cd>
 		</p>
 
 		<p>
-			which takes a vector of numbers and double the 3rd element of the vector.  We used the convention in julia that if the arguments are changed we append a <c>!</c> to the name.  If we enter
+			which takes a vector of numbers and double the 3rd element of the vector.  We used the convention in Julia that if the arguments are changed we append a <c>!</c> to the name.  If we enter
 		</p>
 
 		<p>

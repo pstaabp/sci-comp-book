@@ -76,7 +76,7 @@
 
 
 		<subsection>
-			<title>Compounds boolean statements</title>
+			<title>Compound boolean statements</title>
 
 			<p>
 				We often want to test multiple boolean statements and can build up compound ones with either the <em>and</em> (using the code <c>&amp;&amp;</c>) or <em>or</em> (using the code <c>||</c>) operators. Recall the following table for <c>&amp;&amp;</c> and <c>||</c>
@@ -168,6 +168,41 @@
 				<cd>
 				<cline>(x &gt;=0 &amp;&amp; y &gt; 7) || y == 5</cline>
 				</cd>
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Range Boolean Operator</title>
+
+			<p>
+				There are often situations in mathematics where we write a range of values like <m>1 \leq x \leq 8.5</m>.  We could write in using a compound operator like <c>1 &lt;= x &amp;&amp; x &lt;= 8.5</c>, but Julia has a nice operator that handles this as one like <c>1 &lt;= x &lt;= 8.5</c>.
+			</p>
+
+			<p>
+				For example if <c>x=5, y= -1, z= 10</c> then
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							<c>1 &lt;= x &lt;= 8.5</c> returns <c>true</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>1 &lt;= y &lt;= 8.5</c> returns <c>false</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>1 &lt;= z &lt;= 8.5</c> returns <c>false</c>
+						</p>
+					</li>
+				</ul>
 			</p>
 		</subsection>
 	</section>
@@ -507,15 +542,16 @@ end
 					</li>
 				</ul>
 			</p>
-
-
-
 		</subsection>
+
 
 		<subsection>
 			<title>Debugging While Loops</title>
 
-			<p>As we mentioned above, if we use a function that does not have a root, like <m>f(x)=x^2+2</m>, the <c>bisection</c> function will not stop.  Go ahead and try it.  Here we will add some code to that method that will prevent it from running forever. </p>
+			<p>
+				As we mentioned above, if we use a function that does not have a root, like <m>f(x)=x^2+2</m>, the <c>bisection</c> function will not stop.  Go ahead and try it.  Here we will add some code to that method that will prevent it from running forever.
+			</p>
+
 			<p>
 				<ol>
 					<li>
@@ -523,6 +559,7 @@ end
 							we will introduce a variable <c>n</c> which will keep track of the number of steps we have done.  We will start this variable with the value <c>0</c>.
 						</p>
 					</li>
+
 					<li>
 						<p>
 							Then, inside the loop update the value of <c>n</c> with the statement <c>n += 1</c>.
@@ -537,7 +574,10 @@ end
 				</ol>
 			</p>
 
-			<p>The following update to the <c>bisection</c> method will now stop if we go too many times:</p>
+			<p>
+				The following update to the <c>bisection</c> method will now stop if we go too many times:
+			</p>
+
 
 			<program language="Julia" line-numbers="yes">
 				<input>
@@ -552,8 +592,8 @@ function bisection(f::Function, a::Real, b::Real)
   end
   c
 end
-</input>
-</program>
+				</input>
+			</program>
 		</subsection>
 	</section>
 

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<chapter xml:id="ch-file-system">
+  <title>Files and the File System</title>
+
+  <introduction>
+    <p>
+      As we will see later in this text, having the abiliity to navigate the file system, open files and create files all within the Juilia environment will come in handy.  In this chapter, we will learn the basics of how to do this.
+    </p>
+  </introduction>
+
+  <section xml:id="sect-directories">
+    <title>Directories</title>
+
+    <p>
+      When either working in the REPL or in a notebook, the kernel has a working directory.  This is set by default when you start julia.  To determine what the working directory is, use the <c>pwd</c> command by running <c>pwd()</c>.  It might return something like:
+    </p>
+
+    <p>
+      <cd>
+      <cline>"/Users/juliauser/julia</cline>
+      </cd>
+    </p>
+
+    <p>
+      And this will look more like the windows system on that type of computer.  To get a list (vector) of files and directories in the current directory enter <c>readdir()</c> for read directory.    It will return a vector of strings (directory names and files). Let's say it looks like:
+    </p>
+
+    <p>
+      <cd>
+      <cline>4-element Vector{String}:</cline>
+      <cline>  "ch08.ipynb"</cline>
+      <cline>  "data.csv"</cline>
+      <cline>  "hw"</cline>
+      <cline>  "menu.json"</cline>
+      </cd>
+    </p>
+
+    <p>
+      and just based on files generally have extensions (after the <c>.</c>) and directories do not, it appears that <c>hw</c> is a directory.  If there are no arguments on <c>readdir()</c>, then it will show the files and directories inside the working directory. If you include a string, it will list the contents of the directory.
+    </p>
+
+    <p>
+      Let's now change the directory to the "hw" directory. with <c>cd("hw")</c> for <em>change directory</em>. If you now do <c>pwd()</c> might see <c>"/Users/juliauser/julia/hw"</c>.   If the <c>cd</c> command has no arguments, then the working directory is changed to the user's home directory.
+    </p>
+
+    <p>
+      Another important directory change is that of switching to the parent directory of the working directory. We do this with <c>cd("..")</c>.
+    </p>
+  </section>
+
+  <section xml:id="sect-files">
+    <title>Working with Files and Directories</title>
+
+    <introduction>
+      <p>
+        We also would like to learn how to work with files, such as renaming, copying, deleting and creating files.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Creating Files</title>
+
+      <p>
+        To create a file, use the <c>write</c> command.  A simple example is
+      </p>
+
+      <p>
+        <cd>
+        <cline>write("hello.txt", "Hello!")</cline>
+        </cd>
+      </p>
+
+      <p>
+        You can use vscode or your file manager (Finder, explorer) to examine the file <c>"hello.txt"</c> that is in your working directory. It should have the single line "Hello!" in it.  Open it to see that it is true.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Creating a Directory</title>
+
+      <p>
+        We can create a directory with the <c>mkdir</c> command.  For example <c>mkdir("my-dir")</c> will create the directory "my-dir". If one now performs the command <c>readdir()</c>, the result is:
+      </p>
+
+      <p>
+        <cd>
+        <cline>6-element Vector{String}:</cline>
+        <cline>  "ch08.ipynb"</cline>
+        <cline>  "data.csv"</cline>
+        <cline>  "hello.txt"</cline>
+        <cline>  "hw"</cline>
+        <cline>  "menu.json"</cline>
+        <cline>  "my-dir"</cline>
+        </cd>
+      </p>
+
+      <p>
+        Additionally, there is a <c>mkpath</c> command that can create a set of nested directories.  This is helpful if a directory structure needs to be set up in a certain way.  For example if we do <c>mkpath("my/test/dir")</c>, then examine the File Explorer or Finder and you will see the next directories "my" in the current working directory, then inside of "my" is a directory called "test" then inside a directory called "dir".
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Renaming Files and Directories</title>
+
+      <p>
+        We use the <c>mv</c> command to rename files or move files. This is a command that originated with Unix. Let's rename the file "hello.txt" that we just made to "hello2.txt" with the command <c>move("hello.txt", "hello2.txt")</c>. Examine with the File Explorer or Finder to ensure this happened.
+      </p>
+
+      <p>
+        The <c>mv</c> command also works with directories.  If we want to change the directory "my-dir" to "utils", the command <c>my("my-dir", "utils")</c> will do this.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Moving Directories</title>
+
+      <p>
+        Moving a directory  can also be accomplished with the <c>mv</c> command, but works a bit different than the Unix variety.  If we have the directories "utils" and "hw" and want to move "utils" to within "hw", we can do this with <c>mv("utils","hw/utils")</c> indicating that the new directory name is "hw/utils" or "utils" within "hw".
+      </p>
+    </subsection>
+  </section>
+</chapter>
