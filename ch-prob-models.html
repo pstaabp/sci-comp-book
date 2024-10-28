@@ -13,7 +13,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:type" content="book">
 <meta property="book:title" content="Scientific Computing and Visualization">
-<meta property="book:author" content="Peter Staab">
+<meta property="book:author" content="
+    Peter Staab">
 <script>
 var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
 window.MathJax = {
@@ -195,7 +196,13 @@ window.MathJax = {
 \)</span></div>
 <div class="ptx-page">
 <div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 parts"><ul class="structural contains-active toc-item-list">
-<li class="toc-item toc-frontmatter"><div class="toc-title-box"><a href="frontmatter.html" class="internal"><span class="title">Front Matter</span></a></div></li>
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="frontmatter.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="colophon.html" class="internal"><span class="title">Colophon</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="preface.html" class="internal"><span class="title">Preface</span></a></div></li>
+</ul>
+</li>
 <li class="toc-item toc-part">
 <div class="toc-title-box"><a href="part-intro.html" class="internal"><span class="codenumber">I</span> <span class="title">Introduction to Scientific Computing</span></a></div>
 <ul class="structural toc-item-list"><li class="toc-item toc-chapter">
@@ -1159,38 +1166,46 @@ Random.seed!(1234)
 <div class="para" id="ch-prob-models-3-3-6">Each row contains the coin flips.  Each 1 represents a head and 0 is a tail. If we are interested in the sum of the number of heads, we can do this with the <code class="code-inline tex2jax_ignore">mapslices</code> functions seen in <a href="ch-arrays.html" class="internal" title="Chapter 6: Arrays">Chapter 6</a>.</div>
 <div class="para logical" id="ch-prob-models-3-3-7"><pre class="code-display tex2jax_ignore">num_heads = mapslices(sum,coins3;dims=[2])
 </pre></div>
-<div class="para" id="ch-prob-models-3-3-8">The first few elements of the array is <code class="code-inline tex2jax_ignore">[2; 1; 1; 2; 2; 1; 1; 0 ...]</code> We can plot the results of this with the function</div>
-<div class="para logical" id="ch-prob-models-3-3-9"><pre class="code-display tex2jax_ignore">using Plots
-histogram(num_heads,nbins=4, legend=false)
+<div class="para" id="ch-prob-models-3-3-8">The first few elements of the array is <code class="code-inline tex2jax_ignore">[2; 1; 1; 2; 2; 1; 1; 0 ...]</code>. We would like a plot of this, however need to do a bit of work first.  The hope is that for each number of heads 0, 1, 2 and 3, we create a bar plot with the number of heads for each or the fraction of heads.  Although we have the tools to do this, since this is a common thing to do in statistics, there is a function in the <code class="code-inline tex2jax_ignore">StatsBase</code> package.</div>
+<div class="para logical" id="ch-prob-models-3-3-9"><pre class="code-display tex2jax_ignore">using StatsBase
 </pre></div>
-<div class="para" id="ch-prob-models-3-3-10">and the result is</div>
-<figure class="figure figure-like" id="fig-coins3-sim"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/coins3.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">19.1<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-prob-models-3-3-12">This plot is quite easy to generate, but a bit confusing.  What does the bar between 0 and 1 mean.  This is mainly because the <code class="code-inline tex2jax_ignore">histogram</code> function is more useful for continuous data than discrete data.  We’ll recreate this plot piece by piece and get the results we want. First, start with the <code class="code-inline tex2jax_ignore">StatsBase</code> package (and you may need to add the package) and then load it with</div>
-<div class="para logical" id="ch-prob-models-3-3-13"><pre class="code-display tex2jax_ignore">using StatsBase
+<div class="para" id="ch-prob-models-3-3-10">and then the <code class="code-inline tex2jax_ignore">counts</code> function ( <a class="external" href="https://juliastats.org/StatsBase.jl/latest/counts/#StatsBase.counts" target="_blank">Read the online documentation</a>) can be used:</div>
+<div class="para logical" id="ch-prob-models-3-3-11"><pre class="code-display tex2jax_ignore">head_count = counts(num_heads,0:3)
 </pre></div>
-<div class="para" id="ch-prob-models-3-3-14">and then the <code class="code-inline tex2jax_ignore">counts</code> function ( <a class="external" href="https://juliastats.org/StatsBase.jl/latest/counts/#StatsBase.counts" target="_blank">Read the online documentation</a>) can be used:</div>
-<div class="para logical" id="ch-prob-models-3-3-15"><pre class="code-display tex2jax_ignore">dice_count = counts(num_heads,0:3)
-</pre></div>
-<div class="para" id="ch-prob-models-3-3-16">returns a vector of how many of number of heads fall into each number. The result is the vector <code class="code-inline tex2jax_ignore">[8 39 43 10]</code>.</div>
-<div class="para logical" id="ch-prob-models-3-3-17">
+<div class="para" id="ch-prob-models-3-3-12">returns a vector of how many of number of heads fall into each number. The result is the vector <code class="code-inline tex2jax_ignore">[8 39 43 10]</code>.</div>
+<div class="para logical" id="ch-prob-models-3-3-13">
 <div class="para">and a nicer way to plot the histogram is</div>
-<pre class="code-display tex2jax_ignore">bar(0:3,dice_count/sum(dice_count),legend=false)
+<pre class="code-display tex2jax_ignore">barplot(0:3,head_count/sum(head_count), strokewidth = 1)
 </pre>
 </div>
+<div class="para" id="ch-prob-models-3-3-14">where the <code class="code-inline tex2jax_ignore">strokecolor</code> attribute puts a thin border around each bar. The result is</div>
 <figure class="figure figure-like" id="fig-coins3-sim-improved"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/coins3-improved.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">19.2<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-prob-models-3-3-19">which generates an approximate probability distribution for flipping 3 coins and s umming the number of heads.  Compare this with the plot of the distribution in <a href="ch-probability-random.html" class="internal" title="Chapter 18: Probability Distributions and Pseudorandom Numbers">Chapter 18</a> which uses the definition of probability.</div>
-<div class="para" id="ch-prob-models-3-3-20">And to compare the simulation with the probability density function that we found in <a href="ch-probability-random.html" class="internal" title="Chapter 18: Probability Distributions and Pseudorandom Numbers">Chapter 18</a>, we will plot a side-by-side comparison of the two with the following.  Note that the function <code class="code-inline tex2jax_ignore">groupedbar</code> is part of the <code class="code-inline tex2jax_ignore">StatsPlots</code> package:</div>
-<div class="para logical" id="ch-prob-models-3-3-21"><pre class="code-display tex2jax_ignore">using StatsPlots
-groupedbar(0:3,hcat(dice_count/sum(dice_count), [1/8,3/8,3/8,1/8]), label=["simulation" "pdf"])
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">19.1<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-prob-models-3-3-16">which generates an approximate probability distribution for flipping 3 coins and s umming the number of heads. And to compare the simulation with the probability density function that we found in <a href="ch-probability-random.html" class="internal" title="Chapter 18: Probability Distributions and Pseudorandom Numbers">Chapter 18</a>, we will plot a side-by-side comparison of the two with the following.  Note that the function <code class="code-inline tex2jax_ignore">groupedbar</code> is part of the <code class="code-inline tex2jax_ignore">StatsPlots</code> package:</div>
+<div class="para logical" id="ch-prob-models-3-3-17"><pre class="code-display tex2jax_ignore">barplot(repeat(0:3,2),vcat(head_count/sum(head_count),[1/8, 3/8, 3/8, 1/8]),
+dodge = repeat(0:3,inner = 2), color=repeat(1:2, inner = 4))
 </pre></div>
+<div class="para" id="ch-prob-models-3-3-18">resulting in</div>
 <figure class="figure figure-like" id="fig-coins3-compare"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/coins3-compare.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">19.3<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para logical" id="ch-prob-models-3-3-23">
-<div class="para">A couple of things to note:</div>
-<ul class="disc" id="ch-prob-models-3-3-23-1">
-<li id="ch-prob-models-3-3-23-1-1"><div class="para" id="ch-prob-models-3-3-23-1-1-1">In the <code class="code-inline tex2jax_ignore">groupedbar</code> function, the <code class="code-inline tex2jax_ignore">0:3</code> is the horizontal range and the vertical range has two pieces (because of the <code class="code-inline tex2jax_ignore">hcat</code> function). The first is the random data (switched to a fraction) and the second is the distribution of the number of heads out of 3 coin flips.</div></li>
-<li id="ch-prob-models-3-3-23-1-2"><div class="para" id="ch-prob-models-3-3-23-1-2-1">It is important in the <code class="code-inline tex2jax_ignore">label</code> that the two labels are string separated by a space and not a comma.  (See what happens if you put a comma there.)</div></li>
-</ul>
-</div></section></section><section class="section" id="ch-prob-models-4"><h3 class="heading hide-type">
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">19.2<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-prob-models-3-3-20">This is not the best looking plot and would like to include a legend.  Here’s a little cleaned up version of this and then will explain all of the arguements and attributes.</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">values = 0:3
+heights1 = head_count/sum(head_count)
+heights2 = [1/8, 3/8, 3/8, 1/8]
+colors = Makie.wong_colors()  # use more attractive colors
+fig = Figure()
+ax = Axis(fig[1,1], title = "Comparison of simulation and known PDF of Flipping 3 coins")
+xvals = repeat(values,2)
+heights = vcat(heights1, heights2)
+barplot!(ax, xvals, heights, dodge = repeat(values,inner = 2),
+  color=colors[repeat(1:2, inner = length(values))], strokewidth = 1
+  )
+labels = ["simulation", "PDF"]
+elements = [PolyElement(polycolor = colors[i]) for i in 1:length(labels)]
+axislegend(ax, elements, labels)
+fig
+</code></pre></div>
+<div class="para" id="ch-prob-models-3-3-22">and the resulting plot is</div>
+<figure class="figure figure-like" id="fig-coins3-compare02"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/coins3-compare02.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">19.3<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-prob-models-3-3-24">This is reasonably complicated and for a grouped bar plot and there are many ways to do this using the <code class="code-inline tex2jax_ignore">barplot</code> method and we go into a lot of details in <a href="ch-plotting-data.html" class="internal" title="Chapter 27: Plotting Data">Chapter 27</a>.  To use this with other data, you should be able to update the first 3 lines of this code.</div></section></section><section class="section" id="ch-prob-models-4"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">19.2</span><span class="space"> </span><span class="title">Rolling Dice</span>
 </h3>
 <div class="para" id="ch-prob-models-4-2">A relatively-simple example is that of rolling dice.  As we saw in <a href="ch-probability-random.html" class="internal" title="Chapter 18: Probability Distributions and Pseudorandom Numbers">Chapter 18</a>, if we have a fair, six-sided die, the the probability of any of the numbers coming up is 1/6. We can simulate that using random numbers in the following way:</div>
@@ -1214,18 +1229,17 @@ groupedbar(0:3,hcat(dice_count/sum(dice_count), [1/8,3/8,3/8,1/8]), label=["simu
 </div> <div class="para" id="ch-prob-models-4-6-2-1-2">measure in the sense of a rolling a fair 6-sided die?  Does the result make sense?</div></article></article></details></section><section class="section" id="ch-prob-models-5"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">19.3</span><span class="space"> </span><span class="title">Rolling 2 dice</span>
 </h3>
-<div class="para" id="ch-prob-models-5-2">How do we handle the rolling of two dice? Here’s an array with each row having 2 dice.  This would be a simulation of rolling 10,000 pairs of dice.</div>
-<div class="para logical" id="ch-prob-models-5-3"><pre class="code-display tex2jax_ignore">
-			dice2=rand(1:6,10_000,2)
-			</pre></div>
-<div class="para" id="ch-prob-models-5-4">and then to find the sum of the dice:</div>
-<div class="para logical" id="ch-prob-models-5-5"><pre class="code-display tex2jax_ignore">
-			dsum = mapslices(sum,dice2;dims=[2])
-			</pre></div>
-<div class="para" id="ch-prob-models-5-6">which sums along the rows. This is 10,000 rolls of 2 dice with the sum recorded. First, to get an idea of the distribution of the dice sums, let’s plot the histogram (but use the <code class="code-inline tex2jax_ignore">bar</code> command):</div>
-<div class="para logical" id="ch-prob-models-5-7"><pre class="code-display tex2jax_ignore">bar(2:12,counts(dsum,2:12)/sum(dsum), legend=false, xticks=2:12)
+<div class="para" id="ch-prob-models-5-2">How do we handle the rolling of two dice? We will do this in a similar manner to flipping 3 coins above.  First, we’ll start with an array with each row having 2 dice.  This would be a simulation of rolling 10,000 pairs of dice.</div>
+<div class="para logical" id="ch-prob-models-5-3"><pre class="code-display tex2jax_ignore"> dice2=rand(1:6,10_000,2) </pre></div>
+<div class="para" id="ch-prob-models-5-4">which creates a matrix of size of 10,000 by 2 of random numbers between 1 and 6.  Each row represents a pair of dice and the sum of the dice is just the sum of each row which we can get from</div>
+<div class="para logical" id="ch-prob-models-5-5"><pre class="code-display tex2jax_ignore"> dsum = mapslices(sum,dice2;dims=[2]) </pre></div>
+<div class="para" id="ch-prob-models-5-6">which sums along the rows. This is 10,000 rolls of 2 dice with the sum recorded. First, to get an idea of the distribution of the dice sums, let’s plot the distribution of the values:</div>
+<div class="para logical" id="ch-prob-models-5-7"><pre class="code-display tex2jax_ignore">fig = Figure()
+ax = Axis(fig[1,1], xticks=2:12)
+barplot!(ax, 2:12, counts(dsum,2:12)/sum(dsum), strokewidth = 1)
+fig
 </pre></div>
-<div class="para" id="ch-prob-models-5-8">where <code class="code-inline tex2jax_ignore">xticks</code> gives the tick marks on the x-axis.  The plot generated is</div>
+<div class="para" id="ch-prob-models-5-8">The plot generated is</div>
 <figure class="figure figure-like" id="fig-dice2"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/dice2.png" class="contained" alt="(for accessibility)"></div>
 <figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">19.5<span class="period">.</span></span><span class="space"> </span></figcaption></figure><details id="ch-prob-models-5-10" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
 <span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">19.6</span><span class="period">.</span>
@@ -1314,50 +1328,56 @@ p = \frac{2}{\pi}\frac{\ell}{t}
 <div class="para" id="sect-calc-pi-prob-4-2">The Buffon Needle experiment is fascinating in many ways but there is a much easier way to generate results in a computer simulation.  This is called the <em class="emphasis">Circle in the Square</em> approach.</div>
 <div class="para" id="sect-calc-pi-prob-4-3">Consider a square given by <span class="process-math">\(\{ (x,y)\; | \; 0\leq x\leq 1, 0 \leq y \leq 1\}\text{,}\)</span> which is just the first unit in both <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> in the first quadrant. We generate a number of random points (technically they are uniformly distributed).  Consider</div>
 <div class="para logical" id="sect-calc-pi-prob-4-4"><pre class="code-display tex2jax_ignore">pts=rand(100,2)
-scatter(pts[:,1],pts[:,2], aspect_ratio=:equal, legend=false)
+fig = Figure()
+ax = Axis(fig[1,1], aspect = 1)
+scatter!(ax, pts[:,1],pts[:,2])
+fig
 </pre></div>
 <figure class="figure figure-like" id="fig-circle100"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/circle100.png" class="contained" alt="(for accessibility)"></div>
 <figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">19.8<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="sect-calc-pi-prob-4-6">If we draw a circular arc and then count the number of points within the arc:</div>
-<div class="para logical" id="sect-calc-pi-prob-4-7"><pre class="code-display tex2jax_ignore">scatter(pts[:,1],pts[:,2], aspect_ratio=:equal, legend=false)
-plot!(cos,sin,0,pi/2)
+<div class="para logical" id="sect-calc-pi-prob-4-7"><pre class="code-display tex2jax_ignore">fig = Figure()
+ax = Axis(fig[1,1], aspect = 1)
+scatter!(ax, pts[:,1],pts[:,2])
+t = LinRange(0,pi/2,100)
+lines!(ax,cos.(t),sin.(t), color = :red)
+fig
 </pre></div>
+<div class="para" id="sect-calc-pi-prob-4-8">where the circle has been plotted parametrically and in the first quadrant we use <span class="process-math">\(0 \leq t \leq \pi/2\text{.}\)</span> The result is</div>
 <figure class="figure figure-like" id="fig-circle100a"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/circle100a.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">19.9<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="sect-calc-pi-prob-4-9">The fraction of points should be about the fraction of the area within the arc or <span class="process-math">\(\pi/4\text{.}\)</span> (Note: the <code class="code-inline tex2jax_ignore">plot!</code> function plots on top of the current plot instead of making a new one. It also performs a parametric plot--see <a href="ch-plots-package.html" class="internal" title="Chapter 15: The Plots Package">Chapter 15</a>--of the circle.)</div>
-<div class="para logical" id="sect-calc-pi-prob-4-10">
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">19.9<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="sect-calc-pi-prob-4-10">The fraction of points should be about the fraction of the area within the arc or <span class="process-math">\(\pi/4\text{.}\)</span> (Note: the <code class="code-inline tex2jax_ignore">plot!</code> function plots on top of the current plot instead of making a new one. It also performs a parametric plot--see <a href="ch-plots-package.html" class="internal" title="Chapter 15: The Plots Package">Chapter 15</a>--of the circle.)</div>
+<div class="para logical" id="sect-calc-pi-prob-4-11">
 <div class="para">We can calculate this value by first using the <code class="code-inline tex2jax_ignore">mapslices</code> function on each row to calculate the distance</div>
 <pre class="code-display tex2jax_ignore">dist=mapslices(pt-&gt;sqrt(pt[1]^2+pt[2]^2),pts;dims=[2])
 </pre>
 </div>
-<div class="para" id="sect-calc-pi-prob-4-11">and then count the number of the points within the circle or the distance is less than 1.</div>
-<div class="para logical" id="sect-calc-pi-prob-4-12"><pre class="code-display tex2jax_ignore">numpts = count(d -&gt; d &lt; 1, dist)
+<div class="para" id="sect-calc-pi-prob-4-12">and then count the number of the points within the circle or the distance is less than 1.</div>
+<div class="para logical" id="sect-calc-pi-prob-4-13"><pre class="code-display tex2jax_ignore">numpts = count(d -&gt; d &lt; 1, dist)
 </pre></div>
-<div class="para" id="sect-calc-pi-prob-4-13">and the results is <code class="code-inline tex2jax_ignore">77</code>.  Since the fraction of the points is an estimate for <span class="process-math">\(\pi/4\text{,}\)</span> then we can say that</div>
-<div class="para logical" id="sect-calc-pi-prob-4-14"><div class="displaymath process-math">
+<div class="para" id="sect-calc-pi-prob-4-14">and the results is <code class="code-inline tex2jax_ignore">77</code>.  Since the fraction of the points is an estimate for <span class="process-math">\(\pi/4\text{,}\)</span> then we can say that</div>
+<div class="para logical" id="sect-calc-pi-prob-4-15"><div class="displaymath process-math">
 \begin{equation*}
 \pi \approx 4 \cdot numpts \cdot total\_points
 \end{equation*}
 </div></div>
-<div class="para" id="sect-calc-pi-prob-4-15">so in this case the estimate is <code class="code-inline tex2jax_ignore">3.08</code>. Clearly this is a terrible estimate of <span class="process-math">\(\pi\text{,}\)</span> but increasing the number of points should improve it.</div>
-<div class="para" id="sect-calc-pi-prob-4-16">Instead of just repeating the same code with a different number of points, we will create a function that estimates <span class="process-math">\(\pi\)</span> based on the number of points originally.</div>
+<div class="para" id="sect-calc-pi-prob-4-16">so in this case the estimate is <code class="code-inline tex2jax_ignore">3.08</code>. Clearly this is a terrible estimate of <span class="process-math">\(\pi\text{,}\)</span> but increasing the number of points should improve it.</div>
+<div class="para" id="sect-calc-pi-prob-4-17">Instead of just repeating the same code with a different number of points, we will create a function that estimates <span class="process-math">\(\pi\)</span> based on the number of points originally.</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">function calcPi(total_points::Integer)
   pts=rand(total_points,2)
   dist=mapslices(pt -&gt; pt[1]^2+pt[2]^2, pts; dims=[2])
   4*count(d -&gt; d &lt; 1,dist)/total_points
 end
 </code></pre></div>
-<div class="para" id="sect-calc-pi-prob-4-18">and we haven’t included the square root in the distance calculation because all we are trying to determine is which points are within the unit circle.  This uses the square distance, so the result is the same.</div>
-<div class="para" id="sect-calc-pi-prob-4-19">Let’s run it with 10,000 points using the command:</div>
-<div class="para logical" id="sect-calc-pi-prob-4-20"><pre class="code-display tex2jax_ignore">
-				approx_pi = calcPi(10_000)
-				</pre></div>
-<div class="para" id="sect-calc-pi-prob-4-21">and we get the result <code class="code-inline tex2jax_ignore">3.1632</code>
+<div class="para" id="sect-calc-pi-prob-4-19">and we haven’t included the square root in the distance calculation because all we are trying to determine is which points are within the unit circle.  This uses the square distance, so the result is the same.</div>
+<div class="para" id="sect-calc-pi-prob-4-20">Let’s run it with 10,000 points using the command:</div>
+<div class="para logical" id="sect-calc-pi-prob-4-21"><pre class="code-display tex2jax_ignore"> approx_pi = calcPi(10_000) </pre></div>
+<div class="para" id="sect-calc-pi-prob-4-22">and we get the result <code class="code-inline tex2jax_ignore">3.1632</code>
 </div>
-<details id="sect-calc-pi-prob-4-22" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
+<details id="sect-calc-pi-prob-4-23" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
 <span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">19.10</span><span class="period">.</span>
-</h5></summary><article class="exercise exercise-like knowl__content"><article class="task exercise-like" id="sect-calc-pi-prob-4-22-1"><h6 class="heading"><span class="codenumber">(a)</span></h6>
-<div class="para" id="sect-calc-pi-prob-4-22-1-1-1">for <span class="process-math">\(N=10^5\text{,}\)</span> <span class="process-math">\(N=10^6\)</span> and <span class="process-math">\(N=10^7\)</span> find the relative error of the estimate using your function and using the built-in value <code class="code-inline tex2jax_ignore">pi</code>.</div></article><article class="task exercise-like" id="sect-calc-pi-prob-4-22-2"><h6 class="heading"><span class="codenumber">(b)</span></h6>
-<div class="para" id="sect-calc-pi-prob-4-22-2-1-1">Recall that earlier in the book, we determine that creating an array is one of the slower parts of code. In this case, it is not needed.  Rewrite the <code class="code-inline tex2jax_ignore">calcPi</code> function to not generate a matrix of <code class="code-inline tex2jax_ignore">total_points</code> rows.</div>
-<div class="solutions"><details id="sect-calc-pi-prob-4-22-2-2" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period">.</span></summary><div class="hint solution-like knowl__content"><div class="para" id="sect-calc-pi-prob-4-22-2-2-1">Write a for loop and inside the loop generate a single point and determine whether or not it is in the circle.  Time this version and compare to the <code class="code-inline tex2jax_ignore">calcPi</code> above.</div></div></details></div></article></article></details></section></section></section></div>
+</h5></summary><article class="exercise exercise-like knowl__content"><article class="task exercise-like" id="sect-calc-pi-prob-4-23-1"><h6 class="heading"><span class="codenumber">(a)</span></h6>
+<div class="para" id="sect-calc-pi-prob-4-23-1-1-1">for <span class="process-math">\(N=10^5\text{,}\)</span> <span class="process-math">\(N=10^6\)</span> and <span class="process-math">\(N=10^7\)</span> find the relative error of the estimate using your function and using the built-in value <code class="code-inline tex2jax_ignore">pi</code>.</div></article><article class="task exercise-like" id="sect-calc-pi-prob-4-23-2"><h6 class="heading"><span class="codenumber">(b)</span></h6>
+<div class="para" id="sect-calc-pi-prob-4-23-2-1-1">Recall that earlier in the book, we determine that creating an array is one of the slower parts of code. In this case, it is not needed.  Rewrite the <code class="code-inline tex2jax_ignore">calcPi</code> function to not generate a matrix of <code class="code-inline tex2jax_ignore">total_points</code> rows.</div>
+<div class="solutions"><details id="sect-calc-pi-prob-4-23-2-2" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period">.</span></summary><div class="hint solution-like knowl__content"><div class="para" id="sect-calc-pi-prob-4-23-2-2-1">Write a for loop and inside the loop generate a single point and determine whether or not it is in the circle.  Time this version and compare to the <code class="code-inline tex2jax_ignore">calcPi</code> above.</div></div></details></div></article></article></details></section></section></section></div>
 <div class="ptx-content-footer">
 <a class="previous-button button" href="ch-probability-random.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-poker.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
 </div></main>

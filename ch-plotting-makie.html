@@ -13,7 +13,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="og:type" content="book">
 <meta property="book:title" content="Scientific Computing and Visualization">
-<meta property="book:author" content="Peter Staab">
+<meta property="book:author" content="
+    Peter Staab">
 <script>
 var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
 window.MathJax = {
@@ -195,7 +196,13 @@ window.MathJax = {
 \)</span></div>
 <div class="ptx-page">
 <div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 parts"><ul class="structural contains-active toc-item-list">
-<li class="toc-item toc-frontmatter"><div class="toc-title-box"><a href="frontmatter.html" class="internal"><span class="title">Front Matter</span></a></div></li>
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="frontmatter.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="colophon.html" class="internal"><span class="title">Colophon</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="preface.html" class="internal"><span class="title">Preface</span></a></div></li>
+</ul>
+</li>
 <li class="toc-item toc-part">
 <div class="toc-title-box"><a href="part-intro.html" class="internal"><span class="codenumber">I</span> <span class="title">Introduction to Scientific Computing</span></a></div>
 <ul class="structural toc-item-list"><li class="toc-item toc-chapter">
@@ -1174,7 +1181,16 @@ fig
 </pre></div>
 <div class="para" id="sect-layout-makie-12">will produce the following layout where the 2nd row has nested axes.</div>
 <figure class="figure figure-like" id="fig-layout-nested"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/makie/layout-nested.png" class="contained" alt='A grid layout with one axis on the first row and 3 in the second row. The top row axis is labelled "Axis 1" and the bottom three are labelled "Axis 2", "Axis 3" and "Axis 4" from left to right.'></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">14.5<span class="period">.</span></span><span class="space"> </span>A grid layout with one axis on the first row and 3 in the second row.</figcaption></figure><div class="para" id="sect-layout-makie-14">Notice that to nest axes, we add an additional row/column specification.  For example, <code class="code-inline tex2jax_ignore">fig[2,1][1,2]</code> means first place this in the 2nd row and 1st column of the overall layout and then within that cell, place in the first row, second column.</div></section><section class="section" id="sec-makie-axis"><h3 class="heading hide-type">
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">14.5<span class="period">.</span></span><span class="space"> </span>A grid layout with one axis on the first row and 3 in the second row.</figcaption></figure><div class="para" id="sect-layout-makie-14">Notice that to nest axes, we add an additional row/column specification.  For example, <code class="code-inline tex2jax_ignore">fig[2,1][1,2]</code> means first place this in the 2nd row and 1st column of the overall layout and then within that cell, place in the first row, second column.</div>
+<div class="para" id="sect-layout-makie-15">Alternatively, the following will also create the same result:</div>
+<div class="para logical" id="sect-layout-makie-16"><pre class="code-display tex2jax_ignore">fig = Figure()
+ax1 = Axis(fig[1,1:3], title = "Axis 1")
+ax2 = Axis(fig[2,1], title = "Axis 2")
+ax3 = Axis(fig[2,1], title = "Axis 3")
+ax4 = Axis(fig[2,1], title = "Axis 4")
+fig
+</pre></div>
+<div class="para" id="sect-layout-makie-17">where the <code class="code-inline tex2jax_ignore">fig[1,1:3]</code> on the first Axis object to place it in the 1st row and stretch it across the first 3 columns.</div></section><section class="section" id="sec-makie-axis"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">14.3</span><span class="space"> </span><span class="title">Axis Options</span>
 </h3>
 <div class="para" id="sec-makie-axis-2">We saw above how to place an <code class="code-inline tex2jax_ignore">Axis</code> object inside a <code class="code-inline tex2jax_ignore">Figure</code>.  Upon creating the <code class="code-inline tex2jax_ignore">Axis</code>, we can give other options.  We will cover some of the important ones here, and then refer to the documentation.  The first option to an <code class="code-inline tex2jax_ignore">Axis</code> is a <code class="code-inline tex2jax_ignore">title</code> that we saw above. Just pass the title in as a string.  Other basic options are the <code class="code-inline tex2jax_ignore">xlabel</code> and <code class="code-inline tex2jax_ignore">ylabel</code>.  The following code</div>
@@ -1304,7 +1320,37 @@ fig
 <figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">14.17<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="section" id="ch-plotting-makie-8"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">14.6</span><span class="space"> </span><span class="title">Vector Field and Stream plots</span>
 </h3>
-<div class="para" id="ch-plotting-makie-8-2">There are a number of types of plots that display the direction of flow of a function.  This section goes over a few of these.</div></section><section class="section" id="ch-plotting-makie-9"><h3 class="heading hide-type">
+<div class="para" id="ch-plotting-makie-8-2">There are a number of types of plots that display the direction of flow of a function.  This section goes over a few of these.</div>
+<div class="para" id="ch-plotting-makie-8-3">First, consider a vector field which is is a pair of functions of <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> often written as <span class="process-math">\(\vec{v} = \langle F(x,y), G(x,y) \rangle\text{.}\)</span>  For any point in the plane <span class="process-math">\((x,y)\text{,}\)</span> the vector <span class="process-math">\(\vec{v}\)</span>  is a vector. For example, consider <span class="process-math">\(v=\langle y, -x \rangle\text{.}\)</span> We first start with the <code class="code-inline tex2jax_ignore">arrows</code> method:</div>
+<div class="para logical" id="ch-plotting-makie-8-4"><pre class="code-display tex2jax_ignore">xpts = ypts = LinRange(-3,3,11)
+u = [y for x in xpts, y in ypts]
+v = [-x for x in xpts, y in ypts]
+arrows(xpts,ypts,u,v)
+</pre></div>
+<div class="para" id="ch-plotting-makie-8-5">results in the following plot:</div>
+<figure class="figure figure-like" id="fig-arrows01"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/makie/arrows01.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">14.18<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-makie-8-7">This is a bit hard to read because the arrows overlap.  This is mainly because the arrow length are exactly the size of the vector field at the point.  For example at <span class="process-math">\((1,2)\text{,}\)</span> the vector is <span class="process-math">\(\vec{v} = \langle 2, -1 \rangle\)</span> and the length of this is <span class="process-math">\(\sqrt{5}\approx 2.23.\text{,}\)</span> which overlaps nearby arrows.  One inital way to address this is to set the <code class="code-inline tex2jax_ignore">lengthscale</code> attribute.  Consider the following:</div>
+<div class="para logical" id="ch-plotting-makie-8-8"><pre class="code-display tex2jax_ignore">fig = arrows(xpts,ypts,u,v, lengthscale = 0.25)
+</pre></div>
+<div class="para" id="ch-plotting-makie-8-9">which creates the following plot:</div>
+<figure class="figure figure-like" id="fig-arrows02"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/makie/arrows02.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">14.19<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-makie-8-11">Another way to handle this is to produce a <em class="emphasis">direction field</em> which normalizes all of the arrows to make them the same length to do this, we add the <code class="code-inline tex2jax_ignore">str = sqrt.(u .^ 2 .+ v .^ 2)</code> and then divide both <code class="code-inline tex2jax_ignore">u</code> and <code class="code-inline tex2jax_ignore">v</code> by this variable as in</div>
+<div class="para logical" id="ch-plotting-makie-8-12"><pre class="code-display tex2jax_ignore">arrows(xpts,ypts,u./str,v./str, lengthscale = 0.4)
+</pre></div>
+<div class="para" id="ch-plotting-makie-8-13">which produces the plot:</div>
+<figure class="figure figure-like" id="fig-poly-arrow03"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/makie/arrow03.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">14.20<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-makie-8-15">Since Makie is very good with color, there are some options to make this a bit more colorful.  The <code class="code-inline tex2jax_ignore">arrowcolor</code> and <code class="code-inline tex2jax_ignore">linecolor</code> can be used with the <code class="code-inline tex2jax_ignore">str</code> variable to give each arrow a color.  The following:</div>
+<div class="para logical" id="ch-plotting-makie-8-16"><pre class="code-display tex2jax_ignore">arrows(xpts,ypts,u./str,v./str, lengthscale = 0.4, arrowcolor = vec(str), linecolor = vec(str))
+</pre></div>
+<div class="para" id="ch-plotting-makie-8-17">will produce the following plot:</div>
+<figure class="figure figure-like" id="fig-arrow04"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/makie/arrow04.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">14.21<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-makie-8-19">Note that the <code class="code-inline tex2jax_ignore">str</code> variable is a Matrix and both <code class="code-inline tex2jax_ignore">arrowcolor</code> and <code class="code-inline tex2jax_ignore">linecolor</code> can take a color, but also a vector of values.  This is why the <code class="code-inline tex2jax_ignore">str</code> variable is wrapped in the <code class="code-inline tex2jax_ignore">vec</code> method.</div>
+<div class="para" id="ch-plotting-makie-8-20">A <dfn class="terminology">streamplot</dfn> is related to a vector field plot (arrow plot) in that the arrows follow along continuous curves that are also plotted.  A difference for plotting these in Makie is that instead of building the vector field, that the function is given and then plotted on the given plotting domain.  We will plot the same field above with:</div>
+<div class="para logical" id="ch-plotting-makie-8-21"><pre class="code-display tex2jax_ignore">streamplot(x-&gt;Point2f(x[2], -x[1]), -2..2, -2..2)
+</pre></div>
+<div class="para" id="ch-plotting-makie-8-22">which produces the following:</div>
+<figure class="figure figure-like" id="fig-stream01"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/makie/stream01.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">14.22<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-makie-8-24">Note that the first argument of the <code class="code-inline tex2jax_ignore">streamplot</code> is a function of <code class="code-inline tex2jax_ignore">x</code> a vector to a <code class="code-inline tex2jax_ignore">Point2f</code> object.</div></section><section class="section" id="ch-plotting-makie-9"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">14.7</span><span class="space"> </span><span class="title">Backends for Makie</span>
 </h3>
 <div class="para" id="ch-plotting-makie-9-2">As described in <a href="ch-plotting-basics.html#sect-plotting-backends" class="internal" title="Section 13.5: Plotting Backends">Section 13.5</a>, Makie is a set of high level plotting commands.  The hard work of drawing lines, circles and regions on the screen is done with a backend and the idea is to be able to switch backends easily without changing the high-level code to produce a plot.  Makie has four such options currently: <code class="code-inline tex2jax_ignore">CairoMakie</code>, <code class="code-inline tex2jax_ignore">GLMakie</code>, <code class="code-inline tex2jax_ignore">WGLMakie</code> and <code class="code-inline tex2jax_ignore">RPRMakie</code> and you should have seen the first two appear above in the plotting code.</div>
