@@ -225,6 +225,27 @@
     <p>
       What this function basically does is create the <c>x</c> and <c>y</c> points of the triangle and stores them in a Vector.  Then the last line passes this to a <c>Lines</c> plot with the two vectors <c>xpts</c> and <c>ypts</c>.
     </p>
+
+    <p>Lastly, let plot the triangle.  Since we are using the <c>lines</c> command for this, we can just do:</p>
+
+    <p>
+      <cd>
+        <cline>lines(tri)</cline>
+      </cd>
+    </p>
+    <p>and the result will be the plot</p>
+
+    <figure xml:id="fig-poly-triangle">
+      <caption></caption>
+      <image source="plots/makie/triangle.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+
+
   </section>
 
   <section>
@@ -233,5 +254,6 @@
     <p>
       To be finished: explain and show examples of Plot recipes and how they differ from type recipes.
     </p>
+
   </section>
 </chapter>

@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <chapter xml:id="ch-prob-models">
 	<title>Using Random Numbers and Probability Models</title>
+
 	<introduction>
 		<p>
-			To understand basic probability, often problems are examined that use combinatorics or
-			counting techniques to solve them.  Consider
+			To understand basic probability, often problems are examined that use combinatorics or counting techniques to solve them.  Consider
 		</p>
 
 		<blockquote>
 			<p>
-				<q>A round table has 7 chairs around it.  Mary and her friend Alisha and 5
-				other people are given seats at the table in a random manner.  What is
-				the probability that Mary and Alisha sit next to each other?
-				</q>
+				<q>A round table has 7 chairs around it.  Mary and her friend Alisha and 5 other people are given seats at the table in a random manner.  What is the probability that Mary and Alisha sit next to each other? </q>
 			</p>
 		</blockquote>
 
 		<p>
-			Although it is an good skill to solve problems like these using counting techniques,
-			we examine some ways to use simulation to find the solution in this chapter.
+			Although it is an good skill to solve problems like these using counting techniques, we examine some ways to use simulation to find the solution in this chapter.
 		</p>
 
 		<p>
@@ -32,6 +29,7 @@
 
 	<section>
 		<title>Flipping Coins</title>
+
 		<introduction>
 			<p>
 				Recall as we showed in <xref ref="ch-probability-random"/>, we can generate 100 coin flips by
@@ -44,22 +42,20 @@
 			</p>
 
 			<p>
-				(Note: the result looks like an array of 0s and 1s, but look at the type,
-				<c>Vector{Bool}</c>, which says it is a vector or 1-dimensional boolean array.)
+				(Note: the result looks like an array of 0s and 1s, but look at the type, <c>Vector{Bool}</c>, which says it is a vector or 1-dimensional boolean array.)
 			</p>
 
 			<p>
-				We can determine the number of heads (when the result is 1), by <c>sum(coins)</c>
-				which is <c>58</c>.
+				We can determine the number of heads (when the result is 1), by <c>sum(coins)</c> which is <c>58</c>.
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>Flipping multiple coins</title>
+
 			<p>
-				Another simple example is to flip multiple coins and generally count the number of
-				heads or tails seen.  Consider flipping 3-coins--perhaps a penny, nickel and dime--and
-				counting the number of heads.  We then do that 3-coin flip a larger number of times.
+				Another simple example is to flip multiple coins and generally count the number of heads or tails seen.  Consider flipping 3-coins--perhaps a penny, nickel and dime--and counting the number of heads.  We then do that 3-coin flip a larger number of times.
 			</p>
 
 			<p>
@@ -90,9 +86,7 @@
 			</p>
 
 			<p>
-				Each row contains the coin flips.  Each 1 represents a head and 0 is a tail.
-				If we are interested in the sum of the number of heads, we can do this with the
-				<c>mapslices</c> functions seen in <xref ref="ch-arrays"/>.
+				Each row contains the coin flips.  Each 1 represents a head and 0 is a tail. If we are interested in the sum of the number of heads, we can do this with the <c>mapslices</c> functions seen in <xref ref="ch-arrays"/>.
 			</p>
 
 			<p>
@@ -102,34 +96,7 @@
 			</p>
 
 			<p>
-				The first few elements of the array is <c>[2; 1; 1; 2; 2; 1; 1; 0 ...]</c>
-				We can plot the results of this with the function
-			</p>
-
-			<p>
-				<cd>
-				<cline>using Plots</cline>
-				<cline>histogram(num_heads,nbins=4, legend=false)</cline>
-				</cd>
-			</p>
-
-			<p>
-				and the result is
-			</p>
-
-			<figure xml:id="fig-coins3-sim">
-				<caption></caption>
-				<image source="plots/prob-models/coins3.png">
-					<shortdescription>(for accessibility)</shortdescription>
-				</image>
-			</figure>
-
-			<p>
-				This plot is quite easy to generate, but a bit confusing.  What does the
-				bar between 0 and 1 mean.  This is mainly because the <c>histogram</c> function is
-				more useful for continuous data than discrete data.  We'll recreate this plot piece by
-				piece and get the results we want. First, start with the <c>StatsBase</c> package (and you
-				may need to add the package) and then load it with
+				The first few elements of the array is <c>[2; 1; 1; 2; 2; 1; 1; 0 ...]</c>. We would like a plot of this, however need to do a bit of work first.  The hope is that for each number of heads 0, 1, 2 and 3, we create a bar plot with the number of heads for each or the fraction of heads.  Although we have the tools to do this, since this is a common thing to do in statistics, there is a function in the <c>StatsBase</c> package.
 			</p>
 
 			<p>
@@ -139,91 +106,112 @@
 			</p>
 
 			<p>
-				and then the <c>counts</c> function (
-				<url href="https://juliastats.org/StatsBase.jl/latest/counts/#StatsBase.counts" visual="">Read
-				the online documentation</url>) can be used:
+				and then the <c>counts</c> function ( <url href="https://juliastats.org/StatsBase.jl/latest/counts/#StatsBase.counts" visual="">Read the online documentation</url>) can be used:
 			</p>
 
 			<p>
 				<cd>
-				<cline>dice_count = counts(num_heads,0:3)</cline>
+				<cline>head_count = counts(num_heads,0:3)</cline>
 				</cd>
 			</p>
 
 			<p>
-				returns a vector of how many of number of heads fall into each number. The result is
-				the vector <c>[8 39 43 10]</c>.
+				returns a vector of how many of number of heads fall into each number. The result is the vector <c>[8 39 43 10]</c>.
 			</p>
 
 			<p>
 				and a nicer way to plot the histogram is
 				<cd>
-				<cline>bar(0:3,dice_count/sum(dice_count),legend=false)</cline>
+				<cline>barplot(0:3,head_count/sum(head_count), strokewidth = 1)</cline>
 				</cd>
+			</p>
+
+			<p>
+				where the <c>strokecolor</c> attribute puts a thin border around each bar. The result is
 			</p>
 
 			<figure xml:id="fig-coins3-sim-improved">
 				<caption></caption>
 				<image source="plots/prob-models/coins3-improved.png">
-					<shortdescription>(for accessibility)</shortdescription>
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
 				</image>
 			</figure>
 
 			<p>
-				which generates an approximate probability distribution for flipping 3 coins and s
-				umming the number of heads.  Compare this with the plot of the distribution in
-				<xref ref="ch-probability-random"/> which uses the definition of probability.
-			</p>
-
-			<p>
-				And to compare the simulation with the probability density function that we
-				found in <xref ref="ch-probability-random"/>, we will plot a side-by-side comparison of the
-				two with the following.  Note that the function <c>groupedbar</c> is part of the <c>StatsPlots</c> package:
+				which generates an approximate probability distribution for flipping 3 coins and s umming the number of heads. And to compare the simulation with the probability density function that we found in <xref ref="ch-probability-random"/>, we will plot a side-by-side comparison of the two with the following.  Note that the function <c>groupedbar</c> is part of the <c>StatsPlots</c> package:
 			</p>
 
 			<p>
 				<cd>
-				<cline>using StatsPlots</cline>
-				<cline>groupedbar(0:3,hcat(dice_count/sum(dice_count), [1/8,3/8,3/8,1/8]), label=["simulation" "pdf"])</cline>
+				<cline>barplot(repeat(0:3,2),vcat(head_count/sum(head_count),[1/8, 3/8, 3/8, 1/8]),</cline>
+				<cline>dodge = repeat(0:3,inner = 2), color=repeat(1:2, inner = 4))</cline>
 				</cd>
+			</p>
+
+			<p>
+				resulting in
 			</p>
 
 			<figure xml:id="fig-coins3-compare">
 				<caption></caption>
 				<image source="plots/prob-models/coins3-compare.png">
-					<shortdescription>(for accessibility)</shortdescription>
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
 				</image>
 			</figure>
 
 			<p>
-				A couple of things to note:
-				<ul>
-					<li>
-						<p>
-							In the <c>groupedbar</c> function, the <c>0:3</c> is the horizontal range
-							and the vertical range has two pieces (because of the <c>hcat</c> function).
-							The first is the random data (switched to a fraction) and the second is the
-							distribution of the number of heads out of 3 coin flips.
-						</p>
-					</li>
+				This is not the best looking plot and would like to include a legend.  Here's a little cleaned up version of this and then will explain all of the arguements and attributes.
+			</p>
 
-					<li>
-						<p>
-							It is important in the <c>label</c> that the two labels are string separated by
-							a space and not a comma.  (See what happens if you put a comma there.)
-						</p>
-					</li>
-				</ul>
+
+			<program language="julia" line-numbers="yes">
+				<input>
+values = 0:3
+heights1 = head_count/sum(head_count)
+heights2 = [1/8, 3/8, 3/8, 1/8]
+colors = Makie.wong_colors()  # use more attractive colors
+fig = Figure()
+ax = Axis(fig[1,1], title = "Comparison of simulation and known PDF of Flipping 3 coins")
+xvals = repeat(values,2)
+heights = vcat(heights1, heights2)
+barplot!(ax, xvals, heights, dodge = repeat(values,inner = 2),
+  color=colors[repeat(1:2, inner = length(values))], strokewidth = 1
+  )
+labels = ["simulation", "PDF"]
+elements = [PolyElement(polycolor = colors[i]) for i in 1:length(labels)]
+axislegend(ax, elements, labels)
+fig
+				</input>
+			</program>
+
+			<p>
+				and the resulting plot is
+			</p>
+
+			<figure xml:id="fig-coins3-compare02">
+				<caption></caption>
+				<image source="plots/prob-models/coins3-compare02.png">
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
+				</image>
+			</figure>
+
+			<p>
+				This is reasonably complicated and for a grouped bar plot and there are many ways to do this using the <c>barplot</c> method and we go into a lot of details in <xref ref="ch-plotting-data"/>.  To use this with other data, you should be able to update the first 3 lines of this code.
 			</p>
 		</subsection>
 	</section>
 
 	<section>
 		<title>Rolling Dice</title>
+
 		<p>
-			A relatively-simple example is that of rolling dice.  As we saw in <xref ref="ch-probability-random"/>,
-			if we have a fair, six-sided die, the the probability of any of the numbers coming up is 1/6.
-			We can simulate that using random numbers in the following way:
+			A relatively-simple example is that of rolling dice.  As we saw in <xref ref="ch-probability-random"/>, if we have a fair, six-sided die, the the probability of any of the numbers coming up is 1/6. We can simulate that using random numbers in the following way:
 		</p>
 
 		<p>
@@ -233,16 +221,11 @@
 		</p>
 
 		<p>
-			generated 100 numbers taken from the set <m>\{1,2,3,4,5,6\}</m>.  Running this
-			command<fn>Don't forget that when running code with random numbers, you won't get the exact same results,
-			but the spirit should be the same.</fn> results in a vector of length 100 with random numbers between 1 and 6.
+			generated 100 numbers taken from the set <m>\{1,2,3,4,5,6\}</m>.  Running this command<fn>Don't forget that when running code with random numbers, you won't get the exact same results, but the spirit should be the same.</fn> results in a vector of length 100 with random numbers between 1 and 6.
 		</p>
 
 		<p>
-			The principal of the <em>Law of Large Numbers</em> is that as a experiment is repeated, as the number of times
-			increases, the distribution of results tends toward the underlying distribution.  If we determine if this is
-			true, as the number of time we roll a die increases, the probability of any one number
-			appearing gets closer to 1/6.  For example, to test this, try
+			The principal of the <em>Law of Large Numbers</em> is that as a experiment is repeated, as the number of times increases, the distribution of results tends toward the underlying distribution.  If we determine if this is true, as the number of time we roll a die increases, the probability of any one number appearing gets closer to 1/6.  For example, to test this, try
 			<cd>
 			<cline>p = count(a-&gt;a==3,rand(1:6,1_000))</cline>
 			</cd>
@@ -253,8 +236,7 @@
 			<task>
 				<statement>
 					<p>
-						Trying increasing the number of random numbers used in the above example.
-						You should notice that as that number gets larger, the resulting probability gets closer to 1/6.
+						Trying increasing the number of random numbers used in the above example. You should notice that as that number gets larger, the resulting probability gets closer to 1/6.
 					</p>
 				</statement>
 			</task>
@@ -279,47 +261,46 @@
 
 	<section>
 		<title>Rolling 2 dice</title>
+
 		<p>
-			How do we handle the rolling of two dice? Here's an array with each row
-			having 2 dice.  This would be a simulation of rolling 10,000 pairs of dice.
+			How do we handle the rolling of two dice? We will do this in a similar manner to flipping 3 coins above.  First, we'll start with an array with each row having 2 dice.  This would be a simulation of rolling 10,000 pairs of dice.
+		</p>
+
+		<p>
+			<cd> dice2=rand(1:6,10_000,2) </cd>
+		</p>
+
+		<p>
+			which creates a matrix of size of 10,000 by 2 of random numbers between 1 and 6.  Each row represents a pair of dice and the sum of the dice is just the sum of each row which we can get from
+		</p>
+
+		<p>
+			<cd> dsum = mapslices(sum,dice2;dims=[2]) </cd>
+		</p>
+
+		<p>
+			which sums along the rows. This is 10,000 rolls of 2 dice with the sum recorded. First, to get an idea of the distribution of the dice sums, let's plot the distribution of the values:
 		</p>
 
 		<p>
 			<cd>
-			dice2=rand(1:6,10_000,2)
+			<cline>fig = Figure()</cline>
+			<cline>ax = Axis(fig[1,1], xticks=2:12)</cline>
+			<cline>barplot!(ax, 2:12, counts(dsum,2:12)/sum(dsum), strokewidth = 1)</cline>
+			<cline>fig</cline>
 			</cd>
 		</p>
 
 		<p>
-			and then to find the sum of the dice:
-		</p>
-
-		<p>
-			<cd>
-			dsum = mapslices(sum,dice2;dims=[2])
-			</cd>
-		</p>
-
-		<p>
-			which sums along the rows. This is 10,000 rolls of 2 dice with the sum
-			recorded. First, to get an idea of the distribution of the dice sums,
-			let's plot the histogram (but use the <c>bar</c> command):
-		</p>
-
-		<p>
-			<cd>
-			<cline>bar(2:12,counts(dsum,2:12)/sum(dsum), legend=false, xticks=2:12)</cline>
-			</cd>
-		</p>
-
-		<p>
-			where <c>xticks</c> gives the tick marks on the x-axis.  The plot generated is
+			The plot generated is
 		</p>
 
 		<figure xml:id="fig-dice2">
 			<caption></caption>
 			<image source="plots/prob-models/dice2.png">
-				<shortdescription>(for accessibility)</shortdescription>
+				<shortdescription>
+					(for accessibility)
+				</shortdescription>
 			</image>
 		</figure>
 
@@ -367,10 +348,10 @@
 
 	<section>
 		<title>Other Probability Models</title>
+
 		<introduction>
 			<p>
-				Let's return to the problem that problem at the beginning of this section.
-				We will solve this problem using the random modeling in this chapter.
+				Let's return to the problem that problem at the beginning of this section. We will solve this problem using the random modeling in this chapter.
 			</p>
 
 			<p>
@@ -384,15 +365,11 @@
 			</p>
 
 			<p>
-				where we use generic names for the other 5 people.<fn>Although variable name usually don't matter
-          what they are called, <c>names</c> cannot be used.  There are many function and variable
-        names that cannot be used. This is one example.</fn>  We will take random permutations
-				of this array below and the determine if Alisha and Mary are next to each other.
+				where we use generic names for the other 5 people.<fn>Although variable name usually don't matter what they are called, <c>names</c> cannot be used.  There are many function and variable names that cannot be used. This is one example.</fn>  We will take random permutations of this array below and the determine if Alisha and Mary are next to each other.
 			</p>
 
 			<p>
-				Before we find a random permutation, let's write a function that takes an array of
-				names and returns <c>true</c> if they are next to each other and <c>false</c> if not.
+				Before we find a random permutation, let's write a function that takes an array of names and returns <c>true</c> if they are next to each other and <c>false</c> if not.
 			</p>
 
 
@@ -424,8 +401,7 @@ end
 
 					<li>
 						<p>
-							Determine if the two numbers are next to each other.  Don't forget that
-							this could include positions 1 and 7.
+							Determine if the two numbers are next to each other.  Don't forget that this could include positions 1 and 7.
 						</p>
 					</li>
 				</ol>
@@ -447,8 +423,7 @@ end
 			</program>
 
 			<p>
-				where the <c>findfirst</c> function returns the index of the array where the
-				function is true (that is where the two friends are sitting).  To test this:
+				where the <c>findfirst</c> function returns the index of the array where the function is true (that is where the two friends are sitting).  To test this:
 			</p>
 
 			<p>
@@ -482,13 +457,12 @@ end
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>Random Permutations</title>
+
 			<p>
-				We now return to the problem to study the probability.  The <c>shuffle</c> command in
-				the <c>Random</c> package<fn>The Random package is a built-in package and doesn't need to be added,
-				but just enter <c>using Random</c></fn> takes any array and shuffles (permutes) the
-				contents in a random manner.  For example:
+				We now return to the problem to study the probability.  The <c>shuffle</c> command in the <c>Random</c> package<fn>The Random package is a built-in package and doesn't need to be added, but just enter <c>using Random</c></fn> takes any array and shuffles (permutes) the contents in a random manner.  For example:
 			</p>
 
 			<p>
@@ -498,8 +472,7 @@ end
 			</p>
 
 			<p>
-				returns <c>["p3" "Alisha" "Mary" "p5" "p2" "p4" "p1"]</c>,
-				then we can test if they are sitting next to each other.  The follow repeats this a large number of times:
+				returns <c>["p3" "Alisha" "Mary" "p5" "p2" "p4" "p1"]</c>, then we can test if they are sitting next to each other.  The follow repeats this a large number of times:
 			</p>
 
 
@@ -518,27 +491,21 @@ end
 			</program>
 
 			<p>
-				and then the fraction of times is found with <c>numTimes(10_000)</c>
-        resulting in <c>0.3303</c>.
+				and then the fraction of times is found with <c>numTimes(10_000)</c> resulting in <c>0.3303</c>.
 			</p>
 
 			<p>
-				The true value of the probability can be found in the following way. Mary sits
-				in one of the seven chairs.  Alisha has a equal chance of sitting in one of the
-				remaining 6 chairs.  Two of the chairs are next two Mary, so the probability is
-				2/6 or 1/3.  The result we see above is close to this value.
+				The true value of the probability can be found in the following way. Mary sits in one of the seven chairs.  Alisha has a equal chance of sitting in one of the remaining 6 chairs.  Two of the chairs are next two Mary, so the probability is 2/6 or 1/3.  The result we see above is close to this value.
 			</p>
 		</subsection>
 	</section>
 
 	<section xml:id="sect-calc-pi-prob">
 		<title>Calculating <m>\pi</m> using pseudo random numbers</title>
+
 		<introduction>
 			<p>
-				You probably know the first handful of digits of <m>\pi</m> and recall that probably
-				the first place that you saw this was with circles.  But how do we know what the
-				digits of <m>\pi</m> actually are.  There are a number of ways to find the digits
-				of <m>\pi</m> and in fact, <xref ref="ch-calc-pi"/> presents some interesting ways of calculating it.
+				You probably know the first handful of digits of <m>\pi</m> and recall that probably the first place that you saw this was with circles.  But how do we know what the digits of <m>\pi</m> actually are.  There are a number of ways to find the digits of <m>\pi</m> and in fact, <xref ref="ch-calc-pi"/> presents some interesting ways of calculating it.
 			</p>
 
 			<p>
@@ -546,19 +513,19 @@ end
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>Buffon's Needle Experiment</title>
+
 			<p>
-				In the 18th Century, Georges-Louis Leclerc, Comte de Buffon considered the following
-				problem.  On a floor (or table), draw lines that are parallel and <m>t</m> units apart.
-				Toss needles of length <m>\ell</m> onto the floor and count the number that cross one
-				of the lines.  The following diagram is helpful:
+				In the 18th Century, Georges-Louis Leclerc, Comte de Buffon considered the following problem.  On a floor (or table), draw lines that are parallel and <m>t</m> units apart. Toss needles of length <m>\ell</m> onto the floor and count the number that cross one of the lines.  The following diagram is helpful:
 			</p>
 
 			<figure xml:id="fig-buffon">
 				<caption></caption>
 				<image>
-					<shortdescription></shortdescription>
+					<shortdescription>
+					</shortdescription>
 					<latex-image>
 					<![CDATA[
 					\begin{tikzpicture}[scale=0.5]
@@ -588,41 +555,42 @@ end
 			</p>
 
 			<p>
-				So theoretically, one could sit and toss needles onto a floor to determine the value
-				of <m>\pi</m> by counting the number that cross the lines and those that don't.
-				This would be tedious and possibly prone to error as the number of needles rises.
+				So theoretically, one could sit and toss needles onto a floor to determine the value of <m>\pi</m> by counting the number that cross the lines and those that don't. This would be tedious and possibly prone to error as the number of needles rises.
 			</p>
 
 			<p>
-				More details on this experiment is given on the
-				<url href="https://en.wikipedia.org/wiki/Buffon\%27s_needle" visual="">wikipedia page</url>
+				More details on this experiment is given on the <url href="https://en.wikipedia.org/wiki/Buffon\%27s_needle" visual="">wikipedia page</url>
 			</p>
 		</subsection>
 
+
 		<subsection>
 			<title>Circle in the Square</title>
+
 			<p>
-				The Buffon Needle experiment is fascinating in many ways but there is a much easier
-				way to generate results in a computer simulation.  This is called the <em>Circle in the Square</em> approach.
+				The Buffon Needle experiment is fascinating in many ways but there is a much easier way to generate results in a computer simulation.  This is called the <em>Circle in the Square</em> approach.
 			</p>
 
 			<p>
-				Consider a square given by <m>\{ (x,y)\; | \; 0\leq x\leq 1, 0 \leq y \leq 1\}</m>,
-        which is just the first unit in both <m>x</m> and <m>y</m> in the first quadrant.
-        We generate a number of random points (technically they are uniformly distributed).  Consider
+				Consider a square given by <m>\{ (x,y)\; | \; 0\leq x\leq 1, 0 \leq y \leq 1\}</m>, which is just the first unit in both <m>x</m> and <m>y</m> in the first quadrant. We generate a number of random points (technically they are uniformly distributed).  Consider
 			</p>
 
 			<p>
 				<cd>
 				<cline>pts=rand(100,2)</cline>
-				<cline>scatter(pts[:,1],pts[:,2], aspect_ratio=:equal, legend=false)</cline>
+				<cline>fig = Figure()</cline>
+				<cline>ax = Axis(fig[1,1], aspect = 1)</cline>
+				<cline>scatter!(ax, pts[:,1],pts[:,2])</cline>
+				<cline>fig</cline>
 				</cd>
 			</p>
 
-      <figure xml:id="fig-circle100">
+			<figure xml:id="fig-circle100">
 				<caption></caption>
 				<image source="plots/prob-models/circle100.png">
-					<shortdescription>(for accessibility)</shortdescription>
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
 				</image>
 			</figure>
 
@@ -632,21 +600,30 @@ end
 
 			<p>
 				<cd>
-				<cline>scatter(pts[:,1],pts[:,2], aspect_ratio=:equal, legend=false)</cline>
-				<cline>plot!(cos,sin,0,pi/2)</cline>
+				<cline>fig = Figure()</cline>
+				<cline>ax = Axis(fig[1,1], aspect = 1)</cline>
+				<cline>scatter!(ax, pts[:,1],pts[:,2])</cline>
+				<cline>t = LinRange(0,pi/2,100)</cline>
+				<cline>lines!(ax,cos.(t),sin.(t), color = :red)</cline>
+				<cline>fig</cline>
 				</cd>
 			</p>
-      <figure xml:id="fig-circle100a">
+
+			<p>
+				where the circle has been plotted parametrically and in the first quadrant we use <m>0 \leq t \leq \pi/2</m>. The result is
+			</p>
+
+			<figure xml:id="fig-circle100a">
 				<caption></caption>
 				<image source="plots/prob-models/circle100a.png">
-					<shortdescription>(for accessibility)</shortdescription>
+					<shortdescription>
+						(for accessibility)
+					</shortdescription>
 				</image>
 			</figure>
 
 			<p>
-				The fraction of points should be about the fraction of the area within the arc
-				or <m>\pi/4</m>. (Note: the <c>plot!</c> function plots on top of the current plot instead of making a new one.
-				It also performs a parametric plot--see <xref ref="ch-plots-package"/>--of the circle.)
+				The fraction of points should be about the fraction of the area within the arc or <m>\pi/4</m>. (Note: the <c>plot!</c> function plots on top of the current plot instead of making a new one. It also performs a parametric plot--see <xref ref="ch-plots-package"/>--of the circle.)
 			</p>
 
 			<p>
@@ -667,8 +644,7 @@ end
 			</p>
 
 			<p>
-				and the results is <c>77</c>.  Since the fraction
-				of the points is an estimate for <m>\pi/4</m>, then we can say that
+				and the results is <c>77</c>.  Since the fraction of the points is an estimate for <m>\pi/4</m>, then we can say that
 			</p>
 
 			<p>
@@ -678,13 +654,11 @@ end
 			</p>
 
 			<p>
-				so in this case the estimate is <c>3.08</c>.
-				Clearly this is a terrible estimate of <m>\pi</m>, but increasing the number of points should improve it.
+				so in this case the estimate is <c>3.08</c>. Clearly this is a terrible estimate of <m>\pi</m>, but increasing the number of points should improve it.
 			</p>
 
 			<p>
-				Instead of just repeating the same code with a different number of points, we
-				will create a function that estimates <m>\pi</m> based on the number of points originally.
+				Instead of just repeating the same code with a different number of points, we will create a function that estimates <m>\pi</m> based on the number of points originally.
 			</p>
 
 
@@ -699,8 +673,7 @@ end
 			</program>
 
 			<p>
-				and we haven't included the square root in the distance calculation because all we are
-				trying to determine is which points are within the unit circle.  This uses the square distance, so the result is the same.
+				and we haven't included the square root in the distance calculation because all we are trying to determine is which points are within the unit circle.  This uses the square distance, so the result is the same.
 			</p>
 
 			<p>
@@ -708,9 +681,7 @@ end
 			</p>
 
 			<p>
-				<cd>
-				approx_pi = calcPi(10_000)
-				</cd>
+				<cd> approx_pi = calcPi(10_000) </cd>
 			</p>
 
 			<p>
@@ -721,9 +692,7 @@ end
 				<task>
 					<statement>
 						<p>
-							for <m>N=10^5</m>, <m>N=10^6</m> and <m>N=10^7</m> find the relative error of
-							the estimate using your function and using the built-in value
-							<c>pi</c>.
+							for <m>N=10^5</m>, <m>N=10^6</m> and <m>N=10^7</m> find the relative error of the estimate using your function and using the built-in value <c>pi</c>.
 						</p>
 					</statement>
 				</task>
@@ -732,17 +701,15 @@ end
 				<task>
 					<statement>
 						<p>
-							Recall that earlier in the book, we determine that creating an array is one of the slower parts of code.
-							In this case, it is not needed.  Rewrite the <c>calcPi</c> function to not generate a matrix of
-							<c>total_points</c> rows.
+							Recall that earlier in the book, we determine that creating an array is one of the slower parts of code. In this case, it is not needed.  Rewrite the <c>calcPi</c> function to not generate a matrix of <c>total_points</c> rows.
 						</p>
 					</statement>
-          <hint>
-            <p>
-              Write a for loop and inside the loop generate a single point and
-							determine whether or not it is in the circle.  Time this version and compare to the <c>calcPi</c> above.
-            </p>
-          </hint>
+
+					<hint>
+						<p>
+							Write a for loop and inside the loop generate a single point and determine whether or not it is in the circle.  Time this version and compare to the <c>calcPi</c> above.
+						</p>
+					</hint>
 				</task>
 			</exercise>
 		</subsection>

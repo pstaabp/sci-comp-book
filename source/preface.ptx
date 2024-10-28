@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<preface xml:id="preface">
+  <paragraphs>
+    <title>Preface to Instructors</title>
+
+    <p>
+      Say some things to instructors
+    </p>
+  </paragraphs>
+
+
+  <paragraphs>
+    <title>Preface to Students</title>
+
+    <p>
+      Say some things to students
+    </p>
+  </paragraphs>
+</preface>

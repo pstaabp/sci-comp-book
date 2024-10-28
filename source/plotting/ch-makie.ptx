@@ -192,6 +192,25 @@
     <p>
       Notice that to nest axes, we add an additional row/column specification.  For example, <c>fig[2,1][1,2]</c> means first place this in the 2nd row and 1st column of the overall layout and then within that cell, place in the first row, second column.
     </p>
+
+    <p>
+      Alternatively, the following will also create the same result:
+    </p>
+
+    <p>
+      <cd>
+      <cline>fig = Figure()</cline>
+      <cline>ax1 = Axis(fig[1,1:3], title = "Axis 1")</cline>
+      <cline>ax2 = Axis(fig[2,1], title = "Axis 2")</cline>
+      <cline>ax3 = Axis(fig[2,1], title = "Axis 3")</cline>
+      <cline>ax4 = Axis(fig[2,1], title = "Axis 4")</cline>
+      <cline>fig</cline>
+      </cd>
+    </p>
+
+    <p>
+      where the <c>fig[1,1:3]</c> on the first Axis object to place it in the 1st row and stretch it across the first 3 columns.
+    </p>
   </section>
 
   <section xml:id="sec-makie-axis">
@@ -588,6 +607,131 @@ fig
     <p>
       There are a number of types of plots that display the direction of flow of a function.  This section goes over a few of these.
     </p>
+
+    <p>
+      First, consider a vector field which is is a pair of functions of <m>x</m> and <m>y</m> often written as <m>\vec{v} = \langle F(x,y), G(x,y) \rangle</m>.  For any point in the plane <m>(x,y)</m>, the vector <m>\vec{v}</m>  is a vector. For example, consider <m>v=\langle y, -x \rangle</m>. We first start with the <c>arrows</c> method:
+    </p>
+
+    <p>
+      <cd>
+      <cline>xpts = ypts = LinRange(-3,3,11)</cline>
+      <cline>u = [y for x in xpts, y in ypts]</cline>
+      <cline>v = [-x for x in xpts, y in ypts]</cline>
+      <cline>arrows(xpts,ypts,u,v)</cline>
+      </cd>
+    </p>
+
+    <p>
+      results in the following plot:
+    </p>
+
+    <figure xml:id="fig-arrows01">
+      <caption></caption>
+      <image source="plots/makie/arrows01.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      This is a bit hard to read because the arrows overlap.  This is mainly because the arrow length are exactly the size of the vector field at the point.  For example at <m>(1,2)</m>, the vector is <m>\vec{v} = \langle 2, -1 \rangle</m> and the length of this is <m>\sqrt{5}\approx 2.23.</m>, which overlaps nearby arrows.  One inital way to address this is to set the <c>lengthscale</c> attribute.  Consider the following:
+    </p>
+
+    <p>
+      <cd>
+      <cline>fig = arrows(xpts,ypts,u,v, lengthscale = 0.25)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which creates the following plot:
+    </p>
+
+    <figure xml:id="fig-arrows02">
+      <caption></caption>
+      <image source="plots/makie/arrows02.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      Another way to handle this is to produce a <em>direction field</em> which normalizes all of the arrows to make them the same length to do this, we add the <c>str = sqrt.(u .^ 2 .+ v .^ 2)</c> and then divide both <c>u</c> and <c>v</c> by this variable as in
+    </p>
+
+    <p>
+      <cd>
+      <cline>arrows(xpts,ypts,u./str,v./str, lengthscale = 0.4)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which produces the plot:
+    </p>
+
+    <figure xml:id="fig-poly-arrow03">
+      <caption></caption>
+      <image source="plots/makie/arrow03.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      Since Makie is very good with color, there are some options to make this a bit more colorful.  The <c>arrowcolor</c> and <c>linecolor</c> can be used with the <c>str</c> variable to give each arrow a color.  The following:
+    </p>
+
+    <p>
+      <cd>
+      <cline>arrows(xpts,ypts,u./str,v./str, lengthscale = 0.4, arrowcolor = vec(str), linecolor = vec(str))</cline>
+      </cd>
+    </p>
+
+    <p>
+      will produce the following plot:
+    </p>
+
+    <figure xml:id="fig-arrow04">
+      <caption></caption>
+      <image source="plots/makie/arrow04.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      Note that the <c>str</c> variable is a Matrix and both <c>arrowcolor</c> and <c>linecolor</c> can take a color, but also a vector of values.  This is why the <c>str</c> variable is wrapped in the <c>vec</c> method.
+    </p>
+
+    <p>
+      A <term>streamplot</term> is related to a vector field plot (arrow plot) in that the arrows follow along continuous curves that are also plotted.  A difference for plotting these in Makie is that instead of building the vector field, that the function is given and then plotted on the given plotting domain.  We will plot the same field above with:
+    </p>
+
+    <p>
+      <cd>
+      <cline>streamplot(x-&gt;Point2f(x[2], -x[1]), -2..2, -2..2)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which produces the following:
+    </p>
+
+    <figure xml:id="fig-stream01">
+      <caption></caption>
+      <image source="plots/makie/stream01.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>Note that the first argument of the <c>streamplot</c> is a function of <c>x</c> a vector to a <c>Point2f</c> object. </p>
+
   </section>
 
   <section>
