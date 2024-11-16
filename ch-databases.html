@@ -8,7 +8,7 @@
 <html lang="en-US" dir="ltr">
 <head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Advanced Plotting in Makie</title>
+<title>Storing and extracting sports scores in a database</title>
 <meta name="Keywords" content="Authored in PreTeXt">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta xmlns:pf="https://prefigure.org" property="og:type" content="book">
@@ -187,7 +187,7 @@ window.MathJax = {
 <ol id="searchresults" class="searchresults"></ol>
 </div>
 </div>
-<span class="nav-other-controls"></span><span class="treebuttons"><a class="previous-button button" href="ch-plots-package.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="part-plotting.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="ch-adv-plots.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span></nav><div xmlns:pf="https://prefigure.org" id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R}
+<span class="nav-other-controls"></span><span class="treebuttons"><a class="previous-button button" href="ch-api.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="part-projects.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="backmatter.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span></nav><div xmlns:pf="https://prefigure.org" id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R}
 \newcommand{\lt}{&lt;}
 \newcommand{\gt}{&gt;}
 \newcommand{\amp}{&amp;}
@@ -500,9 +500,9 @@ window.MathJax = {
 </li>
 </ul>
 </li>
-<li class="toc-item toc-part contains-active">
+<li class="toc-item toc-part">
 <div class="toc-title-box"><a href="part-plotting.html" class="internal"><span class="codenumber">III</span> <span class="title">Plotting in Julia</span></a></div>
-<ul class="structural toc-item-list contains-active">
+<ul class="structural toc-item-list">
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-plotting-basics.html" class="internal"><span class="codenumber">13</span> <span class="title">Plotting Basics</span></a></div>
 <ul class="structural toc-item-list">
@@ -571,7 +571,7 @@ window.MathJax = {
 </li>
 </ul>
 </li>
-<li class="toc-item toc-chapter active">
+<li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-makie-adv.html" class="internal"><span class="codenumber">16</span> <span class="title">Advanced Plotting in Makie</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-makie-adv.html#ch-makie-adv-3" class="internal"><span class="codenumber">16.1</span> <span class="title">Creating a Type Recipe for the Polynomial using Makie</span></a></div></li>
@@ -1010,9 +1010,9 @@ window.MathJax = {
 </li>
 </ul>
 </li>
-<li class="toc-item toc-part">
+<li class="toc-item toc-part contains-active">
 <div class="toc-title-box"><a href="part-projects.html" class="internal"><span class="codenumber">IX</span> <span class="title">Scientific Computing Projects</span></a></div>
-<ul class="structural toc-item-list">
+<ul class="structural toc-item-list contains-active">
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-polynomial.html" class="internal"><span class="codenumber">38</span> <span class="title">Creating a Polynomial Module</span></a></div>
 <ul class="structural toc-item-list">
@@ -1050,7 +1050,7 @@ window.MathJax = {
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-api.html#sec-geocoding" class="internal"><span class="codenumber">40.3</span> <span class="title">Querying a Geocoding Service</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-chapter"><div class="toc-title-box"><a href="ch-databases.html" class="internal"><span class="codenumber">41</span> <span class="title">Storing and extracting sports scores in a database</span></a></div></li>
+<li class="toc-item toc-chapter active"><div class="toc-title-box"><a href="ch-databases.html" class="internal"><span class="codenumber">41</span> <span class="title">Storing and extracting sports scores in a database</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-backmatter">
@@ -1136,88 +1136,12 @@ window.MathJax = {
 </ul>
 </li>
 </ul></nav></div>
-<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section xmlns:pf="https://prefigure.org" class="chapter" id="ch-makie-adv"><h2 class="heading">
-<span class="type">Chapter</span><span class="space"> </span><span class="codenumber">16</span><span class="space"> </span><span class="title">Advanced Plotting in Makie</span>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section xmlns:pf="https://prefigure.org" class="chapter" id="ch-databases"><h2 class="heading">
+<span class="type">Chapter</span><span class="space"> </span><span class="codenumber">41</span><span class="space"> </span><span class="title">Storing and extracting sports scores in a database</span>
 </h2>
-<section class="introduction" id="ch-makie-adv-2"><div class="para" id="ch-makie-adv-2-1">There are a few advanced plotting techniques to discuss.  This includes how to create a Plot Recipe to easily plot new objects.  In this chapter we will show how to plot the Polynomial object that we created in <a href="ch-comp-types.html#sect-poly-parametric" class="internal" title="Section 12.3: Polynomials: A parametric data type">Section 12.3</a>.</div></section><section class="section" id="ch-makie-adv-3"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">16.1</span><span class="space"> </span><span class="title">Creating a Type Recipe for the Polynomial using Makie</span>
-</h3>
-<div class="para" id="ch-makie-adv-3-2">Recall that we created a Polynomial in <a href="ch-comp-types.html#sect-poly-parametric" class="internal" title="Section 12.3: Polynomials: A parametric data type">Section 12.3</a>.  The following defines the Polynomial</div>
-<div class="para logical" id="ch-makie-adv-3-3"><pre class="code-display tex2jax_ignore">struct Polynomial{T &lt;: Number}
-  coeffs::Vector{T}
-end
-</pre></div>
-<div class="para" id="ch-makie-adv-3-4">and we will use the following <code class="code-inline tex2jax_ignore">Base.show</code> to improve the appearance:</div>
-<div class="para logical" id="ch-makie-adv-3-5"><pre class="code-display tex2jax_ignore">Base.show(io::IO, p::Polynomial) = print(io, mapreduce(n -&gt; "$(p.coeffs[n]) x^$(n-1)", (str, term) -&gt; "$str $term", 1:length(p.coeffs)))
-</pre></div>
-<div class="para" id="ch-makie-adv-3-6">And lastly, we’ll make a simple polynomial <code class="code-inline tex2jax_ignore">p = Polynomial([1,2,3])</code>.</div>
-<div class="para" id="ch-makie-adv-3-7">We will also benefit from the <code class="code-inline tex2jax_ignore">eval</code> method that evaluations the polynomial.  This one uses Horner’s method</div>
-<div class="para logical" id="ch-makie-adv-3-8"><pre class="code-display tex2jax_ignore">eval(poly::Polynomial, x::Number) = reduce((val,c) -&gt; x*val+c, reverse(poly.coeffs))
-</pre></div>
-<div class="para" id="ch-makie-adv-3-9">In this section we will make a <dfn class="terminology">type recipe</dfn> which is a way to plot a particular type (usually a user-defined one) using an existing plotting function (line <code class="code-inline tex2jax_ignore">lines</code>).  To determine which Makie function that we will use, the <code class="code-inline tex2jax_ignore">Plottype</code> function is used.  For example:</div>
-<div class="para logical" id="ch-makie-adv-3-10"><pre class="code-display tex2jax_ignore">Makie.plottype(::Polynomial) = Makie.Lines
-</pre></div>
-<div class="para" id="ch-makie-adv-3-11">where the only argument of <code class="code-inline tex2jax_ignore">plottype</code> is the type.  Note that since the argument is not explicitly used, we only give the type with <code class="code-inline tex2jax_ignore">::</code> followed by the type.  The plottype is then set to an existing Makie type (note that capitalization).</div>
-<div class="para" id="ch-makie-adv-3-12">The conversion of the user-defined type to a type of (in this case) lines is also needed.  For this example, we need to take a Polynomial and convert it to a pair of vectors that will be the <span class="process-math">\(x\)</span>- and <span class="process-math">\(y\)</span>-points on the curve.  The following is a simple way to do this</div>
-<div class="para logical" id="ch-makie-adv-3-13"><pre class="code-display tex2jax_ignore">Makie.convert_arguments(S::Type{&lt;:Lines}, p::Polynomial, domain = -5..5) = Makie.convert_arguments(S, domain, x-&gt;eval(p,x))
-</pre></div>
-<div class="para" id="ch-makie-adv-3-14">A few comments about this function.</div>
-<div class="para logical" id="ch-makie-adv-3-15"><ul class="disc" id="ch-makie-adv-3-15-1">
-<li id="ch-makie-adv-3-15-1-1"><div class="para" id="ch-makie-adv-3-15-1-1-1">The first argument is the type of the conversion.  The argument <code class="code-inline tex2jax_ignore">S</code> is a <code class="code-inline tex2jax_ignore">Type</code>, we haven’t seen this before and the type must be of type <code class="code-inline tex2jax_ignore">Lines</code>.  This is how Makie know when the <code class="code-inline tex2jax_ignore">lines</code> method is called to use this function.</div></li>
-<li id="ch-makie-adv-3-15-1-2"><div class="para" id="ch-makie-adv-3-15-1-2-1">The second argument is the user-defined type, in this case <code class="code-inline tex2jax_ignore">Polynomial</code>. Unlike above, the argument needs a name.</div></li>
-<li id="ch-makie-adv-3-15-1-3"><div class="para" id="ch-makie-adv-3-15-1-3-1">The third argument is called <code class="code-inline tex2jax_ignore">domain</code> and we give it a default value of the <code class="code-inline tex2jax_ignore">ClosedInterval</code> type of <code class="code-inline tex2jax_ignore">-5..5</code>.</div></li>
-<li id="ch-makie-adv-3-15-1-4"><div class="para" id="p-derived-ch-makie-adv-3-15-1-4">The right hand side is the conversion process.  The first argument of this is the type, <code class="code-inline tex2jax_ignore">S</code> and then the other two arguments are what is passed to the <code class="code-inline tex2jax_ignore">lines</code> method.  Although there are a number of ways to do this for <code class="code-inline tex2jax_ignore">lines</code>, since a polynomial is a mathematical function, the easiest way to accomplish this is the plotting domain and a function.  The domain is the argument passed in and the function is the <code class="code-inline tex2jax_ignore">eval</code>.</div></li>
-</ul></div>
-<div class="para" id="ch-makie-adv-3-16">Now with this type recipe in place, we can plot with the following</div>
-<div class="para logical" id="ch-makie-adv-3-17"><pre class="code-display tex2jax_ignore">lines(poly1, -3..3)
-</pre></div>
-<div class="para" id="ch-makie-adv-3-18">and the result is the following plot</div>
-<figure class="figure figure-like" id="fig-poly-recipe1"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/makie/plot-recipe1.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">16.1<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-makie-adv-3-20">This gives the expected plot of the polynomial on the domain <span class="process-math">\([-3,3]\text{.}\)</span> Since we added a default plotting domain, if we also can plot with</div>
-<div class="para logical" id="ch-makie-adv-3-21"><pre class="code-display tex2jax_ignore">lines(poly1)
-</pre></div>
-<div class="para" id="ch-makie-adv-3-22">resulting in the following plot</div>
-<figure class="figure figure-like" id="fig-poly-recipe2"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/makie/plot-recipe2.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">16.2<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-makie-adv-3-24">and notice that we didn’t put in the plotting domain, however the default one of <code class="code-inline tex2jax_ignore">-5..5</code> was used.</div></section><section class="section" id="ch-makie-adv-4"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">16.2</span><span class="space"> </span><span class="title">Another Type Recipe</span>
-</h3>
-<div class="para" id="ch-makie-adv-4-2">If we have an object that is a triangle that is defined as 3 tuples like:</div>
-<div class="para logical" id="ch-makie-adv-4-3"><pre class="code-display tex2jax_ignore">struct Triangle{T &lt;: Real}
-  pt1::Tuple{T,T}
-  pt2::Tuple{T,T}
-  pt3::Tuple{T,T}
-end
-</pre></div>
-<div class="para" id="ch-makie-adv-4-4">This will create a triangle using 3 tuples (of size 2).  There are better ways to do this in general, but this will illustrate another way to build a type recipe.   The main problem is that when creating the Triangle, all numbers within the tuples have to be the same type and</div>
-<div class="para" id="ch-makie-adv-4-5">We will also use the following <code class="code-inline tex2jax_ignore">Base.show</code> to help the printed version of the triangle:</div>
-<div class="para logical" id="ch-makie-adv-4-6"><pre class="code-display tex2jax_ignore">Base.show(io::IO, tri::Triangle) = print(io, "Δ[$(tri.pt1), $(tri.pt2), $(tri.pt3)]")
-</pre></div>
-<div class="para" id="ch-makie-adv-4-7">And now we can make a Triangle with <code class="code-inline tex2jax_ignore">tri = Triangle((0,0),(0,3),(4,0))</code> as an example.  The result is</div>
-<div class="para logical" id="ch-makie-adv-4-8"><pre class="code-display tex2jax_ignore">Δ[(0, 0), (0,3), (4, 0)]
-</pre></div>
-<div class="para" id="ch-makie-adv-4-9">In this section we wish to show how to create a type recipe for a Triangle.  First, we need to define the <code class="code-inline tex2jax_ignore">plottype</code> which will allow Makie to use one it’s existing plotting routines to plot a <code class="code-inline tex2jax_ignore">Triangle</code>.  Since we just want a `Line` plot, the following will do this:</div>
-<div class="para logical" id="ch-makie-adv-4-10"><pre class="code-display tex2jax_ignore">Makie.plottype(::Triangle) = Makie.Lines
-</pre></div>
-<div class="para" id="ch-makie-adv-4-11">And like above, we don’t need to give the argument a name (because we never use the name in the function), only the type.</div>
-<div class="para" id="ch-makie-adv-4-12">And the other step is to use the <code class="code-inline tex2jax_ignore">convert_arguments</code> method to take an object of type <code class="code-inline tex2jax_ignore">Triangle</code> and convert them to something that <code class="code-inline tex2jax_ignore">lines</code> understands. Here’s a function that will do this:</div>
-<div class="para logical" id="ch-makie-adv-4-13"><pre class="code-display tex2jax_ignore">function Makie.convert_arguments(S::Type{&lt;:Lines}, tri::Triangle)
-  xpts = [tri.pt1[1], tri.pt2[1], tri.pt3[1], tri.pt1[1]]
-  ypts = [tri.pt1[2], tri.pt2[2], tri.pt3[2], tri.pt1[2]]
-  Makie.convert_arguments(S, xpts, ypts)
-end
-</pre></div>
-<div class="para" id="ch-makie-adv-4-14">What this function basically does is create the <code class="code-inline tex2jax_ignore">x</code> and <code class="code-inline tex2jax_ignore">y</code> points of the triangle and stores them in a Vector.  Then the last line passes this to a <code class="code-inline tex2jax_ignore">Lines</code> plot with the two vectors <code class="code-inline tex2jax_ignore">xpts</code> and <code class="code-inline tex2jax_ignore">ypts</code>.</div>
-<div class="para" id="ch-makie-adv-4-15">Lastly, let plot the triangle.  Since we are using the <code class="code-inline tex2jax_ignore">lines</code> command for this, we can just do:</div>
-<div class="para logical" id="ch-makie-adv-4-16"><pre class="code-display tex2jax_ignore">lines(tri)
-</pre></div>
-<div class="para" id="ch-makie-adv-4-17">and the result will be the plot</div>
-<figure class="figure figure-like" id="fig-poly-triangle"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/makie/triangle.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">16.3<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="section" id="ch-makie-adv-5"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">16.3</span><span class="space"> </span><span class="title">Plot Recipes</span>
-</h3>
-<div class="para" id="ch-makie-adv-5-2">To be finished: explain and show examples of Plot recipes and how they differ from type recipes.</div></section></section></div>
+<div class="para" id="ch-databases-2">Databases are very important in any computing environment and often in Scientific Computing if you have a lot of data, then a databse is the proper way to store the data.  This chapter covers some techniques that the author uses to store sports scores and how to extract information efficiently.</div></section></div>
 <div class="ptx-content-footer">
-<a class="previous-button button" href="ch-plots-package.html" title="Previous"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-adv-plots.html" title="Next"><span class="name">Next</span><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
+<a class="previous-button button" href="ch-api.html" title="Previous"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="backmatter.html" title="Next"><span class="name">Next</span><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
 </div></main>
 </div>
 <div id="ptx-page-footer" class="ptx-page-footer">
