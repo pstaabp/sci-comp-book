@@ -408,7 +408,7 @@ end
 			<title>Keyword Arguments for complex functions</title>
 
 			<p>
-				The main place that we have used keywords in this text is in the <c>Plots</c> package. All of the ways to adjust a plot is with keywords.  There are perhaps about 100 keyword arguments to adjust for a plot and since each one of them has a default value, you only need to enter the ones that you want to change.
+				The main place that we have used keywords in this text is in either the <c>Makie</c> or the <c>Plots</c> packages. All of the ways to adjust a plot is with keywords.  There are perhaps about 100 keyword arguments to adjust for a plot and since each one of them has a default value, you only need to enter the ones that you want to change.
 			</p>
 
 			<p>

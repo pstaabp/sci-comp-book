@@ -968,6 +968,131 @@
 		</p>
 	</section>
 
+	<section xml:id="sect-array-concat">
+		<title>Concatenating Arrays</title>
+
+		<p>
+			It is also desirable to join two or more arrays.  We saw we can append one onto another with the <c>append!</c> function, but recall that this method updates the first array, often an underisable result. We can combine the two arrays
+		</p>
+
+		<p>
+			<cd>
+			<cline>x = [1, 2, 3, 4]</cline>
+			<cline>y = [5, 6, 7, 8]</cline>
+			</cd>
+		</p>
+
+		<p>
+			in a way to make a vector of length 8 with <c>vcat(x,y)</c> which returns the vector <c>[1, 2, 3, 4, 5, 6, 7, 8]</c>.  Note: <c>vcat</c> is short for vertical concatenation and when applied to vectors (which are understood to be column vectors), one gets a new vector.
+		</p>
+
+		<p>
+			Alternatively, if we horizontally concatenate these vectors, with <c>hcat(x,y)</c>, we get the result:
+		</p>
+
+		<p>
+			<cd>
+			<cline>4×2 Matrix{Int64}:</cline>
+			<cline>  1  5</cline>
+			<cline>  2  6</cline>
+			<cline>  3  7</cline>
+			<cline>  4  8</cline>
+			</cd>
+		</p>
+
+		<p>
+			which is the 4 by 2 matrix.  That is it creates a matrix with the given vectors.
+		</p>
+
+		<exercise>
+			<introduction>
+				<p>
+					The methods <c>vcat</c> and <c>hcat</c> also can work with other arrays (like matrices).  If we define:
+				</p>
+
+				<p>
+					<cd>
+					<cline>A = [i*j for i=1:4,j=1:4]</cline>
+					<cline>B = [(-1)^(i+j) for i=1:4,j=1:2]</cline>
+					</cd>
+				</p>
+			</introduction>
+
+
+			<task>
+				<statement>
+					<p>
+						Find <c>hcat(A,B)</c> and <c>vcat(A,B)</c> and determine if the results are as expected.
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						What does <c>hcat(A,B,x)</c> do?
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						Try <c>vcat(A,transpose(x))</c>, where <c>transpose(x)</c> performs a transpose (think Linear Algebra) of the vector <c>x</c> which makes it a row vector.
+					</p>
+				</statement>
+			</task>
+		</exercise>
+	</section>
+
+	<section xml:id="sect-array-repeat">
+		<title>Creating patterned arrays with repeat</title>
+
+		<p>
+			Although array comprehensions are incredibly powerful, often if you want to repeat elements of an array to generate another array, the task can be tricky.
+		</p>
+
+		<p>
+			For example, to create a array <c>[1, 2, 1, 2, 1, 2, 1, 2, 1, 2]</c> can be done with a comprehension like:
+		</p>
+
+		<p>
+			<cd>
+			<cline>[1+(i+1)%2 for i=1:8]</cline>
+			</cd>
+		</p>
+
+		<p>
+			and we can use <c>[1+ (i-1) ÷ 4 for i=1:8]</c> to produce the array <c>[1, 1, 1, 1, 2, 2, 2, 2]</c> and also, <c>[1+i % 4 for i=0:7]</c> to generate <c>[1, 2, 3, 4, 1, 2, 3, 4]</c>.
+		</p>
+
+		<p>
+			However, if other numbers are repeated it may not be easy to generate these. Instead, we will use the <c>repeat</c> function which in short repeats the numbers in an array some number of times. First, if we execute <c>repeat(1:2,4)</c>, then the results are the same as the first array above or <c>[1, 2, 1, 2, 1, 2, 1, 2, 1, 2]</c>.  To generate the second one above, we can use the <c>inner</c> option as in <c>repeat(1:2, inner = 4)</c>.  The 3rd example above can be generated with <c>repeat(1:4,2)</c>.
+		</p>
+
+		<p>
+			The method <c>repeat</c> can also be used to generate an array. <c>repeat([1, 2, 3], 2, 3)</c> produces:
+		</p>
+
+		<p>
+			<cd>
+			<cline>6×3 Matrix{Int64}:</cline>
+			<cline>	1  1  1</cline>
+			<cline>	2  2  2</cline>
+			<cline>	3  3  3</cline>
+			<cline>	1  1  1</cline>
+			<cline>	2  2  2</cline>
+			<cline>	3  3  3</cline>
+			</cd>
+		</p>
+
+		<p>
+			which repeats the vector 2 times in the vertical direction and 3 times in the horizontal one.
+		</p>
+	</section>
+
 	<section>
 		<title>Arrays as a Collection</title>
 

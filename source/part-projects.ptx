@@ -7,4 +7,5 @@
 	<xi:include href="projects/ch-polynomial-module.ptx" />
 	<xi:include href="projects/ch-calc-pi.ptx" />
 	<xi:include href="projects/ch-api.ptx" />
+	<xi:include href="projects/ch-database.ptx" />
 </part>

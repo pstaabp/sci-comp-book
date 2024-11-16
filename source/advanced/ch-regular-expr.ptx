@@ -5,7 +5,7 @@
 
   <introduction>
     <p>
-      Regular Expressions are useful for parsing strings.  From a scientific computing standpoint, we will use them to take a string and typically pull out numbers and other syntax. There will be two places that we will use regular expression. 1) to determine if a string matches some pattern and 2) extract information out of a string.  Often the first step will need to be done for the latter step.
+      This chapter is mostly about strings.  We haven't spent a lot of time in this book with strings mainly because scientific computing tends to use mostly numbers.  However, strings are often how data is entered and we need to parse this data. We will start with some functions that determine if strings match another string and the move on to regular expressions, the main topic of this chapter. From a scientific computing standpoint, we will use regular expressions to take a string and typically pull out numbers and other syntax. There will be two places that we will use regular expression. 1) to determine if a string matches some pattern and 2) extract information out of a string.  Often the first step will need to be done for the latter step.
     </p>
 
     <p>
@@ -16,66 +16,148 @@
   <section>
     <title>Simple Pattern Matching</title>
 
+    <p>
+      Let's start with some examples of pattern matching.  If we want to determine if a string matches a pattern, we can use the exact string.  For example, let's see if a string matches <c>"cat"</c>.  We can do this with the <c>occursin</c> function like:
+    </p>
+
+    <p>
+      <cd>
+      <cline>occursin("cat","cat")</cline>
+      </cd>
+    </p>
+
+    <p>
+      which will return <c>true</c>. Of course, we don't need to use <c>occursin</c> to test that two strings are equal,
+    </p>
+
+    <p>
+      <cd>
+      <cline>"cat"=="cat"</cline>
+      </cd>
+    </p>
+
+    <p>
+      will do this. The <c>occursin</c> command will just determine if there is the first string somewhere inside the second string.  So <c>occursin("cat", "scatter")</c> will return <c>true</c>, but <c>occursin("cat", "cottage")</c> will return <c>false</c>.  Throughout this chapter, we will be testing a few different strings to determine how matches occur, we may do both of these matches together with
+    </p>
+
+    <p>
+      <cd>
+      <cline>map(s -&gt; occursin("cat", s), ["scatter", "cottage"])</cline>
+      </cd>
+    </p>
+
+    <p>
+      and this returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>2-element Vector{Bool}:</cline>
+      <cline>  1</cline>
+      <cline>  0</cline>
+      </cd>
+    </p>
+
+    <p>
+      and recall that boolean vectors show values of 1 for true and 0 for false.  Thus "scatter" matches, but "cottage" does not.
+    </p>
+
+    <p>
+      There are also the methods <c>startswith</c> and <c>endswith</c> that matches a string at the beginning or end.
+    </p>
+
+    <p>
+      <cd>
+      <cline>map(s-&gt;startswith(s, "cat"), ["catastrophe", "scatter", "tigercat"])</cline>
+      </cd>
+    </p>
+
+    <p>
+      returns the vector <c>[1, 0, 0]</c> indicating that only the first string matched.  Note that the <c>startswith</c> function has the argument list switched from that of the <c>occursin</c> function.  And example with <c>endswith</c> is
+    </p>
+
+    <p>
+      <cd>
+      <cline>map(s-&gt;endswith(s, "cat"), ["catastrophe", "scatter", "tigercat"])</cline>
+      </cd>
+    </p>
+
+    <p>
+      returns <c>[0,0,1]</c> indicating that only the last string matched.
+    </p>
+
+    <p>
+      We haven't used a regular expression yet.  A regular expression is much more flexible that the matching options above and we will spend the rest of this chapter showing this.
+    </p>
+  </section>
+
+  <section>
+    <title>Basic Regular Expressions</title>
+
     <introduction>
       <p>
-        Let's start with some examples of pattern matching.  If we want to determine if a string matches a pattern, we can use the exact string.  For example, let's see if a string matches <c>"cat"</c>.  We can do this with the <c>occursin</c> function like:
+        A <term>regular expression</term> is a sequence of characters (like a string) that is used to match other strings.  Some of the characters are <em>regular</em> characters, which will match the corresponding character.  The other type are <em>special</em> characters which often match multiple characters (for example any digit).
+      </p>
+
+      <p>
+        In Julia, we can make a regular expression by prepending a string with an <c>r</c>. For example, let's say that we want match the string <c>"cat"</c>.  These are all regular characters, so the regular expression is <c>r"cat"</c>.  If we run
       </p>
 
       <p>
         <cd>
-        <cline>occursin("cat","cat")</cline>
+        <cline>map(s-&gt; occursin(r"cat", s), ["catastrophe", "scatter", "tigercat"])</cline>
         </cd>
       </p>
 
       <p>
-        which will return <c>true</c>. Of course, we don't need to use <c>occursin</c> to test that two strings are equal,
+        which returns <c>[1, 1, 1]</c>, indicating that all three match.  Note that this is the same matching as using <c>occursin</c> with <c>"cat"</c> and this always works if the regular expression is regular characters.
+      </p>
+
+      <p>
+        We can also match the beginning and end of the string with a regular expression.  The special character <c>^</c> at the beginning of the regular expression will match the rest of the string at the beginning or <c>r"^cat"</c> as an example.  The following:
       </p>
 
       <p>
         <cd>
-        <cline>"cat"=="cat"</cline>
+        <cline>map(s-&gt; occursin(r"^cat", s), ["catastrophe", "scatter", "tigercat"])</cline>
         </cd>
       </p>
 
       <p>
-        will do this. The <c>occursin</c> command will just determine if there is the first string somewhere inside the second string.  So <c>occursin("cat", "scatter")</c> will return <c>true</c>, but <c>occursin("cat", "cottage")</c> will return <c>false</c>.
+        returns <c>[1, 0, 0]</c> showing that only "catastrophe" starts with "cat".
       </p>
 
       <p>
-        We haven't used a regular expression yet.  In Julia, we can make a regular expression by prepending a string with an <c>r</c>. For example, let's say that we want to a string to start with the string <c>"cat"</c>.  We can do this with
+        Another special character is the <c>$</c> which means to match the end of the string.  So
       </p>
 
       <p>
         <cd>
-        <cline>occursin(r"^cat", "catalog")</cline>
+        <cline>map(s-&gt; occursin(r"cat$", s), ["catastrophe", "scatter", "tigercat"])</cline>
         </cd>
       </p>
 
       <p>
-        which returns <c>true</c>, however <c>occursin(r"^cat", "scatter")</c> will return <c>false</c>.  The <c>^</c> at the beginning of the regular expression indicates that the following characters must start the string.   Before going on, note that regular expressions are strings that are interpreted in a particular way.  With this example, we have seen that there are two types of characters, <term> special characters</term> like <c>^</c> and <term>regular characters</term>, like the letters of the latin alphabet.   The special characters have a meaning associated with them and regular characters do not have anything special.
-      </p>
-
-      <p>
-        Another special character is the <c>$</c> which means to match the end of the string.  So <c>occursin(r"cat$", "tigercat")</c> will return true, whereas <c>occursin(r"cat$", "catalog")</c> will return <c>false</c>.
+        will return <c>[0, 0, 1]</c> indicating that only "tigercat" matches "cat" at the end.
       </p>
     </introduction>
 
 
     <subsection>
-      <title>Optional matches</title>
+      <title>Character Class and Ranges</title>
 
       <p>
-        Typically we want more flexibility with regular expressions.  For example, instead of matching <c>"cat"</c>, what if we want to match <c>"cat"</c>, <c>"cot"</c> or <c>"cut"</c>?  We can do this with a option group which is a set of <c>[]</c>.  For example a regular expression <c>r"c[aou]t"</c> will match <c>"cat"</c>, <c>"cot"</c> or <c>"cut"</c> such as
+        Typically we want more flexibility with regular expressions.  For example, instead of matching <c>"cat"</c>, what if we want to match <c>"cat"</c>, <c>"cot"</c> or <c>"cut"</c>?  We can do this with a set of <c>[]</c>.  For example a regular expression <c>r"c[aou]t"</c> will match <c>"cat"</c>, <c>"cot"</c> or <c>"cut"</c> such as
       </p>
 
       <p>
         <cd>
-        <cline>map(s -&gt; occursin(r"c[auo]t", s), ["cat", "cot", "cut"])</cline>
+        <cline>map(s -&gt; occursin(r"c[auo]t", s), ["catalog", "scotch", "cutlery", "settle"])</cline>
         </cd>
       </p>
 
       <p>
-        returns true (as a boolean vector) for all three matches.  Note: this will also match <c>"scatter"</c>, <c>"cotangent"</c> and <c>"cutlery"</c>.
+        returns <c>[1, 1, 1, 0]</c> indicating that the first three matches but the last one does not.
       </p>
 
       <p>
@@ -84,24 +166,22 @@
 
       <p>
         <cd>
-        <cline>occursin(r"^[a-f]","apple")</cline>
-        <cline>occursin(r"^[a-f]","catalog")</cline>
+        <cline>map(s -&gt; occursin(r"^[a-f]",s), ["apple", "checkmate", "frosted flakes", "zebra"])</cline>
         </cd>
       </p>
 
       <p>
-        both return <c>true</c>.  Now to confuse things, <c>^</c> can be used within the <c>[]</c> for a <em>not</em> in.  Let's say we don't what a string to start with <c>a</c> through <c>f</c>. Entering
+        returns <c>[1, 1, 1, 0]</c>, showing that the first 3 match, but the 4th does not.   Now to confuse things, <c>^</c> can be used within the <c>[]</c> for a <em>not</em> in.  Let's say we don't what a string to start with <c>a</c> through <c>f</c>. Entering
       </p>
 
       <p>
         <cd>
-        <cline>occursin(r"^[^a-f]","apple")</cline>
-        <cline>occursin(r"^[^a-f]","zebra")</cline>
+        <cline>map(s -&gt; occursin(r"^[^a-f]",s), ["apple", "frosted flakes", "poutine", "zebra"])</cline>
         </cd>
       </p>
 
       <p>
-        the first returns <c>false</c> while the second returns <c>true</c>.
+        returns <c>[0, 0, 1, 1]</c> showing that the last two strings match.
       </p>
 
       <p>
@@ -110,14 +190,41 @@
 
       <p>
         <cd>
-        <cline>occursin(r"c.t","catalog")</cline>
-        <cline>occursin(r"c.t","yacht")</cline>
-        <cline>occursin(r"c.t","tact")</cline>
+        <cline>map(s -&gt; occursin(r"c.t",s), ["catalog", "tactile", "yacht"])</cline>
         </cd>
       </p>
 
       <p>
-        the first 2 return true and the last is false.
+        returns <c>[1, 0, 1]</c>, where "tactile" does not match because there is no character between the "c" and "t".
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Optional sets of characters</title>
+
+      <p>
+        Another important regular expression is that of a optional set of characters.  If we want to match "cat" or "dog" we can construct a regular expression with these string separated with a <c>|</c> (like an or).  Consider the following:
+      </p>
+
+      <p>
+        <cd>
+        <cline>map(s -&gt; occursin(r"dog|cat",s), ["dogma", "catalog", "chair"])</cline>
+        </cd>
+      </p>
+
+      <p>
+        which results in <c>[1, 1, 0]</c>.  Often if we want to match an option with other strings, we can add parentheses to group the option. (We will use parentheses for other grouping later).  For example
+      </p>
+
+      <p>
+        <cd>
+        <cline>map(s -&gt; occursin(r"(dog|cat)fish",s), ["dogfish", "catfish", "clownfish"])</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns <c>[1, 1, 0]</c>.
       </p>
 
       <exercise>
@@ -300,6 +407,78 @@
         </statement>
       </exercise>
     </subsection>
+  </section>
+
+  <section>
+    <title>Extracting substrings with Regular Expressions</title>
+
+    <p>
+      Although often it is nice to know whether or not a string matches a particular pattern, the power of regular expressions comes with extracting information.  Let's start with an example.  Sports scores are stored as strings in the form "X-X", where "X" is an integer and the home team is listed first.  These could be "4-3", "123-97".  First, we can determine if these match with the following
+    </p>
+
+    <p>
+      <cd>
+      <cline>map(s -&gt; occursin(r"^\d+-\d+$"), ["78-75","5-3", "123-97"])</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns <c>[1, 1, 1]</c>, therefore all true.  Note that although <c>-</c> seems to be a special character, which would need escaping, it is only special in the character ranges <c> [ ]</c>, and since this doesn't use that, no escaping is needed.
+    </p>
+
+    <p>
+      Ultimately, we want to extract the integer information, so we will group these by using parentheses.  Instead, we use the regular expression <c>r"(\d+)-(\d+)"</c>.  If you replace this with that above, you will still see that it matches (returns true).  Intead, we will use the <c>match</c> method which returns more information.   If we enter:
+    </p>
+
+    <p>
+      <cd>
+      <cline>match(r"^(\d+)-(\d+)$", "78-75")</cline>
+      </cd>
+    </p>
+
+    <p>
+      then the following is returned:
+    </p>
+
+    <p>
+      <cd>
+      <cline>RegexMatch("78-75", 1="78", 2="75")</cline>
+      </cd>
+    </p>
+
+    <p>
+      and this is a object of type <c>RegexMatch</c>, the first argument is the matched string and the other parts are the matched substrings.  We can get those substrings with <c>m[1]</c> and <c>m[2]</c>.
+    </p>
+
+    <p>Next, let's parse the substrings as numbers.  For this we can use the <c>parse</c> method and we'll make it a tuple with:
+    </p>
+
+    <p>
+      <cd>
+        <cline>(home = parse(Int,m[1]), away = parse(m[2], m[2]))</cline>
+      </cd>
+    </p>
+
+    <note>
+      <p>The author has done a lot of work with sport scores over the years and uses both Julia and this exact method of extracting scores using webpages with the scores.  The extraction of scoring on a webpage can be automated so that years worth of data can be combed through quickly.  Generally once the scores are extracted, they are stored in a database (see <xref ref="ch-databases"/>) for processing later.
+      </p>
+    </note>
+
+    <remark>
+      <p>
+        If you only need to test if a string matches a pattern (using a regular expression), use <c>occursin</c>. If you need to extract substrings, use <c>match</c>.
+      </p>
+    </remark>
+
+    <exercise>
+      <p>
+        Although the parts of a U.S. phone number have little meaning these days, the first 3 digits are the area code, the second three are the region (or region code) and the last 4 are the number within the region.
+      </p>
+
+      <p>
+        First, extract phone numbers in the U.S. form of "XXX-XXX-XXXX" or "(XXX) XXX-XXXX" where the separator <c>-</c> can be a <c>.</c>.  Secondly, parse the three substrings as integers.
+      </p>
+    </exercise>
   </section>
 
   <section>

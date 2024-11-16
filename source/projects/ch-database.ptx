@@ -1,0 +1,5 @@
+<chapter xml:id="ch-databases">
+  <title>Storing and extracting sports scores in a database</title>
+
+  <p>Databases are very important in any computing environment and often in Scientific Computing if you have a lot of data, then a databse is the proper way to store the data.  This chapter covers some techniques that the author uses to store sports scores and how to extract information efficiently. </p>
+</chapter>
