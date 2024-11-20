@@ -1242,15 +1242,34 @@ x = [1, 2, 3, 4]
 </pre></div>
 <div class="para" id="ch-plotting-data-4-4-6">where we have used array concatenation explained in <a href="ch-arrays.html#sect-array-concat" class="internal" title="Section 6.11: Concatenating Arrays">Section 6.11</a> and the <code class="code-inline tex2jax_ignore">repeat</code> method from <a href="ch-arrays.html#sect-array-repeat" class="internal" title="Section 6.12: Creating patterned arrays with repeat">Section 6.12</a>.  First, the <code class="code-inline tex2jax_ignore">stack</code> of the <code class="code-inline tex2jax_ignore">barplot</code> explains that the data is to be stacked and how to stack the results.  Without the <code class="code-inline tex2jax_ignore">color</code> option, the bars are stacked, but can’t be distinguished (try it!). Also, again, typing this on multiple lines is mainly for clarity--the same results occur if this was a single line. The results are:</div>
 <figure class="figure figure-like" id="fig-stacked-bar01"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/plot-data/stack01.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">27.5<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para logical" id="ch-plotting-data-4-4-8"><pre class="code-display tex2jax_ignore">colors =Makie.wong_colors()
-
-v = repeat([1,2],4)
-
-barplot(x, h, dodge = v, color = colors[v] )
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">27.5<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-data-4-4-8">I’m not a fan of the default colors that are used.  One can choose any of the named colors.  See <a class="external" href="https://docs.makie.org/stable/explanations/colors" target="_blank">Makie page on colors</a><details class="ptx-footnote" aria-live="polite" id="ch-plotting-data-4-4-8-2"><summary class="ptx-footnote__number" title="Footnote 27.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="ch-plotting-data-4-4-8-2"><code class="code-inline tex2jax_ignore">docs.makie.org/stable/explanations/colors</code></div></details> for more details.  A common color grouping which works well for bar colors (that is there is contrast between colors) is the built-in <code class="code-inline tex2jax_ignore">Makie.wong_colors()</code>. The above plot can be changed with</div>
+<div class="para logical" id="ch-plotting-data-4-4-9"><pre class="code-display tex2jax_ignore">colors =Makie.wong_colors()
+fig = barplot(vcat(x,x),vcat(h1,h2), 
+ stack = vcat(x,x), 
+ color=repeat(1:2,inner=4),
+ strokewidth = 0.5)
 </pre></div>
-<div class="para" id="ch-plotting-data-4-4-9">which results in</div>
-<figure class="figure figure-like" id="fig-simple-barplot"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/makie/simple-barplot.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">27.6<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="subsection" id="ch-plotting-data-4-5"><h4 class="heading hide-type">
+<div class="para" id="ch-plotting-data-4-4-10">which results in</div>
+<figure class="figure figure-like" id="fig-simple-stacked-bar02"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/plot-data/stack02.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">27.6<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-data-4-4-12">If you want to specify the colors, simply replace the first line above, with an array of named colors.  For example,</div>
+<div class="para logical" id="ch-plotting-data-4-4-13"><pre class="code-display tex2jax_ignore">colors = [:fuchsia, :steelblue]
+fig = barplot(vcat(x,x),vcat(h1,h2), 
+ stack = vcat(x,x), 
+ color=repeat(1:2,inner=4),
+ strokewidth = 0.5)
+</pre></div>
+<div class="para" id="ch-plotting-data-4-4-14">results in</div>
+<figure class="figure figure-like" id="fig-simple-stacked-bar03"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/plot-data/stack03.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">27.7<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-data-4-4-16">However, if the desire of plotting two sets of data is to compare them, often plotting them side by side is better.  This can be accomplished with the dodge option as in</div>
+<div class="para logical" id="ch-plotting-data-4-4-17"><pre class="code-display tex2jax_ignore">colors = Makie.wong_colors()
+fig = barplot(vcat(x,x),vcat(h1,h2),
+  dodge = repeat(1:2,inner=4),
+  color=colors[repeat(1:2,inner=4)],
+  strokewidth = 0.5)
+</pre></div>
+<div class="para" id="ch-plotting-data-4-4-18">resulting in</div>
+<figure class="figure figure-like" id="fig-simple-dodged-bar"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/plot-data/dodge01.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">27.8<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-data-4-4-20">Note that the <code class="code-inline tex2jax_ignore">dodge</code> option determines the order of each group of bars for each <code class="code-inline tex2jax_ignore">x</code> value.  Although not shown, you can use more than two sets of bars for a group.</div></section><section class="subsection" id="ch-plotting-data-4-5"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">27.2.3</span><span class="space"> </span><span class="title">Example of Realistic Barplot in Makie</span>
 </h4>
 <div class="para" id="ch-plotting-data-4-5-2">To plot every score (which is discrete), let’s consider a bar plot in which the height of a bar at a given score is the number of games with that score.  To generate this, we load in the <code class="code-inline tex2jax_ignore">nba2024.csv</code> file.  Note you will need to download/install <code class="code-inline tex2jax_ignore">CSV</code> and <code class="code-inline tex2jax_ignore">DataFrames</code>.</div>
@@ -1273,7 +1292,7 @@ nba_scores = CSV.read("nba.csv", DataFrame)
 </pre></div>
 <div class="para" id="ch-plotting-data-4-5-10">which results in the plot</div>
 <figure class="figure figure-like" id="fig-nba-home"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/makie/nba_home.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">27.7<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-data-4-5-12">Another interesting plot is to place bars side by side for the home and visitor scores.  This is a little but possible with the <code class="code-inline tex2jax_ignore">barplot</code> command.  We just need to include all of the data together and then including a vector of grouping.  The following is the code to do this:</div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">27.9<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-data-4-5-12">Another interesting plot is to place bars side by side for the home and visitor scores.  This is a little but possible with the <code class="code-inline tex2jax_ignore">barplot</code> command.  We just need to include all of the data together and then including a vector of grouping.  The following is the code to do this:</div>
 <div class="para logical" id="ch-plotting-data-4-5-13"><pre class="code-display tex2jax_ignore">colors = Makie.wong_colors()
 barplot(
   repeat(70:160,2),
@@ -1285,7 +1304,7 @@ barplot(
 </pre></div>
 <div class="para" id="ch-plotting-data-4-5-14">where this is one command but split onto lines for readability.  The 2nd line is the horizontal axis which is just the same as the plot above except that we need to repeat it twice.  The third line concatenates vertically (<code class="code-inline tex2jax_ignore">vcat</code>) the two distributions.  The fourth line explain how to group the data (<code class="code-inline tex2jax_ignore">dodge</code> is used to include it side by side or <code class="code-inline tex2jax_ignore">stack</code> is to stack it vertically). The color attribute (line 5) sets the color for each bar--again, this is needed to be a repeated vector.  The result of this is</div>
 <figure class="figure figure-like" id="fig-nba-compare"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/plot-data/nba-compare.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">27.8<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-data-4-5-16">More examples of plotting data can be found in <a href="ch-data.html" class="internal" title="Chapter 28: Introduction to Data Analysis">Chapter 28</a> and other chapters in <a href="part-data-analysis.html" class="internal" title="Part VI: Data Analysis">Part VI</a>, which uses larger datasets and investigates how to gain insights into data from visualization.</div></section></section></section></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">27.10<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-plotting-data-4-5-16">More examples of plotting data can be found in <a href="ch-data.html" class="internal" title="Chapter 28: Introduction to Data Analysis">Chapter 28</a> and other chapters in <a href="part-data-analysis.html" class="internal" title="Part VI: Data Analysis">Part VI</a>, which uses larger datasets and investigates how to gain insights into data from visualization.</div></section></section></section></div>
 <div class="ptx-content-footer">
 <a class="previous-button button" href="part-data-analysis.html" title="Previous"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-data.html" title="Next"><span class="name">Next</span><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
 </div></main>

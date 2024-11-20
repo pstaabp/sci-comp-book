@@ -1225,11 +1225,12 @@ end
 </pre></div>
 <div class="para" id="ch-olympics-5-3-5">will extract the <code class="code-inline tex2jax_ignore">first</code> element of the names.  Also, we wish to rename to <code class="code-inline tex2jax_ignore">Name</code>.</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">@chain olympics begin
-  subset(:Season =&gt; s-&gt; s .== "Summer")
-  subset(:Medal =&gt; m -&gt; m .!= "NA")
+  dropmissing(:Medal)
+  subset([:Games, :Medal] =&gt; (g, m)  -&gt; g .== "2000 Summer" .&amp;&amp; m .== "Gold")
   groupby(:ID)
-  combine(:Name =&gt;  (names-&gt; first(names)) =&gt; :Name, nrow)
+  combine(:Name =&gt;  (names -&gt; first(names)) =&gt; :Name, nrow)
   sort(:nrow, rev = true)
+  first(10)
 end
 </code></pre></div></section><section class="subsection" id="ch-olympics-5-4"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">31.3.3</span><span class="space"> </span><span class="title">Which athlete had the most Olympic gold medals in the Summer 2000 games? How many medals?</span>
