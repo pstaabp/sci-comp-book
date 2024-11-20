@@ -25,14 +25,16 @@
     </p>
 
     <p>
-      We will start by loading the file with
+      For this chapter we will need load the packages <c>DataFrames, Chain, Statistics, CSV</c> and will start by loading the file with
     </p>
 
     <p>
-      <cd> census_data = CSV.read("Gaz_ua_national.csv",DataFrame) </cd>
+      <cd> census = CSV.read("Gaz_ua_national.csv",DataFrame) </cd>
     </p>
-    <p>or adjusting the path to the file if needed.  And additionally, the last column name <c>"INTPTLONG"</c> isn't read in correctly, so we need to adjust this with </p>
 
+    <p>
+      or adjusting the path to the file if needed.
+    </p>
   </section>
 
   <section>
@@ -47,6 +49,12 @@
         <ol>
           <li>
             <p>
+              What is the total population of all areas?
+            </p>
+          </li>
+
+          <li>
+            <p>
               What are the top 10 areas in population?
             </p>
           </li>
@@ -59,25 +67,19 @@
 
           <li>
             <p>
-              Give a histogram plot in terms of population? (What are good bin sizes?)
-            </p>
-          </li>
-
-          <li>
-            <p>
-              What is the total population of all areas?
-            </p>
-          </li>
-
-          <li>
-            <p>
-              What the top 10 area in housing units?
+              Give a histogram plot in terms of population?
             </p>
           </li>
 
           <li>
             <p>
               What is the total number of housing units?
+            </p>
+          </li>
+
+          <li>
+            <p>
+              What the top 10 area in housing units?
             </p>
           </li>
 
@@ -95,18 +97,62 @@
 
           <li>
             <p>
-              What are the Massachusetts areas in the data?
+              List the top 5 Massachusetts areas  by population.
             </p>
           </li>
 
           <li>
             <p>
-              What is the average population, median and standard deviation of the areas?
+              What is the average population, median and standard deviation of all Massachusetts areas?
             </p>
           </li>
         </ol>
       </p>
     </introduction>
+
+
+    <subsection>
+      <title>Data Analysis of Census Data</title>
+
+      <p>
+        Now that we have the data loaded and stored in the DataFrame called <c>census</c>, there are a number of ways to answer the questions posed above.  A nice clean technique is to answer the question by building a <c>@chain</c> block that starts with the <c>census</c> DataFrame and results in the answer.  Most of the time this works and we will show this in the rest of the chapter.  For complicated questions, we will walk through step by step how to do this.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>What is the total population of all areas?</title>
+
+      <p>
+        This is simply the sum of the <c>POP10</c> column, which can be found using the <c>combine</c> function as in
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+@chain census begin
+  combine(:POP10 =&gt; sum =&gt; :TOTAL_POP)
+end
+        </input>
+      </program>
+
+      <p>
+        which returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>1×1 DataFrame</cline>
+        <cline>Row  TOTAL_POP</cline>
+        <cline>     Int64</cline>
+        <cline>1    252746527 </cline>
+        </cd>
+      </p>
+
+      <p>
+        indicating that the total population is 252746527.  Note: the total U.S. Population in 2010 was about 309 million, so this dataset is not capturing everyone.
+      </p>
+    </subsection>
 
 
     <subsection>
@@ -120,12 +166,34 @@
       <program language="julia" line-numbers="yes">
         <input>
 @chain census_data begin
-  select(:GEOID, :NAME, :POP10)
+  select(:NAME, :POP10)
   sort(:POP10, rev = true)
   first(10)
 end
         </input>
       </program>
+
+      <p>
+        and this returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>10×2 DataFrame</cline>
+        <cline>Row  NAME                                                 POP10</cline>
+        <cline>     String                                               Int64</cline>
+        <cline>1    New York--Newark, NY--NJ--CT Urbanized Area          18351295</cline>
+        <cline>2    Los Angeles--Long Beach--Anaheim, CA Urbanized Area  12150996</cline>
+        <cline>3    Chicago, IL--IN Urbanized Area                        8608208</cline>
+        <cline>4    Miami, FL Urbanized Area                              5502379</cline>
+        <cline>5    Philadelphia, PA--NJ--DE--MD Urbanized Area           5441567</cline>
+        <cline>6    Dallas--Fort Worth--Arlington, TX Urbanized Area      5121892</cline>
+        <cline>7    Houston, TX Urbanized Area                            4944332</cline>
+        <cline>8    Washington, DC--VA--MD Urbanized Area                 4586770</cline>
+        <cline>9    Atlanta, GA Urbanized Area                            4515419</cline>
+        <cline>10   Boston, MA--NH--RI Urbanized Area                     4181019</cline>
+        </cd>
+      </p>
     </subsection>
 
 
@@ -143,12 +211,25 @@ end
 
       <program language="julia" line-numbers="yes">
         <input>
-@chain census_data begin
-  subset(:INTPTLONG =&gt; long -&gt; long .&lt; -120)
-  combine(:POP10 =&gt; sum)
-end
+        @chain census begin
+          subset(:INTPTLONG =&gt; long -&gt; long .&lt; -120)
+          combine(:POP10 =&gt; sum =&gt; :POP_WEST_120)
+        end
         </input>
       </program>
+
+      <p>
+        The result is
+      </p>
+
+      <p>
+        <cd>
+        <cline>1×1 DataFrame</cline>
+        <cline>Row  POP_WEST_120</cline>
+        <cline>     Int64</cline>
+        <cline>1    21932350      </cline>
+        </cd>
+      </p>
 
       <p>
         The result shows the total population west of 120 degrees is about 22 million.
@@ -160,12 +241,12 @@ end
       <title>Give a histogram plot in terms of population?</title>
 
       <p>
-        To produce a histogram of the population, we will use the <c>histogram</c> function of the package <c>StatsPlots</c>. <url href="https://github.com/JuliaPlots/StatsPlots.jl" visual="">Check out the documentation</url>. If we do:
+        To produce a histogram of the population, we will use the <c>hist</c> method from the <c>Makie</c> package. <url href="https://docs.makie.org/v0.21/reference/plots/hist" visual="">Check out the documentation</url>. If we do:
       </p>
 
       <p>
         <cd>
-        <cline>@df census_data histogram(:POP10)</cline>
+        <cline>hist(census.POP10)</cline>
         </cd>
       </p>
 
@@ -186,8 +267,19 @@ end
         The trouble with this is that there are many many census areas with very little population. We can fix this with a log scale. If you enter
       </p>
 
+
+      <program language="julia" line-numbers="yes">
+        <input>
+b=10 .^(3:0.2:8)
+fig = Figure()
+ax = Axis(fig[1,1], xscale = log10)
+hist!(ax, census.POP10, bins=b, strokewidth=0.5)
+fig
+        </input>
+      </program>
+
       <p>
-        <cd> @df census_data histogram(:POP10, xscale = :log10, xlims = (10^3,10^6)) </cd>
+        where the <c>b</c> variable is the locations of the bin boundaries.  This took some experiments to get the right sizes.  The attribute <c>xscale</c> sets the scale to base-10 logarithmic scale.
       </p>
 
       <p>
@@ -206,25 +298,6 @@ end
 
 
     <subsection>
-      <title>What is the total population of all areas?</title>
-
-      <p>
-        This is basically asking the question of the total population in the United States.  We can do this with
-      </p>
-
-      <p>
-        <cd>
-        <cline>sum(census_data.POP10)</cline>
-        </cd>
-      </p>
-
-      <p>
-        which returns <c>252746527</c>, which is just over 312 million.
-      </p>
-    </subsection>
-
-
-    <subsection>
       <title>What the top 10 area in housing density?</title>
 
       <p>
@@ -234,7 +307,7 @@ end
 
       <program language="julia" line-numbers="yes">
         <input>
-@chain census_data begin
+@chain census begin
   transform( [:POP10, :HU10] =&gt; ((p,h)-&gt; p./h) =&gt; :Housing_Density)
   select(:NAME, :Housing_Density)
   sort(:Housing_Density, rev=true)
@@ -245,6 +318,24 @@ end
 
       <p>
         the results of this is
+      </p>
+
+      <p>
+        <cd>
+        <cline>10×2 DataFrame</cline>
+        <cline>Row   NAME                                   Housing_Density</cline>
+        <cline>      String                                 Float64</cline>
+        <cline>1     Air Force Academy, CO Urban Cluster    16.908</cline>
+        <cline>2     Colorado City, AZ--UT Urban Cluster     8.1839</cline>
+        <cline>3     Kinross, MI Urban Cluster               6.75773</cline>
+        <cline>4     Soledad, CA Urban Cluster               6.61642</cline>
+        <cline>5     Alfred, NY Urban Cluster                6.55842</cline>
+        <cline>6     Avenal, CA Urban Cluster                6.44713</cline>
+        <cline>7     Corcoran, CA Urban Cluster              6.12188</cline>
+        <cline>8     Montgomery, PA Urban Cluster            5.83454</cline>
+        <cline>9     Darbydale, OH Urban Cluster             5.6216</cline>
+        <cline>10    Woodville, FL Urban Cluster             5.37327 </cline>
+        </cd>
       </p>
     </subsection>
 
@@ -259,15 +350,11 @@ end
 
       <program language="julia" line-numbers="yes">
         <input>
-@chain census_data begin
+@chain census begin
   combine(:HU10 =&gt; sum)
 end
         </input>
       </program>
-
-      <p>
-        or more simply <c>sum(census_data.HU10)</c>
-      </p>
 
       <p>
         which has the result <c>105549535</c>.
@@ -285,13 +372,35 @@ end
 
       <program language="julia" line-numbers="yes">
         <input>
-@chain census_data begin
+@chain census begin
   select(:NAME, :ALAND)
   sort(:ALAND, rev=true)
   first(10)
 end
         </input>
       </program>
+
+      <p>
+        and the result is
+      </p>
+
+      <p>
+        <cd>
+        <cline>10×2 DataFrame</cline>
+        <cline>Row  NAME                                                 ALAND</cline>
+        <cline>     String                                               Int64</cline>
+        <cline>1    New York--Newark, NY--NJ--CT Urbanized Area          8935981360</cline>
+        <cline>2    Atlanta, GA Urbanized Area                           6851428985</cline>
+        <cline>3    Chicago, IL--IN Urbanized Area                       6326686332</cline>
+        <cline>4    Philadelphia, PA--NJ--DE--MD Urbanized Area          5131721516</cline>
+        <cline>5    Boston, MA--NH--RI Urbanized Area                    4852227548</cline>
+        <cline>6    Dallas--Fort Worth--Arlington, TX Urbanized Area     4607936452</cline>
+        <cline>7    Los Angeles--Long Beach--Anaheim, CA Urbanized Area  4496266014</cline>
+        <cline>8    Houston, TX Urbanized Area                           4299420988</cline>
+        <cline>9    Detroit, MI Urbanized Area                           3463234750</cline>
+        <cline>10   Washington, DC--VA--MD Urbanized Area                3423261150 </cline>
+        </cd>
+      </p>
     </subsection>
 
 
@@ -312,11 +421,33 @@ end
 end
         </input>
       </program>
+      <p>
+        and the result is
+      </p>
+
+      <p>
+        <cd>
+          <cline>10×2 DataFrame
+            Row  NAME                                          AWATER
+                 String                                        Int64
+            1    New York--Newark, NY--NJ--CT Urbanized Area   533176599
+            2    Minneapolis--St. Paul, MN--WI Urbanized Area  232127029
+            3    Tampa--St. Petersburg, FL Urbanized Area      211394181
+            4    Boston, MA--NH--RI Urbanized Area             201870511
+            5    Jacksonville, FL Urbanized Area               199369291
+            6    Miami, FL Urbanized Area                      191964476
+            7    Virginia Beach, VA Urbanized Area             189979138
+            8    Seattle, WA Urbanized Area                    173839079
+            9    Orlando, FL Urbanized Area                    142321970
+            10   Palm Bay--Melbourne, FL Urbanized Area        130390065
+            </cline>
+        </cd>
+      </p>
     </subsection>
 
 
     <subsection>
-      <title>What are the Massachusetts areas in the data?</title>
+      <title> List the top 5 Massachusetts areas  by population.</title>
 
       <p>
         First, we'll need to filter (subset) the dataset to only include those with <c>MA</c> in the name.  We can use the <c>occursin</c> function to do this:
@@ -325,17 +456,34 @@ end
 
       <program language="julia" line-numbers="yes">
         <input>
-@chain census_data begin
-  subset(:NAME =&gt; (n -&gt; occursin.("MA",n)))
-  combine(:POP10 =&gt; sum)
-end
+          @chain census begin
+          subset(:NAME =&gt; (n -&gt; occursin.("MA",n)))
+          sort(:POP10, rev= true)
+          first(5)
+          select(:NAME, :POP10)
+        end
         </input>
       </program>
+      <p>
+        and the result is:
+      </p>
+      <p>
+        <cd>
+          <cline>5×2 DataFrame</cline>
+            <cline>Row  NAME                                POP10</cline>
+            <cline>     String                              Int64</cline>
+            <cline>1    Boston, MA--NH--RI Urbanized Area   4181019</cline>
+            <cline>2    Providence, RI--MA Urbanized Area   1190956</cline>
+            <cline>3    Springfield, MA--CT Urbanized Area  621300</cline>
+            <cline>4    Worcester, MA--CT Urbanized Area    486514</cline>
+            <cline>5    Barnstable Town, MA Urbanized Area  246695</cline>
+        </cd>
+      </p>
     </subsection>
 
 
     <subsection>
-      <title>What is the average population, median and standard deviation of the each of the areas?</title>
+      <title>What is the average population, median and standard deviation of all Massachusetts areas?</title>
 
       <p>
         This is similar to above, except we change the functions on the combine:
@@ -350,16 +498,18 @@ end
 end
         </input>
       </program>
+
       <p>
         which results in
       </p>
+
       <p>
         <cd>
-          <cline>1×3 DataFrame</cline>
-            <cline>Row  POP10_mean  POP10_median  POP10_std</cline>
-            <cline>     Float64     Float64       Float64</cline>
-            <cline>1    3.69408e5   20717.5       9.44398e5</cline>
-            <cline></cline>
+        <cline>1×3 DataFrame</cline>
+        <cline>Row  POP10_mean  POP10_median  POP10_std</cline>
+        <cline>     Float64     Float64       Float64</cline>
+        <cline>1    3.69408e5   20717.5       9.44398e5</cline>
+        <cline></cline>
         </cd>
       </p>
     </subsection>
