@@ -238,12 +238,16 @@
       </figure>
 
       <p>
+        I'm not a fan of the default colors that are used.  One can choose any of the named colors.  See <url href="https://docs.makie.org/stable/explanations/colors">Makie page on colors</url> for more details.  A common color grouping which works well for bar colors (that is there is contrast between colors) is the built-in <c>Makie.wong_colors()</c>. The above plot can be changed with
+      </p>
+
+      <p>
         <cd>
         <cline>colors =Makie.wong_colors()</cline>
-        <cline></cline>
-        <cline>v = repeat([1,2],4)</cline>
-        <cline></cline>
-        <cline>barplot(x, h, dodge = v, color = colors[v] )</cline>
+        <cline>fig = barplot(vcat(x,x),vcat(h1,h2), </cline>
+        <cline> stack = vcat(x,x), </cline>
+        <cline> color=repeat(1:2,inner=4),</cline>
+        <cline> strokewidth = 0.5)</cline>
         </cd>
       </p>
 
@@ -251,14 +255,67 @@
         which results in
       </p>
 
-      <figure xml:id="fig-simple-barplot">
+      <figure xml:id="fig-simple-stacked-bar02">
         <caption></caption>
-        <image source="plots/makie/simple-barplot.png" width="90%">
+        <image source="plots/plot-data/stack02.png" width="90%">
           <shortdescription>
             (for accessibility)
           </shortdescription>
         </image>
       </figure>
+
+      <p>
+        If you want to specify the colors, simply replace the first line above, with an array of named colors.  For example,
+      </p>
+
+      <p>
+        <cd>
+        <cline>colors = [:fuchsia, :steelblue]</cline>
+        <cline>fig = barplot(vcat(x,x),vcat(h1,h2), </cline>
+        <cline> stack = vcat(x,x), </cline>
+        <cline> color=repeat(1:2,inner=4),</cline>
+        <cline> strokewidth = 0.5)</cline>
+        </cd>
+      </p>
+
+      <p>
+        results in
+      </p>
+
+      <figure xml:id="fig-simple-stacked-bar03">
+        <caption></caption>
+        <image source="plots/plot-data/stack03.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>
+        However, if the desire of plotting two sets of data is to compare them, often plotting them side by side is better.  This can be accomplished with the dodge option as in
+      </p>
+
+      <p>
+        <cd>
+        <cline>colors = Makie.wong_colors()</cline>
+        <cline>fig = barplot(vcat(x,x),vcat(h1,h2),</cline>
+        <cline>  dodge = repeat(1:2,inner=4),</cline>
+        <cline>  color=colors[repeat(1:2,inner=4)],</cline>
+        <cline>  strokewidth = 0.5)</cline>
+        </cd>
+      </p>
+      <p>resulting in </p>
+
+      <figure xml:id="fig-simple-dodged-bar">
+        <caption></caption>
+        <image source="plots/plot-data/dodge01.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>Note that the <c>dodge</c> option determines the order of each group of bars for each <c>x</c> value.  Although not shown, you can use more than two sets of bars for a group. </p>
     </subsection>
 
 

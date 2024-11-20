@@ -278,11 +278,12 @@ end
       <program language="julia" line-numbers="yes">
         <input>
 @chain olympics begin
-  subset(:Season =&gt; s-&gt; s .== "Summer")
-  subset(:Medal =&gt; m -&gt; m .!= "NA")
+  dropmissing(:Medal)
+  subset([:Games, :Medal] =&gt; (g, m)  -&gt; g .== "2000 Summer" .&amp;&amp; m .== "Gold")
   groupby(:ID)
-  combine(:Name =&gt;  (names-&gt; first(names)) =&gt; :Name, nrow)
+  combine(:Name =&gt;  (names -&gt; first(names)) =&gt; :Name, nrow)
   sort(:nrow, rev = true)
+  first(10)
 end
         </input>
       </program>

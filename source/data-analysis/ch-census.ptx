@@ -21,7 +21,7 @@
     </p>
 
     <p>
-      Download the file <url href="julia-files/Gaz_ua_national.csv" visual="">Gaz\_ua\_national.csv</url> and save it somewhere that you can access it from Julia. This file has a lot of census data that we will try to find answers. Information about the data is <url href="http://www.census.gov/geo/maps-data/data/gazetteer2010.html" visual="">on the census website</url>
+      Download the file <url href="assets/datasets/Gaz_ua_national.csv" visual="">Gaz_ua_national.csv</url> and save it somewhere that you can access it from Julia. This file has a lot of census data that we will try to find answers. Information about the data is <url href="http://www.census.gov/geo/maps-data/data/gazetteer2010.html" visual="">on the census website</url>
     </p>
 
     <p>
@@ -31,6 +31,8 @@
     <p>
       <cd> census_data = CSV.read("Gaz_ua_national.csv",DataFrame) </cd>
     </p>
+    <p>or adjusting the path to the file if needed.  And additionally, the last column name <c>"INTPTLONG"</c> isn't read in correctly, so we need to adjust this with </p>
+
   </section>
 
   <section>
