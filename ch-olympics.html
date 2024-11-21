@@ -882,7 +882,7 @@ window.MathJax = {
 <div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5" class="internal"><span class="codenumber">31.3</span> <span class="title">Answering the Questions</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-2" class="internal"><span class="codenumber">31.3.1</span> <span class="title">What is the total number of medals given in all Olympics in the dataset?</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-3" class="internal"><span class="codenumber">31.3.2</span> <span class="title">Give the top 10 athletes by number of medals in the Summer Olympics</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-3" class="internal"><span class="codenumber">31.3.2</span> <span class="title">Collectively taking each summer Olympics, give the top 10 athletes by number of medals</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-4" class="internal"><span class="codenumber">31.3.3</span> <span class="title">Which athlete had the most Olympic gold medals in the Summer 2000 games? How many medals?</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-5" class="internal"><span class="codenumber">31.3.4</span> <span class="title">List the top 10 countries by medals in only winter Olympics.</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-6" class="internal"><span class="codenumber">31.3.5</span> <span class="title">Plot the average weight for male and female in each year over the entire span of the Olympic games.</span></a></div></li>
@@ -1218,22 +1218,38 @@ end
 </code></pre></div>
 <div class="para" id="ch-olympics-5-2-4">and the result is <code class="code-inline tex2jax_ignore">39783</code>
 </div></section><section class="subsection" id="ch-olympics-5-3"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">31.3.2</span><span class="space"> </span><span class="title">Give the top 10 athletes by number of medals in the Summer Olympics</span>
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">31.3.2</span><span class="space"> </span><span class="title">Collectively taking each summer Olympics, give the top 10 athletes by number of medals</span>
 </h4>
-<div class="para" id="ch-olympics-5-3-2">This is a classic split-apply-combine example as shown in <a href="ch-manipulating-data.html#sect-split-apply-combine" class="internal" title="Section 29.8: Split-Apply-Combine">Section 29.8</a>. For this, we first filter by only Summer games and then drop all rows without a medal. Since we are asking for the individual medals, we will next group by the athlete <code class="code-inline tex2jax_ignore">ID</code>.  This is the first 3 lines within the <code class="code-inline tex2jax_ignore">@chain</code> block and is a good idea to run these lines.</div>
+<div class="para" id="ch-olympics-5-3-2">This is a classic split-apply-combine example as shown in <a href="ch-manipulating-data.html#sect-split-apply-combine" class="internal" title="Section 29.8: Split-Apply-Combine">Section 29.8</a>. For this, we first drop all rows without a medal and then filter by only Summer games. Since we are asking for the individual medals, we will next group by the athlete <code class="code-inline tex2jax_ignore">ID</code>.  This is the first 3 lines within the <code class="code-inline tex2jax_ignore">@chain</code> block and is a good idea to run these lines.</div>
 <div class="para" id="ch-olympics-5-3-3">Next, we want to combine the groups. In short, we want the total number of medals (this is simply found by calling <code class="code-inline tex2jax_ignore">nrow</code>) and the name, which is a little trickier.  When using <code class="code-inline tex2jax_ignore">combine</code> on a column in a grouped DataFrame, each of the functions that are called take in an array (or an iterator). That is, when extracting <code class="code-inline tex2jax_ignore">Name</code> from the DataFrame, it returns an array of names.  The line</div>
-<div class="para logical" id="ch-olympics-5-3-4"><pre class="code-display tex2jax_ignore">combine(:Name =&gt;  (names-&gt; first(names)) =&gt; :Name, nrow)
+<div class="para logical" id="ch-olympics-5-3-4"><pre class="code-display tex2jax_ignore">combine(:Name =&gt;  first =&gt; :Name, nrow)
 </pre></div>
-<div class="para" id="ch-olympics-5-3-5">will extract the <code class="code-inline tex2jax_ignore">first</code> element of the names.  Also, we wish to rename to <code class="code-inline tex2jax_ignore">Name</code>.</div>
+<div class="para" id="ch-olympics-5-3-5">will extract the <code class="code-inline tex2jax_ignore">first</code> element of the array of names.  And then we will rename this to <code class="code-inline tex2jax_ignore">Name</code>.</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">@chain olympics begin
   dropmissing(:Medal)
-  subset([:Games, :Medal] =&gt; (g, m)  -&gt; g .== "2000 Summer" .&amp;&amp; m .== "Gold")
+  subset([:Season, :Medal] =  &gt; (s, m)  -  &gt; s .== "Summer" .&amp;&amp; m .== "Gold")
   groupby(:ID)
-  combine(:Name =&gt;  (names -&gt; first(names)) =&gt; :Name, nrow)
+  combine(:Name =  &gt; first =  &gt; :Name, nrow)
   sort(:nrow, rev = true)
   first(10)
 end
-</code></pre></div></section><section class="subsection" id="ch-olympics-5-4"><h4 class="heading hide-type">
+</code></pre></div>
+<div class="para" id="ch-olympics-5-3-7">The result of this is:</div>
+<div class="para logical" id="ch-olympics-5-3-8"><pre class="code-display tex2jax_ignore">10×3 DataFrame
+            Row  ID      Name  nrow
+                 Int64   String  Int64
+            1    94406   Michael Fred Phelps, II  23
+            2    33557   Raymond Clarence "Ray" Ewry  10
+            3    67046   Larysa Semenivna Latynina (Diriy-)  9
+            4    69210   Frederick Carlton "Carl" Lewis  9
+            5    87390   Paavo Johannes Nurmi  9
+            6    113912  Mark Andrew Spitz  9
+            7    11642   Matthew Nicholas "Matt" Biondi  8
+            8    13029   Usain St. Leo Bolt  8
+            9    35550   Birgit Fischer-Schmidt  8
+            10   57998   Sawao Kato  8
+            
+</pre></div></section><section class="subsection" id="ch-olympics-5-4"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">31.3.3</span><span class="space"> </span><span class="title">Which athlete had the most Olympic gold medals in the Summer 2000 games? How many medals?</span>
 </h4>
 <div class="para" id="ch-olympics-5-4-2">First, we would like to take the data set and filter (subset) to the Summer 2000 games and only gold medals.  However, if we try to subset on medals with <code class="code-inline tex2jax_ignore">missing</code> values.</div>
