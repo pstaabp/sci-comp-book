@@ -21,13 +21,7 @@
 
         <li>
           <p>
-            Which athlete had the most Olympic gold medals in the Summer 2000 games? How many medals?
-          </p>
-        </li>
-
-        <li>
-          <p>
-            List the top 10 countries by medals in only winter Olympics.
+            List the top 10 countries by medals in all winter Olympics.
           </p>
         </li>
 
@@ -254,10 +248,10 @@ end
 
 
     <subsection>
-      <title>Give the top 10 athletes by number of medals in the Summer Olympics</title>
+      <title>Collectively taking each summer Olympics, give the top 10 athletes by number of medals</title>
 
       <p>
-        This is a classic split-apply-combine example as shown in <xref ref="sect-split-apply-combine"/>. For this, we first filter by only Summer games and then drop all rows without a medal. Since we are asking for the individual medals, we will next group by the athlete <c>ID</c>.  This is the first 3 lines within the <c>@chain</c> block and is a good idea to run these lines.
+        This is a classic split-apply-combine example as shown in <xref ref="sect-split-apply-combine"/>. For this, we first drop all rows without a medal and then filter by only Summer games. Since we are asking for the individual medals, we will next group by the athlete <c>ID</c>.  This is the first 3 lines within the <c>@chain</c> block and is a good idea to run these lines.
       </p>
 
       <p>
@@ -266,12 +260,12 @@ end
 
       <p>
         <cd>
-        <cline>combine(:Name =&gt;  (names-&gt; first(names)) =&gt; :Name, nrow)</cline>
+        <cline>combine(:Name =&gt;  first =&gt; :Name, nrow)</cline>
         </cd>
       </p>
 
       <p>
-        will extract the <c>first</c> element of the names.  Also, we wish to rename to <c>Name</c>.
+        will extract the <c>first</c> element of the array of names.  And then we will rename this to <c>Name</c>.
       </p>
 
 
@@ -279,57 +273,35 @@ end
         <input>
 @chain olympics begin
   dropmissing(:Medal)
-  subset([:Games, :Medal] =&gt; (g, m)  -&gt; g .== "2000 Summer" .&amp;&amp; m .== "Gold")
+  subset([:Season, :Medal] =  &gt; (s, m)  -  &gt; s .== "Summer" .&amp;&amp; m .== "Gold")
   groupby(:ID)
-  combine(:Name =&gt;  (names -&gt; first(names)) =&gt; :Name, nrow)
+  combine(:Name =  &gt; first =  &gt; :Name, nrow)
   sort(:nrow, rev = true)
   first(10)
 end
         </input>
       </program>
-    </subsection>
-
-
-    <subsection>
-      <title>Which athlete had the most Olympic gold medals in the Summer 2000 games? How many medals?</title>
-
       <p>
-        First, we would like to take the data set and filter (subset) to the Summer 2000 games and only gold medals.  However, if we try to subset on medals with <c>missing</c> values.
-      </p>
-
-
-      <program language="julia" line-numbers="yes">
-        <input>
-@chain olympics begin
-  dropmissing(:Medal)
-  subset([:Games, :Medal] =&gt; (g, m)  -&gt; g .== "2000 Summer" .&amp;&amp; m .== "Gold")
-  groupby(:ID)
-  combine(:Name =&gt;  (names -&gt; first(names)) =&gt; :Name, nrow)
-  sort(:nrow, rev = true)
-  first(10)
-end
-        </input>
-      </program>
-
-      <p>
-        The resulting DataFrame is
+        The result of this is:
       </p>
 
       <p>
         <cd>
-        <cline>5×3 DataFrame</cline>
-        <cline>Row  ID      Name_function                         nrow</cline>
-        <cline>     Int64   String                                Int64</cline>
-        <cline>1    85286   Aleksey Yuryevich Nemov               6</cline>
-        <cline>2    120087  Ian James Thorpe                      5</cline>
-        <cline>3    121258  Dara Grace Torres (-Hoffman, -Minas)  5</cline>
-        <cline>4    25975   Inge de Bruijn                        4</cline>
-        <cline>5    45039   Gary Wayne Hall, Jr.                  4</cline>
+          <cline>10×3 DataFrame
+            Row  ID      Name  nrow
+                 Int64   String  Int64
+            1    94406   Michael Fred Phelps, II  23
+            2    33557   Raymond Clarence "Ray" Ewry  10
+            3    67046   Larysa Semenivna Latynina (Diriy-)  9
+            4    69210   Frederick Carlton "Carl" Lewis  9
+            5    87390   Paavo Johannes Nurmi  9
+            6    113912  Mark Andrew Spitz  9
+            7    11642   Matthew Nicholas "Matt" Biondi  8
+            8    13029   Usain St. Leo Bolt  8
+            9    35550   Birgit Fischer-Schmidt  8
+            10   57998   Sawao Kato  8
+            </cline>
         </cd>
-      </p>
-
-      <p>
-        This shows that Aleksey Nemov had 6 medals in the Summer 2000 games.
       </p>
     </subsection>
 
