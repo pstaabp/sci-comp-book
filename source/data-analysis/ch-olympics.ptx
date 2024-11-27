@@ -27,7 +27,7 @@
 
         <li>
           <p>
-            Plot the average weight for male and female in each year over the entire span of the Olympic games.
+            Produce a line plot the average weight for male and female in each year over the entire span of the Olympic games.
           </p>
         </li>
 
@@ -39,13 +39,7 @@
 
         <li>
           <p>
-            What age the most common athlete?  What we are looking for is the mode of the age of all athletes.
-          </p>
-        </li>
-
-        <li>
-          <p>
-            Consider the winter games between 1950 and 1970.  Collectively of these games, what are the top 5 sports by total medals given?
+            What are the top 5 sports (not events) by total medals given for winter olympics between 1950 and 1970?
           </p>
         </li>
       </ol>
@@ -228,7 +222,7 @@
       <title>What is the total number of medals given in all Olympics in the dataset?</title>
 
       <p>
-        Since each row is an athlete-event, we drop all of the columns in the <c>Medal</c> column and then count all of the rows or
+        Since each row is an athlete-event, we drop all of the rows with missing values in the <c>Medal</c> column and then count all of the rows or
       </p>
 
 
@@ -281,26 +275,26 @@ end
 end
         </input>
       </program>
+
       <p>
         The result of this is:
       </p>
 
       <p>
         <cd>
-          <cline>10×3 DataFrame
-            Row  ID      Name  nrow
-                 Int64   String  Int64
-            1    94406   Michael Fred Phelps, II  23
-            2    33557   Raymond Clarence "Ray" Ewry  10
-            3    67046   Larysa Semenivna Latynina (Diriy-)  9
-            4    69210   Frederick Carlton "Carl" Lewis  9
-            5    87390   Paavo Johannes Nurmi  9
-            6    113912  Mark Andrew Spitz  9
-            7    11642   Matthew Nicholas "Matt" Biondi  8
-            8    13029   Usain St. Leo Bolt  8
-            9    35550   Birgit Fischer-Schmidt  8
-            10   57998   Sawao Kato  8
-            </cline>
+        <cline>10×2 DataFrame</cline>
+        <cline>Row  Name                                nrow</cline>
+        <cline>     String                              Int64</cline>
+        <cline>1    Michael Fred Phelps, II             28</cline>
+        <cline>2    Larysa Semenivna Latynina (Diriy-)  18</cline>
+        <cline>3    Nikolay Yefimovich Andrianov        15</cline>
+        <cline>4    Edoardo Mangiarotti                 13</cline>
+        <cline>5    Takashi Ono                         13</cline>
+        <cline>6    Borys Anfiyanovych Shakhlin         13</cline>
+        <cline>7    Natalie Anne Coughlin (-Hall)       12</cline>
+        <cline>8    Birgit Fischer-Schmidt              12</cline>
+        <cline>9    Sawao Kato                          12</cline>
+        <cline>10   Ryan Steven Lochte                  12</cline>
         </cd>
       </p>
     </subsection>
@@ -310,7 +304,7 @@ end
       <title>List the top 10 countries by medals in only winter Olympics.</title>
 
       <p>
-        To start off, we again filter only by those with medals and in this case the <c>Season</c> column has the value <c>Winter</c>. Then we group by the \texttt{Team} column, which represents the Country.  We then define <c>Total_Medals</c> to be the number within each group.  Finally, we order (descending) by <c>Total_Medals</c> and print the first 10 rows.
+        To start off, we again filter only by those with medals and in this case the <c>Season</c> column has the value <c>Winter</c>. Then we group by the <c>NOC</c> column, which represents the Country.  We then define <c>Total_Medals</c> to be the number within each group.  Finally, we order (descending) by <c>Total_Medals</c> and print the first 10 rows.
       </p>
 
 
@@ -325,28 +319,111 @@ end
 end
         </input>
       </program>
+
+      <p>
+        the results of this is
+      </p>
+
+      <p>
+        <cd>
+          <cline>10×2 DataFrame</cline>
+<cline>Row  NOC       Num_Medals</cline>
+<cline>     String3   Int64</cline>
+<cline>1    USA       635</cline>
+<cline>2    CAN       611</cline>
+<cline>3    NOR       443</cline>
+<cline>4    URS       440</cline>
+<cline>5    SWE       428</cline>
+<cline>6    FIN       426</cline>
+<cline>7    GER       386</cline>
+<cline>8    AUT       280</cline>
+<cline>9    SUI       275</cline>
+<cline>10   RUS       260</cline>
+        </cd>
+      </p>
     </subsection>
 
 
     <subsection>
-      <title>Plot the average weight for male and female in each year over the entire span of the Olympic games.</title>
+      <title>Produce a line plot the average weight for male and female in each year over the entire span of the Olympic games.</title>
 
       <p>
+        In this case, first we'll drop all rows in which the weight is missing.  Then we will group by both sex and year (the year in which the games took place) and then `combine` by finding the mean weight with:
       </p>
 
 
       <program language="julia" line-numbers="yes">
         <input>
 @chain olympics begin
-  transform(:Weight =&gt; ByRow(w -&gt; w == "NA" ? missing : parse(Float64, w)) =&gt; :Weight_float)
-  dropmissing(:Weight_float)
+  dropmissing(:Weight)
   groupby([:Year, :Sex])
-  combine(:Weight_float =&gt; mean)
-  unstack(:Sex, :Weight_float_mean)
-  plot(_.Year, [_.M, _.F], label = ["M" "F"], legend = :right)
+  combine(:Weight =&gt; mean =gt; :Mean_weight)
 end
         </input>
       </program>
+
+      <p>
+        The result of this is
+      </p>
+
+      <p>
+        <cd>
+        <cline>64×3 DataFrame   54 rows omitted</cline>
+        <cline>Row   Year   Sex      Mean_weight</cline>
+        <cline>      Int64  String1  Float64</cline>
+        <cline>1     1896   M        71.3878</cline>
+        <cline>2     1900   M        74.557</cline>
+        <cline>3     1904   M        72.1973</cline>
+        <cline>4     1906   M        75.9171</cline>
+        <cline>5     1908   M        75.3861</cline>
+        <cline>⋮       ⋮     ⋮          ⋮      </cline>
+        <cline>60    2012   F        62.0538</cline>
+        <cline>61    2014   M        77.9016</cline>
+        <cline>62    2014   F        60.5203</cline>
+        <cline>63    2016   M        78.5603</cline>
+        <cline>64    2016   F        61.9313</cline>
+        </cd>
+      </p>
+
+      <p>
+        It would be nice if we could rearrange the dataframe to make a M(ale) and F(emale) column and then that would be easily plotted.  This can be done with the <c>unstack</c> function. Specifically, we can do the following:
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+weight = @chain olympics begin
+  dropmissing(:Weight)
+  groupby([:Year, :Sex])
+  combine(:Weight =&gt; mean =&gt; :Mean_weight)
+  unstack(:Sex, :Mean_weight)
+end        </input>
+      </program>
+
+      <p>
+ Now that we have the data, we can plot it with the following:
+      </p>
+
+      <p>
+        <cd>
+        <cline>fig, ax = lines(weight.Year, weight.M)</cline>
+        <cline>lines!(ax, weight.Year, weight.F)</cline>
+        <cline>fig</cline>
+        </cd>
+      </p>
+
+      <p>
+ resulting in the plot
+      </p>
+
+      <figure xml:id="fig-olympics-weight">
+        <caption></caption>
+        <image source="plots/olympics/weight.png" width="90%">
+          <shortdescription>
+ (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
     </subsection>
 
 
@@ -354,7 +431,7 @@ end
       <title>Plot the number of medals that the U.S. collected over each olympic year.</title>
 
       <p>
-        First, we filter by the country, but this time use the <c>NOC</c> column which is the country code.  We also filter out all in the <c>Medal</c> column with value <c>NA</c>. Since we want the number of medals by year, we group by the <c>Year</c> column and define the <c>num_medals</c> to be the length of the number elements in each group. Finally, we can just send (pipe) the results to the <c>@df</c> macros which plots the dataframe.
+ First, like above, we will drop rows with missing <c>Medal</c> column and then  we filter by the country, using <c>NOC</c> column which is the country code.  Since we want the number of medals by year, we group by the <c>Year</c> column and define the <c>num_medals</c> to be the length of the number elements in each group. Finally, we can just plot the results.  This can all happen in the same <c>@chain</c> block as follows:
       </p>
 
 
@@ -364,32 +441,28 @@ end
   dropmissing(:Medal)
   subset(:NOC => name -> name .== "USA")
   groupby(:Year)
-  combine(nrow)
-  bar(_.Year, _.nrow)
+  combine(nrow => :num_medals)
+  barplot(_.Year, _.num_medals)
 end
         </input>
       </program>
 
       <p>
-        It is interesting to note that this database lists some medals from 1906\footnote{Suprising to the author, there was an event called the \href{https://en.wikipedia.org/wiki/1906_Intercalated_Games}{1906 Intercalated Games} in Athens, Greece.  This is listed in this database.} Also, it hard not to notice that the 1904 games sent a lot medals to the U.S.\footnote{The 1904 Olympic games were held in St. Louis, Missouri, which was quite difficult to get to from Europe and other places around the world. This resulted in a large number of American athletes winning medals.
+        The results is the following plot
       </p>
-    </subsection>
 
-
-    <subsection>
-      <title>What age the most common athlete?  What we are looking for is the mode of the age of all athletes.</title>
+      <figure xml:id="fig-olympics-usa">
+        <caption></caption>
+        <image source="plots/olympics/usa-by-year.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
 
       <p>
-
+        It is interesting to note that this database lists some medals from 1906<fn>Suprising to the author, there was an event called the <url href="https://en.wikipedia.org/wiki/1906_Intercalated_Games">1906 Intercalated Games</url> in Athens, Greece.  This is listed in this database.</fn> Also, it hard not to notice that the 1904 games sent a lot medals to the U.S.<fn>The 1904 Olympic games were held in St. Louis, Missouri, which was quite difficult to get to from Europe and other places around the world. This resulted in a large number of American athletes winning medals.</fn>
       </p>
-
-      <program language="julia" line-numbers="yes">
-				<input>
-@chain olympics begin
-  combine(:Age =&gt; mode)
-end
-</input>
-</program>
     </subsection>
 
 
@@ -397,7 +470,41 @@ end
       <title>What are the top 5 sports (not events) by total medals given for winter olympics between 1950 and 1970?</title>
 
       <p>
+        Again, like above, since we are looking for total medals, we will drop all rows with a missing value in the <c>Medal</c> column.  Then we subset (filter) rows to get winter games between 1950 and 1970.  Since we are looking for the top 5 events, we group by <c>Event</c>, total the results then sort
+      </p>
 
+      <p>
+        <cd>
+        <cline>@chain olympics begin</cline>
+        <cline>  dropmissing(:Medal)</cline>
+        <cline>  subset([:Season, :Year] =&gt; (season, year) -&gt; season .== "Winter" .&amp;&amp; 1950 .&gt;= year .&gt;= 1970)</cline>
+        <cline>  groupby(:Event)</cline>
+        <cline>  combine(nrow)</cline>
+        <cline>  sort(:nrow, rev = true)</cline>
+        <cline>  first(5)</cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        the results are the following:
+      </p>
+
+      <p>
+        <cd>
+        <cline>5×2 DataFrame</cline>
+        <cline>Row  Event                                                nrow</cline>
+        <cline>     String                                               Int64</cline>
+        <cline>1    Ice Hockey Men's Ice Hockey                          255</cline>
+        <cline>2    Cross Country Skiing Men's 4 x 10 kilometres Relay   60</cline>
+        <cline>3    Bobsleigh Men's Four                                 48</cline>
+        <cline>4    Cross Country Skiing Women's 3 x 5 kilometres Relay  36</cline>
+        <cline>5    Figure Skating Mixed Pairs                           32 </cline>
+        </cd>
+      </p>
+
+      <p>
+        It may seem shocking to see a huge number of ice hockey medals in the timeframe, but since this is a team sport, every member of the team gets the medal.  There are generally about 20-25 players on an ice hockey team.
       </p>
     </subsection>
   </section>
