@@ -888,10 +888,9 @@ window.MathJax = {
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-2" class="internal"><span class="codenumber">32.3.1</span> <span class="title">What is the total number of medals given in all Olympics in the dataset?</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-3" class="internal"><span class="codenumber">32.3.2</span> <span class="title">Collectively taking each summer Olympics, give the top 10 athletes by number of medals</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-4" class="internal"><span class="codenumber">32.3.3</span> <span class="title">List the top 10 countries by medals in only winter Olympics.</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-5" class="internal"><span class="codenumber">32.3.4</span> <span class="title">Plot the average weight for male and female in each year over the entire span of the Olympic games.</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-5" class="internal"><span class="codenumber">32.3.4</span> <span class="title">Produce a line plot the average weight for male and female in each year over the entire span of the Olympic games.</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-6" class="internal"><span class="codenumber">32.3.5</span> <span class="title">Plot the number of medals that the U.S. collected over each olympic year.</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-7" class="internal"><span class="codenumber">32.3.6</span> <span class="title">What age the most common athlete?  What we are looking for is the mode of the age of all athletes.</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-8" class="internal"><span class="codenumber">32.3.7</span> <span class="title">What are the top 5 sports (not events) by total medals given for winter olympics between 1950 and 1970?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-5-7" class="internal"><span class="codenumber">32.3.6</span> <span class="title">What are the top 5 sports (not events) by total medals given for winter olympics between 1950 and 1970?</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-olympics.html#ch-olympics-6" class="internal"><span class="codenumber">32.4</span> <span class="title">Exercise</span></a></div></li>
@@ -1149,10 +1148,9 @@ window.MathJax = {
 <li id="ch-olympics-2-1-1-1"><div class="para" id="ch-olympics-2-1-1-1-1">What is the total number of medals given in all Olympics in the dataset?</div></li>
 <li id="ch-olympics-2-1-1-2"><div class="para" id="ch-olympics-2-1-1-2-1">Collectively taking each summer Olympics, give the top 10 athletes by number of medals.</div></li>
 <li id="ch-olympics-2-1-1-3"><div class="para" id="ch-olympics-2-1-1-3-1">List the top 10 countries by medals in all winter Olympics.</div></li>
-<li id="ch-olympics-2-1-1-4"><div class="para" id="ch-olympics-2-1-1-4-1">Plot the average weight for male and female in each year over the entire span of the Olympic games.</div></li>
+<li id="ch-olympics-2-1-1-4"><div class="para" id="ch-olympics-2-1-1-4-1">Produce a line plot the average weight for male and female in each year over the entire span of the Olympic games.</div></li>
 <li id="ch-olympics-2-1-1-5"><div class="para" id="ch-olympics-2-1-1-5-1">Plot the number of medals that the U.S. collected over each olympic year.</div></li>
-<li id="ch-olympics-2-1-1-6"><div class="para" id="ch-olympics-2-1-1-6-1">What age the most common athlete?  What we are looking for is the mode of the age of all athletes.</div></li>
-<li id="ch-olympics-2-1-1-7"><div class="para" id="ch-olympics-2-1-1-7-1">Consider the winter games between 1950 and 1970.  Collectively of these games, what are the top 5 sports by total medals given?</div></li>
+<li id="ch-olympics-2-1-1-6"><div class="para" id="ch-olympics-2-1-1-6-1">What are the top 5 sports (not events) by total medals given for winter olympics between 1950 and 1970?</div></li>
 </ol>
 </div></section><section class="section" id="ch-olympics-3"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">32.1</span><span class="space"> </span><span class="title">Downloading the Data and Loading the Packages</span>
@@ -1212,7 +1210,7 @@ Row  ID     Name                  Sex      Age      Height        Weight        
 <section class="subsection" id="ch-olympics-5-2"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">32.3.1</span><span class="space"> </span><span class="title">What is the total number of medals given in all Olympics in the dataset?</span>
 </h4>
-<div class="para" id="ch-olympics-5-2-2">Since each row is an athlete-event, we drop all of the columns in the <code class="code-inline tex2jax_ignore">Medal</code> column and then count all of the rows or</div>
+<div class="para" id="ch-olympics-5-2-2">Since each row is an athlete-event, we drop all of the rows with missing values in the <code class="code-inline tex2jax_ignore">Medal</code> column and then count all of the rows or</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">@chain olympics begin
   dropmissing(:Medal)
   nrow
@@ -1237,24 +1235,23 @@ end
 end
 </code></pre></div>
 <div class="para" id="ch-olympics-5-3-7">The result of this is:</div>
-<div class="para logical" id="ch-olympics-5-3-8"><pre class="code-display tex2jax_ignore">10×3 DataFrame
-            Row  ID      Name  nrow
-                 Int64   String  Int64
-            1    94406   Michael Fred Phelps, II  23
-            2    33557   Raymond Clarence "Ray" Ewry  10
-            3    67046   Larysa Semenivna Latynina (Diriy-)  9
-            4    69210   Frederick Carlton "Carl" Lewis  9
-            5    87390   Paavo Johannes Nurmi  9
-            6    113912  Mark Andrew Spitz  9
-            7    11642   Matthew Nicholas "Matt" Biondi  8
-            8    13029   Usain St. Leo Bolt  8
-            9    35550   Birgit Fischer-Schmidt  8
-            10   57998   Sawao Kato  8
-            
+<div class="para logical" id="ch-olympics-5-3-8"><pre class="code-display tex2jax_ignore">10×2 DataFrame
+Row  Name                                nrow
+     String                              Int64
+1    Michael Fred Phelps, II             28
+2    Larysa Semenivna Latynina (Diriy-)  18
+3    Nikolay Yefimovich Andrianov        15
+4    Edoardo Mangiarotti                 13
+5    Takashi Ono                         13
+6    Borys Anfiyanovych Shakhlin         13
+7    Natalie Anne Coughlin (-Hall)       12
+8    Birgit Fischer-Schmidt              12
+9    Sawao Kato                          12
+10   Ryan Steven Lochte                  12
 </pre></div></section><section class="subsection" id="ch-olympics-5-4"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">32.3.3</span><span class="space"> </span><span class="title">List the top 10 countries by medals in only winter Olympics.</span>
 </h4>
-<div class="para" id="ch-olympics-5-4-2">To start off, we again filter only by those with medals and in this case the <code class="code-inline tex2jax_ignore">Season</code> column has the value <code class="code-inline tex2jax_ignore">Winter</code>. Then we group by the \texttt{Team} column, which represents the Country.  We then define <code class="code-inline tex2jax_ignore">Total_Medals</code> to be the number within each group.  Finally, we order (descending) by <code class="code-inline tex2jax_ignore">Total_Medals</code> and print the first 10 rows.</div>
+<div class="para" id="ch-olympics-5-4-2">To start off, we again filter only by those with medals and in this case the <code class="code-inline tex2jax_ignore">Season</code> column has the value <code class="code-inline tex2jax_ignore">Winter</code>. Then we group by the <code class="code-inline tex2jax_ignore">NOC</code> column, which represents the Country.  We then define <code class="code-inline tex2jax_ignore">Total_Medals</code> to be the number within each group.  Finally, we order (descending) by <code class="code-inline tex2jax_ignore">Total_Medals</code> and print the first 10 rows.</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">@chain olympics begin
   subset(:Season =&gt; s-&gt; s .== "Winter")
   subset(:Medal =&gt; m -&gt; m .!= "NA")
@@ -1262,45 +1259,105 @@ end
   combine(nrow)
   sort(:nrow, rev = true)
 end
-</code></pre></div></section><section class="subsection" id="ch-olympics-5-5"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">32.3.4</span><span class="space"> </span><span class="title">Plot the average weight for male and female in each year over the entire span of the Olympic games.</span>
+</code></pre></div>
+<div class="para" id="ch-olympics-5-4-4">the results of this is</div>
+<div class="para logical" id="ch-olympics-5-4-5"><pre class="code-display tex2jax_ignore">10×2 DataFrame
+Row  NOC       Num_Medals
+     String3   Int64
+1    USA       635
+2    CAN       611
+3    NOR       443
+4    URS       440
+5    SWE       428
+6    FIN       426
+7    GER       386
+8    AUT       280
+9    SUI       275
+10   RUS       260
+</pre></div></section><section class="subsection" id="ch-olympics-5-5"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">32.3.4</span><span class="space"> </span><span class="title">Produce a line plot the average weight for male and female in each year over the entire span of the Olympic games.</span>
 </h4>
-<div class="para" id="ch-olympics-5-5-2"></div>
+<div class="para" id="ch-olympics-5-5-2">In this case, first we’ll drop all rows in which the weight is missing.  Then we will group by both sex and year (the year in which the games took place) and then `combine` by finding the mean weight with:</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">@chain olympics begin
-  transform(:Weight =&gt; ByRow(w -&gt; w == "NA" ? missing : parse(Float64, w)) =&gt; :Weight_float)
-  dropmissing(:Weight_float)
+  dropmissing(:Weight)
   groupby([:Year, :Sex])
-  combine(:Weight_float =&gt; mean)
-  unstack(:Sex, :Weight_float_mean)
-  plot(_.Year, [_.M, _.F], label = ["M" "F"], legend = :right)
+  combine(:Weight =&gt; mean =gt; :Mean_weight)
 end
-</code></pre></div></section><section class="subsection" id="ch-olympics-5-6"><h4 class="heading hide-type">
+</code></pre></div>
+<div class="para" id="ch-olympics-5-5-4">The result of this is</div>
+<div class="para logical" id="ch-olympics-5-5-5"><pre class="code-display tex2jax_ignore">64×3 DataFrame   54 rows omitted
+Row   Year   Sex      Mean_weight
+      Int64  String1  Float64
+1     1896   M        71.3878
+2     1900   M        74.557
+3     1904   M        72.1973
+4     1906   M        75.9171
+5     1908   M        75.3861
+⋮       ⋮     ⋮          ⋮      
+60    2012   F        62.0538
+61    2014   M        77.9016
+62    2014   F        60.5203
+63    2016   M        78.5603
+64    2016   F        61.9313
+</pre></div>
+<div class="para" id="ch-olympics-5-5-6">It would be nice if we could rearrange the dataframe to make a M(ale) and F(emale) column and then that would be easily plotted.  This can be done with the <code class="code-inline tex2jax_ignore">unstack</code> function. Specifically, we can do the following:</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">weight = @chain olympics begin
+  dropmissing(:Weight)
+  groupby([:Year, :Sex])
+  combine(:Weight =&gt; mean =&gt; :Mean_weight)
+  unstack(:Sex, :Mean_weight)
+end
+</code></pre></div>
+<div class="para" id="ch-olympics-5-5-8">Now that we have the data, we can plot it with the following:</div>
+<div class="para logical" id="ch-olympics-5-5-9"><pre class="code-display tex2jax_ignore">fig, ax = lines(weight.Year, weight.M)
+lines!(ax, weight.Year, weight.F)
+fig
+</pre></div>
+<div class="para" id="ch-olympics-5-5-10">resulting in the plot</div>
+<figure class="figure figure-like" id="fig-olympics-weight"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/olympics/weight.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">32.1<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="subsection" id="ch-olympics-5-6"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">32.3.5</span><span class="space"> </span><span class="title">Plot the number of medals that the U.S. collected over each olympic year.</span>
 </h4>
-<div class="para" id="ch-olympics-5-6-2">First, we filter by the country, but this time use the <code class="code-inline tex2jax_ignore">NOC</code> column which is the country code.  We also filter out all in the <code class="code-inline tex2jax_ignore">Medal</code> column with value <code class="code-inline tex2jax_ignore">NA</code>. Since we want the number of medals by year, we group by the <code class="code-inline tex2jax_ignore">Year</code> column and define the <code class="code-inline tex2jax_ignore">num_medals</code> to be the length of the number elements in each group. Finally, we can just send (pipe) the results to the <code class="code-inline tex2jax_ignore">@df</code> macros which plots the dataframe.</div>
+<div class="para" id="ch-olympics-5-6-2">First, like above, we will drop rows with missing <code class="code-inline tex2jax_ignore">Medal</code> column and then  we filter by the country, using <code class="code-inline tex2jax_ignore">NOC</code> column which is the country code.  Since we want the number of medals by year, we group by the <code class="code-inline tex2jax_ignore">Year</code> column and define the <code class="code-inline tex2jax_ignore">num_medals</code> to be the length of the number elements in each group. Finally, we can just plot the results.  This can all happen in the same <code class="code-inline tex2jax_ignore">@chain</code> block as follows:</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">@chain olympics begin
   dropmissing(:Medal)
   subset(:NOC =&gt; name -&gt; name .== "USA")
   groupby(:Year)
-  combine(nrow)
-  bar(_.Year, _.nrow)
+  combine(nrow =&gt; :num_medals)
+  barplot(_.Year, _.num_medals)
 end
 </code></pre></div>
-<div class="para" id="ch-olympics-5-6-4">It is interesting to note that this database lists some medals from 1906\footnote{Suprising to the author, there was an event called the \href{https://en.wikipedia.org/wiki/1906_Intercalated_Games}{1906 Intercalated Games} in Athens, Greece.  This is listed in this database.} Also, it hard not to notice that the 1904 games sent a lot medals to the U.S.\footnote{The 1904 Olympic games were held in St. Louis, Missouri, which was quite difficult to get to from Europe and other places around the world. This resulted in a large number of American athletes winning medals.</div></section><section class="subsection" id="ch-olympics-5-7"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">32.3.6</span><span class="space"> </span><span class="title">What age the most common athlete?  What we are looking for is the mode of the age of all athletes.</span>
+<div class="para" id="ch-olympics-5-6-4">The results is the following plot</div>
+<figure class="figure figure-like" id="fig-olympics-usa"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/olympics/usa-by-year.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">32.2<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-olympics-5-6-6">It is interesting to note that this database lists some medals from 1906<details class="ptx-footnote" aria-live="polite" id="ch-olympics-5-6-6-1"><summary class="ptx-footnote__number" title="Footnote 32.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="ch-olympics-5-6-6-1">Suprising to the author, there was an event called the <a class="external" href="https://en.wikipedia.org/wiki/1906_Intercalated_Games" target="_blank">1906 Intercalated Games</a> in Athens, Greece.  This is listed in this database.</div></details> Also, it hard not to notice that the 1904 games sent a lot medals to the U.S.<details class="ptx-footnote" aria-live="polite" id="ch-olympics-5-6-6-2"><summary class="ptx-footnote__number" title="Footnote 32.4"><sup> 4 </sup></summary><div class="ptx-footnote__contents" id="ch-olympics-5-6-6-2">The 1904 Olympic games were held in St. Louis, Missouri, which was quite difficult to get to from Europe and other places around the world. This resulted in a large number of American athletes winning medals.</div></details>
+</div></section><section class="subsection" id="ch-olympics-5-7"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">32.3.6</span><span class="space"> </span><span class="title">What are the top 5 sports (not events) by total medals given for winter olympics between 1950 and 1970?</span>
 </h4>
-<div class="para" id="ch-olympics-5-7-2"></div>
-<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">@chain olympics begin
-  combine(:Age =&gt; mode)
+<div class="para" id="ch-olympics-5-7-2">Again, like above, since we are looking for total medals, we will drop all rows with a missing value in the <code class="code-inline tex2jax_ignore">Medal</code> column.  Then we subset (filter) rows to get winter games between 1950 and 1970.  Since we are looking for the top 5 events, we group by <code class="code-inline tex2jax_ignore">Event</code>, total the results then sort</div>
+<div class="para logical" id="ch-olympics-5-7-3"><pre class="code-display tex2jax_ignore">@chain olympics begin
+  dropmissing(:Medal)
+  subset([:Season, :Year] =&gt; (season, year) -&gt; season .== "Winter" .&amp;&amp; 1950 .&gt;= year .&gt;= 1970)
+  groupby(:Event)
+  combine(nrow)
+  sort(:nrow, rev = true)
+  first(5)
 end
-</code></pre></div></section><section class="subsection" id="ch-olympics-5-8"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">32.3.7</span><span class="space"> </span><span class="title">What are the top 5 sports (not events) by total medals given for winter olympics between 1950 and 1970?</span>
-</h4>
-<div class="para" id="ch-olympics-5-8-2"></div></section></section><section class="section" id="ch-olympics-6"><h3 class="heading hide-type">
+</pre></div>
+<div class="para" id="ch-olympics-5-7-4">the results are the following:</div>
+<div class="para logical" id="ch-olympics-5-7-5"><pre class="code-display tex2jax_ignore">5×2 DataFrame
+Row  Event                                                nrow
+     String                                               Int64
+1    Ice Hockey Men's Ice Hockey                          255
+2    Cross Country Skiing Men's 4 x 10 kilometres Relay   60
+3    Bobsleigh Men's Four                                 48
+4    Cross Country Skiing Women's 3 x 5 kilometres Relay  36
+5    Figure Skating Mixed Pairs                           32 
+</pre></div>
+<div class="para" id="ch-olympics-5-7-6">It may seem shocking to see a huge number of ice hockey medals in the timeframe, but since this is a team sport, every member of the team gets the medal.  There are generally about 20-25 players on an ice hockey team.</div></section></section><section class="section" id="ch-olympics-6"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">32.4</span><span class="space"> </span><span class="title">Exercise</span>
 </h3>
 <details id="ch-olympics-6-2" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
-<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">32.1</span><span class="period">.</span>
+<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">32.3</span><span class="period">.</span>
 </h4></summary><article class="exercise exercise-like knowl__content"><div class="introduction" id="ch-olympics-6-2-1"><div class="para" id="ch-olympics-6-2-1-1">Use the dataset for this chapter to answer the following questions:</div></div>
 <article class="task exercise-like" id="ch-olympics-6-2-2"><h5 class="heading"><span class="codenumber">(a)</span></h5>
 <div class="para" id="ch-olympics-6-2-2-1-1">Who has the most Winter Olympic Silver medals?</div></article><article class="task exercise-like" id="ch-olympics-6-2-3"><h5 class="heading"><span class="codenumber">(b)</span></h5>
