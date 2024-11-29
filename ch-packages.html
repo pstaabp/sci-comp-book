@@ -156,9 +156,9 @@ window.MathJax = {
 #ch-olympics-2-1-1 { counter-set: ch-olympics-2-1-1 0; }
 #ch-olympics-2-1-1 > li::marker { content: ""counter(ch-olympics-2-1-1,decimal)"."; }
 #ch-olympics-2-1-1 > li { counter-increment: ch-olympics-2-1-1; }
-#ch-num-int-3-17-1 { counter-set: ch-num-int-3-17-1 0; }
-#ch-num-int-3-17-1 > li::marker { content: ""counter(ch-num-int-3-17-1,decimal)"."; }
-#ch-num-int-3-17-1 > li { counter-increment: ch-num-int-3-17-1; }
+#ch-num-int-3-16-1 { counter-set: ch-num-int-3-16-1 0; }
+#ch-num-int-3-16-1 > li::marker { content: ""counter(ch-num-int-3-16-1,decimal)"."; }
+#ch-num-int-3-16-1 > li { counter-increment: ch-num-int-3-16-1; }
 #sect-installing-vscode-7-1 { counter-set: sect-installing-vscode-7-1 0; }
 #sect-installing-vscode-7-1 > li::marker { content: ""counter(sect-installing-vscode-7-1,decimal)"."; }
 #sect-installing-vscode-7-1 > li { counter-increment: sect-installing-vscode-7-1; }
@@ -540,7 +540,8 @@ window.MathJax = {
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-7" class="internal"><span class="codenumber">14.5</span> <span class="title">Contour Plots</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-8" class="internal"><span class="codenumber">14.6</span> <span class="title">Vector Field and Stream plots</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-9" class="internal"><span class="codenumber">14.7</span> <span class="title">Backends for Makie</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-9" class="internal"><span class="codenumber">14.7</span> <span class="title">Updating axis elements in a shorthand manner</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-10" class="internal"><span class="codenumber">14.8</span> <span class="title">Backends for Makie</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
@@ -853,7 +854,10 @@ window.MathJax = {
 </li>
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-linear-regression.html" class="internal"><span class="codenumber">30</span> <span class="title">Linear Regression</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-3" class="internal"><span class="codenumber">30.1</span> <span class="title">Basics of Linear Regression</span></a></div></li></ul>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-3" class="internal"><span class="codenumber">30.1</span> <span class="title">Basics of Linear Regression</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-4" class="internal"><span class="codenumber">30.2</span> <span class="title">Linear Regression with GLM package</span></a></div></li>
+</ul>
 </li>
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-census.html" class="internal"><span class="codenumber">31</span> <span class="title">Analyzing Census Data</span></a></div>
@@ -964,11 +968,13 @@ window.MathJax = {
 </li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5" class="internal"><span class="codenumber">36.3</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">DifferentialEquations package</code></span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-3" class="internal"><span class="codenumber">36.3.1</span> <span class="title">A Simple Example</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-6" class="internal"><span class="codenumber">36.4</span> <span class="title">Example of a system of differential equations</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-3" class="internal"><span class="codenumber">36.3.1</span> <span class="title">A Simple Example</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-4" class="internal"><span class="codenumber">36.3.2</span> <span class="title">Example of a system of differential equations</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-5" class="internal"><span class="codenumber">36.3.3</span> <span class="title">The Lorenz System</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-6" class="internal"><span class="codenumber">36.3.4</span> <span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-6-3" class="internal"><span class="codenumber">36.4.1</span> <span class="title">The Lorenz System</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-6-4" class="internal"><span class="codenumber">36.4.2</span> <span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span></a></div></li>
 </ul>
 </li>
 </ul>
@@ -1144,56 +1150,50 @@ window.MathJax = {
 </h2>
 <section class="introduction" id="ch-packages-2"><div class="para" id="ch-packages-2-1">As with many software packages, additional functionality is available in other libraries or packages. If you take a look at <a class="external" href="Julia's\%20Package\%20Listing" target="_blank">https://juliaobserver.com</a><details class="ptx-footnote" aria-live="polite" id="ch-packages-2-1-2"><summary class="ptx-footnote__number" title="Footnote B.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="ch-packages-2-1-2"><code class="code-inline tex2jax_ignore">juliaobserver.com</code></div></details> there are about 2000 packages (as of Fall 2018). Clicking on any of the package names will give additional information about the package including documentation (hopefully).</div>
 <div class="para" id="ch-packages-2-2">If you don’t have a package installed and try to use it, like:</div>
-<div class="para logical" id="ch-packages-2-3"><pre class="code-display tex2jax_ignore">
-			using Primes
-			</pre></div>
+<div class="para logical" id="ch-packages-2-3"><pre class="code-display tex2jax_ignore">using Primes
+</pre></div>
 <div class="para" id="ch-packages-2-4">you will get an error that it isn’t installed--unless you actually installed it previously. You can add the package by</div>
-<div class="para logical" id="ch-packages-2-5"><pre class="code-display tex2jax_ignore">
-			using Pkg
-			Pkg.add("Primes")
-			</pre></div>
+<div class="para logical" id="ch-packages-2-5"><pre class="code-display tex2jax_ignore">using Pkg
+Pkg.add("Primes")
+</pre></div>
 <div class="para" id="ch-packages-2-6">and after fetching the package, rerunning</div>
-<div class="para logical" id="ch-packages-2-7"><pre class="code-display tex2jax_ignore">
-			using Primes
-			</pre></div>
+<div class="para logical" id="ch-packages-2-7"><pre class="code-display tex2jax_ignore">using Primes
+</pre></div>
 <div class="para" id="ch-packages-2-8">should no longer give an error. Then, for example, try</div>
-<div class="para logical" id="ch-packages-2-9"><pre class="code-display tex2jax_ignore">
-			isprime(17)
-			</pre></div>
-<div class="para" id="ch-packages-2-10">which returns \verb!true! because 17 is a prime number. This is a nondeterministic function that determines if a number is true. The documentation for the Primes package is at \url{https://github.com/JuliaMath/Primes.jl} and demonstrates 4 commands including <code class="code-inline tex2jax_ignore">isprime</code> and <code class="code-inline tex2jax_ignore">factor</code> which returns all prime factors (and the order).</div>
+<div class="para logical" id="ch-packages-2-9"><pre class="code-display tex2jax_ignore">isprime(17)
+</pre></div>
+<div class="para" id="ch-packages-2-10">which returns <code class="code-inline tex2jax_ignore">true</code> because 17 is a prime number. This is a nondeterministic function that determines if a number is true and you can find out more information at <a class="external" href="https://github.com/JuliaMath/Primes.jl" target="_blank">the Primes package documentation.</a><details class="ptx-footnote" aria-live="polite" id="ch-packages-2-10-3"><summary class="ptx-footnote__number" title="Footnote B.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-packages-2-10-3"><code class="code-inline tex2jax_ignore">github.com/JuliaMath/Primes.jl</code></div></details> This demonstrates 4 commands including <code class="code-inline tex2jax_ignore">isprime</code> and <code class="code-inline tex2jax_ignore">factor</code> which returns all prime factors (and the order).</div>
 <div class="para logical" id="ch-packages-2-11">
 <div class="para">A few other packages that we have seen or will see:</div>
 <ul class="disc" id="ch-packages-2-11-1">
 <li id="ch-packages-2-11-1-1"><div class="para" id="ch-packages-2-11-1-1-1">IJulia -- provides the browser interface to Julia. You are probably already using this.</div></li>
-<li id="ch-packages-2-11-1-2"><div class="para" id="ch-packages-2-11-1-2-1">ForwardDiff -- does Automatic Differentiation (see Chapter 8)</div></li>
-<li id="ch-packages-2-11-1-3"><div class="para" id="ch-packages-2-11-1-3-1">Plots -- A plotting packages (See Chapter 11)</div></li>
-<li id="ch-packages-2-11-1-4"><div class="para" id="ch-packages-2-11-1-4-1">GR -- A backend to the Plots package.</div></li>
-<li id="ch-packages-2-11-1-5"><div class="para" id="ch-packages-2-11-1-5-1">PlotlyJS -- Another nice backend to the Plots package.</div></li>
-<li id="ch-packages-2-11-1-6"><div class="para" id="ch-packages-2-11-1-6-1">DataFrames -- a way to nicely handle datasets generally loaded from external files.</div></li>
+<li id="ch-packages-2-11-1-2"><div class="para" id="ch-packages-2-11-1-2-1">ForwardDiff -- does Automatic Differentiation (see <a href="ch-rootfinding.html" class="internal" title="Chapter 11: Solving Quadratics and Rootfinding">Chapter 11</a>)</div></li>
+<li id="ch-packages-2-11-1-3"><div class="para" id="ch-packages-2-11-1-3-1">Makie -- A plotting package (See <a href="ch-plotting-makie.html" class="internal" title="Chapter 14: Using Makie for Plots">Chapter 14</a>)</div></li>
+<li id="ch-packages-2-11-1-4"><div class="para" id="ch-packages-2-11-1-4-1">CairoMakie -- A backend to the Makie package.</div></li>
+<li id="ch-packages-2-11-1-5"><div class="para" id="ch-packages-2-11-1-5-1">DataFrames -- a way to nicely handle datasets generally loaded from external files, which are used in <a href="ch-data.html" class="internal" title="Chapter 28: Introduction to Data Analysis">Chapter 28</a>
+</div></li>
 </ul>
 <div class="para">
 <a href="ch-packages.html" class="internal" title="Appendix B: Managing Packages">Appendix B</a> will show how to create our own packages also called a module.</div>
 </div></section><section class="section" id="ch-packages-3"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">B.1</span><span class="space"> </span><span class="title">Managing Packages in Julia</span>
 </h3>
-<section class="introduction" id="ch-packages-3-2"><div class="para" id="ch-packages-3-2-1">Although we can use the <code class="code-inline tex2jax_ignore">Pkg</code> package to handle packages, this section will use the terminal REPL to handle any non-standard packages. Additional documentation on this is given in <a class="external" href="Julia's\%20package\%20manager\%20help\%20pages" target="_blank">https://docs.julialang.org/en/latest/stdlib/Pkg/</a><details class="ptx-footnote" aria-live="polite" id="ch-packages-3-2-1-3"><summary class="ptx-footnote__number" title="Footnote B.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-packages-3-2-1-3"><code class="code-inline tex2jax_ignore">julialang.org</code></div></details> First, open up a terminal version of julia (generally by opening the application that you downloaded). You will get:</div>
+<section class="introduction" id="ch-packages-3-2"><div class="para" id="ch-packages-3-2-1">Although we can use the <code class="code-inline tex2jax_ignore">Pkg</code> package to handle packages, this section will use the terminal REPL to handle any non-standard packages. Additional documentation on this is given in <a class="external" href="Julia's\%20package\%20manager\%20help\%20pages" target="_blank">https://docs.julialang.org/en/latest/stdlib/Pkg/</a><details class="ptx-footnote" aria-live="polite" id="ch-packages-3-2-1-3"><summary class="ptx-footnote__number" title="Footnote B.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="ch-packages-3-2-1-3"><code class="code-inline tex2jax_ignore">julialang.org</code></div></details> First, open up a terminal version of julia (generally by opening the application that you downloaded). You will get:</div>
 <div class="para logical" id="ch-packages-3-2-2"><pre class="code-display tex2jax_ignore">               _
    _       _ _(_)_     |  Documentation: https://docs.julialang.org
   (_)     | (_) (_)    |
    _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
   | | | | | | |/ _` |  |
-  | | |_| | | | (_| |  |  Version 1.4.1 (2020-04-14)
+  | | |_| | | | (_| |  |  Version 1.11.1 (2024-10-16)
  _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
 |__/                   |
 </pre></div>
 <div class="para" id="ch-packages-3-2-3">or similar and then</div>
-<div class="para logical" id="ch-packages-3-2-4"><pre class="code-display tex2jax_ignore">
-				julia&gt;
-				</pre></div>
+<div class="para logical" id="ch-packages-3-2-4"><pre class="code-display tex2jax_ignore">julia&gt;
+</pre></div>
 <div class="para" id="ch-packages-3-2-5">which means we’re ready to handle julia commands. If we type <code class="code-inline tex2jax_ignore">{]</code>}, then the prompt turns into:</div>
-<div class="para logical" id="ch-packages-3-2-6"><pre class="code-display tex2jax_ignore">
-				(v1.4) pkg&gt;
-				</pre></div>
+<div class="para logical" id="ch-packages-3-2-6"><pre class="code-display tex2jax_ignore">(v1.11) pkg&gt;
+</pre></div>
 <div class="para" id="ch-packages-3-2-7">where the 1.4 will be the version of julia that you are running. There are a number of commands that we will cover here:</div>
 <div class="para logical" id="ch-packages-3-2-8"><ul class="disc" id="ch-packages-3-2-8-1">
 <li id="ch-packages-3-2-8-1-1"><div class="para" id="ch-packages-3-2-8-1-1-1">add</div></li>
@@ -1209,50 +1209,42 @@ window.MathJax = {
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">B.1.1</span><span class="space"> </span><span class="title">Adding a package</span>
 </h4>
 <div class="para" id="ch-packages-3-3-2">In the package command line, type <code class="code-inline tex2jax_ignore">add</code> \emph{package\_name} to add the package. For example, to add the <code class="code-inline tex2jax_ignore">ForwardDff</code> package:</div>
-<div class="para logical" id="ch-packages-3-3-3"><pre class="code-display tex2jax_ignore">
-				add ForwardDiff
-				</pre></div>
+<div class="para logical" id="ch-packages-3-3-3"><pre class="code-display tex2jax_ignore">add ForwardDiff
+</pre></div>
 <div class="para" id="ch-packages-3-3-4">and it is not installed, you will get something like:</div>
-<div class="para logical" id="ch-packages-3-3-5"><pre class="code-display tex2jax_ignore">
-				Updating registry at `~/.julia/registries/General`
-				Updating git-repo `https://github.com/JuliaRegistries/General.git`
-				Updating `~/.julia/environments/v1.0/Project.toml`
-				[f6369f11] + ForwardDiff v0.9.0
-				Updating `~/.julia/environments/v1.0/Manifest.toml`
-				[9e28174c] + BinDeps v0.8.10
-				[bbf7d656] + CommonSubexpressions v0.2.0
-				[163ba53b] + DiffResults v0.0.3
-				[b552c78f] + DiffRules v0.0.7
-				[f6369f11] + ForwardDiff v0.9.0
-				[77ba4419] + NaNMath v0.3.2
-				[276daf66] + SpecialFunctions v0.7.0
-				[90137ffa] + StaticArrays v0.8.3
-				</pre></div>
+<div class="para logical" id="ch-packages-3-3-5"><pre class="code-display tex2jax_ignore">Updating registry at `~/.julia/registries/General` 
+Updating git-repo `https://github.com/JuliaRegistries/General.git` 
+Updating `~/.julia/environments/v1.0/Project.toml` 
+[f6369f11] + ForwardDiff v0.9.0 
+Updating `~/.julia/environments/v1.0/Manifest.toml` 
+[9e28174c] + BinDeps v0.8.10 
+[bbf7d656] + CommonSubexpressions v0.2.0 
+[163ba53b] + DiffResults v0.0.3 
+[b552c78f] + DiffRules v0.0.7 
+[f6369f11] + ForwardDiff v0.9.0 
+[77ba4419] + NaNMath v0.3.2 
+[276daf66] + SpecialFunctions v0.7.0 
+[90137ffa] + StaticArrays v0.8.3 
+</pre></div>
 <div class="para" id="ch-packages-3-3-6">A few things to note:</div>
 <div class="para logical" id="ch-packages-3-3-7"><ul class="disc" id="ch-packages-3-3-7-1">
-<li id="ch-packages-3-3-7-1-1"><div class="para" id="ch-packages-3-3-7-1-1-1">You results will vary depending on version numbers avaiable and what subpackages (like \verb!DiffRules! or \verb!StaticArrays! are needed for the current version of the package you want to load.</div></li>
+<li id="ch-packages-3-3-7-1-1"><div class="para" id="ch-packages-3-3-7-1-1-1">You results will vary depending on version numbers avaiable and what subpackages (like <code class="code-inline tex2jax_ignore">DiffRules</code> or <code class="code-inline tex2jax_ignore">StaticArrays</code>) are needed for the current version of the package you want to load.</div></li>
 <li id="ch-packages-3-3-7-1-2"><div class="para" id="ch-packages-3-3-7-1-2-1">The line after the 2nd <code class="code-inline tex2jax_ignore">Updating</code> line is the package (and version) that you are installing.</div></li>
 <li id="ch-packages-3-3-7-1-3"><div class="para" id="ch-packages-3-3-7-1-3-1">All of the lines after the 3rd <code class="code-inline tex2jax_ignore">Updating</code> line is all of the  packages that this depends on.</div></li>
 <li id="ch-packages-3-3-7-1-4"><div class="para" id="ch-packages-3-3-7-1-4-1">The + sign means that the package is being added.</div></li>
 </ul></div>
 <div class="para" id="ch-packages-3-3-8">If you want to add multiple packages at the same time, say packages A, B and C, type <code class="code-inline tex2jax_ignore">add\ A\ B\ C</code>. You can also add particular versions of a package (often for testing or to avoid a bug). For example, if you want version 0.3.0 of <code class="code-inline tex2jax_ignore">ForwardDiff</code> type:</div>
-<div class="para logical" id="ch-packages-3-3-9"><pre class="code-display tex2jax_ignore">
-				add ForwardDiff@0.3.0
-				</pre></div>
+<div class="para logical" id="ch-packages-3-3-9"><pre class="code-display tex2jax_ignore"> add ForwardDiff@0.3.0 </pre></div>
 <div class="para" id="ch-packages-3-3-10">You will then get info on the dependencies on that version.</div></section><section class="subsection" id="ch-packages-3-4"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">B.1.2</span><span class="space"> </span><span class="title">Package Status</span>
 </h4>
 <div class="para" id="ch-packages-3-4-2">The <code class="code-inline tex2jax_ignore">status</code> command (or <code class="code-inline tex2jax_ignore">st</code>) will just list all of the main packages installed. For example,</div>
-<div class="para logical" id="ch-packages-3-4-3"><pre class="code-display tex2jax_ignore">
-				Status `~/.julia/environments/v1.0/Project.toml`
-				[c52e3926] Atom v0.7.6
-				[336ed68f] CSV v0.3.1
-				[a93c6f00] DataFrames v0.13.1
-				[f6369f11] ForwardDiff v0.9.0
-				[7073ff75] IJulia v1.12.0
-				[e5e0dc1b] Juno v0.5.3
-				[1a8c2f83] Query v0.10.0
-				</pre></div>
+<div class="para logical" id="ch-packages-3-4-3"><pre class="code-display tex2jax_ignore">Status `~/.julia/environments/v1.11/Project.toml`
+[336ed68f] CSV v0.10.15
+[a93c6f00] DataFrames v1.7.0
+[f6369f11] ForwardDiff v0.10.38
+[7073ff75] IJulia v1.26.0
+</pre></div>
 <div class="para" id="ch-packages-3-4-4">and note that these are just the packages added by the <code class="code-inline tex2jax_ignore">add</code> command, not all of the dependencies. If you want all of the dependencies as well, type <code class="code-inline tex2jax_ignore">st\ -\/-manifest</code> and I get a huge list of packages.</div></section><section class="subsection" id="ch-packages-3-5"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">B.1.3</span><span class="space"> </span><span class="title">Removing a Package</span>
 </h4>
@@ -1260,15 +1252,14 @@ window.MathJax = {
 <div class="para logical" id="ch-packages-3-5-3"><pre class="code-display tex2jax_ignore">remove ForwardDiff
 </pre></div>
 <div class="para" id="ch-packages-3-5-4">we get the following:</div>
-<div class="para logical" id="ch-packages-3-5-5"><pre class="code-display tex2jax_ignore">
-				Updating `~/.julia/environments/v1.0/Project.toml`
-				[f6369f11] - ForwardDiff v0.3.0
-				Updating `~/.julia/environments/v1.0/Manifest.toml`
-				[49dc2e85] - Calculus v0.4.1
-				[c5cfe0b6] - DiffBase v0.2.0
-				[f6369f11] - ForwardDiff v0.3.0
-				[77ba4419] - NaNMath v0.3.2
-				</pre></div>
+<div class="para logical" id="ch-packages-3-5-5"><pre class="code-display tex2jax_ignore">Updating `~/.julia/environments/v1.0/Project.toml` 
+[f6369f11] - ForwardDiff v0.3.0 
+Updating `~/.julia/environments/v1.0/Manifest.toml` 
+[49dc2e85] - Calculus v0.4.1 
+[c5cfe0b6] - DiffBase v0.2.0 
+[f6369f11] - ForwardDiff v0.3.0 
+[77ba4419] - NaNMath v0.3.2 
+</pre></div>
 <div class="para" id="ch-packages-3-5-6">Note:</div>
 <div class="para logical" id="ch-packages-3-5-7"><ul class="disc" id="ch-packages-3-5-7-1">
 <li id="ch-packages-3-5-7-1-1"><div class="para" id="ch-packages-3-5-7-1-1-1">The <code class="code-inline tex2jax_ignore">rm</code> command removes the package from the list of available packages, but doesn’t remove them from your harddrive.</div></li>
@@ -1277,14 +1268,13 @@ window.MathJax = {
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">B.1.4</span><span class="space"> </span><span class="title">Updating packages</span>
 </h4>
 <div class="para" id="ch-packages-3-6-2">If you type <code class="code-inline tex2jax_ignore">update</code> or <code class="code-inline tex2jax_ignore">up</code> you will update all of the installed packages (and dependencies). For example:</div>
-<div class="para logical" id="ch-packages-3-6-3"><pre class="code-display tex2jax_ignore">
-				Updating `~/.julia/environments/v1.0/Project.toml`
-				[7073ff75] ↑ IJulia v1.11.1 ⇒ v1.12.0
-				Updating `~/.julia/environments/v1.0/Manifest.toml`
-				[7073ff75] ↑ IJulia v1.11.1 ⇒ v1.12.0
-				[b85f4697] ↑ SoftGlobalScope v1.0.5 ⇒ v1.0.7
-				[5e66a065] ↑ TableShowUtils v0.1.1 ⇒ v0.2.0
-				</pre></div>
+<div class="para logical" id="ch-packages-3-6-3"><pre class="code-display tex2jax_ignore">Updating `~/.julia/environments/v1.0/Project.toml` 
+[7073ff75] ↑ IJulia v1.11.1 ⇒ v1.12.0 
+Updating `~/.julia/environments/v1.0/Manifest.toml` 
+[7073ff75] ↑ IJulia v1.11.1 ⇒ v1.12.0 
+[b85f4697] ↑ SoftGlobalScope v1.0.5 ⇒ v1.0.7 
+[5e66a065] ↑ TableShowUtils v0.1.1 ⇒ v0.2.0 
+</pre></div>
 <div class="para" id="ch-packages-3-6-4">and all updates will be with an ↑. If you only want to update a single package, type the name after <code class="code-inline tex2jax_ignore">update</code>.</div></section><section class="subsection" id="ch-packages-3-7"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">B.1.5</span><span class="space"> </span><span class="title">Building Packages</span>
 </h4>
@@ -1292,20 +1282,16 @@ window.MathJax = {
 <div class="para logical" id="ch-packages-3-7-3"><pre class="code-display tex2jax_ignore">build
 </pre></div>
 <div class="para" id="ch-packages-3-7-4">or if you only want say <code class="code-inline tex2jax_ignore">IJulia</code> built,</div>
-<div class="para logical" id="ch-packages-3-7-5"><pre class="code-display tex2jax_ignore">
-				build IJulia
-				</pre></div></section><section class="subsection" id="ch-packages-3-8"><h4 class="heading hide-type">
+<div class="para logical" id="ch-packages-3-7-5"><pre class="code-display tex2jax_ignore"> build IJulia </pre></div></section><section class="subsection" id="ch-packages-3-8"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">B.1.6</span><span class="space"> </span><span class="title">Precompiling packages</span>
 </h4>
 <div class="para" id="ch-packages-3-8-2">When a package is used, often it requests to be compiled. For example, when <code class="code-inline tex2jax_ignore">using\ Primes</code>, then following is shown:</div>
-<div class="para logical" id="ch-packages-3-8-3"><pre class="code-display tex2jax_ignore">
-				[ Info: Precompiling Primes [27ebfcd6-29c5-5fa9-bf4b-fb8fc14df3ae]
-				</pre></div>
+<div class="para logical" id="ch-packages-3-8-3"><pre class="code-display tex2jax_ignore">[ Info: Precompiling Primes [27ebfcd6-29c5-5fa9-bf4b-fb8fc14df3ae]
+</pre></div>
 <div class="para" id="ch-packages-3-8-4">and basically some code is compiled beforehand, generally to speed up code. You can precompile all code with</div>
-<div class="para logical" id="ch-packages-3-8-5"><pre class="code-display tex2jax_ignore">
-				precompile
-				</pre></div>
-<div class="para" id="ch-packages-3-8-6">and it may take a while, but you won’t have to wait, when you load the package with the <code class="code-inline tex2jax_ignore">using</code> command.</div></section><section class="subsection" id="ch-packages-3-9"><h4 class="heading hide-type">
+<div class="para logical" id="ch-packages-3-8-5"><pre class="code-display tex2jax_ignore">precompile
+</pre></div>
+<div class="para" id="ch-packages-3-8-6">and it may take a while, but you won’t have to wait, when you load the package with the <code class="code-inline tex2jax_ignore">using</code> command. This is generally not needed anymore and is done automatically.</div></section><section class="subsection" id="ch-packages-3-9"><h4 class="heading hide-type">
 <span class="type">Subsection</span><span class="space"> </span><span class="codenumber">B.1.7</span><span class="space"> </span><span class="title">Testing a Packages</span>
 </h4>
 <div class="para" id="ch-packages-3-9-2">To test a packge, say the <code class="code-inline tex2jax_ignore">ForwardDiff</code> package, then</div>

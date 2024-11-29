@@ -156,9 +156,9 @@ window.MathJax = {
 #ch-olympics-2-1-1 { counter-set: ch-olympics-2-1-1 0; }
 #ch-olympics-2-1-1 > li::marker { content: ""counter(ch-olympics-2-1-1,decimal)"."; }
 #ch-olympics-2-1-1 > li { counter-increment: ch-olympics-2-1-1; }
-#ch-num-int-3-17-1 { counter-set: ch-num-int-3-17-1 0; }
-#ch-num-int-3-17-1 > li::marker { content: ""counter(ch-num-int-3-17-1,decimal)"."; }
-#ch-num-int-3-17-1 > li { counter-increment: ch-num-int-3-17-1; }
+#ch-num-int-3-16-1 { counter-set: ch-num-int-3-16-1 0; }
+#ch-num-int-3-16-1 > li::marker { content: ""counter(ch-num-int-3-16-1,decimal)"."; }
+#ch-num-int-3-16-1 > li { counter-increment: ch-num-int-3-16-1; }
 #sect-installing-vscode-7-1 { counter-set: sect-installing-vscode-7-1 0; }
 #sect-installing-vscode-7-1 > li::marker { content: ""counter(sect-installing-vscode-7-1,decimal)"."; }
 #sect-installing-vscode-7-1 > li { counter-increment: sect-installing-vscode-7-1; }
@@ -540,7 +540,8 @@ window.MathJax = {
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-7" class="internal"><span class="codenumber">14.5</span> <span class="title">Contour Plots</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-8" class="internal"><span class="codenumber">14.6</span> <span class="title">Vector Field and Stream plots</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-9" class="internal"><span class="codenumber">14.7</span> <span class="title">Backends for Makie</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-9" class="internal"><span class="codenumber">14.7</span> <span class="title">Updating axis elements in a shorthand manner</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-10" class="internal"><span class="codenumber">14.8</span> <span class="title">Backends for Makie</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
@@ -853,7 +854,10 @@ window.MathJax = {
 </li>
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-linear-regression.html" class="internal"><span class="codenumber">30</span> <span class="title">Linear Regression</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-3" class="internal"><span class="codenumber">30.1</span> <span class="title">Basics of Linear Regression</span></a></div></li></ul>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-3" class="internal"><span class="codenumber">30.1</span> <span class="title">Basics of Linear Regression</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-4" class="internal"><span class="codenumber">30.2</span> <span class="title">Linear Regression with GLM package</span></a></div></li>
+</ul>
 </li>
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-census.html" class="internal"><span class="codenumber">31</span> <span class="title">Analyzing Census Data</span></a></div>
@@ -964,11 +968,13 @@ window.MathJax = {
 </li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5" class="internal"><span class="codenumber">36.3</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">DifferentialEquations package</code></span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-3" class="internal"><span class="codenumber">36.3.1</span> <span class="title">A Simple Example</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-6" class="internal"><span class="codenumber">36.4</span> <span class="title">Example of a system of differential equations</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-3" class="internal"><span class="codenumber">36.3.1</span> <span class="title">A Simple Example</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-4" class="internal"><span class="codenumber">36.3.2</span> <span class="title">Example of a system of differential equations</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-5" class="internal"><span class="codenumber">36.3.3</span> <span class="title">The Lorenz System</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-6" class="internal"><span class="codenumber">36.3.4</span> <span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-6-3" class="internal"><span class="codenumber">36.4.1</span> <span class="title">The Lorenz System</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-6-4" class="internal"><span class="codenumber">36.4.2</span> <span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span></a></div></li>
 </ul>
 </li>
 </ul>
@@ -1176,7 +1182,7 @@ y_2' \amp = -4y_1
 <div class="para" id="ch-diffeq-3-2-2"></div>
 <div class="para logical" id="ch-diffeq-3-2-3"><div class="displaymath process-math" id="eq-diff-eqn-simple">
 \begin{equation}
-y' = f(y,t), \qquad y(0) = y_0 \tag{36.1}
+y' = f(y,t), \qquad y(0) = y_0\tag{36.1}
 \end{equation}
 </div></div>
 <div class="para" id="ch-diffeq-3-2-4">with the understanding that we will solve this at a discrete set of points, so we let <span class="process-math">\(y_n = y(t_n)\)</span> and <span class="process-math">\(t_k = t_0 + k\Delta t\text{,}\)</span> where <span class="process-math">\(\Delta t\)</span> is a small time step.  We can then replace <span class="process-math">\(y'\)</span> with the approximation:</div>
@@ -1233,8 +1239,10 @@ end
 <div class="para logical" id="ch-diffeq-3-3-7-3"><pre class="code-display tex2jax_ignore">([0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0], [1.0, 1.1, 1.2100000000000002, 1.3310000000000002, 1.4641000000000002, 1.61051, 1.7715610000000002, 1.9487171, 2.1435888100000002, 2.357947691, 2.5937424601])
 </pre></div>
 <div class="para" id="ch-diffeq-3-3-7-4">which is a tuple of two arrays.  This results the <span class="process-math">\(t\)</span> and <span class="process-math">\(y\)</span> values based on Euler’s method.  However, perhaps it’s more interesting to see a plot.  Also, note that the analytic solution to this is <span class="process-math">\(y=e^x\text{,}\)</span> so the plot of the approximate solution using Euler’s method as well as the analytic solution is</div>
-<div class="para logical" id="ch-diffeq-3-3-7-5"><pre class="code-display tex2jax_ignore">plot(t,y,label="Euler's solution")
-plot!(t-&gt;exp(t),0,1,label="Analytic solution")
+<div class="para logical" id="ch-diffeq-3-3-7-5"><pre class="code-display tex2jax_ignore">fig, ax = lines(t,y,label="Euler's solution")
+lines!(ax, 0..1, exp,label="Analytic solution")
+axislegend(ax, position = :lt)
+fig
 </pre></div>
 <figure class="figure figure-like" id="fig-euler"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/diffeqn/euler.png" class="contained" alt="(for accessibility)"></div>
 <figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">36.2<span class="period">.</span></span><span class="space"> </span></figcaption></figure></article></details></section></section><section class="section" id="ch-diffeq-4"><h3 class="heading hide-type">
@@ -1277,7 +1285,9 @@ end
 <div class="para" id="ch-diffeq-4-3-4">and we can use this to solve <span class="process-math">\(y'=y\text{,}\)</span> <span class="process-math">\(y(0)=1\)</span> by</div>
 <div class="para logical" id="ch-diffeq-4-3-5"><pre class="code-display tex2jax_ignore">t,y = rk4((t,y) -&gt; y, 0, 1, 0.1, 10)
 </pre></div>
-<div class="para" id="ch-diffeq-4-3-6">and the results are  <code class="code-inline tex2jax_ignore"></code>.</div></section></section><section class="section" id="ch-diffeq-5"><h3 class="heading hide-type">
+<div class="para" id="ch-diffeq-4-3-6">and the results are</div>
+<div class="para logical" id="ch-diffeq-4-3-7"><pre class="code-display tex2jax_ignore">(LinRange{Float64}(0.0, 1.0, 11), [1.0, 1.1051708333333332, 1.2214025708506944, 1.3498584970625376, 1.4918242400806856, 1.648720638596838, 1.822117962091933, 2.0137516265967768, 2.2255395632923154, 2.459601413780071, 2.718279744135166]) 
+</pre></div></section></section><section class="section" id="ch-diffeq-5"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">36.3</span><span class="space"> </span><span class="title">Using the <code class="code-inline tex2jax_ignore">DifferentialEquations package</code></span>
 </h3>
 <section class="introduction" id="ch-diffeq-5-2"><div class="para" id="ch-diffeq-5-2-1">There is a very mature and robust package for solving differential equations aptly called <code class="code-inline tex2jax_ignore">DifferentialEquations</code>.  We will show a few examples to get a feeling for how to use the package, but as you can tell from <a class="external" href="https://docs.sciml.ai/dev/index.html" target="_blank">the documentation</a><details class="ptx-footnote" aria-live="polite" id="ch-diffeq-5-2-1-3"><summary class="ptx-footnote__number" title="Footnote 36.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-diffeq-5-2-1-3"><code class="code-inline tex2jax_ignore">docs.sciml.ai</code></div></details>, that there are a lot of possibilities with the package so we’ll show a couple of examples.</div>
@@ -1316,74 +1326,170 @@ u0: 1.0
 </pre></div>
 <div class="para" id="ch-diffeq-5-3-12">This gives information about the datatypes of the function and initial condition because some solvers will use this information differently. to solve this problem,</div>
 <div class="para logical" id="ch-diffeq-5-3-13"><pre class="code-display tex2jax_ignore"> sol = solve(prob) </pre></div>
-<div class="para" id="ch-diffeq-5-3-14">which returns \jlc[diffeq]{display(sol)} \printpythontex[verbatim]</div>
-<div class="para" id="ch-diffeq-5-3-15">Note that the solution appears to be an array of time (that isn’t equally-spaced) and function values at those <span class="process-math">\(t\)</span> values.  If you want to access one of them, you can do:</div>
-<div class="para logical" id="ch-diffeq-5-3-16"><pre class="code-display tex2jax_ignore"> sol[3] </pre></div>
-<div class="para" id="ch-diffeq-5-3-17">which returns \jlc[diffeq]{print(sol[3])}\printpythontex[verb], the third element in the array.  However, this structure is much more than just an array. If you want the function value at 0.75, for example, you can access it like a function evaluation:</div>
-<div class="para logical" id="ch-diffeq-5-3-18"><pre class="code-display tex2jax_ignore"> sol(0.75) </pre></div>
-<div class="para" id="ch-diffeq-5-3-19">which returns \jlc[diffeq]{print(sol(0.75))} \printpythontex[verb]~ and this is interpolated from the generated points.  The result guarantees accuracy to within a default tolerance of <code class="code-inline tex2jax_ignore">1e-3</code> or you can set a different tolerance with the keyword <code class="code-inline tex2jax_ignore">reltol</code> such as <code class="code-inline tex2jax_ignore">reltol=1e-6</code>.</div>
-<div class="para" id="ch-diffeq-5-3-20">So for example, you can generate an array of tuples with</div>
-<div class="para logical" id="ch-diffeq-5-3-21"><pre class="code-display tex2jax_ignore"> [(t,sol(t)) for t=0:0.1:1] </pre></div>
-<div class="para" id="ch-diffeq-5-3-22">which returns \jlc[diffeq]{display([(t,sol(t)) for t=0:0.1:1])}\printpythontex[verbatim]</div>
-<div class="para logical" id="ch-diffeq-5-3-23">
+<div class="para" id="ch-diffeq-5-3-14">which returns</div>
+<div class="para logical" id="ch-diffeq-5-3-15"><pre class="code-display tex2jax_ignore">retcode: Success
+Interpolation: 3rd order Hermite
+t: 5-element Vector{Float64}:
+ 0.0
+ 0.10001999200479662
+ 0.34802032833535873
+ 0.683052570376323
+ 1.0
+u: 5-element Vector{Float64}:
+ 1.0
+ 1.105193012902056
+ 1.416261037790314
+ 1.9799122839671017
+ 2.718281708773355
+</pre></div>
+<div class="para" id="ch-diffeq-5-3-16">Note that the solution appears to be an array of time (that isn’t equally-spaced) and function values at those <span class="process-math">\(t\)</span> values.  If you want to access one of them, you can do:</div>
+<div class="para logical" id="ch-diffeq-5-3-17"><pre class="code-display tex2jax_ignore"> sol[3] </pre></div>
+<div class="para" id="ch-diffeq-5-3-18">which returns <code class="code-inline tex2jax_ignore">1.416261037790314</code>, the third element of the <code class="code-inline tex2jax_ignore">u</code> array.  However, this structure is much more than just an array. If you want the function value at 0.75, for example, you can access it like a function evaluation:</div>
+<div class="para logical" id="ch-diffeq-5-3-19"><pre class="code-display tex2jax_ignore"> sol(0.75) </pre></div>
+<div class="para" id="ch-diffeq-5-3-20">which returns <code class="code-inline tex2jax_ignore">2.1170003461681204</code> and this is interpolated from the generated points.  The result guarantees accuracy to within a default tolerance of <code class="code-inline tex2jax_ignore">1e-3</code> or you can set a different tolerance with the keyword <code class="code-inline tex2jax_ignore">reltol</code> such as <code class="code-inline tex2jax_ignore">reltol=1e-6</code>.</div>
+<div class="para" id="ch-diffeq-5-3-21">So for example, you can generate an array of tuples with</div>
+<div class="para logical" id="ch-diffeq-5-3-22"><pre class="code-display tex2jax_ignore">[(t,sol(t)) for t=0:0.1:1]
+</pre></div>
+<div class="para" id="ch-diffeq-5-3-23">which returns</div>
+<div class="para logical" id="ch-diffeq-5-3-24"><pre class="code-display tex2jax_ignore">11-element Vector{Tuple{Float64, Float64}}:
+ (0.0, 1.0)
+ (0.1, 1.1051709180988993)
+ (0.2, 1.2214028012281672)
+ (0.3, 1.3498587272674625)
+ (0.4, 1.4918249699503803)
+ (0.5, 1.648721181273569)
+ (0.6, 1.8221180994290354)
+ (0.7, 2.0137527117177667)
+ (0.8, 2.2255411035915857)
+ (0.9, 2.4596023119414028)
+ (1.0, 2.718281708773351)
+</pre></div>
+<div class="para logical" id="ch-diffeq-5-3-25">
 <div class="para">One can also generate a plot of the solution with</div>
-<pre class="code-display tex2jax_ignore"> plot(sol) </pre>
+<pre class="code-display tex2jax_ignore">lines(pts)
+</pre>
 </div>
-<div class="para" id="ch-diffeq-5-3-24">or if you want to plot the numerical solution with the analytic solution <span class="process-math">\(y=e^t\text{,}\)</span> then</div>
-<div class="para logical" id="ch-diffeq-5-3-25"><pre class="code-display tex2jax_ignore"> plot(sol,label="numerical",legend=:topleft,lw=3) plot!(0:0.01:1,map(exp,0:0.01:1),label="analytic",lw=3,ls=:dash) </pre></div>
-<div class="para" id="ch-diffeq-5-3-26">which shows that they appear to the resolution of the plot that the two solutions are identical, however if we plot the error associated with the numerical method by</div>
-<div class="para logical" id="ch-diffeq-5-3-27"><pre class="code-display tex2jax_ignore"> plot(0:0.01:1,map(t-&gt;sol(t)-exp(t),0:0.01:1)) </pre></div>
-<div class="para" id="ch-diffeq-5-3-28">this shows that error is within <span class="process-math">\(10^{-6}\text{.}\)</span>
-</div></section><section class="subsection" id="ch-diffeq-5-4"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">36.3.2</span><span class="space"> </span><span class="title">Example of a system of differential equations</span>
-</h4>
-<div class="para" id="ch-diffeq-5-4-2">Let’s solve</div>
-<div class="para logical" id="ch-diffeq-5-4-3"><div class="displaymath process-math" id="ch-diffeq-5-4-3-1">
-\begin{gather*}
-\end{gather*}
+<div class="para" id="ch-diffeq-5-3-26">or if you want to plot the numerical solution with the analytic solution <span class="process-math">\(y=e^t\text{,}\)</span> then</div>
+<div class="para logical" id="ch-diffeq-5-3-27"><pre class="code-display tex2jax_ignore">fig, ax = lines(pts)
+lines!(0..1,exp)
+fig
+</pre></div>
+<div class="para" id="ch-diffeq-5-3-28">and the result is</div>
+<figure class="figure figure-like" id="fig-de-deexp"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/diffeqn/DEexp.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">36.3<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-diffeq-5-3-30">which shows that they appear to the resolution of the plot that the two solutions are identical, however if we plot the error associated with the numerical method by</div>
+<div class="para logical" id="ch-diffeq-5-3-31"><pre class="code-display tex2jax_ignore">lines(0..1, t -&gt; abs(sol(t)-exp(t)))
+</pre></div>
+<div class="para" id="ch-diffeq-5-3-32">which generates the following plot:</div>
+<figure class="figure figure-like" id="fig-de-error"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/diffeqn/error.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">36.4<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-diffeq-5-3-34">this shows that error is within <span class="process-math">\(10^{-6}\text{,}\)</span> which is the tolerance for the <code class="code-inline tex2jax_ignore">solve</code> method of the DifferentialEquations package.</div>
+<details id="ch-diffeq-5-3-35" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
+<span class="type">Check Your Understanding</span><span class="space"> </span><span class="codenumber">36.5</span><span class="period">.</span>
+</h5></summary><article class="exercise exercise-like knowl__content"><article class="task exercise-like" id="ch-diffeq-5-3-35-1"><h6 class="heading"><span class="codenumber">(a)</span></h6>
+<div class="para" id="ch-diffeq-5-3-35-1-1-1">Find the solution to the differential equation</div> <div class="para logical" id="ch-diffeq-5-3-35-1-1-2"><div class="displaymath process-math">
+\begin{equation*}
+y' = \frac{t}{1+y^2}, \qquad y(0) = 1
+\end{equation*}
+</div></div> <div class="para" id="ch-diffeq-5-3-35-1-1-3">on the interval <span class="process-math">\([0,10]\text{.}\)</span>
+</div></article><article class="task exercise-like" id="ch-diffeq-5-3-35-2"><h6 class="heading"><span class="codenumber">(b)</span></h6>
+<div class="para" id="ch-diffeq-5-3-35-2-1-1">Reproduce the solution to <span class="process-math">\(y'=y, ~~ y(0)=1\)</span> with the option <code class="code-inline tex2jax_ignore">abstol = 1e-10</code>.  Produce a plot of the error as above to show that the result is within the given tolerance.</div></article></article></details></section></section><section class="section" id="ch-diffeq-6"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">36.4</span><span class="space"> </span><span class="title">Example of a system of differential equations</span>
+</h3>
+<section class="introduction" id="ch-diffeq-6-2"><div class="para" id="ch-diffeq-6-2-1">Let’s solve</div>
+<div class="para logical" id="ch-diffeq-6-2-2"><div class="displaymath process-math">
+\begin{equation*}
+y'' + y = 0
+\end{equation*}
 </div></div>
-<div class="para" id="ch-diffeq-5-4-4">which is an example of a harmonic oscillator.  We first need to put this in a system form by letting <span class="process-math">\(y_1=y\)</span> and <span class="process-math">\(y_2=y'\text{.}\)</span>  Then from the differential equation <span class="process-math">\(y'' = - y\)</span> or <span class="process-math">\(y_2' = -y_1\text{.}\)</span>  We can then write this as</div>
-<div class="para logical" id="ch-diffeq-5-4-5"><div class="displaymath process-math" id="ch-diffeq-5-4-5-1">
+<div class="para" id="ch-diffeq-6-2-3">which is an example of a harmonic oscillator.  We first need to put this in a system form by letting <span class="process-math">\(y_1=y\)</span> and <span class="process-math">\(y_2=y'\text{.}\)</span>  Then from the differential equation <span class="process-math">\(y'' = - y\)</span> or <span class="process-math">\(y_2' = -y_1\text{.}\)</span>  We can then write this as</div>
+<div class="para logical" id="ch-diffeq-6-2-4"><div class="displaymath process-math" id="ch-diffeq-6-2-4-1">
 \begin{align*}
 y_1' \amp = y_2 \\
 y_2' \amp = -y_1
 \end{align*}
 </div></div>
-<div class="para" id="ch-diffeq-5-4-6">We will write this in julia using</div>
-<div class="para logical" id="ch-diffeq-5-4-7"><pre class="code-display tex2jax_ignore"> function F(du,u,p,t) du[1] = u[2] du[2] = - u[1] end </pre></div>
-<div class="para" id="ch-diffeq-5-4-8">and then create the differential problem with</div>
-<div class="para logical" id="ch-diffeq-5-4-9"><pre class="code-display tex2jax_ignore"> prob2 = ODEProblem(F,[1;0],(0,6pi)) </pre></div>
-<div class="para" id="ch-diffeq-5-4-10">where <code class="code-inline tex2jax_ignore">[1;0]</code> is the initial condition which would be <span class="process-math">\(y(0)=1, y'(0)=0\)</span> and the solution is</div>
-<div class="para logical" id="ch-diffeq-5-4-11"><pre class="code-display tex2jax_ignore"> sol2 = solve(prob2) </pre></div>
-<div class="para" id="ch-diffeq-5-4-12">If you just plot the results:</div>
-<div class="para logical" id="ch-diffeq-5-4-13"><pre class="code-display tex2jax_ignore"> plot(sol2) </pre></div>
-<div class="para" id="ch-diffeq-5-4-14">you’ll see the two elements of the vector plotted as functions of <span class="process-math">\(t\)</span> or:</div>
-<div class="para" id="ch-diffeq-5-4-15">If instead, you want the results plotted like a parametric equation, then we use the <code class="code-inline tex2jax_ignore">vars</code> keyword and the <code class="code-inline tex2jax_ignore">(1,2)</code> refers to the two elements of the solution if you use 0 for vars, that represents the independent variable--generally <span class="process-math">\(t\text{.}\)</span>
-</div>
-<div class="para logical" id="ch-diffeq-5-4-16"><pre class="code-display tex2jax_ignore"> plot(sol2,vars=(1,2),aspect_ratio=:equal) </pre></div></section><section class="subsection" id="ch-diffeq-5-5"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">36.3.3</span><span class="space"> </span><span class="title">The Lorenz System</span>
+<div class="para" id="ch-diffeq-6-2-5">We will write this in julia using</div>
+<div class="para logical" id="ch-diffeq-6-2-6"><pre class="code-display tex2jax_ignore">function F!(du,u,p,t) 
+  du[1] = u[2] 
+  du[2] = - u[1] 
+end 
+</pre></div>
+<div class="para" id="ch-diffeq-6-2-7">and then create the differential problem with</div>
+<div class="para logical" id="ch-diffeq-6-2-8"><pre class="code-display tex2jax_ignore"> prob2 = ODEProblem(F!,[1;0],(0,6pi)) </pre></div>
+<div class="para" id="ch-diffeq-6-2-9">where <code class="code-inline tex2jax_ignore">[1;0]</code> is the initial condition which would be <span class="process-math">\(y(0)=1, y'(0)=0\)</span> and the solution is</div>
+<div class="para logical" id="ch-diffeq-6-2-10"><pre class="code-display tex2jax_ignore"> sol2 = solve(prob2) </pre></div>
+<div class="para" id="ch-diffeq-6-2-11">If you just plot the results:</div>
+<div class="para logical" id="ch-diffeq-6-2-12"><pre class="code-display tex2jax_ignore">fig, ax = lines(sol3)
+axislegend(ax, position=(0.8,1))
+fig
+</pre></div>
+<div class="para" id="ch-diffeq-6-2-13">you’ll see the two elements of the vector plotted as functions of <span class="process-math">\(t\)</span> or:</div>
+<figure class="figure figure-like" id="fig-diffeqn-oscillator"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/diffeqn/oscillator.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">36.6<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-diffeq-6-2-15">If instead, you want the results plotted like a parametric equation, then we need to do a bit more work.  The result of the solution <code class="code-inline tex2jax_ignore">sol2</code> is a function of <code class="code-inline tex2jax_ignore">t</code> that returns a vector of the two variables <span class="process-math">\(y_1\)</span> and <span class="process-math">\(y_2\text{.}\)</span>  To generate the desired plot:</div>
+<div class="para logical" id="ch-diffeq-6-2-16"><pre class="code-display tex2jax_ignore">y1 = map(t -&gt; sol3(t)[1],0:0.1:6pi)
+y2 = map(t -&gt; sol3(t)[2],0:0.1:6pi)
+lines(y1, y2, axis = (aspect = 1,))
+</pre></div>
+<div class="para" id="ch-diffeq-6-2-17">and recall that the comma afer <code class="code-inline tex2jax_ignore">aspect = 1,</code> is important to make that a tuple and we desire the aspect ratio to be 1 because the output should be a circle.  The plot is</div>
+<figure class="figure figure-like" id="fig-de-system01"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/diffeqn/system01.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">36.7<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="subsection" id="ch-diffeq-6-3"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">36.4.1</span><span class="space"> </span><span class="title">The Lorenz System</span>
 </h4>
-<div class="para" id="ch-diffeq-5-5-2">The Lorenz system is relatively famous system of differential equations for many reasons.  It is a system of ODEs, it is nonlinear and for many parameters the solution exhibits sensitivity on initial conditions, an important property for differential equation that exhibit chaotic behavior.  The Lorenz system is</div>
-<div class="para logical" id="ch-diffeq-5-5-3"><div class="displaymath process-math" id="ch-diffeq-5-5-3-1">
+<div class="para" id="ch-diffeq-6-3-2">The Lorenz system is relatively famous system of differential equations for many reasons.  It is a system of ODEs, it is nonlinear and for many parameters the solution exhibits sensitivity on initial conditions, an important property for differential equation that exhibit chaotic behavior.  The Lorenz system is</div>
+<div class="para logical" id="ch-diffeq-6-3-3"><div class="displaymath process-math" id="ch-diffeq-6-3-3-1">
 \begin{align*}
 \frac{dx}{dt} \amp = \sigma (y-x) \\
 \frac{dy}{dt} \amp = x (\rho -z) - y \\
 \frac{dz}{dt} \amp = xy - \beta z
 \end{align*}
 </div></div>
-<div class="para" id="ch-diffeq-5-5-4">and we will look for solution with <span class="process-math">\(\sigma=10, \rho = 28\)</span> and <span class="process-math">\(\beta=8/3\)</span> so we define</div>
-<div class="para logical" id="ch-diffeq-5-5-5"><pre class="code-display tex2jax_ignore"> function lorenz!(du,u,p,t) du[1] = 10.0*(u[2]-u[1]) du[2] = u[1]*(28.0-u[3]) - u[2] du[3] = u[1]*u[2] - (8/3)*u[3] end </pre></div>
-<div class="para" id="ch-diffeq-5-5-6">and if the following timespan and initial conditions are used to solve the differential equation as in:</div>
-<div class="para logical" id="ch-diffeq-5-5-7"><pre class="code-display tex2jax_ignore"> u0 = [1.0;0.0;0.0] tspan = (0.0,100.0) prob3 = ODEProblem(lorenz!,u0,tspan) sol3 = solve(prob3) </pre></div>
-<div class="para" id="ch-diffeq-5-5-8">then the standard plot of the solution is</div>
-<div class="para logical" id="ch-diffeq-5-5-9"><pre class="code-display tex2jax_ignore"> plot(sol3) </pre></div>
-<div class="para" id="ch-diffeq-5-5-10">which shows each of the variables as a plot with respect to <span class="process-math">\(t\text{.}\)</span>  Instead, the classic plot of this solution is as a 3D parametric plot, which you can see with:</div>
-<div class="para logical" id="ch-diffeq-5-5-11"><pre class="code-display tex2jax_ignore"> plot(sol3,vars=(1,2,3)) </pre></div>
-<div class="para" id="ch-diffeq-5-5-12">and this results in</div></section><section class="subsection" id="ch-diffeq-5-6"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">36.3.4</span><span class="space"> </span><span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span>
+<div class="para" id="ch-diffeq-6-3-4">and we will look for solution with <span class="process-math">\(\sigma=10, \rho = 28\)</span> and <span class="process-math">\(\beta=8/3\)</span> so we define</div>
+<div class="para logical" id="ch-diffeq-6-3-5"><pre class="code-display tex2jax_ignore">function lorenz!(du, u, p, t)
+  du[1] = 10.0 * (u[2] - u[1])
+  du[2] = u[1] * (28.0 - u[3]) - u[2]
+  du[3] = u[1] * u[2] - (8 / 3) * u[3]
+  nothing
+end
+</pre></div>
+<div class="para" id="ch-diffeq-6-3-6">and if the following timespan and initial conditions are used to solve the differential equation as in:</div>
+<div class="para logical" id="ch-diffeq-6-3-7"><pre class="code-display tex2jax_ignore">u0 = [1.0; 0.0; 0.0]
+tspan = (0.0, 100.0)
+prob = ODEProblem(lorenz!, u0, tspan)
+solve(prob);
+</pre></div>
+<div class="para" id="ch-diffeq-6-3-8">If we plot the 3 components of the solution as functions of t, with</div>
+<div class="para logical" id="ch-diffeq-6-3-9"><pre class="code-display tex2jax_ignore">fig, ax = lines(lorsol)
+axislegend(ax, position = :lt)
+fig
+</pre></div>
+<div class="para" id="ch-diffeq-6-3-10">and the plot is</div>
+<figure class="figure figure-like" id="fig-de-lorenz01"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/diffeqn/lorenz01.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">36.8<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-diffeq-6-3-12">and it is difficult to see the difference between u[1] and u[2].  The classic plot of this solution is as a 3D parametric plot, which can be generated with</div>
+<div class="para logical" id="ch-diffeq-6-3-13"><pre class="code-display tex2jax_ignore">t = LinRange(0,100,10_000)
+lines(lorsol(t,idxs = 1).u, lorsol(t, idxs = 2).u, lorsol(t, idxs = 3).u)
+</pre></div>
+<div class="para" id="ch-diffeq-6-3-14">and this results in</div>
+<figure class="figure figure-like" id="fig-de-lorenz02"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/diffeqn/lorenz02.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">36.9<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-diffeq-6-3-16">This is not clear what is going on because of the angle that we are viewing it.   We can change that with the <code class="code-inline tex2jax_ignore">azimuth</code> option of the <code class="code-inline tex2jax_ignore">Axis3</code> object.  With a little bit of playing, if we do</div>
+<div class="para logical" id="ch-diffeq-6-3-17"><pre class="code-display tex2jax_ignore">fig = Figure()
+ax = Axis3(fig[1,1], azimuth = 0.75pi)
+lines!(ax, lorsol(t,idxs = 1).u, lorsol(t, idxs = 2).u, lorsol(t, idxs = 3).u, linewidth = 0.5)
+fig
+</pre></div>
+<div class="para" id="ch-diffeq-6-3-18">and this results in</div>
+<figure class="figure figure-like" id="fig-de-lorenz03"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/diffeqn/lorenz03.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">36.10<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-diffeq-6-3-20">For these examples, we have used the <code class="code-inline tex2jax_ignore">CairoMakie</code> package for plotting.  This is very nice for 2D plots (or projections of 3D plots into 2 dimensions), if we use the <code class="code-inline tex2jax_ignore">GLMakie</code> package, we can get an interactive plot.  First, we need to load and activate the package with</div>
+<div class="para logical" id="ch-diffeq-6-3-21"><pre class="code-display tex2jax_ignore">using GLMakie
+GLMakie.activate!()
+Makie.inline!(false)
+</pre></div>
+<div class="para" id="ch-diffeq-6-3-22">and notice that we have set the <code class="code-inline tex2jax_ignore">inline</code> to <code class="code-inline tex2jax_ignore">false</code> so that the plot is not placed inside the notebook.   And then run the plotting command with:</div>
+<div class="para logical" id="ch-diffeq-6-3-23"><pre class="code-display tex2jax_ignore">lines(lorsol(t,idxs = 1).u, lorsol(t, idxs = 2).u, lorsol(t, idxs = 3).u, linewidth = 0.5)
+</pre></div>
+<div class="para" id="ch-diffeq-6-3-24">which should open up a window on your computer that allows you to rotate the plot with the mouse.</div></section><section class="subsection" id="ch-diffeq-6-4"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">36.4.2</span><span class="space"> </span><span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span>
 </h4>
-<div class="para" id="ch-diffeq-5-6-2">If you take a look at the  <a class="external" href="https://docs.sciml.ai/dev/index.html" target="_blank">the documentation of the package</a><details class="ptx-footnote" aria-live="polite" id="ch-diffeq-5-6-2-2"><summary class="ptx-footnote__number" title="Footnote 36.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="ch-diffeq-5-6-2-2"><code class="code-inline tex2jax_ignore">docs.sciml.ai</code></div></details>, we have only touched the surface of this package and it can do a lot with many different differential equations including initial value problems (that all three examples fit into), boundary value problems, stiff equations (aka they are hard to solve numerically) and stocastic differential equations.</div>
-<div class="para" id="ch-diffeq-5-6-3">Also, the actual solvers are not discussed here, however if you want to know the details, the documentation explains them.  I have found that the default solvers are generally good enough and unless there is an issue, probably work for most problems.</div></section></section></section></div>
+<div class="para" id="ch-diffeq-6-4-2">If you take a look at the  <a class="external" href="https://docs.sciml.ai/dev/index.html" target="_blank">the documentation of the package</a><details class="ptx-footnote" aria-live="polite" id="ch-diffeq-6-4-2-2"><summary class="ptx-footnote__number" title="Footnote 36.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="ch-diffeq-6-4-2-2"><code class="code-inline tex2jax_ignore">docs.sciml.ai</code></div></details>, we have only touched the surface of this package and it can do a lot with many different differential equations including initial value problems (that all three examples fit into), boundary value problems, stiff equations (aka they are hard to solve numerically) and stocastic differential equations.</div>
+<div class="para" id="ch-diffeq-6-4-3">Also, the actual solvers are not discussed here, however if you want to know the details, the documentation explains them.  I have found that the default solvers are generally good enough and unless there is an issue, probably work for most problems.</div></section></section></section></div>
 <div class="ptx-content-footer">
 <a class="previous-button button" href="ch-num-int.html" title="Previous"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-optimization.html" title="Next"><span class="name">Next</span><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
 </div></main>

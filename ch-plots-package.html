@@ -156,9 +156,9 @@ window.MathJax = {
 #ch-olympics-2-1-1 { counter-set: ch-olympics-2-1-1 0; }
 #ch-olympics-2-1-1 > li::marker { content: ""counter(ch-olympics-2-1-1,decimal)"."; }
 #ch-olympics-2-1-1 > li { counter-increment: ch-olympics-2-1-1; }
-#ch-num-int-3-17-1 { counter-set: ch-num-int-3-17-1 0; }
-#ch-num-int-3-17-1 > li::marker { content: ""counter(ch-num-int-3-17-1,decimal)"."; }
-#ch-num-int-3-17-1 > li { counter-increment: ch-num-int-3-17-1; }
+#ch-num-int-3-16-1 { counter-set: ch-num-int-3-16-1 0; }
+#ch-num-int-3-16-1 > li::marker { content: ""counter(ch-num-int-3-16-1,decimal)"."; }
+#ch-num-int-3-16-1 > li { counter-increment: ch-num-int-3-16-1; }
 #sect-installing-vscode-7-1 { counter-set: sect-installing-vscode-7-1 0; }
 #sect-installing-vscode-7-1 > li::marker { content: ""counter(sect-installing-vscode-7-1,decimal)"."; }
 #sect-installing-vscode-7-1 > li { counter-increment: sect-installing-vscode-7-1; }
@@ -540,7 +540,8 @@ window.MathJax = {
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-7" class="internal"><span class="codenumber">14.5</span> <span class="title">Contour Plots</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-8" class="internal"><span class="codenumber">14.6</span> <span class="title">Vector Field and Stream plots</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-9" class="internal"><span class="codenumber">14.7</span> <span class="title">Backends for Makie</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-9" class="internal"><span class="codenumber">14.7</span> <span class="title">Updating axis elements in a shorthand manner</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-plotting-makie.html#ch-plotting-makie-10" class="internal"><span class="codenumber">14.8</span> <span class="title">Backends for Makie</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter active">
@@ -853,7 +854,10 @@ window.MathJax = {
 </li>
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-linear-regression.html" class="internal"><span class="codenumber">30</span> <span class="title">Linear Regression</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-3" class="internal"><span class="codenumber">30.1</span> <span class="title">Basics of Linear Regression</span></a></div></li></ul>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-3" class="internal"><span class="codenumber">30.1</span> <span class="title">Basics of Linear Regression</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-4" class="internal"><span class="codenumber">30.2</span> <span class="title">Linear Regression with GLM package</span></a></div></li>
+</ul>
 </li>
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-census.html" class="internal"><span class="codenumber">31</span> <span class="title">Analyzing Census Data</span></a></div>
@@ -964,11 +968,13 @@ window.MathJax = {
 </li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5" class="internal"><span class="codenumber">36.3</span> <span class="title">Using the <code class="code-inline tex2jax_ignore">DifferentialEquations package</code></span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-3" class="internal"><span class="codenumber">36.3.1</span> <span class="title">A Simple Example</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-6" class="internal"><span class="codenumber">36.4</span> <span class="title">Example of a system of differential equations</span></a></div>
 <ul class="structural toc-item-list">
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-3" class="internal"><span class="codenumber">36.3.1</span> <span class="title">A Simple Example</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-4" class="internal"><span class="codenumber">36.3.2</span> <span class="title">Example of a system of differential equations</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-5" class="internal"><span class="codenumber">36.3.3</span> <span class="title">The Lorenz System</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-5-6" class="internal"><span class="codenumber">36.3.4</span> <span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-6-3" class="internal"><span class="codenumber">36.4.1</span> <span class="title">The Lorenz System</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-diffeq.html#ch-diffeq-6-4" class="internal"><span class="codenumber">36.4.2</span> <span class="title">Other Aspects of the <code class="code-inline tex2jax_ignore">DifferentialEquations</code></span></a></div></li>
 </ul>
 </li>
 </ul>
