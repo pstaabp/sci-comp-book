@@ -480,6 +480,57 @@ fig
         <cline>fig</cline>
         </cd>
       </p>
+
+      <p>
+        If instead you want a legend that sits inside the axis, we can use the <c>axislegend</c> method.
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+fig, ax = lines(0..2pi,sin,label="sin(x)")
+lines!(ax,0..2pi,cos, label="cos(x)")
+axislegend(ax)
+fig
+        </input>
+      </program>
+
+      <p>
+        which produces the plot:
+      </p>
+
+      <figure xml:id="fig-legend02">
+        <caption></caption>
+        <image source="plots/makie/legend02.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>
+        The location of the legend isn't great in this situation.  One can add the <c>location</c> option to the <c>axislegend</c> method which is a symbol of two characters, the first being "l", "r" or "c" for left, right or center for the horizontal placement and the second being "t", "b" or "c" for top, bottom or center for the vertical placement.  Alternatively, it can be set as a tuple that is interpreted as the horizontal and vertical location as fractions from the lower left.  To slide the legend box over just a bit we can use
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <input>
+fig, ax = lines(0..2pi,sin,label="sin(x)")
+lines!(ax,0..2pi,cos, label="cos(x)")
+axislegend(ax, position = (0.8, 1))
+fig
+        </input>
+      </program>
+      <p>and the result is </p>
+
+         <figure xml:id="fig-legend03">
+        <caption></caption>
+        <image source="plots/makie/legend03.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
     </subsection>
   </section>
 
@@ -730,8 +781,78 @@ fig
       </image>
     </figure>
 
-    <p>Note that the first argument of the <c>streamplot</c> is a function of <c>x</c> a vector to a <c>Point2f</c> object. </p>
+    <p>
+      Note that the first argument of the <c>streamplot</c> is a function of <c>x</c> a vector to a <c>Point2f</c> object.
+    </p>
+  </section>
 
+  <section>
+    <title>Updating axis elements in a shorthand manner</title>
+
+    <p>
+      As we have seen above, updating information from an axis requires setting options on the axis object.  We have accomplished this by first making a Figure and then an Axis object and finally adding plots to the axis.  This is sometimes overkill.  In this section, we will see an alternative if the options are short.
+    </p>
+
+    <p>
+      For example, let's produce a function plot and put a title on it. For example,
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+fig = Figure()
+ax = Axis(fig[1,1], title = L"A graph of $x^2$")
+lines!(ax, -2..2, x -&gt; x^2)
+fig
+      </input>
+    </program>
+
+    <p>
+      which produces the plot
+    </p>
+
+    <figure xml:id="fig-makie-xsq01">
+      <caption></caption>
+      <image source="plots/makie/xsq01.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      Alternatively, one can add an <c>axis</c> attribute to the <c>lines</c> method to do the same as in
+    </p>
+
+    <p>
+      <cd>
+      <cline>lines(-2..2,x -&gt; x^2, axis = (title = L"A plot of $x^2$",))</cline>
+      </cd>
+    </p>
+
+    <p>
+      which produces the same plot as above.
+    </p>
+
+    <note>
+      <p>
+        An astute eye notices the comma after the string that is the <c>title</c> option.  This is not a typo.  Try removing it and you'll see an error.  Why is that needed then?
+      </p>
+
+      <p>
+        The <c>axis</c> keyword option to the <c>lines</c> function needs to be a named tuple.  Without the comma, try to create a named tuple with one element with
+      </p>
+
+      <p>
+        <cd>
+        <cline>(a = "string")</cline>
+        </cd>
+      </p>
+
+      <p>
+        the output is <c>"string"</c>, it doesn't appear to be a tuple.  What the above has done is just assign the string "string" to the variable <c>a</c>.  To create this as a tuple a comma is needed as in <c>(a = "string",)</c> and the result is the desired output.
+      </p>
+    </note>
   </section>
 
   <section>

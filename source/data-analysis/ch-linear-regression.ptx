@@ -158,6 +158,7 @@ fig
       <cline>fig</cline>
       </cd>
     </p>
+
     <p>
       which produces the following plot:
     </p>
@@ -170,5 +171,76 @@ fig
         </shortdescription>
       </image>
     </figure>
+
+    <p>
+      This looks good visually, but how do we know it is a good fit.  There are a number of parameters that we can use to calculate the fit, but instead, we'll switch to using a package.
+    </p>
+  </section>
+
+  <section>
+    <title>Linear Regression with GLM package</title>
+
+    <p>
+      There is a robust packge for regression called <c>GLM</c> short for Generalized Linear Models, which allows many different kinds of regression performed on a dataset.  Make sure that you have added this package and loaded it with <c>using GLM</c>.
+    </p>
+
+    <p>
+      To start with a simple model, we can produce a best fit line with the formula <c>y ~ x</c>, meaning that we want <c>y</c>, which is a column in our <c>data</c> Dataframe as the dependent variable to be linear in <c>x</c> the column that will be the independent variable.  After creating a formula with the <c>@formula</c> macro, we fit the data with the <c>lm</c> short for linear model method as in:
+    </p>
+
+    <p>
+      <cd>
+      <cline>fm = @formula(y ~ x)</cline>
+      <cline>model = lm(fm, data)</cline>
+      </cd>
+    </p>
+
+    <p>
+      The result is
+    </p>
+
+    <p>
+      <cd>
+      <cline>y ~ 1 + x</cline>
+      <cline></cline>
+      <cline>Coefficients:</cline>
+      <cline>──────────────────────────────────────────────────────────────────────────</cline>
+      <cline>                 Coef.  Std. Error       t  Pr(&gt;|t|)  Lower 95%  Upper 95%</cline>
+      <cline>──────────────────────────────────────────────────────────────────────────</cline>
+      <cline>(Intercept)  10.982      0.4244      25.88    &lt;1e-05    9.89103  12.0729</cline>
+      <cline>x            -0.846847   0.0657102  -12.89    &lt;1e-04   -1.01576  -0.677933</cline>
+      <cline>──────────────────────────────────────────────────────────────────────────</cline>
+      </cd>
+    </p>
+
+    <p>
+      There are a number of things to note here:
+    </p>
+
+    <p>
+      <ul>
+        <li>
+          <p>
+            The top line is the formula <c>y ~ 1 + x</c> which is the same as <c>y ~ x</c>.  The <c>1</c> denotes that you want to include a constant term in your formula.  Note: you can do <c>y ~ 0 + x</c> to force no constant term.
+          </p>
+        </li>
+
+        <li>
+          <p>
+            The cofficients table has information about all of the coefficients, in this case 2, the constant term and the coefficient of the <c>x</c> term.  The first column is which coefficient and the second is the best-fit value of this coefficient.  Notice that this is the same as we found above using the derived formulas.
+          </p>
+        </li>
+
+        <li>
+          <p>
+            The remainder of the table indicate statistics to determine the significance of each of the coefficients.  The <c>Pr(&gt; |t|)</c> is the p-value for each of the coefficients differs from 0.  In this case, each are highly significant due to the small values.  The last two columns give a confidence interval.  To 95% confidence, each coefficient is between the last two columns.
+          </p>
+        </li>
+      </ul>
+    </p>
+
+    <p>
+      Additionally, we can determine the overall fit of the model with an <m>r^2</m> value.  This is accomplished with <c>r2(model)</c> which returns <c>0.970775653702483</c>.  A standard interpretation of this is that the linear model explains 97% of the variation in the data.
+    </p>
   </section>
 </chapter>
