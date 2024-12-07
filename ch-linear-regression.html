@@ -856,7 +856,22 @@ window.MathJax = {
 <div class="toc-title-box"><a href="ch-linear-regression.html" class="internal"><span class="codenumber">30</span> <span class="title">Linear Regression</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-3" class="internal"><span class="codenumber">30.1</span> <span class="title">Basics of Linear Regression</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-4" class="internal"><span class="codenumber">30.2</span> <span class="title">Linear Regression with GLM package</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-4" class="internal"><span class="codenumber">30.2</span> <span class="title">Measures of Regression</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-5" class="internal"><span class="codenumber">30.3</span> <span class="title">A Matrix Approach to Linear Regression</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-6" class="internal"><span class="codenumber">30.4</span> <span class="title">Fitting Other Functions to Data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-6-3" class="internal"><span class="codenumber">30.4.1</span> <span class="title">Fitting a Quadratic to Data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-6-4" class="internal"><span class="codenumber">30.4.2</span> <span class="title">Multilinear Regression</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-7" class="internal"><span class="codenumber">30.5</span> <span class="title">Linear Regression with GLM package</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-7-3" class="internal"><span class="codenumber">30.5.1</span> <span class="title">Finding the best-fit quadratic with GLM</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-7-4" class="internal"><span class="codenumber">30.5.2</span> <span class="title">Multilinear Regression with GLM</span></a></div></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
@@ -1030,8 +1045,8 @@ window.MathJax = {
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#sect-test-poly-string" class="internal"><span class="codenumber">39.3</span> <span class="title">Testing the Stringification</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-6" class="internal"><span class="codenumber">39.4</span> <span class="title">Test Driven Development</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-7" class="internal"><span class="codenumber">39.5</span> <span class="title">Tests for Addition, Subtraction and Multiplication</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-8" class="internal"><span class="codenumber">39.6</span> <span class="title">Creating tests for string contructors</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-9" class="internal"><span class="codenumber">39.7</span> <span class="title">Testing polynomial evalution</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-8" class="internal"><span class="codenumber">39.6</span> <span class="title">Creating tests for string constructors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-9" class="internal"><span class="codenumber">39.7</span> <span class="title">Testing polynomial evaluation</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
@@ -1173,54 +1188,216 @@ fig
 S(a,b) = \sum_{k=1}^n (y_k - (ax_k+b))^2\tag{30.1}
 \end{equation}
 </div></div>
-<div class="para" id="ch-linear-regression-3-10">which is explicitly stated as a function of <span class="process-math">\(a\)</span> and <span class="process-math">\(b\text{,}\)</span> the slope and <span class="process-math">\(y\)</span>-intercept of the line.  The best fine line then is the line that minimizes this function. To find the values of <span class="process-math">\(a\)</span> and <span class="process-math">\(b\text{,}\)</span> there are many techniques to accomplish this<details class="ptx-footnote" aria-live="polite" id="ch-linear-regression-3-10-6"><summary class="ptx-footnote__number" title="Footnote 30.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="ch-linear-regression-3-10-6">A common way to do this is to use techniques from multi-variate calculus that differentiates the function then finds the value where the derivatives are 0.</div></details>, here we will write this as</div>
+<div class="para" id="ch-linear-regression-3-10">which is explicitly stated as a function of <span class="process-math">\(a\)</span> and <span class="process-math">\(b\text{,}\)</span> the slope and <span class="process-math">\(y\)</span>-intercept of the line.  The best fine line then is the line that minimizes this function. To find the values of <span class="process-math">\(a\)</span> and <span class="process-math">\(b\text{,}\)</span> there are many techniques to accomplish this. We find the derivatives <span class="process-math">\(\partial S/\partial a\)</span> and <span class="process-math">\(\partial S/\partial b\text{,}\)</span>
+</div>
 <div class="para logical" id="ch-linear-regression-3-11"><div class="displaymath process-math" id="ch-linear-regression-3-11-1">
-\begin{align*}
-X \amp = \begin{bmatrix} 1 &amp; x_1 \\ 1 &amp; x_2 \\ \vdots \\ 1 &amp; x_n \end{bmatrix} \amp \amp \vec{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}  \amp \vec{c} \amp \begin{bmatrix} a \\ b \end{bmatrix} 
-\end{align*}
+\begin{align}
+\frac{\partial S}{\partial a}\amp = 2 \sum_{k=1}^n(y_k -(ax_k+b))(-x_k) \notag\\
+\amp = -2 \sum_{k=1}^n x_k y_k + 2 a \sum_{k=1}^n x_k^2  + 2 b \sum_{k=1}^n x_k  \notag\\
+\amp = -2 S_{xy} + 2 a S_{xx} + 2b S_x \tag{30.2}\\
+\frac{\partial S}{\partial b} \amp = 2 \sum_{k=1}^n(y_k - (ax_k+b))(-1) \notag\\
+\amp = - 2 \sum_{k=1}^n y_k + 2a \sum_{k=1}^n x_k  +2b \sum_{k=1}^n 1 \notag\\
+\amp = - 2 S_y + 2a S_x + 2nb \tag{30.3}
+\end{align}
 </div></div>
-<div class="para" id="ch-linear-regression-3-12">and then <a href="ch-linear-regression.html#eqn-sum-sq" class="xref" data-knowl="./knowl/xref/eqn-sum-sq.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 30.1">(30.1)</a> can be written as</div>
+<div class="para" id="ch-linear-regression-3-12">where</div>
 <div class="para logical" id="ch-linear-regression-3-13"><div class="displaymath process-math" id="ch-linear-regression-3-13-1">
+\begin{align}
+S_x \amp = \sum x_i, \amp \quad S_y \amp= \sum y_i, \amp S_{xx} \amp = \sum x_i^2, \amp \quad S_{xy} \amp = \sum x_i y_i,\amp \quad S_{yy} \amp = \sum y_i^2 \tag{30.4}
+\end{align}
+</div></div>
+<div class="para" id="ch-linear-regression-3-14">Setting both <a href="ch-linear-regression.html#ch-linear-regression-3-11-1" class="xref" data-knowl="./knowl/xref/eq-lr-sa.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 30.2">(30.2)</a> and <a href="ch-linear-regression.html#ch-linear-regression-3-11-1" class="xref" data-knowl="./knowl/xref/eq-lr-sb.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 30.3">(30.3)</a> to 0 and solving for <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> leads to</div>
+<div class="para logical" id="ch-linear-regression-3-15"><div class="displaymath process-math" id="ch-linear-regression-3-15-1">
+\begin{align}
+a \amp = \frac{n S_{xy} -S_x S_y }{n S_{xx} - S_x^2}\amp b \amp = \frac{1}{n} \left( S_y - a S_x \right) \tag{30.5}
+\end{align}
+</div></div>
+<div class="para" id="ch-linear-regression-3-16">To find the best-fit line using Julia, we will first define the sums from <a href="ch-linear-regression.html#ch-linear-regression-3-15-1" class="xref" data-knowl="./knowl/xref/eqn-lr-coeffs.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 30.5">(30.5)</a> with</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">Sx = sum(data.x)
+Sy = sum(data.y)
+Sxx = sum(x -&gt; x^2, data.x)
+Sxy = sum(data.x .* data.y)
+Syy = sum(y -&gt; y^2, data.y)
+</code></pre></div>
+<div class="para" id="ch-linear-regression-3-18">where in the case of the 3rd and 5th line above, we have used the option for <code class="code-inline tex2jax_ignore">sum</code> that takes a function and applies the function to the array element and then sums.  With these given terms, we can find <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> with</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">a = (length(data.x)*Sxy - Sx*Sy)/(length(data.x)*Sxx-Sx^2)
+b = (Sy-a*Sx)/length(data.x)
+a,b
+</code></pre></div>
+<div class="para" id="ch-linear-regression-3-20">and this returns <code class="code-inline tex2jax_ignore">(-0.8468468468468469, 10.981981981981983)</code> for <code class="code-inline tex2jax_ignore">a</code> and <code class="code-inline tex2jax_ignore">b</code> respectivley.  The best fit line is then <span class="process-math">\(y=10.98198 - 0.8468 x\text{.}\)</span> We can use this to plot the data and the best-fit line as follows:</div>
+<div class="para logical" id="ch-linear-regression-3-21"><pre class="code-display tex2jax_ignore">fig, ax = scatter(data.x,data.y)
+lines!(ax,0..10,x -&gt; c[2]*x+c[1], color = :darkgreen)
+fig
+</pre></div>
+<div class="para" id="ch-linear-regression-3-22">which produces the following plot:</div>
+<figure class="figure figure-like" id="fig-lr-bestfit"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/linear-regression/best-fit.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">30.4<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-linear-regression-3-24">This looks good visually, but how do we know it is a good fit.  There are a number of parameters that we can use to calculate the fit and the next sections goes briefly into this.</div></section><section class="section" id="ch-linear-regression-4"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">30.2</span><span class="space"> </span><span class="title">Measures of Regression</span>
+</h3>
+<div class="para" id="ch-linear-regression-4-2">As we saw in the previous section, visually the fit of the example above looks good, but it would be nice to have a measure (numerical value) of the fit.  We will explore this in this section.</div>
+<div class="para" id="ch-linear-regression-4-3">First, we introduce the notion of the residuals for a regression, in short this is</div>
+<div class="para logical" id="ch-linear-regression-4-4"><div class="displaymath process-math">
+\begin{equation*}
+\epsilon_i = y_i - (ax_i+b)
+\end{equation*}
+</div></div>
+<div class="para" id="ch-linear-regression-4-5">where <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> are the best fit slope and intercept.  In terms of a plot, each <span class="process-math">\(\epsilon_i\)</span> is the vertical distance between a datapoint and the regression line.</div>
+<div class="para" id="ch-linear-regression-4-6">There are two important measures here, the <dfn class="terminology">sum of squares regression</dfn> or</div>
+<div class="para logical" id="ch-linear-regression-4-7"><div class="displaymath process-math">
+\begin{equation*}
+\text{SSR} = \sum \epsilon_i^2
+\end{equation*}
+</div></div>
+<div class="para" id="ch-linear-regression-4-8">Again, as we mentioned in the previous section, the goal of regression is to find the regression coefficients (in this case the slope and intercept) that minimize this value.</div>
+<div class="para" id="ch-linear-regression-4-9">For the example above, we can find the SSR in Julia with</div>
+<div class="para logical" id="ch-linear-regression-4-10"><pre class="code-display tex2jax_ignore">SSR = sum([(data.y[i] - a*data.x[i]-b)^2 for i=1:nrow(data) ])
+</pre></div>
+<div class="para" id="ch-linear-regression-4-11">and this returns <code class="code-inline tex2jax_ignore">1.3693693693693667</code>.  The <dfn class="terminology">sum of squares error</dfn> or</div>
+<div class="para logical" id="ch-linear-regression-4-12"><div class="displaymath process-math">
+\begin{equation*}
+\text{SSE} = \sum (y_i - \bar{y})^2
+\end{equation*}
+</div></div>
+<div class="para" id="ch-linear-regression-4-13">The SSE can be written as:</div>
+<div class="para logical" id="ch-linear-regression-4-14"><div class="displaymath process-math">
+\begin{equation*}
+\text{SSE} = S_{yy} - \frac{1}{n} S_y^2
+\end{equation*}
+</div></div>
+<div class="para" id="ch-linear-regression-4-15">is a sum of squares of the vertical distance between the <span class="process-math">\(y\)</span>-value of each datapoint and the mean.  Using the example above, we have already calculated <span class="process-math">\(S_{yy}\)</span> and <span class="process-math">\(S_y\)</span> so</div>
+<div class="para logical" id="ch-linear-regression-4-16"><pre class="code-display tex2jax_ignore">SSE = Syy -Sy^2/nrow(data)
+</pre></div>
+<div class="para" id="ch-linear-regression-4-17">resulting in <code class="code-inline tex2jax_ignore">46.85714285714283</code>. A nice measure of the fit of the regression line is by using the following:</div>
+<div class="para logical" id="ch-linear-regression-4-18"><div class="displaymath process-math">
+\begin{equation*}
+r^2 = 1 - \frac{\text{SSR}}{\text{SSE}}
+\end{equation*}
+</div></div>
+<div class="para" id="ch-linear-regression-4-19">The value of <span class="process-math">\(r^2\)</span> satisfies <span class="process-math">\(0 \leq r^2 \leq 1\)</span> and a proof is left to the reader.   The closer the value is to 1, the better the fit and in fact when <span class="process-math">\(r^2=1\text{,}\)</span> then the data perfects lies on a line.</div>
+<div class="para" id="ch-linear-regression-4-20">For the example above</div>
+<div class="para logical" id="ch-linear-regression-4-21"><pre class="code-display tex2jax_ignore">rsq = 1-SSR/SSE
+</pre></div>
+<div class="para" id="ch-linear-regression-4-22">resulting in <code class="code-inline tex2jax_ignore">0.970775653702483</code>, which is a good fit, where 97% of the variability in the data is explained with the linear model.</div></section><section class="section" id="ch-linear-regression-5"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">30.3</span><span class="space"> </span><span class="title">A Matrix Approach to Linear Regression</span>
+</h3>
+<div class="para" id="ch-linear-regression-5-2">The above formulas for linear regression works only for a best-fit line through a set of points <span class="process-math">\((x_k, y_k)\text{.}\)</span>  If we want to either fit other functions, one needs to find another way.  A more general way is to define</div>
+<div class="para logical" id="ch-linear-regression-5-3"><div class="displaymath process-math" id="ch-linear-regression-5-3-1">
 \begin{align*}
-S(a,b) \amp = (X \vec{c}  - \vec{y})^T (X \vec{c}-\vec{y})
+X \amp = \begin{bmatrix} 1 \amp x_1 \\ 1 \amp x_2 \\ \vdots \\ 1 \amp x_n \end{bmatrix} \amp \amp \vec{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}  \amp \vec{c} \amp = \begin{bmatrix} a \\ b \end{bmatrix} 
 \end{align*}
 </div></div>
-<div class="para" id="ch-linear-regression-3-14">and differentiating with <span class="process-math">\(\partial_{\vec{x}} [(\vec{F}(\vec{x}))^{\intercal} \vec{F}(\vec{x})] = 2 \vec{F}(\vec{x})^{\intercal} \vec{F}(\vec{x})\)</span> leads to</div>
-<div class="para logical" id="ch-linear-regression-3-15"><div class="displaymath process-math" id="ch-linear-regression-3-15-1">
+<div class="para" id="ch-linear-regression-5-4">and then <a href="ch-linear-regression.html#eqn-sum-sq" class="xref" data-knowl="./knowl/xref/eqn-sum-sq.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 30.1">(30.1)</a> can be written as</div>
+<div class="para logical" id="ch-linear-regression-5-5"><div class="displaymath process-math" id="eq-sum-sq-vect1">
+\begin{equation}
+S(a,b) = (X \vec{c}  - \vec{y})^T (X \vec{c}-\vec{y})\tag{30.6}
+\end{equation}
+</div></div>
+<div class="para" id="ch-linear-regression-5-6">and differentiating with <span class="process-math">\(\partial_{\vec{x}} [(\vec{F}(\vec{x}))^{\intercal} \vec{F}(\vec{x})] = 2 \vec{F}(\vec{x})^{\intercal} \vec{F}(\vec{x})\)</span> leads to</div>
+<div class="para logical" id="ch-linear-regression-5-7"><div class="displaymath process-math" id="ch-linear-regression-5-7-1">
 \begin{align*}
 \frac{\partial S}{\partial \vec{c}} \amp =  2 X^{\intercal} (X \vec{c} - \vec{y})\\
-\amp = 2 X^{\intercal} X \vec{c} - 2 X \vec{y} 
+\amp = 2 X^{\intercal} X \vec{c} - 2 X^{\intercal} \vec{y} 
 \end{align*}
 </div></div>
-<div class="para" id="ch-linear-regression-3-16">and setting this to <span class="process-math">\(\vec{0}\)</span> and solving for <span class="process-math">\(\vec{c}\)</span> results in</div>
-<div class="para logical" id="ch-linear-regression-3-17"><div class="displaymath process-math">
+<div class="para" id="ch-linear-regression-5-8">and setting this to <span class="process-math">\(\vec{0}\)</span> and solving for <span class="process-math">\(\vec{c}\)</span> results in</div>
+<div class="para logical" id="ch-linear-regression-5-9"><div class="displaymath process-math">
+\begin{equation*}
+\vec{c} = (X^{\intercal} X)^{-1} X^{\intercal} \vec{y}
+\end{equation*}
+</div></div>
+<div class="para" id="ch-linear-regression-5-10">We now apply this to the above example.  First, we will create the <code class="code-inline tex2jax_ignore">X</code> matrix with the following:</div>
+<div class="para logical" id="ch-linear-regression-5-11"><pre class="code-display tex2jax_ignore">X = [data.x[i]^k for i=1:nrow(data), k=0:1]
+</pre></div>
+<div class="para" id="ch-linear-regression-5-12">which generates the matrix with ones in the first column and <code class="code-inline tex2jax_ignore">data.x</code> in the second.  And then</div>
+<div class="para logical" id="ch-linear-regression-5-13"><pre class="code-display tex2jax_ignore">c = inv(X'*X)*X'*data.y
+</pre></div>
+<div class="para" id="ch-linear-regression-5-14">where <code class="code-inline tex2jax_ignore">X'</code> is the way to find the transpose of <code class="code-inline tex2jax_ignore">X</code> in julia.  The result is the vector <code class="code-inline tex2jax_ignore">[ 10.982, -0.8468]</code>, which is the vector of <span class="process-math">\(y\)</span>-intercept and slope.  So the best-fit line for this is <span class="process-math">\(y=-0.8468x+10.982\text{.}\)</span>
+</div></section><section class="section" id="ch-linear-regression-6"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">30.4</span><span class="space"> </span><span class="title">Fitting Other Functions to Data</span>
+</h3>
+<section class="introduction" id="ch-linear-regression-6-2"><div class="para" id="ch-linear-regression-6-2-1">As mentioned above, we may want to fit other functions to a set of data.  For example, if we want to fit the following data to a quadratic.</div></section><section class="subsection" id="ch-linear-regression-6-3"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">30.4.1</span><span class="space"> </span><span class="title">Fitting a Quadratic to Data</span>
+</h4>
+<div class="para logical" id="ch-linear-regression-6-3-2"><pre class="code-display tex2jax_ignore">data2 = DataFrame(x =-4:4, y = [15, 10, 5, 2, 1, 0, 3,8, 17])
+</pre></div>
+<div class="para" id="ch-linear-regression-6-3-3">which has the following scatter plot</div>
+<figure class="figure figure-like" id="fig-lr-quad-fit01"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/linear-regression/quad-fit01.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">30.5<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-linear-regression-6-3-5">It appears that the data might fit a quadratic curve of the form <span class="process-math">\(q(x) = ax^2+bx+c\text{.}\)</span> Similar to above, we desire to find the constants <span class="process-math">\(a, b\)</span> and <span class="process-math">\(c\)</span> such that</div>
+<div class="para logical" id="ch-linear-regression-6-3-6"><div class="displaymath process-math">
+\begin{equation*}
+S(a,b,c) = \sum_{k=1}^n (y_k - (a_2 x_k^2 + a_1 x_k + a_0))^2
+\end{equation*}
+</div></div>
+<div class="para" id="ch-linear-regression-6-3-7">is minimized.  We will write in the same way using matrix as</div>
+<div class="para logical" id="ch-linear-regression-6-3-8"><div class="displaymath process-math" id="eq-sum-sq-vect2">
+\begin{equation}
+S(a,b,c) = (X \vec{c})^{\intercal} X \vec{c}\tag{30.7}
+\end{equation}
+</div></div>
+<div class="para" id="ch-linear-regression-6-3-9">with</div>
+<div class="para logical" id="ch-linear-regression-6-3-10"><div class="displaymath process-math" id="ch-linear-regression-6-3-10-1">
+\begin{align*}
+X \amp = \begin{bmatrix} 1 \amp x_1 \amp x_1^2 \\ 1 \amp x_2 \amp x_2^2 \\ \vdots \\ 1 \amp x_n \amp x_n^2 \end{bmatrix} \amp \amp \vec{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}  \amp \vec{c} \amp \begin{bmatrix} a_0 \\ a_1 \\ a_2 \end{bmatrix} 
+\end{align*}
+</div></div>
+<div class="para" id="ch-linear-regression-6-3-11">and since <a href="ch-linear-regression.html#eq-sum-sq-vect2" class="xref" data-knowl="./knowl/xref/eq-sum-sq-vect2.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 30.7">(30.7)</a> has the same form as <a href="ch-linear-regression.html#eq-sum-sq-vect1" class="xref" data-knowl="./knowl/xref/eq-sum-sq-vect1.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 30.6">(30.6)</a>, to find the values <span class="process-math">\(\vec{c}\)</span> that minimizes <a href="ch-linear-regression.html#eq-sum-sq-vect2" class="xref" data-knowl="./knowl/xref/eq-sum-sq-vect2.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 30.7">(30.7)</a> is the same or</div>
+<div class="para logical" id="ch-linear-regression-6-3-12"><div class="displaymath process-math">
 \begin{equation*}
 \vec{c} = (X^{\intercal} X)^{-1} X \vec{y}
 \end{equation*}
 </div></div>
-<div class="para" id="ch-linear-regression-3-18">We now apply this to the above example.  First, we will create the <code class="code-inline tex2jax_ignore">X</code> matrix with the following:</div>
-<div class="para logical" id="ch-linear-regression-3-19"><pre class="code-display tex2jax_ignore">X = [data.x[i]^k for i=1:size(data,1), k=0:1]
+<div class="para" id="ch-linear-regression-6-3-13">For the example at the top of this section, we define</div>
+<div class="para logical" id="ch-linear-regression-6-3-14"><pre class="code-display tex2jax_ignore">X = [data2.x[k]^i for k=1:nrow(data), i=0:2]
 </pre></div>
-<div class="para" id="ch-linear-regression-3-20">which generates the matrix with ones in the first column and <code class="code-inline tex2jax_ignore">data.x</code> in the second.  And then</div>
-<div class="para logical" id="ch-linear-regression-3-21"><pre class="code-display tex2jax_ignore">c = inv(transpose(X)*X)*transpose(X)*data.y
+<div class="para" id="ch-linear-regression-6-3-15">Then we can find the coefficients with</div>
+<div class="para logical" id="ch-linear-regression-6-3-16"><pre class="code-display tex2jax_ignore">c = inv(X'*X)*X'*data2.y
 </pre></div>
-<div class="para" id="ch-linear-regression-3-22">results in the vector <code class="code-inline tex2jax_ignore">[ 10.982, -0.8468]</code>, which is the vector of <span class="process-math">\(y\)</span>-intercept and slope.  So the best-fit line for this is <span class="process-math">\(y=-0.8468x+10.982\text{.}\)</span>  We can use this to plot the data and the best-fit line as follows:</div>
-<div class="para logical" id="ch-linear-regression-3-23"><pre class="code-display tex2jax_ignore">fig, ax = scatter(data.x,data.y)
-lines!(ax,0..10,x -&gt; c[2]*x+c[1], color = :darkgreen)
+<div class="para" id="ch-linear-regression-6-3-17">The result of this is <code class="code-inline tex2jax_ignore">[0.255, -0.0666, 0.978]</code>.  Therefore the best-fit quadratic is</div>
+<div class="para logical" id="ch-linear-regression-6-3-18"><div class="displaymath process-math">
+\begin{equation*}
+q(x) = 0.978 x^2 -0.0666 x + 0.255
+\end{equation*}
+</div></div>
+<div class="para" id="ch-linear-regression-6-3-19">A plot of the data and the function is given by</div>
+<figure class="figure figure-like" id="fig-quad-fit02"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/linear-regression/quad-fit02.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">30.6<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section><section class="subsection" id="ch-linear-regression-6-4"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">30.4.2</span><span class="space"> </span><span class="title">Multilinear Regression</span>
+</h4>
+<div class="para" id="ch-linear-regression-6-4-2">Another common function used to fit to data is that of a linear function in higher dimensions. As an example, consider the following dataset:</div>
+<div class="para logical" id="ch-linear-regression-6-4-3"><pre class="code-display tex2jax_ignore">data3 = DataFrame(
+  x = [1, 1, 2, 3, 3, 4, 5, 5, 6, 2, 4, 8], 
+  y = [1, 6, 8, 2, 2, 3, 7, 3, 1, 4, 9, 6], 
+  z = [14, 7, 4, 14, 13, 12, 7,  13, 16, 11, 4, 10])
+</pre></div>
+<div class="para" id="ch-linear-regression-6-4-4">which has the plot</div>
+<figure class="figure figure-like" id="fig-lr-scatter3"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/linear-regression/scatter3.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">30.7<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-linear-regression-6-4-6">Although this is difficult to tell, these points roughly fall on a plane, so we can fit a plane of the form <span class="process-math">\(z = a_0 + a_1 x + a_2 y\)</span> to the data.  This can be done with the matrix form by setting the first column to 1, the second column to <span class="process-math">\(x\)</span> and the third to <span class="process-math">\(y\)</span> or</div>
+<div class="para logical" id="ch-linear-regression-6-4-7"><pre class="code-display tex2jax_ignore">X = ones(Int,size(data3,1),3)
+X[:,2] = data3.x
+X[:,3] = data3.y
+X
+</pre></div>
+<div class="para" id="ch-linear-regression-6-4-8">and again using the same formula as above to find the best-fit coefficients:</div>
+<div class="para logical" id="ch-linear-regression-6-4-9"><pre class="code-display tex2jax_ignore">c = inv(X'*X)*X'*data3.z
+</pre></div>
+<div class="para" id="ch-linear-regression-6-4-10">resulting in <code class="code-inline tex2jax_ignore">[15.13, 0.4085, -1.433]</code>  which is the plane <span class="process-math">\(z = 15.13+0.4085x-1.433y\text{.}\)</span>  A plot of the plane and the points is found with:</div>
+<div class="para logical" id="ch-linear-regression-6-4-11"><pre class="code-display tex2jax_ignore">xpts = ypts = LinRange(0,10,100)
+fig, ax = surface(xpts, ypts, [c[1].+c[2].*x .+ c[3] .* y for x in xpts, y in ypts])
+scatter!(ax, data3.x, data3.y, data3.z)
 fig
 </pre></div>
-<div class="para" id="ch-linear-regression-3-24">which produces the following plot:</div>
-<figure class="figure figure-like" id="fig-lr-bestfit"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/linear-regression/best-fit.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">30.4<span class="period">.</span></span><span class="space"> </span></figcaption></figure><div class="para" id="ch-linear-regression-3-26">This looks good visually, but how do we know it is a good fit.  There are a number of parameters that we can use to calculate the fit, but instead, we’ll switch to using a package.</div></section><section class="section" id="ch-linear-regression-4"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">30.2</span><span class="space"> </span><span class="title">Linear Regression with GLM package</span>
+<div class="para" id="ch-linear-regression-6-4-12">resulting in the following plot.  Note: to get the interactive version of this plot, use <code class="code-inline tex2jax_ignore">GLMakie</code> and set <code class="code-inline tex2jax_ignore">Makie.inline!(false)</code> to ensure a separate window which allows the plot to rotate interactively.</div>
+<figure class="figure figure-like" id="fig-lr-scatter3-with-plane"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/linear-regression/scatter3-with-plane.png" class="contained" alt="(for accessibility)"></div>
+<figcaption><span class="type">Figure</span><span class="space"> </span><span class="codenumber">30.8<span class="period">.</span></span><span class="space"> </span></figcaption></figure></section></section><section class="section" id="ch-linear-regression-7"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">30.5</span><span class="space"> </span><span class="title">Linear Regression with GLM package</span>
 </h3>
-<div class="para" id="ch-linear-regression-4-2">There is a robust packge for regression called <code class="code-inline tex2jax_ignore">GLM</code> short for Generalized Linear Models, which allows many different kinds of regression performed on a dataset.  Make sure that you have added this package and loaded it with <code class="code-inline tex2jax_ignore">using GLM</code>.</div>
-<div class="para" id="ch-linear-regression-4-3">To start with a simple model, we can produce a best fit line with the formula <code class="code-inline tex2jax_ignore">y ~ x</code>, meaning that we want <code class="code-inline tex2jax_ignore">y</code>, which is a column in our <code class="code-inline tex2jax_ignore">data</code> Dataframe as the dependent variable to be linear in <code class="code-inline tex2jax_ignore">x</code> the column that will be the independent variable.  After creating a formula with the <code class="code-inline tex2jax_ignore">@formula</code> macro, we fit the data with the <code class="code-inline tex2jax_ignore">lm</code> short for linear model method as in:</div>
-<div class="para logical" id="ch-linear-regression-4-4"><pre class="code-display tex2jax_ignore">fm = @formula(y ~ x)
+<section class="introduction" id="ch-linear-regression-7-2"><div class="para" id="ch-linear-regression-7-2-1">There is a robust packge for regression called <code class="code-inline tex2jax_ignore">GLM</code> short for Generalized Linear Models, which allows many different kinds of regression performed on a dataset.  Make sure that you have added this package and loaded it with <code class="code-inline tex2jax_ignore">using GLM</code>.</div>
+<div class="para" id="ch-linear-regression-7-2-2">To start with a simple model, we can produce a best fit line with the formula <code class="code-inline tex2jax_ignore">y ~ x</code>, meaning that we want <code class="code-inline tex2jax_ignore">y</code>, which is a column in our <code class="code-inline tex2jax_ignore">data</code> Dataframe as the dependent variable to be linear in <code class="code-inline tex2jax_ignore">x</code> the column that will be the independent variable.  After creating a formula with the <code class="code-inline tex2jax_ignore">@formula</code> macro, we fit the data with the <code class="code-inline tex2jax_ignore">lm</code> short for linear model method as in:</div>
+<div class="para logical" id="ch-linear-regression-7-2-3"><pre class="code-display tex2jax_ignore">fm = @formula(y ~ x)
 model = lm(fm, data)
 </pre></div>
-<div class="para" id="ch-linear-regression-4-5">The result is</div>
-<div class="para logical" id="ch-linear-regression-4-6"><pre class="code-display tex2jax_ignore">y ~ 1 + x
+<div class="para" id="ch-linear-regression-7-2-4">The result is</div>
+<div class="para logical" id="ch-linear-regression-7-2-5"><pre class="code-display tex2jax_ignore">y ~ 1 + x
 
 Coefficients:
 ──────────────────────────────────────────────────────────────────────────
@@ -1230,13 +1407,59 @@ Coefficients:
 x            -0.846847   0.0657102  -12.89    &lt;1e-04   -1.01576  -0.677933
 ──────────────────────────────────────────────────────────────────────────
 </pre></div>
-<div class="para" id="ch-linear-regression-4-7">There are a number of things to note here:</div>
-<div class="para logical" id="ch-linear-regression-4-8"><ul class="disc" id="ch-linear-regression-4-8-1">
-<li id="ch-linear-regression-4-8-1-1"><div class="para" id="ch-linear-regression-4-8-1-1-1">The top line is the formula <code class="code-inline tex2jax_ignore">y ~ 1 + x</code> which is the same as <code class="code-inline tex2jax_ignore">y ~ x</code>.  The <code class="code-inline tex2jax_ignore">1</code> denotes that you want to include a constant term in your formula.  Note: you can do <code class="code-inline tex2jax_ignore">y ~ 0 + x</code> to force no constant term.</div></li>
-<li id="ch-linear-regression-4-8-1-2"><div class="para" id="ch-linear-regression-4-8-1-2-1">The cofficients table has information about all of the coefficients, in this case 2, the constant term and the coefficient of the <code class="code-inline tex2jax_ignore">x</code> term.  The first column is which coefficient and the second is the best-fit value of this coefficient.  Notice that this is the same as we found above using the derived formulas.</div></li>
-<li id="ch-linear-regression-4-8-1-3"><div class="para" id="ch-linear-regression-4-8-1-3-1">The remainder of the table indicate statistics to determine the significance of each of the coefficients.  The <code class="code-inline tex2jax_ignore">Pr(&gt; |t|)</code> is the p-value for each of the coefficients differs from 0.  In this case, each are highly significant due to the small values.  The last two columns give a confidence interval.  To 95% confidence, each coefficient is between the last two columns.</div></li>
+<div class="para" id="ch-linear-regression-7-2-6">There are a number of things to note here:</div>
+<div class="para logical" id="ch-linear-regression-7-2-7"><ul class="disc" id="ch-linear-regression-7-2-7-1">
+<li id="ch-linear-regression-7-2-7-1-1"><div class="para" id="ch-linear-regression-7-2-7-1-1-1">The top line is the formula <code class="code-inline tex2jax_ignore">y ~ 1 + x</code> which is the same as <code class="code-inline tex2jax_ignore">y ~ x</code>.  The <code class="code-inline tex2jax_ignore">1</code> denotes that you want to include a constant term in your formula.  Note: you can do <code class="code-inline tex2jax_ignore">y ~ 0 + x</code> to force no constant term.</div></li>
+<li id="ch-linear-regression-7-2-7-1-2"><div class="para" id="ch-linear-regression-7-2-7-1-2-1">The cofficients table has information about all of the coefficients, in this case 2, the constant term and the coefficient of the <code class="code-inline tex2jax_ignore">x</code> term.  The first column is which coefficient and the second is the best-fit value of this coefficient.  Notice that this is the same as we found above using the derived formulas.</div></li>
+<li id="ch-linear-regression-7-2-7-1-3"><div class="para" id="ch-linear-regression-7-2-7-1-3-1">The remainder of the table indicate statistics to determine the significance of each of the coefficients.  The <code class="code-inline tex2jax_ignore">Pr(&gt; |t|)</code> is the <span class="process-math">\(p\)</span>-value for each of the coefficients differs from 0.  In this case, each are highly significant due to the small values.  The last two columns give a confidence interval.  To 95% confidence, each coefficient is between the last two columns.</div></li>
 </ul></div>
-<div class="para" id="ch-linear-regression-4-9">Additionally, we can determine the overall fit of the model with an <span class="process-math">\(r^2\)</span> value.  This is accomplished with <code class="code-inline tex2jax_ignore">r2(model)</code> which returns <code class="code-inline tex2jax_ignore">0.970775653702483</code>.  A standard interpretation of this is that the linear model explains 97% of the variation in the data.</div></section></section></div>
+<div class="para" id="ch-linear-regression-7-2-8">Additionally, we can determine the overall fit of the model with an <span class="process-math">\(r^2\)</span> value.  This is accomplished with <code class="code-inline tex2jax_ignore">r2(model)</code> which returns <code class="code-inline tex2jax_ignore">0.970775653702483</code>.  A standard interpretation of this is that the linear model explains 97% of the variation in the data.  This represents a very good linear fit.</div></section><section class="subsection" id="ch-linear-regression-7-3"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">30.5.1</span><span class="space"> </span><span class="title">Finding the best-fit quadratic with GLM</span>
+</h4>
+<div class="para" id="ch-linear-regression-7-3-2">You may be surprised to learn that the quadratic fit is actually a linear model.  But wait, you say, I learned in Precaclulus that a quadratic function is not linear and that is true.  But recall that the linearity is in the unknown coefficents and those are linear.</div>
+<div class="para" id="ch-linear-regression-7-3-3">To find the best-fit quadratic using GLM, we first build the quadratic formula with</div>
+<div class="para logical" id="ch-linear-regression-7-3-4"><pre class="code-display tex2jax_ignore">fm2 = @formula y ~ 1 + x + x^2
+</pre></div>
+<div class="para" id="ch-linear-regression-7-3-5">and although you don’t need to include the 1, I would recommend putting it in for any non linear function.  This will correspond to fitting to a function of the form <span class="process-math">\(y = a_0 + a_1 x + a_2 x^2\text{.}\)</span>
+</div>
+<div class="para" id="ch-linear-regression-7-3-6">To find the coefficients, we’ll use</div>
+<div class="para logical" id="ch-linear-regression-7-3-7"><pre class="code-display tex2jax_ignore">model2 = lm(fm2, data2)
+</pre></div>
+<div class="para" id="ch-linear-regression-7-3-8">which returns</div>
+<div class="para logical" id="ch-linear-regression-7-3-9"><pre class="code-display tex2jax_ignore">y ~ 1 + x + :(x ^ 2)
+
+Coefficients:
+──────────────────────────────────────────────────────────────────────────
+                  Coef.  Std. Error      t  Pr(&gt;|t|)  Lower 95%  Upper 95%
+──────────────────────────────────────────────────────────────────────────
+(Intercept)   0.255411     0.600744   0.43    0.6855  -1.21456    1.72538
+x            -0.0666667    0.153459  -0.43    0.6792  -0.442168   0.308835
+x ^ 2         0.978355     0.067732  14.44    &lt;1e-05   0.812621   1.14409
+──────────────────────────────────────────────────────────────────────────
+</pre></div>
+<div class="para" id="ch-linear-regression-7-3-10">and we’ll find the <span class="process-math">\(r^2\)</span> value with</div>
+<div class="para logical" id="ch-linear-regression-7-3-11"><pre class="code-display tex2jax_ignore">r2(model2)
+</pre></div>
+<div class="para" id="ch-linear-regression-7-3-12">which returns <code class="code-inline tex2jax_ignore">0.972071266946816</code>, which is surprisingly close to the previous example, but just shows that the overall model is a good fit.  However, looking at the table above, only the <span class="process-math">\(x^2\)</span> term is significantly different from 0, with a <span class="process-math">\(p\)</span>-value much less that 0.05, the standard cutoff level.</div></section><section class="subsection" id="ch-linear-regression-7-4"><h4 class="heading hide-type">
+<span class="type">Subsection</span><span class="space"> </span><span class="codenumber">30.5.2</span><span class="space"> </span><span class="title">Multilinear Regression with GLM</span>
+</h4>
+<div class="para" id="ch-linear-regression-7-4-2">The example using the dataset <code class="code-inline tex2jax_ignore">data</code> above was fit with two predictor variables, <code class="code-inline tex2jax_ignore">x</code> and <code class="code-inline tex2jax_ignore">y</code>.  To build the formula and then the model is done with</div>
+<div class="para logical" id="ch-linear-regression-7-4-3"><pre class="code-display tex2jax_ignore">fm3 = @formula z ~ x + y
+model3 = lm(fm3, data3)
+</pre></div>
+<div class="para" id="ch-linear-regression-7-4-4">and this returns</div>
+<div class="para logical" id="ch-linear-regression-7-4-5"><pre class="code-display tex2jax_ignore">z ~ 1 + x + y
+
+Coefficients:
+──────────────────────────────────────────────────────────────────────────
+                 Coef.  Std. Error       t  Pr(&gt;|t|)  Lower 95%  Upper 95%
+──────────────────────────────────────────────────────────────────────────
+(Intercept)  15.134      0.32197     47.00    &lt;1e-11  14.4056    15.8623
+x             0.408533   0.0623703    6.55    0.0001   0.267442   0.549625
+y            -1.4343     0.0472865  -30.33    &lt;1e-09  -1.54126   -1.32733
+──────────────────────────────────────────────────────────────────────────
+</pre></div>
+<div class="para" id="ch-linear-regression-7-4-6">and finding the <span class="process-math">\(r^2\)</span> value with <code class="code-inline tex2jax_ignore">f2(model3)</code> returns <code class="code-inline tex2jax_ignore">0.9905202860004992</code>, a very good fit and examining the <code class="code-inline tex2jax_ignore">Pr(&gt;|t|)</code> column all of the coefficients are significant.</div></section></section></section></div>
 <div class="ptx-content-footer">
 <a class="previous-button button" href="ch-manipulating-data.html" title="Previous"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-census.html" title="Next"><span class="name">Next</span><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
 </div></main>

@@ -856,7 +856,22 @@ window.MathJax = {
 <div class="toc-title-box"><a href="ch-linear-regression.html" class="internal"><span class="codenumber">30</span> <span class="title">Linear Regression</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-3" class="internal"><span class="codenumber">30.1</span> <span class="title">Basics of Linear Regression</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-4" class="internal"><span class="codenumber">30.2</span> <span class="title">Linear Regression with GLM package</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-4" class="internal"><span class="codenumber">30.2</span> <span class="title">Measures of Regression</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-5" class="internal"><span class="codenumber">30.3</span> <span class="title">A Matrix Approach to Linear Regression</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-6" class="internal"><span class="codenumber">30.4</span> <span class="title">Fitting Other Functions to Data</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-6-3" class="internal"><span class="codenumber">30.4.1</span> <span class="title">Fitting a Quadratic to Data</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-6-4" class="internal"><span class="codenumber">30.4.2</span> <span class="title">Multilinear Regression</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-7" class="internal"><span class="codenumber">30.5</span> <span class="title">Linear Regression with GLM package</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-7-3" class="internal"><span class="codenumber">30.5.1</span> <span class="title">Finding the best-fit quadratic with GLM</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-linear-regression.html#ch-linear-regression-7-4" class="internal"><span class="codenumber">30.5.2</span> <span class="title">Multilinear Regression with GLM</span></a></div></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
@@ -1030,8 +1045,8 @@ window.MathJax = {
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#sect-test-poly-string" class="internal"><span class="codenumber">39.3</span> <span class="title">Testing the Stringification</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-6" class="internal"><span class="codenumber">39.4</span> <span class="title">Test Driven Development</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-7" class="internal"><span class="codenumber">39.5</span> <span class="title">Tests for Addition, Subtraction and Multiplication</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-8" class="internal"><span class="codenumber">39.6</span> <span class="title">Creating tests for string contructors</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-9" class="internal"><span class="codenumber">39.7</span> <span class="title">Testing polynomial evalution</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-8" class="internal"><span class="codenumber">39.6</span> <span class="title">Creating tests for string constructors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-polynomial.html#ch-polynomial-9" class="internal"><span class="codenumber">39.7</span> <span class="title">Testing polynomial evaluation</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-chapter">
@@ -1173,7 +1188,7 @@ using .Poly
 <div class="para" id="sec-poly-module-8">and you shouldn’t get any errors and see the output <code class="code-inline tex2jax_ignore">1 x^0 + 2 x^1 + 3 x^2</code>.</div></section><section class="section" id="sec-test-poly"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">39.2</span><span class="space"> </span><span class="title">Testing the Polynomial Module</span>
 </h3>
-<div class="para" id="sec-test-poly-2">We are going to start testing the module immediately.   Here’s a fair straightfoward test suite that just creates the polynomial and tests each are the correct type:</div>
+<div class="para" id="sec-test-poly-2">We are going to start testing the module immediately.   Here’s a fair straightforward test suite that just creates the polynomial and tests each are the correct type:</div>
 <div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">using .Poly
 using Test
 function isequal(x::Polynomial,y::Polynomial)
@@ -1204,7 +1219,7 @@ end
 <div class="para" id="sec-test-poly-4">Save these lines to a file called <code class="code-inline tex2jax_ignore">test-polynomial.jl</code> and then run the code with</div>
 <div class="para logical" id="sec-test-poly-5"><pre class="code-display tex2jax_ignore">include("test-polynomial.jl")
 </pre></div>
-<div class="para" id="sec-test-poly-6">where this time we use the <code class="code-inline tex2jax_ignore">include</code> comamnd.  We don’t need the <code class="code-inline tex2jax_ignore">includet</code> since this is not a module that needs to be tracked.  Upon running this, you should see:</div>
+<div class="para" id="sec-test-poly-6">where this time we use the <code class="code-inline tex2jax_ignore">include</code> command.  We don’t need the <code class="code-inline tex2jax_ignore">includet</code> since this is not a module that needs to be tracked.  Upon running this, you should see:</div>
 <div class="para logical" id="sec-test-poly-7"><pre class="code-display tex2jax_ignore">Test Summary:                                     | Pass  Total  Time
 Creating a Polynomial as a Vector of Coefficients |   12     12  0.2s
 </pre></div>
@@ -1235,7 +1250,7 @@ end
 <div class="para" id="ch-polynomial-6-3">Although we have already written a little code, we will switch to writing tests before writing code.</div></section><section class="section" id="ch-polynomial-7"><h3 class="heading hide-type">
 <span class="type">Section</span><span class="space"> </span><span class="codenumber">39.5</span><span class="space"> </span><span class="title">Tests for Addition, Subtraction and Multiplication</span>
 </h3>
-<div class="para" id="ch-polynomial-7-2">We first start with tests for Addition, subtraction, scalar multiplicaiton and polynomial multiplication.  We have already written this code earlier, but we’ll write the tests before including the code. We’ll start with handling polynomials with integer coefficients.  If we start with the following polynomials</div>
+<div class="para" id="ch-polynomial-7-2">We first start with tests for Addition, subtraction, scalar multiplication and polynomial multiplication.  We have already written this code earlier, but we’ll write the tests before including the code. We’ll start with handling polynomials with integer coefficients.  If we start with the following polynomials</div>
 <div class="para logical" id="ch-polynomial-7-3"><pre class="code-display tex2jax_ignore">poly10 = Polynomial([1, 2, 3])
 poly11 = Polynomial([-2,1,0,1])
 </pre></div>
@@ -1248,7 +1263,7 @@ poly11 = Polynomial([-2,1,0,1])
 end
 </pre></div>
 <div class="para" id="ch-polynomial-7-6">and recall that the polynomial multiplication is performed using distribution (extended FOIL).</div></section><section class="section" id="ch-polynomial-8"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">39.6</span><span class="space"> </span><span class="title">Creating tests for string contructors</span>
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">39.6</span><span class="space"> </span><span class="title">Creating tests for string constructors</span>
 </h3>
 <div class="para" id="ch-polynomial-8-2">Although we have a constructor for creating a polynomial from the coefficients, it’s also nice to have a constructor that parses a string.  For example, if we have</div>
 <div class="para logical" id="ch-polynomial-8-3"><pre class="code-display tex2jax_ignore">poly21 = Polynomial("-3+10x-5x^4")
@@ -1288,8 +1303,8 @@ poly54 = Polynomial("(3-2im)x^2+(2+im)x+im")
 poly55 = Polynomial("im+x^2")
 poly56 = Polynomial("4x^3+3imx^2+2x+im")
 </code></pre></div>
-<div class="para" id="ch-polynomial-8-8">After defining these, each of these should then be tested for constructions and other operations (stringification, addition, subtraction and multiplicaiton).  All of these can be found <em class="emphasis">here</em>.</div></section><section class="section" id="ch-polynomial-9"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">39.7</span><span class="space"> </span><span class="title">Testing polynomial evalution</span>
+<div class="para" id="ch-polynomial-8-8">After defining these, each of these should then be tested for constructions and other operations (stringification, addition, subtraction and multiplication).  All of these can be found <em class="emphasis">here</em>.</div></section><section class="section" id="ch-polynomial-9"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">39.7</span><span class="space"> </span><span class="title">Testing polynomial evaluation</span>
 </h3>
 <div class="para" id="ch-polynomial-9-2">The last set of tests that we are going to develop are those of polynomial evaluation.</div></section></section></div>
 <div class="ptx-content-footer">
