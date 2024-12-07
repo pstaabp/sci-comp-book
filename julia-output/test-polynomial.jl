@@ -1,9 +1,10 @@
 using .Poly
 using Test
 
-function isequal(x::Polynomial,y::Polynomial)
-    return x.coeffs == y.coeffs
-end
+import Base.==
+
+==(p1::Polynomial, p2::Polynomial) = p1.coeffs == p2.coeffs
+≈(p1::Polynomial, p2::Polynomial) = p1.coeffs ≈ p2.coeffs
 
 ## test the creation polynomials
 
@@ -39,57 +40,61 @@ poly10 = Polynomial([1, 2, 3])
 poly11 = Polynomial([-2,1,0,1])
 
 @testset "Addition, Subtraction and Constant Multiplication" begin
- @test poly10+poly11 == Polynomial([-1,3,3,1])
- @test poly11-poly10 == Polynomial([-3,-1,-3,1])
- @test 4*poly10 == Polynomial([4,8,12])
- @test poly10*poly11 == Polynomial([-2,-3,-4,4,3])
+ @test poly10+poly11 == Polynomial([-1,3,3,1]) skip = skip_arith
+ @test poly11-poly10 == Polynomial([-3,-1,-3,1]) skip = skip_arith
+ @test 4*poly10 == Polynomial([4,8,12]) skip = skip_arith
+ @test poly10*poly11 == Polynomial([-2,-3,-4,4,3]) skip = skip_arith
 end
 
-poly21 = Polynomial("-3+10x-5x^4")
-poly22 = Polynomial("x^2+2x+3")
-poly23 = Polynomial("2x-1")
-
+local poly21, poly22, poly23
+if !skip_str_const
+  poly21 = Polynomial("-3+10x-5x^4")
+  poly22 = Polynomial("x^2+2x+3")
+  poly23 = Polynomial("2x-1")
+end
 
 @testset "Creating a Polynomial from a string with integer coefficients" begin
-  @test isa(poly21, Polynomial)
-  @test typeof(poly21) == Polynomial{Int64}
-  @test isequal(poly21, Polynomial([-3,10,0,0,-5]))
-  @test isa(poly22, Polynomial)
-  @test typeof(poly22) == Polynomial{Int64}
-  @test isequal(poly22, Polynomial([3,2,1]))
-  @test isa(poly23, Polynomial)
-  @test typeof(poly23) == Polynomial{Int64}
-  @test isequal(poly23, Polynomial([-1,2]))
+  @test isa(poly21, Polynomial)  skip = skip_str_const
+  @test typeof(poly21) == Polynomial{Int64}  skip = skip_str_const
+  @test poly21 == Polynomial([-3,10,0,0,-5])  skip = skip_str_const
+  @test isa(poly22, Polynomial)  skip = skip_str_const
+  @test typeof(poly22) == Polynomial{Int64}  skip = skip_str_const
+  @test poly22 ==Polynomial([3,2,1])  skip = skip_str_const
+  @test isa(poly23, Polynomial)  skip = skip_str_const
+  @test typeof(poly23) == Polynomial{Int64}  skip = skip_str_const
+  @test poly23 == Polynomial([-1,2])  skip = skip_str_const
 end
 
 poly31 = Polynomial([1.0, 2.0, 3.0])
 poly32 = Polynomial([0,4.0,0,-1.0])
 poly33 = Polynomial([1/2,1/4,1/8,1/10])
 
-poly34 = Polynomial("3.0x^2+2.0x+1.0")
-poly35 = Polynomial("-1.0x^3+4.0")
-poly36 = Polynomial("0.5+0.25x+0.125x^2+0.1x^3")
-
-
 poly41 = Polynomial([1//2, 1//3, 1//4])
 poly42 = Polynomial([1,0,0,1//6])
 poly43 = Polynomial([-1//8,0,0,0,1])
-
-poly44 = Polynomial("1//4x^2+1//3x+1//2")
-poly45 = Polynomial("1//6x^3+1")
-poly46 = Polynomial("x^4-1//8")
 
 poly51 = Polynomial([im, 2+im, 3-2im])
 poly52 = Polynomial([im,0,1])
 poly53 = Polynomial([im,2,3im,4])
 
-poly54 = Polynomial("(3-2im)x^2+(2+im)x+im")
-poly55 = Polynomial("im+x^2")
-poly56 = Polynomial("4x^3+3imx^2+2x+im")
 
+local poly34, poly35, poly36, poly44, poly45, poly46
+if !skip_str_const
+  poly34 = Polynomial("3.0x^2+2.0x+1.0")
+  poly35 = Polynomial("-1.0x^3+4.0")
+  poly36 = Polynomial("0.5+0.25x+0.125x^2+0.1x^3")
+
+  poly44 = Polynomial("1//4x^2+1//3x+1//2")
+  poly45 = Polynomial("1//6x^3+1")
+  poly46 = Polynomial("x^4-1//8")
+
+  poly54 = Polynomial("(3-2im)x^2+(2+im)x+im")
+  poly55 = Polynomial("im+x^2")
+  poly56 = Polynomial("4x^3+3imx^2+2x+im")
+
+end
 
 @testset "Evaluating polynomial with integer coeffs" begin
-  @test eval(poly10, 2) == 17
-  @test eval(poly10, -1) == 2
-
+  @test eval(poly10, 2) == 17 skip = skip_poly_eval
+  @test eval(poly10, -1) == 2 skip = skip_poly_eval
 end

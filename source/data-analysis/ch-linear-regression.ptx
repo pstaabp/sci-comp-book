@@ -87,68 +87,70 @@ fig
     </p>
 
     <p>
-      which is explicitly stated as a function of <m>a</m> and <m>b</m>, the slope and <m>y</m>-intercept of the line.  The best fine line then is the line that minimizes this function. To find the values of <m>a</m> and <m>b</m>, there are many techniques to accomplish this<fn>A common way to do this is to use techniques from multi-variate calculus that differentiates the function then finds the value where the derivatives are 0.</fn>, here we will write this as
+      which is explicitly stated as a function of <m>a</m> and <m>b</m>, the slope and <m>y</m>-intercept of the line.  The best fine line then is the line that minimizes this function. To find the values of <m>a</m> and <m>b</m>, there are many techniques to accomplish this. We find the derivatives <m>\partial S/\partial a</m> and <m>\partial S/\partial b</m>,
     </p>
 
     <p>
       <md>
-        <mrow>X \amp = \begin{bmatrix} 1 &amp; x_1 \\ 1 &amp; x_2 \\ \vdots \\ 1 &amp; x_n \end{bmatrix} \amp \amp \vec{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}  \amp \vec{c} \amp \begin{bmatrix} a \\ b \end{bmatrix} </mrow>
+        <mrow> \frac{\partial S}{\partial a}\amp = 2 \sum_{k=1}^n(y_k -(ax_k+b))(-x_k) </mrow>
+        <mrow> \amp = -2 \sum_{k=1}^n x_k y_k + 2 a \sum_{k=1}^n x_k^2  + 2 b \sum_{k=1}^n x_k  </mrow>
+        <mrow number="yes" xml:id="eq-lr-sa"> \amp = -2 S_{xy} + 2 a S_{xx} + 2b S_x </mrow>
+        <mrow> \frac{\partial S}{\partial b} \amp = 2 \sum_{k=1}^n(y_k - (ax_k+b))(-1) </mrow>
+        <mrow> \amp = - 2 \sum_{k=1}^n y_k + 2a \sum_{k=1}^n x_k  +2b \sum_{k=1}^n 1 </mrow>
+        <mrow number="yes" xml:id="eq-lr-sb"> \amp = - 2 S_y + 2a S_x + 2nb </mrow>
       </md>
     </p>
 
     <p>
-      and then <xref ref="eqn-sum-sq"/> can be written as
+      where
     </p>
 
     <p>
       <md>
-        <mrow>S(a,b) \amp = (X \vec{c}  - \vec{y})^T (X \vec{c}-\vec{y})</mrow>
+        <mrow number="yes" xml:id="eq-lr-sums"> S_x \amp = \sum x_i, \amp \quad S_y \amp= \sum y_i, \amp S_{xx} \amp = \sum x_i^2, \amp \quad S_{xy} \amp = \sum x_i y_i,\amp \quad S_{yy} \amp = \sum y_i^2 </mrow>
       </md>
     </p>
 
     <p>
-      and differentiating with <m>\partial_{\vec{x}} [(\vec{F}(\vec{x}))^{\intercal} \vec{F}(\vec{x})] = 2 \vec{F}(\vec{x})^{\intercal} \vec{F}(\vec{x})</m> leads to
+      Setting both <xref ref="eq-lr-sa"/> and <xref ref="eq-lr-sb"/> to 0 and solving for <m>a</m> and <m>b</m> leads to
     </p>
 
     <p>
       <md>
-        <mrow>\frac{\partial S}{\partial \vec{c}} \amp =  2 X^{\intercal} (X \vec{c} - \vec{y})</mrow>
-        <mrow> \amp = 2 X^{\intercal} X \vec{c} - 2 X \vec{y} </mrow>
+        <mrow number="yes" xml:id="eqn-lr-coeffs"> a \amp = \frac{n S_{xy} -S_x S_y }{n S_{xx} - S_x^2}\amp b \amp = \frac{1}{n} \left( S_y - a S_x \right) </mrow>
       </md>
     </p>
 
     <p>
-      and setting this to <m>\vec{0}</m> and solving for <m>\vec{c}</m> results in
+      To find the best-fit line using Julia, we will first define the sums from <xref ref="eqn-lr-coeffs"/> with
     </p>
 
-    <p>
-      <me>
-        \vec{c} = (X^{\intercal} X)^{-1} X \vec{y}
-      </me>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <input>
+Sx = sum(data.x)
+Sy = sum(data.y)
+Sxx = sum(x -&gt; x^2, data.x)
+Sxy = sum(data.x .* data.y)
+Syy = sum(y -&gt; y^2, data.y)
+      </input>
+    </program>
 
     <p>
-      We now apply this to the above example.  First, we will create the <c>X</c> matrix with the following:
+      where in the case of the 3rd and 5th line above, we have used the option for <c>sum</c> that takes a function and applies the function to the array element and then sums.  With these given terms, we can find <m>a</m> and <m>b</m> with
     </p>
 
-    <p>
-      <cd>
-      <cline>X = [data.x[i]^k for i=1:size(data,1), k=0:1]</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <input>
+a = (length(data.x)*Sxy - Sx*Sy)/(length(data.x)*Sxx-Sx^2)
+b = (Sy-a*Sx)/length(data.x)
+a,b
+      </input>
+    </program>
 
     <p>
-      which generates the matrix with ones in the first column and <c>data.x</c> in the second.  And then
-    </p>
-
-    <p>
-      <cd>
-      <cline>c = inv(transpose(X)*X)*transpose(X)*data.y</cline>
-      </cd>
-    </p>
-
-    <p>
-      results in the vector <c>[ 10.982, -0.8468]</c>, which is the vector of <m>y</m>-intercept and slope.  So the best-fit line for this is <m>y=-0.8468x+10.982</m>.  We can use this to plot the data and the best-fit line as follows:
+      and this returns <c>(-0.8468468468468469, 10.981981981981983)</c> for <c>a</c> and <c>b</c> respectivley.  The best fit line is then <m>y=10.98198 - 0.8468 x</m>. We can use this to plot the data and the best-fit line as follows:
     </p>
 
     <p>
@@ -173,74 +175,550 @@ fig
     </figure>
 
     <p>
-      This looks good visually, but how do we know it is a good fit.  There are a number of parameters that we can use to calculate the fit, but instead, we'll switch to using a package.
+      This looks good visually, but how do we know it is a good fit.  There are a number of parameters that we can use to calculate the fit and the next sections goes briefly into this.
     </p>
+  </section>
+
+  <section>
+    <title>Measures of Regression</title>
+
+    <p>
+      As we saw in the previous section, visually the fit of the example above looks good, but it would be nice to have a measure (numerical value) of the fit.  We will explore this in this section.
+    </p>
+
+    <p>
+      First, we introduce the notion of the residuals for a regression, in short this is
+    </p>
+
+    <p>
+      <me>
+        \epsilon_i = y_i - (ax_i+b)
+      </me>
+    </p>
+
+    <p>
+      where <m>a</m> and <m>b</m> are the best fit slope and intercept.  In terms of a plot, each <m>\epsilon_i</m> is the vertical distance between a datapoint and the regression line.
+    </p>
+
+    <p>
+      There are two important measures here, the <term>sum of squares regression</term> or
+    </p>
+
+    <p>
+      <me>
+        \text{SSR} = \sum \epsilon_i^2
+      </me>
+    </p>
+
+    <p>
+      Again, as we mentioned in the previous section, the goal of regression is to find the regression coefficients (in this case the slope and intercept) that minimize this value.
+    </p>
+
+    <p>
+      For the example above, we can find the SSR in Julia with
+    </p>
+
+    <p>
+      <cd>
+      <cline>SSR = sum([(data.y[i] - a*data.x[i]-b)^2 for i=1:nrow(data) ])</cline>
+      </cd>
+    </p>
+
+    <p>
+      and this returns <c>1.3693693693693667</c>.  The <term>sum of squares error</term> or
+    </p>
+
+    <p>
+      <me>
+        \text{SSE} = \sum (y_i - \bar{y})^2
+      </me>
+    </p>
+
+    <p>
+      The SSE can be written as:
+    </p>
+
+    <p>
+      <me>
+        \text{SSE} = S_{yy} - \frac{1}{n} S_y^2
+      </me>
+    </p>
+
+    <p>
+      is a sum of squares of the vertical distance between the <m>y</m>-value of each datapoint and the mean.  Using the example above, we have already calculated <m>S_{yy}</m> and <m>S_y</m> so
+    </p>
+
+    <p>
+      <cd>
+      <cline>SSE = Syy -Sy^2/nrow(data)</cline>
+      </cd>
+    </p>
+
+    <p>
+      resulting in <c>46.85714285714283</c>. A nice measure of the fit of the regression line is by using the following:
+    </p>
+
+    <p>
+      <me>
+        r^2 = 1 - \frac{\text{SSR}}{\text{SSE}}
+      </me>
+    </p>
+
+    <p>
+      The value of <m>r^2</m> satisfies <m>0 \leq r^2 \leq 1</m> and a proof is left to the reader.   The closer the value is to 1, the better the fit and in fact when <m>r^2=1</m>, then the data perfects lies on a line.
+    </p>
+
+    <p>
+      For the example above
+    </p>
+
+    <p>
+      <cd>
+      <cline>rsq = 1-SSR/SSE</cline>
+      </cd>
+    </p>
+
+    <p>
+      resulting in <c>0.970775653702483</c>, which is a good fit, where 97% of the variability in the data is explained with the linear model.
+    </p>
+  </section>
+
+  <section>
+    <title>A Matrix Approach to Linear Regression</title>
+
+    <p>
+      The above formulas for linear regression works only for a best-fit line through a set of points <m>(x_k, y_k)</m>.  If we want to either fit other functions, one needs to find another way.  A more general way is to define
+    </p>
+
+    <p>
+      <md>
+        <mrow>X \amp = \begin{bmatrix} 1 \amp x_1 \\ 1 \amp x_2 \\ \vdots \\ 1 \amp x_n \end{bmatrix} \amp \amp \vec{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}  \amp \vec{c} \amp = \begin{bmatrix} a \\ b \end{bmatrix} </mrow>
+      </md>
+    </p>
+
+    <p>
+      and then <xref ref="eqn-sum-sq"/> can be written as
+    </p>
+
+    <p>
+      <men xml:id="eq-sum-sq-vect1">
+        S(a,b) = (X \vec{c}  - \vec{y})^T (X \vec{c}-\vec{y})
+      </men>
+    </p>
+
+    <p>
+      and differentiating with <m>\partial_{\vec{x}} [(\vec{F}(\vec{x}))^{\intercal} \vec{F}(\vec{x})] = 2 \vec{F}(\vec{x})^{\intercal} \vec{F}(\vec{x})</m> leads to
+    </p>
+
+    <p>
+      <md>
+        <mrow>\frac{\partial S}{\partial \vec{c}} \amp =  2 X^{\intercal} (X \vec{c} - \vec{y})</mrow>
+        <mrow> \amp = 2 X^{\intercal} X \vec{c} - 2 X^{\intercal} \vec{y} </mrow>
+      </md>
+    </p>
+
+    <p>
+      and setting this to <m>\vec{0}</m> and solving for <m>\vec{c}</m> results in
+    </p>
+
+    <p>
+      <me>
+        \vec{c} = (X^{\intercal} X)^{-1} X^{\intercal} \vec{y}
+      </me>
+    </p>
+
+    <p>
+      We now apply this to the above example.  First, we will create the <c>X</c> matrix with the following:
+    </p>
+
+    <p>
+      <cd>
+      <cline>X = [data.x[i]^k for i=1:nrow(data), k=0:1]</cline>
+      </cd>
+    </p>
+
+    <p>
+      which generates the matrix with ones in the first column and <c>data.x</c> in the second.  And then
+    </p>
+
+    <p>
+      <cd>
+      <cline>c = inv(X'*X)*X'*data.y</cline>
+      </cd>
+    </p>
+
+    <p>
+      where <c>X'</c> is the way to find the transpose of <c>X</c> in julia.  The result is the vector <c>[ 10.982, -0.8468]</c>, which is the vector of <m>y</m>-intercept and slope.  So the best-fit line for this is <m>y=-0.8468x+10.982</m>.
+    </p>
+  </section>
+
+  <section>
+    <title>Fitting Other Functions to Data</title>
+
+    <introduction>
+      <p>
+        As mentioned above, we may want to fit other functions to a set of data.  For example, if we want to fit the following data to a quadratic.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Fitting a Quadratic to Data</title>
+
+      <p>
+        <cd>
+        <cline>data2 = DataFrame(x =-4:4, y = [15, 10, 5, 2, 1, 0, 3,8, 17])</cline>
+        </cd>
+      </p>
+
+      <p>
+        which has the following scatter plot
+      </p>
+
+      <figure xml:id="fig-lr-quad-fit01">
+        <caption></caption>
+        <image source="plots/linear-regression/quad-fit01.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>
+        It appears that the data might fit a quadratic curve of the form <m>q(x) = ax^2+bx+c</m>. Similar to above, we desire to find the constants <m>a, b</m> and <m>c</m> such that
+      </p>
+
+      <p>
+        <me>
+          S(a,b,c) = \sum_{k=1}^n (y_k - (a_2 x_k^2 + a_1 x_k + a_0))^2
+        </me>
+      </p>
+
+      <p>
+        is minimized.  We will write in the same way using matrix as
+      </p>
+
+      <p>
+        <men xml:id="eq-sum-sq-vect2">
+          S(a,b,c) = (X \vec{c})^{\intercal} X \vec{c}
+        </men>
+      </p>
+
+      <p>
+        with
+      </p>
+
+      <p>
+        <md>
+          <mrow>X \amp = \begin{bmatrix} 1 \amp x_1 \amp x_1^2 \\ 1 \amp x_2 \amp x_2^2 \\ \vdots \\ 1 \amp x_n \amp x_n^2 \end{bmatrix} \amp \amp \vec{y} = \begin{bmatrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{bmatrix}  \amp \vec{c} \amp \begin{bmatrix} a_0 \\ a_1 \\ a_2 \end{bmatrix} </mrow>
+        </md>
+      </p>
+
+      <p>
+        and since <xref ref="eq-sum-sq-vect2"/> has the same form as <xref ref="eq-sum-sq-vect1"/>, to find the values <m>\vec{c}</m> that minimizes <xref ref="eq-sum-sq-vect2"/> is the same or
+      </p>
+
+      <p>
+        <me>
+          \vec{c} = (X^{\intercal} X)^{-1} X \vec{y}
+        </me>
+      </p>
+
+      <p>
+        For the example at the top of this section, we define
+      </p>
+
+      <p>
+        <cd>
+        <cline>X = [data2.x[k]^i for k=1:nrow(data), i=0:2]</cline>
+        </cd>
+      </p>
+
+      <p>
+        Then we can find the coefficients with
+      </p>
+
+      <p>
+        <cd>
+        <cline>c = inv(X'*X)*X'*data2.y</cline>
+        </cd>
+      </p>
+
+      <p>
+        The result of this is <c>[0.255, -0.0666, 0.978]</c>.  Therefore the best-fit quadratic is
+      </p>
+
+      <p>
+        <me>
+          q(x) = 0.978 x^2 -0.0666 x + 0.255
+        </me>
+      </p>
+
+      <p>
+        A plot of the data and the function is given by
+      </p>
+
+      <figure xml:id="fig-quad-fit02">
+        <caption></caption>
+        <image source="plots/linear-regression/quad-fit02.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+    </subsection>
+
+
+    <subsection>
+      <title>Multilinear Regression</title>
+
+      <p>
+        Another common function used to fit to data is that of a linear function in higher dimensions. As an example, consider the following dataset:
+      </p>
+
+      <p>
+        <cd>
+        <cline>data3 = DataFrame(</cline>
+        <cline>  x = [1, 1, 2, 3, 3, 4, 5, 5, 6, 2, 4, 8], </cline>
+        <cline>  y = [1, 6, 8, 2, 2, 3, 7, 3, 1, 4, 9, 6], </cline>
+        <cline>  z = [14, 7, 4, 14, 13, 12, 7,  13, 16, 11, 4, 10])</cline>
+        </cd>
+      </p>
+
+      <p>
+        which has the plot
+      </p>
+
+      <figure xml:id="fig-lr-scatter3">
+        <caption></caption>
+        <image source="plots/linear-regression/scatter3.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>
+        Although this is difficult to tell, these points roughly fall on a plane, so we can fit a plane of the form <m>z = a_0 + a_1 x + a_2 y</m> to the data.  This can be done with the matrix form by setting the first column to 1, the second column to <m>x</m> and the third to <m>y</m> or
+      </p>
+
+      <p>
+        <cd>
+        <cline>X = ones(Int,size(data3,1),3)</cline>
+        <cline>X[:,2] = data3.x</cline>
+        <cline>X[:,3] = data3.y</cline>
+        <cline>X</cline>
+        </cd>
+      </p>
+
+      <p>
+        and again using the same formula as above to find the best-fit coefficients:
+      </p>
+
+      <p>
+        <cd>
+        <cline>c = inv(X'*X)*X'*data3.z</cline>
+        </cd>
+      </p>
+
+      <p>
+        resulting in <c>[15.13, 0.4085, -1.433]</c>  which is the plane <m>z = 15.13+0.4085x-1.433y</m>.  A plot of the plane and the points is found with:
+      </p>
+
+      <p>
+        <cd>
+        <cline>xpts = ypts = LinRange(0,10,100)</cline>
+        <cline>fig, ax = surface(xpts, ypts, [c[1].+c[2].*x .+ c[3] .* y for x in xpts, y in ypts])</cline>
+        <cline>scatter!(ax, data3.x, data3.y, data3.z)</cline>
+        <cline>fig</cline>
+        </cd>
+      </p>
+
+      <p>
+        resulting in the following plot.  Note: to get the interactive version of this plot, use <c>GLMakie</c> and set <c>Makie.inline!(false)</c> to ensure a separate window which allows the plot to rotate interactively.
+      </p>
+
+      <figure xml:id="fig-lr-scatter3-with-plane">
+        <caption></caption>
+        <image source="plots/linear-regression/scatter3-with-plane.png" width="90%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+    </subsection>
   </section>
 
   <section>
     <title>Linear Regression with GLM package</title>
 
-    <p>
-      There is a robust packge for regression called <c>GLM</c> short for Generalized Linear Models, which allows many different kinds of regression performed on a dataset.  Make sure that you have added this package and loaded it with <c>using GLM</c>.
-    </p>
+    <introduction>
+      <p>
+        There is a robust packge for regression called <c>GLM</c> short for Generalized Linear Models, which allows many different kinds of regression performed on a dataset.  Make sure that you have added this package and loaded it with <c>using GLM</c>.
+      </p>
 
-    <p>
-      To start with a simple model, we can produce a best fit line with the formula <c>y ~ x</c>, meaning that we want <c>y</c>, which is a column in our <c>data</c> Dataframe as the dependent variable to be linear in <c>x</c> the column that will be the independent variable.  After creating a formula with the <c>@formula</c> macro, we fit the data with the <c>lm</c> short for linear model method as in:
-    </p>
+      <p>
+        To start with a simple model, we can produce a best fit line with the formula <c>y ~ x</c>, meaning that we want <c>y</c>, which is a column in our <c>data</c> Dataframe as the dependent variable to be linear in <c>x</c> the column that will be the independent variable.  After creating a formula with the <c>@formula</c> macro, we fit the data with the <c>lm</c> short for linear model method as in:
+      </p>
 
-    <p>
-      <cd>
-      <cline>fm = @formula(y ~ x)</cline>
-      <cline>model = lm(fm, data)</cline>
-      </cd>
-    </p>
+      <p>
+        <cd>
+        <cline>fm = @formula(y ~ x)</cline>
+        <cline>model = lm(fm, data)</cline>
+        </cd>
+      </p>
 
-    <p>
-      The result is
-    </p>
+      <p>
+        The result is
+      </p>
 
-    <p>
-      <cd>
-      <cline>y ~ 1 + x</cline>
-      <cline></cline>
-      <cline>Coefficients:</cline>
-      <cline>──────────────────────────────────────────────────────────────────────────</cline>
-      <cline>                 Coef.  Std. Error       t  Pr(&gt;|t|)  Lower 95%  Upper 95%</cline>
-      <cline>──────────────────────────────────────────────────────────────────────────</cline>
-      <cline>(Intercept)  10.982      0.4244      25.88    &lt;1e-05    9.89103  12.0729</cline>
-      <cline>x            -0.846847   0.0657102  -12.89    &lt;1e-04   -1.01576  -0.677933</cline>
-      <cline>──────────────────────────────────────────────────────────────────────────</cline>
-      </cd>
-    </p>
+      <p>
+        <cd>
+        <cline>y ~ 1 + x</cline>
+        <cline></cline>
+        <cline>Coefficients:</cline>
+        <cline>──────────────────────────────────────────────────────────────────────────</cline>
+        <cline>                 Coef.  Std. Error       t  Pr(&gt;|t|)  Lower 95%  Upper 95%</cline>
+        <cline>──────────────────────────────────────────────────────────────────────────</cline>
+        <cline>(Intercept)  10.982      0.4244      25.88    &lt;1e-05    9.89103  12.0729</cline>
+        <cline>x            -0.846847   0.0657102  -12.89    &lt;1e-04   -1.01576  -0.677933</cline>
+        <cline>──────────────────────────────────────────────────────────────────────────</cline>
+        </cd>
+      </p>
 
-    <p>
-      There are a number of things to note here:
-    </p>
+      <p>
+        There are a number of things to note here:
+      </p>
 
-    <p>
-      <ul>
-        <li>
-          <p>
-            The top line is the formula <c>y ~ 1 + x</c> which is the same as <c>y ~ x</c>.  The <c>1</c> denotes that you want to include a constant term in your formula.  Note: you can do <c>y ~ 0 + x</c> to force no constant term.
-          </p>
-        </li>
+      <p>
+        <ul>
+          <li>
+            <p>
+              The top line is the formula <c>y ~ 1 + x</c> which is the same as <c>y ~ x</c>.  The <c>1</c> denotes that you want to include a constant term in your formula.  Note: you can do <c>y ~ 0 + x</c> to force no constant term.
+            </p>
+          </li>
 
-        <li>
-          <p>
-            The cofficients table has information about all of the coefficients, in this case 2, the constant term and the coefficient of the <c>x</c> term.  The first column is which coefficient and the second is the best-fit value of this coefficient.  Notice that this is the same as we found above using the derived formulas.
-          </p>
-        </li>
+          <li>
+            <p>
+              The cofficients table has information about all of the coefficients, in this case 2, the constant term and the coefficient of the <c>x</c> term.  The first column is which coefficient and the second is the best-fit value of this coefficient.  Notice that this is the same as we found above using the derived formulas.
+            </p>
+          </li>
 
-        <li>
-          <p>
-            The remainder of the table indicate statistics to determine the significance of each of the coefficients.  The <c>Pr(&gt; |t|)</c> is the p-value for each of the coefficients differs from 0.  In this case, each are highly significant due to the small values.  The last two columns give a confidence interval.  To 95% confidence, each coefficient is between the last two columns.
-          </p>
-        </li>
-      </ul>
-    </p>
+          <li>
+            <p>
+              The remainder of the table indicate statistics to determine the significance of each of the coefficients.  The <c>Pr(&gt; |t|)</c> is the <m>p</m>-value for each of the coefficients differs from 0.  In this case, each are highly significant due to the small values.  The last two columns give a confidence interval.  To 95% confidence, each coefficient is between the last two columns.
+            </p>
+          </li>
+        </ul>
+      </p>
 
-    <p>
-      Additionally, we can determine the overall fit of the model with an <m>r^2</m> value.  This is accomplished with <c>r2(model)</c> which returns <c>0.970775653702483</c>.  A standard interpretation of this is that the linear model explains 97% of the variation in the data.
-    </p>
+      <p>
+        Additionally, we can determine the overall fit of the model with an <m>r^2</m> value.  This is accomplished with <c>r2(model)</c> which returns <c>0.970775653702483</c>.  A standard interpretation of this is that the linear model explains 97% of the variation in the data.  This represents a very good linear fit.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Finding the best-fit quadratic with GLM</title>
+
+      <p>
+        You may be surprised to learn that the quadratic fit is actually a linear model.  But wait, you say, I learned in Precaclulus that a quadratic function is not linear and that is true.  But recall that the linearity is in the unknown coefficents and those are linear.
+      </p>
+
+      <p>
+        To find the best-fit quadratic using GLM, we first build the quadratic formula with
+      </p>
+
+      <p>
+        <cd>
+        <cline>fm2 = @formula y ~ 1 + x + x^2</cline>
+        </cd>
+      </p>
+
+      <p>
+        and although you don't need to include the 1, I would recommend putting it in for any non linear function.  This will correspond to fitting to a function of the form <m>y = a_0 + a_1 x + a_2 x^2</m>.
+      </p>
+
+      <p>
+        To find the coefficients, we'll use
+      </p>
+
+      <p>
+        <cd>
+        <cline>model2 = lm(fm2, data2)</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>y ~ 1 + x + :(x ^ 2)</cline>
+        <cline></cline>
+        <cline>Coefficients:</cline>
+        <cline>──────────────────────────────────────────────────────────────────────────</cline>
+        <cline>                  Coef.  Std. Error      t  Pr(&gt;|t|)  Lower 95%  Upper 95%</cline>
+        <cline>──────────────────────────────────────────────────────────────────────────</cline>
+        <cline>(Intercept)   0.255411     0.600744   0.43    0.6855  -1.21456    1.72538</cline>
+        <cline>x            -0.0666667    0.153459  -0.43    0.6792  -0.442168   0.308835</cline>
+        <cline>x ^ 2         0.978355     0.067732  14.44    &lt;1e-05   0.812621   1.14409</cline>
+        <cline>──────────────────────────────────────────────────────────────────────────</cline>
+        </cd>
+      </p>
+
+      <p>
+        and we'll find the <m>r^2</m> value with
+      </p>
+
+      <p>
+        <cd>
+        <cline>r2(model2)</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns <c>0.972071266946816</c>, which is surprisingly close to the previous example, but just shows that the overall model is a good fit.  However, looking at the table above, only the <m>x^2</m> term is significantly different from 0, with a <m>p</m>-value much less that 0.05, the standard cutoff level.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Multilinear Regression with GLM</title>
+
+      <p>
+        The example using the dataset <c>data</c> above was fit with two predictor variables, <c>x</c> and <c>y</c>.  To build the formula and then the model is done with
+      </p>
+
+      <p>
+        <cd>
+        <cline>fm3 = @formula z ~ x + y</cline>
+        <cline>model3 = lm(fm3, data3)</cline>
+        </cd>
+      </p>
+
+      <p>
+        and this returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>z ~ 1 + x + y</cline>
+        <cline></cline>
+        <cline>Coefficients:</cline>
+        <cline>──────────────────────────────────────────────────────────────────────────</cline>
+        <cline>                 Coef.  Std. Error       t  Pr(&gt;|t|)  Lower 95%  Upper 95%</cline>
+        <cline>──────────────────────────────────────────────────────────────────────────</cline>
+        <cline>(Intercept)  15.134      0.32197     47.00    &lt;1e-11  14.4056    15.8623</cline>
+        <cline>x             0.408533   0.0623703    6.55    0.0001   0.267442   0.549625</cline>
+        <cline>y            -1.4343     0.0472865  -30.33    &lt;1e-09  -1.54126   -1.32733</cline>
+        <cline>──────────────────────────────────────────────────────────────────────────</cline>
+        </cd>
+      </p>
+      <p>
+        and finding the <m>r^2</m> value with <c>f2(model3)</c> returns <c>0.9905202860004992</c>, a very good fit and examining the <c>Pr(&gt;|t|)</c> column all of the coefficients are significant.
+      </p>
+    </subsection>
   </section>
 </chapter>

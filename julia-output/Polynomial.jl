@@ -5,18 +5,18 @@ export Polynomial
 struct Polynomial{T <: Number}
   coeffs::Vector{T}
 
-  # function Polynomial(c::Vector{T}) where T <: Number
-  #   new{T}(c)
-  # end
+  function Polynomial(c::Vector{T}) where T <: Number
+    new{T}(c)
+  end
 
-  # function Polynomial(str::String)
-  #   local terms = map(t -> polyTerm(t), splitPoly(str))
-  #   local coeffs = zeros(Int,maximum(map(t -> t.pow, terms))+1)
-  #   for term in terms
-  #     coeffs[term.pow+1] = term.coeff
-  #   end
-  #   new{Int}(coeffs)
-  # end
+  function Polynomial(str::String)
+    local terms = map(t -> polyTerm(t), splitPoly(str))
+    local coeffs = zeros(Int,maximum(map(t -> t.pow, terms))+1)
+    for term in terms
+      coeffs[term.pow+1] = term.coeff
+    end
+    new{Int}(coeffs)
+  end
 end
 
 
@@ -46,10 +46,12 @@ function splitPoly(p::String)
 end
 
 function polyTerm(str::String)
-  local poly_re = r"^([+-]?)(\d+)?(x(\^(\d+))?)?$"
+  local poly_re = r"^([+-]?)(\d+(\.\d*)?)?(x(\^(\d+))?)?$"
   local m = match(poly_re, str)
+  @show m
   local c = "$(m[1])$(isnothing(m[2]) ? 1 : m[2])"
-  (coeff = parse(Int, c), pow = m[3] == "x" ? 1 : m[5] !== nothing ? parse(Int, m[5]) : 0)
+  (coeff = isnothing(m[3]) ? parse(Int, c) : parse(Float64, c),
+    pow = m[4] == "x" ? 1 : !isnothing(m[6]) ? parse(Int, m[6]) : 0)
 end
 
 end

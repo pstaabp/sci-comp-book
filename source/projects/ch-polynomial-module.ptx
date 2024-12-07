@@ -62,7 +62,7 @@ end # of the module Poly
     <title>Testing the Polynomial Module</title>
 
     <p>
-      We are going to start testing the module immediately.   Here's a fair straightfoward test suite that just creates the polynomial and tests each are the correct type:
+      We are going to start testing the module immediately.   Here's a fair straightforward test suite that just creates the polynomial and tests each are the correct type:
     </p>
 
 
@@ -108,7 +108,7 @@ end
     </p>
 
     <p>
-      where this time we use the <c>include</c> comamnd.  We don't need the <c>includet</c> since this is not a module that needs to be tracked.  Upon running this, you should see:
+      where this time we use the <c>include</c> command.  We don't need the <c>includet</c> since this is not a module that needs to be tracked.  Upon running this, you should see:
     </p>
 
     <p>
@@ -197,7 +197,7 @@ end
     <title>Tests for Addition, Subtraction and Multiplication</title>
 
     <p>
-      We first start with tests for Addition, subtraction, scalar multiplicaiton and polynomial multiplication.  We have already written this code earlier, but we'll write the tests before including the code. We'll start with handling polynomials with integer coefficients.  If we start with the following polynomials
+      We first start with tests for Addition, subtraction, scalar multiplication and polynomial multiplication.  We have already written this code earlier, but we'll write the tests before including the code. We'll start with handling polynomials with integer coefficients.  If we start with the following polynomials
     </p>
 
     <p>
@@ -228,7 +228,7 @@ end
   </section>
 
   <section>
-    <title>Creating tests for string contructors</title>
+    <title>Creating tests for string constructors</title>
 
     <p>
       Although we have a constructor for creating a polynomial from the coefficients, it's also nice to have a constructor that parses a string.  For example, if we have
@@ -292,12 +292,12 @@ poly56 = Polynomial("4x^3+3imx^2+2x+im")
     </program>
 
     <p>
-      After defining these, each of these should then be tested for constructions and other operations (stringification, addition, subtraction and multiplicaiton).  All of these can be found <em>here</em>.
+      After defining these, each of these should then be tested for constructions and other operations (stringification, addition, subtraction and multiplication).  All of these can be found <em>here</em>.
     </p>
   </section>
 
   <section>
-    <title>Testing polynomial evalution</title>
+    <title>Testing polynomial evaluation</title>
 
     <p>
       The last set of tests that we are going to develop are those of polynomial evaluation.
