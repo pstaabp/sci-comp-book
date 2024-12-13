@@ -8,7 +8,7 @@
 <html lang="en-US" dir="ltr">
 <head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Introduction to Scientific Computing</title>
+<title>Using Databases</title>
 <meta name="Keywords" content="Authored in PreTeXt">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta xmlns:pf="https://prefigure.org" property="og:type" content="book">
@@ -187,7 +187,7 @@ window.MathJax = {
 <ol id="searchresults" class="searchresults"></ol>
 </div>
 </div>
-<span class="nav-other-controls"></span><span class="treebuttons"><a class="previous-button button" href="part-intro.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="part-intro.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="part-julia-basics.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span></nav><div xmlns:pf="https://prefigure.org" id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R}
+<span class="nav-other-controls"></span><span class="treebuttons"><a class="previous-button button" href="ch-file-system.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="part-advanced.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="part-data-analysis.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span></nav><div xmlns:pf="https://prefigure.org" id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R}
 \newcommand{\lt}{&lt;}
 \newcommand{\gt}{&gt;}
 \newcommand{\amp}{&amp;}
@@ -203,9 +203,9 @@ window.MathJax = {
 <li class="toc-item toc-preface"><div class="toc-title-box"><a href="preface.html" class="internal"><span class="title">Preface</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-part contains-active">
+<li class="toc-item toc-part">
 <div class="toc-title-box"><a href="part-intro.html" class="internal"><span class="codenumber">I</span> <span class="title">Introduction to Scientific Computing</span></a></div>
-<ul class="structural toc-item-list contains-active"><li class="toc-item toc-chapter active">
+<ul class="structural toc-item-list"><li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-intro.html" class="internal"><span class="codenumber">1</span> <span class="title">Introduction to Scientific Computing</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-intro.html#ch-intro-3" class="internal"><span class="codenumber">1.1</span> <span class="title">Examples of Scientific Computing</span></a></div></li>
@@ -675,9 +675,9 @@ window.MathJax = {
 </li>
 </ul>
 </li>
-<li class="toc-item toc-part">
+<li class="toc-item toc-part contains-active">
 <div class="toc-title-box"><a href="part-advanced.html" class="internal"><span class="codenumber">V</span> <span class="title">Advanced Features of Julia</span></a></div>
-<ul class="structural toc-item-list">
+<ul class="structural toc-item-list contains-active">
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-adv-functions.html" class="internal"><span class="codenumber">21</span> <span class="title">Advanced Function Features of Julia</span></a></div>
 <ul class="structural toc-item-list">
@@ -789,7 +789,7 @@ window.MathJax = {
 </li>
 </ul>
 </li>
-<li class="toc-item toc-chapter">
+<li class="toc-item toc-chapter active">
 <div class="toc-title-box"><a href="ch-database.html" class="internal"><span class="codenumber">27</span> <span class="title">Using Databases</span></a></div>
 <ul class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-database.html#ch-database-3" class="internal"><span class="codenumber">27.1</span> <span class="title">Creating a SQLite Database</span></a></div></li>
@@ -1169,71 +1169,102 @@ window.MathJax = {
 </ul>
 </li>
 </ul></nav></div>
-<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section xmlns:pf="https://prefigure.org" class="chapter" id="ch-intro"><h2 class="heading">
-<span class="type">Chapter</span><span class="space"> </span><span class="codenumber">1</span><span class="space"> </span><span class="title">Introduction to Scientific Computing</span>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section xmlns:pf="https://prefigure.org" class="chapter" id="ch-database"><h2 class="heading">
+<span class="type">Chapter</span><span class="space"> </span><span class="codenumber">27</span><span class="space"> </span><span class="title">Using Databases</span>
 </h2>
-<section class="introduction" id="ch-intro-2"><div class="para" id="ch-intro-2-1">So you picked up (or probably actually clicked on) this text and maybe you wonder what Scientific Computing actually is. This will give a brief overview of the field and try to explain with some actual examples.</div>
-<div class="para" id="ch-intro-2-2">In short, scientific computing is a field of study that solves problems from the sciences and mathematics that are generally too difficulty to solve using standard techniques and need to resort to writing some computer code to get an answer.</div></section><section class="section" id="ch-intro-3"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">1.1</span><span class="space"> </span><span class="title">Examples of Scientific Computing</span>
+<section class="introduction" id="ch-database-2"><div class="para" id="ch-database-2-1">We will see data analysis in the next part of this text. Often, when datasets get large, it is advantageous to store them in a database.  We will show how to do this in a simple database system, SQLite, which is a SQL database that can be stored in a single file.</div></section><section class="section" id="ch-database-3"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">27.1</span><span class="space"> </span><span class="title">Creating a SQLite Database</span>
 </h3>
-<div class="para" id="ch-intro-3-2">The classic example of scientific computing is that of weather prediction. Atmospheric scientists and meteorologists use weather models (mathematical equations) that are run on fairly powerful computers. The results are generally a large amount of data (temperature, pressure, humidity, etc.) that often is plotted for various regions of the U.S. or other countries. The resulting data gives the standard forecasts that many of us look at on smart phone apps or on TV or other places.</div>
-<div class="para" id="ch-intro-3-3">Data analysis is also ubiquitous and one can think about this falling in the realm of scientific computing. Although this varies, an autonomous vehicle can generate 25 Gb of data per day.<details class="ptx-footnote" aria-live="polite" id="ch-intro-3-3-1"><summary class="ptx-footnote__number" title="Footnote 1.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="ch-intro-3-3-1"><a class="external" href="https://www.tuxera.com/blog/autonomous-cars-300-tb-of-data-per-year/" target="_blank">see this link</a></div></details>. Although there is plenty of scientific computing without the data generation in self-driving cars, this is an example of needing to handle and analyze large amount of data quite quickly.</div>
-<div class="para" id="ch-intro-3-4">Recently, disease modeling came into focus with the COVID-19 pandemic. Plenty of research posted updates on predicted cases and deaths in the U.S. and throughout the world. Most of these model involve using existing data to fit mathematical functions and then use the resulting functions to predict the future. In addition, due to the diversity of conditions in different regions of the country and world, many localized models are developed at once with some predicted interaction as people travel from region to region.</div></section><section class="section" id="ch-intro-4"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">1.2</span><span class="space"> </span><span class="title">Modeling</span>
+<div class="para" id="ch-database-3-2">This section goes over how to create a SQLite database and let’s go ahead and do it with an example.  If we have the forecast for some location over the next week with the following data:</div>
+<div class="code-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><pre class="program line-numbers"><code class="language-none">forecast = [
+  (date = "2024-12-07", high = 37, low = 23, precip = 0, cond = "Partly Cloudy"),
+  (date = "2024-12-08", high = 44, low = 28, precip = 60, cond = "Snow"),
+  (date = "2024-12-09", high = 44, low = 32, precip = 75, cond = "Rain"),
+  (date = "2024-12-10", high = 44, low = 39, precip = 70, cond = "Rain"),
+  (date = "2024-12-11", high = 58, low = 40, precip = 80, cond = "Rain"),
+  (date = "2024-12-12", high = 48, low = 28, precip = 60, cond = "Rain"),
+  (date = "2024-12-13", high = 37, low = 25, precip = 0, cond = "Sunny"),
+  (date = "2024-12-14", high = 40, low = 24, precip = 0, cond = "Sunny"),
+  (date = "2024-12-15", high = 45, low = 30, precip = 0, cond = "Cloudy"),
+]
+</code></pre></div>
+<div class="para" id="ch-database-3-4">To put this into a SQLite database, we first create one with</div>
+<div class="para logical" id="ch-database-3-5"><pre class="code-display tex2jax_ignore">db = SQLite.DB("forecast.sqlite")
+</pre></div>
+<div class="para" id="ch-database-3-6">which resulted in the following:</div>
+<div class="para logical" id="ch-database-3-7"><pre class="code-display tex2jax_ignore">SQLite.DB("forecast.sqlite")
+</pre></div>
+<div class="para" id="ch-database-3-8">showing that it succeeded and that there is a file called "forecast.sqlite" that was created (in the working directory).</div>
+<div class="para" id="ch-database-3-9">This is just an empty database.  To do anything with it, a table needs to be created in the database.  We can do this with the following:</div>
+<div class="para logical" id="ch-database-3-10"><pre class="code-display tex2jax_ignore">DBInterface.execute(db, 
+  """CREATE TABLE IF NOT EXISTS FORECAST
+  (DATE_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  DATE TEXT NOT NULL,
+  HI_TEMP INTEGER NOT NULL,
+  LO_TEMP INTEGER NOT NULL,
+  PRECIP INTEGER NOT NULL,
+  COND TEXT NOT NULL
+  );""")
+</pre></div>
+<div class="para" id="ch-database-3-11">Each item in the <code class="code-inline tex2jax_ignore">()</code> list a column in the database, with the name of the column, type and if you insist that there are values (cannot be missing).  Here’s the details of each column.</div>
+<div class="para logical" id="ch-database-3-12"><dl class="description-list">
+<dt id="ch-database-3-12-1-1"><code class="code-inline tex2jax_ignore">DATE_ID</code></dt>
+<dd><div class="para" id="ch-database-3-12-1-1-2">This column is created as an index and can be thought of as the row in the database. The term <code class="code-inline tex2jax_ignore">PRIMARY KEY</code> says that this is the key in the databse and <code class="code-inline tex2jax_ignore">AUTOINCREMENT</code> is used to say that this column will be created automatically.  Both the key and the autoincrementing is often desireable for a database to help with both joining to other databases and indexing.</div></dd>
+<dt id="ch-database-3-12-1-2"><code class="code-inline tex2jax_ignore">DATE</code></dt>
+<dd><div class="para" id="ch-database-3-12-1-2-2">The date will be stored as a string (TEXT).  Although other databases have a native Date type, SQLite does not and strings are generally sufficient.</div></dd>
+<dt id="ch-database-3-12-1-3"><code class="code-inline tex2jax_ignore">HI_TEMP</code></dt>
+<dd><div class="para" id="ch-database-3-12-1-3-2">The forecast high temperature of the day as a integer.</div></dd>
+<dt id="ch-database-3-12-1-4"><code class="code-inline tex2jax_ignore">LO_TEMP</code></dt>
+<dd><div class="para" id="ch-database-3-12-1-4-2">The forecast low temperature of the day as a integer.</div></dd>
+<dt id="ch-database-3-12-1-5"><code class="code-inline tex2jax_ignore">PRECIP</code></dt>
+<dd><div class="para" id="ch-database-3-12-1-5-2">The forecast percent chance of precipitation (rain or snow) as an integer.</div></dd>
+<dt id="ch-database-3-12-1-6"><code class="code-inline tex2jax_ignore">COND</code></dt>
+<dd><div class="para" id="ch-database-3-12-1-6-2">The forecast conditions (Sunny, Partly Cloudy, etc.) as a string (TEXT).</div></dd>
+</dl></div>
+<div class="para" id="ch-database-3-13">Before going on, let’s see if we can take a look at this database using a command line tool called <code class="code-inline tex2jax_ignore">sqlite3</code><details class="ptx-footnote" aria-live="polite" id="ch-database-3-13-2"><summary class="ptx-footnote__number" title="Footnote 27.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="ch-database-3-13-2">Add some information to get this on mac/windows/linux</div></details>. Go to a terminal,  or shell (for example, in VSCode, <em class="emphasis">View</em> then <em class="emphasis">Terminal</em>),  make sure you are in the same directory that <code class="code-inline tex2jax_ignore">forecast.sqlite</code> was created and type in <code class="code-inline tex2jax_ignore">sqlite3 forecast.sqlite</code>.</div>
+<div class="para" id="ch-database-3-14">You will see the following (or similar depending on version):</div>
+<div class="para logical" id="ch-database-3-15"><pre class="code-display tex2jax_ignore">SQLite version 3.43.2 2023-10-10 13:08:14
+Enter ".help" for usage hints.
+sqlite&gt;
+</pre></div>
+<div class="para" id="ch-database-3-16">If we enter <code class="code-inline tex2jax_ignore">.tables</code>, this will show all of the database tables in the database.  We only have a single one so <code class="code-inline tex2jax_ignore">FORECAST</code> is the only one listed.  To list the columns as names and other information, enter <code class="code-inline tex2jax_ignore">pragma table_info(FORECAST);</code> and this returns</div>
+<div class="para logical" id="ch-database-3-17"><pre class="code-display tex2jax_ignore">1|DATE|TEXT|1||0
+2|HI_TEMP|INTEGER|1||0
+3|LO_TEMP|INTEGER|1||0
+4|PRECIP|INTEGER|1||0
+5|COND|TEXT|1||0
+</pre></div>
+<div class="para" id="ch-database-3-18">and the second column (separated by a <code class="code-inline tex2jax_ignore">|</code>) is the name of the column and the third column is the datatype.  The other three are related to indexing and skipped for now.</div></section><section class="section" id="ch-database-4"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">27.2</span><span class="space"> </span><span class="title">Adding data to a database</span>
 </h3>
-<div class="para" id="ch-intro-4-2">In nearly every example of scientific computing, a mathematical model is used. In short, a model is an equation, set of equations or some algorithm that is assumed as a mathematical understanding of the underlying problem. Mathematical models range vastly from field to field and generally the details are only taught in the individual fields, so we’re not covering too much about models in this course, but here’s a few examples.</div>
-<div class="para logical" id="ch-intro-4-3"><ul class="disc" id="ch-intro-4-3-1">
-<li id="ch-intro-4-3-1-1"><div class="para" id="ch-intro-4-3-1-1-1">In weather prediction, if the underlying physics is assumed, there is a large set of partial differential equations called the Navier-Stokes equations. Some approximation of these is used often with some statistical modeling for weather models.</div></li>
-<li id="ch-intro-4-3-1-2"><div class="para" id="ch-intro-4-3-1-2-1">In the autonomous car example above, modeling of the car dynamics often consists of the physics of moving objects which link position, velocity, acceleration and force. There is also a lot of artificial intelligence (AI) for object detection.</div></li>
-<li id="ch-intro-4-3-1-3"><div class="para" id="ch-intro-4-3-1-3-1">In the contagious disease models, there is usually some please of differential equations (the SIR model is a simple version) and some probability modeling. We will discuss both of these in this text.</div></li>
-</ul></div></section><section class="section" id="ch-intro-5"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">1.3</span><span class="space"> </span><span class="title">Computing</span>
+<div class="para" id="ch-database-4-2">Next, we want to write data to the database.  We will use a SQL command to do this</div>
+<div class="para logical" id="ch-database-4-3"><pre class="code-display tex2jax_ignore">for fc in forecast 
+  DBInterface.execute(db, """INSERT INTO FORECAST 
+    (DATE, HI_TEMP, LO_TEMP, PRECIP, COND) VALUES
+    ('$(fc.date)', $(fc.high), $(fc.low), $(fc.precip), '$(fc.cond)');""" )
+end
+</pre></div>
+<div class="para" id="ch-database-4-4">where we have used the <code class="code-inline tex2jax_ignore">INSERT</code> command to do this.  <code class="code-inline tex2jax_ignore">INSERT</code> is more like an append command, but the general way this works is</div>
+<div class="para logical" id="ch-database-4-5"><pre class="code-display tex2jax_ignore">INSERT INTO TABLE (COL1, COL2, ...) VALUE (VAL1, VAL2, ...); 
+</pre></div>
+<div class="para" id="ch-database-4-6">where <code class="code-inline tex2jax_ignore">TABLE</code> is the name of the table and then the values <code class="code-inline tex2jax_ignore">VAL1, VAL2, ...</code> are placed in the columns <code class="code-inline tex2jax_ignore">COL1, COL2, ...</code>.  If you created a column with <code class="code-inline tex2jax_ignore">NOT NULL</code> then a value will need to be written, but if not, this column can be missing.  Text columns need to be put in surrounded by single quotes (this is a SQL/SQLITE requirement not a Julia one).  Also, we have splite the <code class="code-inline tex2jax_ignore">INSERT</code> command over three lines just for readibility.  This single command can be broken up in any way desired.  Because we wrote this over 3 times, we use the multiline version of string that are fenced with <code class="code-inline tex2jax_ignore">"""</code>.</div></section><section class="section" id="ch-database-5"><h3 class="heading hide-type">
+<span class="type">Section</span><span class="space"> </span><span class="codenumber">27.3</span><span class="space"> </span><span class="title">Examining the Database in a Database</span>
 </h3>
-<div class="para" id="ch-intro-5-2">The computing side of Scientific Computing is generally very important as well. As mentioned above, most of the problems studied get much too large or complicated to solve analytically (generally as a mathematical problem) and some sort of approximation is needed.</div>
-<div class="para" id="ch-intro-5-3">In many cases, there are existing algorithms that are developed to solve some underlying mathematical problem and the main focus is on setting up the problem is the right way. For example, if there is a differential equation to solve, a package can be loaded to use a particular differential equation solver and then the results need to be analyzed.</div>
-<div class="para" id="ch-intro-5-4">But in general, those that succeed in Scientific Computation are good at the coding/computation side of things. It takes such skills to manage problems common in this fields.</div>
-<div class="para" id="ch-intro-5-5">I want to emphasize that Scientific computation, however, is not just computer programming. It takes a blend of skills to succeed at this. One needs a fairly deep knowledge of the field they are working in to understand how solving the problem using some algorithm is generating the correct answer.</div></section><section class="section" id="ch-intro-6"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">1.4</span><span class="space"> </span><span class="title">Ideas needed to do Effective Scientific Computing</span>
-</h3>
-<div class="para" id="ch-intro-6-2">Scientific Computing is generally used to solve problems in Mathematics and various Science fields. There are a number of important things that you need to know to solve problems effectively.</div>
-<div class="para logical" id="ch-intro-6-3"><ul class="disc" id="ch-intro-6-3-1">
-<li id="ch-intro-6-3-1-1"><div class="para" id="ch-intro-6-3-1-1-1">
-<em class="emphasis">Find/develop code that runs quickly.</em> Everyone wants the answer as soon as possible. However, if you write some code that doesn’t take long to develop and returns the correct answer in a few seconds, it probably doesn’t matter how efficient the algorithm is. However, if it takes a few hours to run, you probably want to investigate your solution algorithm.</div></li>
-<li id="ch-intro-6-3-1-2"><div class="para" id="ch-intro-6-3-1-2-1">
-<em class="emphasis">Find/develop code that uses an appropriate amount of memory.</em> Another important aspect is that of memory consumption. It’s not hard to find datasets these days that are 1TB or more in size, however few desktop/laptop machines have more than 16 or 32Gb of RAM, so you can’t load the entire file into memory. Such a dataset would need to be processed in chunks.</div></li>
-<li id="ch-intro-6-3-1-3"><div class="para" id="ch-intro-6-3-1-3-1">
-<em class="emphasis">Make sure you have known solutions/unit tests</em> How do you know that your solution is correct? It is important to have relatively simple cases that you can test your code on before solving more complex things.</div></li>
-</ul></div></section><section class="section" id="ch-intro-7"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">1.5</span><span class="space"> </span><span class="title">Examples of Scientific Computing</span>
-</h3>
-<div class="para logical" id="ch-intro-7-2"><ul class="disc" id="ch-intro-7-2-1">
-<li id="ch-intro-7-2-1-1"><div class="para" id="ch-intro-7-2-1-1-1">Consider a list of 5 cities that you need to visit and return to where you started. If you know the distances between each pair of cities, what is the most efficient path (in terms of distance or time) that gets you to each city and return.</div></li>
-<li id="ch-intro-7-2-1-2"><div class="para" id="ch-intro-7-2-1-2-1">Poker is a card game in which certain sets of cards (hands) beat other hands. Determine the probability (or chance) of getting any particular hand in Poker.</div></li>
-<li id="ch-intro-7-2-1-3"><div class="para" id="ch-intro-7-2-1-3-1">Given a dataset of Major League Baseball scores from 2000-2017, find the game with the largest score, most innings played, biggest winning margin, etc.</div></li>
-</ul></div>
-<div class="para" id="ch-intro-7-3">We will look at these an other problems in this course.</div></section><section class="section" id="ch-intro-8"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">1.6</span><span class="space"> </span><span class="title">Writing Code for Scientific Computing</span>
-</h3>
-<div class="para" id="ch-intro-8-2">Look back at the list of requirements for Scientific Computing projects. A general rule of thumb is to use a computing language that you know will work well for those tasks. Typically, most students have learned one or two languages and aren’t quite sure which to use. In most cases it doesn’t matter what to use, but for complex problems it will matter.</div>
-<div class="para" id="ch-intro-8-3">One of the best languages for scientific computing has been Matlab over the past 3 or 4 decades. It is used extensively in engineering firms throughout the world (and the headquarters is in nearby Natick, MA). We won’t be using Matlab here though. One of the nice things about taking a class is exploring new languages. Here we will use <a class="external" href="http://julialang.org" target="_blank">Julia</a><details class="ptx-footnote" aria-live="polite" id="ch-intro-8-3-2"><summary class="ptx-footnote__number" title="Footnote 1.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-intro-8-3-2"><code class="code-inline tex2jax_ignore">julialang.org</code></div></details>, which is a very new language that a lot of people in scientific computing are excited about. We will give examples using Julia, but the ideas here should be applicable to other languages. Julia was designed as a scientific computing language, but in short is a modern language. There are number of aspects that makes Julia a good language for this. Julia is</div>
-<div class="para logical" id="ch-intro-8-4"><dl class="description-list">
-<dt id="ch-intro-8-4-1-1">a scripting language with dynamic types</dt>
-<dd><div class="para" id="ch-intro-8-4-1-1-2">This means you can get started right away--there’s no need to learn about compilation--and you can prototype things quickly.</div></dd>
-<dt id="ch-intro-8-4-1-2">a language with just-in-time compilation</dt>
-<dd><div class="para" id="ch-intro-8-4-1-2-2">Most of the time scripting languages are slow, however with modern under-the-hood tools, languages can be compiled on the fly to create very fast runtimes. There is a <a class="external" href="https://www.julialang.org/benchmarks/" target="_blank">webpage on benchmarks</a><details class="ptx-footnote" aria-live="polite" id="ch-intro-8-4-1-2-2-2"><summary class="ptx-footnote__number" title="Footnote 1.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="ch-intro-8-4-1-2-2-2"><code class="code-inline tex2jax_ignore">www.julialang.org/benchmarks/</code></div></details> comparing Julia to other standard languages.</div></dd>
-<dt id="ch-intro-8-4-1-3">open source</dt>
-<dd><div class="para" id="ch-intro-8-4-1-3-2">Although often open-source implies free but not high-quality, the free part holds, but more important is that anyone can contributed to the code. The Julia community is committed to creating a high-quality piece of software and many discussion revolve around writing code that will improve the speed or other aspects. This is very opaque and unclear if it happens with commercial software.</div></dd>
-<dt id="ch-intro-8-4-1-4">easy to use</dt>
-<dd><div class="para" id="ch-intro-8-4-1-4-2">The syntax of Julia is similar to that of python, a very popular language, and is often intuitive.</div></dd>
-<dt id="ch-intro-8-4-1-5">a joy to use</dt>
-<dd><div class="para" id="ch-intro-8-4-1-5-2">Additionally, the structure of the language makes it easy to start with, but as projects get more complex, it can be written in a simple way.</div></dd>
-</dl></div></section><section class="section" id="ch-intro-9"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space"> </span><span class="codenumber">1.7</span><span class="space"> </span><span class="title">Let’s get started</span>
-</h3>
-<div class="para" id="ch-intro-9-2">You can start by just reading the book, but to get the most out of this, make sure that you have a computer with access to Julia. If you already have this, great. If not, see <a href="ch-getting-started.html" class="internal" title="Appendix A: Getting Started with Julia">Appendix A</a> which will show you a few way to get the code up and running.</div>
-<div class="para" id="ch-intro-9-3">Solving Scientific Computing problems ultimately boils down to manipulating data and at the most basic is that of strings and numbers. We begin with understanding these data types and how to store values in them. We also show some of Julia syntax, which looks like other languages (like python). Hopefully you have some basic knowledge of computing, but no assumption of any particular language is necessary.</div></section></section></div>
+<div class="para" id="ch-database-5-2">Next, let’s look the data in the database to ensure it was read in correctly.  First, let’s use the <code class="code-inline tex2jax_ignore">sqlite3</code> command line program first.  Again, go to a terminal or shell and enter <code class="code-inline tex2jax_ignore">sqlite3 forecast.sqlite</code>. To examine the entire table, we enter</div>
+<div class="para logical" id="ch-database-5-3"><pre class="code-display tex2jax_ignore">SELECT * FROM FORECAST;
+</pre></div>
+<div class="para logical" id="ch-database-5-4"><pre class="code-display tex2jax_ignore">1|2024-12-07|37|23|0|Partly Cloudy
+2|2024-12-08|44|28|60|Snow
+3|2024-12-09|44|32|75|Rain
+4|2024-12-10|44|39|70|Rain
+5|2024-12-11|58|40|80|Rain
+6|2024-12-12|48|28|60|Rain
+7|2024-12-13|37|25|0|Sunny
+8|2024-12-14|40|24|0|Sunny
+9|2024-12-15|45|30|0|Cloudy
+</pre></div></section></section></div>
 <div class="ptx-content-footer">
-<a class="previous-button button" href="part-intro.html" title="Previous"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="part-julia-basics.html" title="Next"><span class="name">Next</span><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
+<a class="previous-button button" href="ch-file-system.html" title="Previous"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="part-data-analysis.html" title="Next"><span class="name">Next</span><span xmlns:pf="https://prefigure.org" class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
 </div></main>
 </div>
 <div id="ptx-page-footer" class="ptx-page-footer">
