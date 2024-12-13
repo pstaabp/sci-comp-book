@@ -251,12 +251,12 @@ menu = Dict("items" => [
 
     <p>
       <cd>
-      <cline>Downloads.request("https://pro.openweathermap.org/data/2.5/forecast?lat=42.5817&amp;lon=-71.793&amp;appid=5a6e6bf61f0f285da7a9886694c04c87", output = "weather.json")</cline>
+      <cline>Downloads.request("https://pro.openweathermap.org/data/2.5/forecast?lat=42.5817&amp;lon=-71.793&amp;units=imperials&amp;appid=5a6e6bf61f0f285da7a9886694c04c87", output = "weather.json")</cline>
       </cd>
     </p>
 
     <p>
-      The weather data is then stored in the file <c>"weather.json"</c>.  We can parse the JSON file with
+      The weather data is then stored in the file <c>"weather.json"</c>.   Also, the units used was changed from standard to <c>imperial</c> the units used in the United States.  We can parse the JSON file with
     </p>
 
     <p>
@@ -311,40 +311,80 @@ menu = Dict("items" => [
 
     <program language="julia" line-numbers="yes">
       <input>
-        40×5 DataFrame15 rows omitted
+40×5 DataFrame15 rows omitted
 Row	time	temp	humidity	wind	conditions
 Int64	Float64	Int64	Float64	String
-1	1734102000	268.3	60	4.63	Clear
-2	1734112800	269.92	47	5.1	Clouds
-3	1734123600	269.46	45	3.94	Clear
-4	1734134400	268.59	56	2.91	Clear
-5	1734145200	267.97	60	2.84	Clear
-6	1734156000	267.53	66	2.5	Clear
-7	1734166800	266.95	66	1.85	Clear
-8	1734177600	266.39	67	1.51	Clear
-9	1734188400	270.19	42	2.96	Clear
-10	1734199200	272.46	32	2.76	Clear
-11	1734210000	270.01	48	1.91	Clear
-12	1734220800	268.17	63	1.27	Clear
-13	1734231600	267.7	67	1.13	Clear
+1	1734102000	24.17	61	10.18	Clear
+2	1734112800	25.83	52	11.3	Clear
+3	1734123600	25.32	50	8.79	Clear
+4	1734134400	24.28	56	6.44	Clear
+5	1734145200	23.18	60	6.26	Clear
+6	1734156000	22.37	66	5.59	Clear
+7	1734166800	21.29	66	4.0	Clear
+8	1734177600	20.32	67	3.36	Clear
+9	1734188400	27.16	42	6.53	Clear
+10	1734199200	31.28	31	6.06	Clear
+11	1734210000	26.87	47	4.23	Clear
+12	1734220800	23.56	62	2.86	Clear
+13	1734231600	22.73	67	2.53	Clear
 ⋮	⋮	⋮	⋮	⋮	⋮
-29	1734404400	277.09	99	2.4	Clouds
-30	1734415200	280.5	97	4.7	Rain
-31	1734426000	281.49	94	5.18	Rain
-32	1734436800	283.67	93	6.92	Clouds
-33	1734447600	284.24	94	5.98	Rain
-34	1734458400	284.33	90	6.4	Rain
-35	1734469200	281.86	86	6.62	Rain
-36	1734480000	276.52	81	4.86	Clouds
-37	1734490800	275.94	84	5.6	Clouds
-38	1734501600	275.16	86	4.58	Clouds
-39	1734512400	274.72	84	4.4	Clouds
-40	1734523200	273.24	91	2.21	Clouds
+29	1734404400	39.88	99	5.73	Clouds
+30	1734415200	45.81	97	10.67	Rain
+31	1734426000	47.59	94	11.72	Rain
+32	1734436800	51.42	92	15.46	Clouds
+33	1734447600	52.45	94	13.4	Rain
+34	1734458400	52.65	90	14.5	Rain
+35	1734469200	48.51	86	14.63	Rain
+36	1734480000	38.66	81	10.71	Clouds
+37	1734490800	37.58	84	12.39	Clouds
+38	1734501600	36.18	85	10.18	Clouds
+39	1734512400	35.33	83	9.86	Clouds
+40	1734523200	32.65	91	4.94	Clouds
       </input>
     </program>
 
     <p>
-      The units for each of these is probably not what you expect, but is done is a very general way for weather in any location in the world.   The site <url href="https://openweathermap.org/forecast5" /> gives details about each of the fields and the units.
+      The units for the <c>time</c> column  is given in <url href="https://en.wikipedia.org/wiki/Unix_time">unix time</url>, the number of seconds since January 1, 1970.  On the surface this seems to be a strange way to measure time, but many things (like time differences and time zones) can be handled relatively easily.  The units of the other columns are standard for temperature (Fahrenheit) and wind speed (miles per hour).  The site <url href="https://openweathermap.org/forecast5" /> gives additional details about each of the fields and the units.
     </p>
+
+    <p>
+      Although there is much we can do with the time data, we will just make a simple new column that represents the number of hours since the beginning of the forecast (first row of data).  Since this is in seconds, we will first shift by the unix time of the first row and then divide by 3600 (number of seconds in an hour).  This can be done using the <c>@chain</c> blocks shown in <xref ref="ch-manipulating-data"/> as
+    </p>
+
+    <p>
+      <cd>
+      <cline>weather2 = @chain weather_df begin</cline>
+      <cline>  transform(:time =&gt; (t-&gt; (t .- 1734102000 )/3600) =&gt; :time_hours)</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      The results add a new column called <c>time_hours</c> to the DataFrame which is the number of hours into the forecast, which runs from 0.0 to 117.0.
+    </p>
+
+    <p>
+      We can plot of the data above using techniques in <xref ref="ch-plotting-makie"/>, <xref ref="ch-plots-package"/> and <xref ref="ch-plotting-data"/>.  In this example, we will make line plots with <c>time_hours</c> on the horizontal and <c>temp</c>, <c>humidity</c> and <c>wind</c> as separate plots using the following code:
+    </p>
+
+    <p>
+      <cd>
+      <cline>fig, ax = lines(weather2.time_hours, weather2.temp, label = "temperature")</cline>
+      <cline>lines!(ax,weather2.time_hours, weather2.humidity, label = "humidity")</cline>
+      <cline>lines!(ax,weather2.time_hours, weather2.wind, label = "wind speed")</cline>
+      <cline>axislegend(ax, position = :lt)</cline>
+      <cline>fig</cline>
+      </cd>
+    </p>
+    <p>and when I downloaded the data, the plot I got was: </p>
+
+       <figure xml:id="fig-weather">
+      <caption>Line plots of weather data</caption>
+      <image source="plots/weather/weather.png" width="90%">
+        <shortdescription>
+          Line plots showing predicted values of temperature, humidity and wind speed from 0 to 117 hours from the current time.
+        </shortdescription>
+      </image>
+    </figure>
   </section>
 </chapter>
