@@ -33,7 +33,7 @@
 
   <introduction>
     <p>
-      In <xref ref="ch-arrays"/>, we introduced an array, which is a set of things (integers, floats, string or other) with an order to it.  Julia has the notion of a collection, which is an abstract notion of a collection.  In this chapter, we will examine the abstract collection as well as discuss concrete versions, some of which we have seen previously and introduce Sets and Dictionaries an important collection types.
+      In <xref ref="ch-arrays"/>, we introduced an array, which is a set of things (integers, floats, strings or other) with an order to it.  We will examine many common features that together make these as an abstract notion of a collection.  Since Julia does not have classes, there isn't a formal abstract class like other languagues.  Instead, there are common methods associated with collections like an array that we will also see in the Sets and Dictionaries an important collection types.  Lastly, we will create our own abstract collection.
     </p>
   </introduction>
 
@@ -206,7 +206,7 @@
     </p>
 
     <p>
-      An getter/accessor is similar to that of an array.  <c>d["a"]</c> will return <c>1</c>, the value of the key corresponding to <c>"a"</c>. And one can set a value in the same way.  <c>d["a"] = 10</c> will update the value associated with the key "a" to be 10.
+      The getter/accessor is similar to that of an array.  <c>d["a"]</c> will return <c>1</c>, the value of the key corresponding to <c>"a"</c>. And one can set a value in the same way.  <c>d["a"] = 10</c> will update the value associated with the key "a" to be 10.  Note that this is one way that a Dictionary differs from a named tuple.  The Dictionary can be updated/mutated and a named tuple cannot.
     </p>
 
     <p>

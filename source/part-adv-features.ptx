@@ -10,6 +10,6 @@
   <xi:include href="advanced/ch-parallel.ptx" />
   <xi:include href="advanced/ch-regular-expr.ptx" />
   <xi:include href="advanced/ch-file-system.ptx" />
-
+  <xi:include href="advanced/ch-database.ptx" />
 
 </part>

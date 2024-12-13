@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <chapter xml:id="ch-api">
-  <title>Working with a web API and JSON strings</title>
+  <title>Working with a weather web API and JSON strings</title>
 
   <introduction>
     <p>
@@ -107,7 +107,10 @@ menu = Dict("items" => [
     </p>
 
     <p>
-      and notice that it comes back with no line breaks.  JSON isn't designed to be easily readable. Instead, it is designed to compactly store data.
+      and notice that it comes back with no line breaks.  JSON isn't designed to be easily readable. Instead, it is designed to compactly store data.  However, there is a package called <c>PrettyPrint</c> that allows better printing. Download and do <c>using PrettyPrint</c> and then
+    </p>
+
+    <p>
     </p>
   </section>
 
@@ -115,7 +118,7 @@ menu = Dict("items" => [
     <title>Handling Files</title>
 
     <p>
-      As we discussed, JSON is a format that is generally used to transfer data between computers.   Instead of it being typed in, it will often be stored as a file, so in this section, we will discuss how to handle files.  As an example, let's say that we have a menu, simimlar to above, but stored in the following file.  First, download this file and move it
+      As we discussed, JSON is a format that is generally used to transfer data between computers.   Instead of it being typed in, it will often be stored as a file, and will be helpful to review <xref ref="ch-file-system"/>.  Later, we use a command to save a file and another to read it, however it is helpful to understand file structure offered in that chapter.
     </p>
   </section>
 
@@ -156,9 +159,192 @@ menu = Dict("items" => [
     </p>
 
     <p>
-      Which makes a request to the webserver at <c>https://geocoding.geo.census.gov</c> with the given address and other parameters.  Note that the output is saved in a file called <c>"tdgarden.json"</c>.  Go ahead and look at it in VS code or another text editor.
+      Which makes a request to the webserver at <c>https://geocoding.geo.census.gov</c> with the given address and other parameters.  Note that the output is saved in a file called <c>"tdgarden.json"</c>.  Go ahead and look at it in VS code or another text editor, however JSON files are generally a good method for sending data between computers and is not very readable.
     </p>
 
-    <p>We will load in the json file </p>
+    <p>
+      We will load in the json file  with the command <c>j = JSON.parsefile("tdgarden.json") </c> and then pretty printing it with <c>pprintln(j)</c> results in
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+        {
+  "result" : {
+               "addressMatches" : [
+                                    {
+                                      "tigerLine" : {"side" : "L",
+                                                     "tigerLineId" : "85709714"},
+                                      "coordinates" : {"x" : -71.063299192963,
+                                                       "y" : 42.364398683584},
+                                      "addressComponents" : {"toAddress" : "50",
+                                                             "preQualifier" : "",
+                                                             "zip" : "02114",
+                                                             "state" : "MA",
+                                                             "preType" : "",
+                                                             "streetName" : "CAUSEWAY",
+                                                             "suffixType" : "ST",
+                                                             "preDirection" : "",
+                                                             "city" : "BOSTON",
+                                                             "suffixQualifier" : "",
+                                                             "suffixDirection" : "",
+                                                             "fromAddress" : "98"},
+                                      "matchedAddress" : "80 CAUSEWAY ST, BOSTON, MA, 02114",
+                                    },
+                                  ],
+               "input" : {
+                           "benchmark" : {"benchmarkName" : "Public_AR_Current",
+                                          "isDefault" : true,
+                                          "benchmarkDescription" : "Public Address Ranges - Current Benchmark",
+                                          "id" : "4"},
+                           "address" : {"city" : "Boston",
+                                        "zip" : "02114",
+                                        "street" : "80 Causeway St",
+                                        "state" : "MA"},
+                         },
+             },
+}
+      </input>
+    </program>
+
+    <p>
+      Recall that the desire in this API call was to get the longitude and latitude coordinates of the location.  This is on lines 7 and 8 of the above outuput, but can be accessed from the Dictionary with
+    </p>
+
+    <p>
+      <cd>
+      <cline>j["result"]["addressMatches"][1]["coordinates"]</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>Dict{String, Any} with 2 entries:</cline>
+      <cline>  "x" =&gt; -71.0633</cline>
+      <cline>  "y" =&gt; 42.3644</cline>
+      </cd>
+    </p>
+  </section>
+
+  <section>
+    <title>Accessing API Weather Data</title>
+
+    <p>
+      The previous example was relatively simple and this will give a more complex example.  We will use the service from <url href="openweathermap.org" /> to access weather data for a particular location.   First, you should visit the site and create an account (for free) to access an API key.  This will be needed below.
+    </p>
+
+    <p>
+      After signing up, go to ???? to access your API key and make a note of it (or store it in a file on your personal computer.  )
+    </p>
+
+    <p>
+      We will make a call to get a 4-day/3-hour forecast for Fitchburg, MA.  First, use the service above to get the coordinates (I used the address of 100 Main Street in Fitchburg) and received <c>-71.793</c> for the longitude and <c>42.5817</c> for the latitude.
+    </p>
+
+    <p>
+      This is then fed into the openweather API as
+    </p>
+
+    <p>
+      <cd>
+      <cline>Downloads.request("https://pro.openweathermap.org/data/2.5/forecast?lat=42.5817&amp;lon=-71.793&amp;appid=5a6e6bf61f0f285da7a9886694c04c87", output = "weather.json")</cline>
+      </cd>
+    </p>
+
+    <p>
+      The weather data is then stored in the file <c>"weather.json"</c>.  We can parse the JSON file with
+    </p>
+
+    <p>
+      <cd>
+      <cline>weather = JSON.parsefile("weather.json")</cline>
+      </cd>
+    </p>
+
+    <p>
+      and examine the results with <c>pprintln(weather)</c>.  You will see that it is a large file. The main weather information is in the <c>list</c> field and the next step is to extract the data and place this in a <c>DataFrame</c>.  Although there is a lot of information there, we will extract the time, temperature, humidity, wind and conditions from this to begin with.  First, we will make an empty <c>DataFrame</c> with these columns with the following command:
+    </p>
+
+    <p>
+      <cd>
+      <cline>weather_df = DataFrame(time = Int[], temp = Float64[], humidity = Int[], wind = Float64[], conditions = String[])</cline>
+      </cd>
+    </p>
+
+    <p>
+      Extracting the correct data requires that the proper fields are included.  All of the desired data is in the <c>"list"</c> field, which is an array of other data, so for each element of this, we extract the time, temp, wind, ...  First, let's just show the conditions with
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+        for w in weather["list"]
+          weath =  (time = w["dt"], temp = w["main"]["temp"], humidity = w["main"]["humidity"], wind = w["wind"]["speed"], conditions = w["weather"][1]["main"])
+          @show weath
+        end
+      </input>
+    </program>
+
+    <p>
+      but the output is not shown here, but it appears that it was parsed correctly. To add this to the dataframe, we change the above to
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+          for w in weather["list"]
+            append!(weather_df, [(time = w["dt"], temp = w["main"]["temp"], humidity = w["main"]
+            ["humidity"], wind = w["wind"]["speed"], conditions = w["weather"][1]["main"])])
+          end
+          weather_df
+      </input>
+    </program>
+
+    <p>
+      And the result of this should be similar to
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+        40×5 DataFrame15 rows omitted
+Row	time	temp	humidity	wind	conditions
+Int64	Float64	Int64	Float64	String
+1	1734102000	268.3	60	4.63	Clear
+2	1734112800	269.92	47	5.1	Clouds
+3	1734123600	269.46	45	3.94	Clear
+4	1734134400	268.59	56	2.91	Clear
+5	1734145200	267.97	60	2.84	Clear
+6	1734156000	267.53	66	2.5	Clear
+7	1734166800	266.95	66	1.85	Clear
+8	1734177600	266.39	67	1.51	Clear
+9	1734188400	270.19	42	2.96	Clear
+10	1734199200	272.46	32	2.76	Clear
+11	1734210000	270.01	48	1.91	Clear
+12	1734220800	268.17	63	1.27	Clear
+13	1734231600	267.7	67	1.13	Clear
+⋮	⋮	⋮	⋮	⋮	⋮
+29	1734404400	277.09	99	2.4	Clouds
+30	1734415200	280.5	97	4.7	Rain
+31	1734426000	281.49	94	5.18	Rain
+32	1734436800	283.67	93	6.92	Clouds
+33	1734447600	284.24	94	5.98	Rain
+34	1734458400	284.33	90	6.4	Rain
+35	1734469200	281.86	86	6.62	Rain
+36	1734480000	276.52	81	4.86	Clouds
+37	1734490800	275.94	84	5.6	Clouds
+38	1734501600	275.16	86	4.58	Clouds
+39	1734512400	274.72	84	4.4	Clouds
+40	1734523200	273.24	91	2.21	Clouds
+      </input>
+    </program>
+
+    <p>
+      The units for each of these is probably not what you expect, but is done is a very general way for weather in any location in the world.   The site <url href="https://openweathermap.org/forecast5" /> gives details about each of the fields and the units.
+    </p>
   </section>
 </chapter>

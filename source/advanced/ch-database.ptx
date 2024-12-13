@@ -1,0 +1,225 @@
+<chapter xml:id="ch-database">
+  <title>Using Databases</title>
+
+  <introduction>
+    <p>
+      We will see data analysis in the next part of this text. Often, when datasets get large, it is advantageous to store them in a database.  We will show how to do this in a simple database system, SQLite, which is a SQL database that can be stored in a single file.
+    </p>
+  </introduction>
+
+  <section>
+    <title>Creating a SQLite Database</title>
+
+    <p>
+      This section goes over how to create a SQLite database and let's go ahead and do it with an example.  If we have the forecast for some location over the next week with the following data:
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <input>
+forecast = [
+  (date = "2024-12-07", high = 37, low = 23, precip = 0, cond = "Partly Cloudy"),
+  (date = "2024-12-08", high = 44, low = 28, precip = 60, cond = "Snow"),
+  (date = "2024-12-09", high = 44, low = 32, precip = 75, cond = "Rain"),
+  (date = "2024-12-10", high = 44, low = 39, precip = 70, cond = "Rain"),
+  (date = "2024-12-11", high = 58, low = 40, precip = 80, cond = "Rain"),
+  (date = "2024-12-12", high = 48, low = 28, precip = 60, cond = "Rain"),
+  (date = "2024-12-13", high = 37, low = 25, precip = 0, cond = "Sunny"),
+  (date = "2024-12-14", high = 40, low = 24, precip = 0, cond = "Sunny"),
+  (date = "2024-12-15", high = 45, low = 30, precip = 0, cond = "Cloudy"),
+]
+      </input>
+    </program>
+
+    <p>
+      To put this into a SQLite database, we first create one with
+    </p>
+
+    <p>
+      <cd>
+      <cline>db = SQLite.DB("forecast.sqlite")</cline>
+      </cd>
+    </p>
+
+    <p>
+      which resulted in the following:
+    </p>
+
+    <p>
+      <cd>
+      <cline>SQLite.DB("forecast.sqlite")</cline>
+      </cd>
+    </p>
+
+    <p>
+      showing that it succeeded and that there is a file called "forecast.sqlite" that was created (in the working directory).
+    </p>
+
+    <p>
+      This is just an empty database.  To do anything with it, a table needs to be created in the database.  We can do this with the following:
+    </p>
+
+    <p>
+      <cd>
+      <cline>DBInterface.execute(db, </cline>
+      <cline>  """CREATE TABLE IF NOT EXISTS FORECAST</cline>
+      <cline>  (DATE_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,</cline>
+      <cline>  DATE TEXT NOT NULL,</cline>
+      <cline>  HI_TEMP INTEGER NOT NULL,</cline>
+      <cline>  LO_TEMP INTEGER NOT NULL,</cline>
+      <cline>  PRECIP INTEGER NOT NULL,</cline>
+      <cline>  COND TEXT NOT NULL</cline>
+      <cline>  );""")</cline>
+      </cd>
+    </p>
+
+    <p>
+      Each item in the <c>()</c> list a column in the database, with the name of the column, type and if you insist that there are values (cannot be missing).  Here's the details of each column.
+    </p>
+
+    <p>
+      <dl>
+      <li>
+        <title><c>DATE_ID</c></title>
+
+        <p>
+          This column is created as an index and can be thought of as the row in the database. The term <c>PRIMARY KEY</c> says that this is the key in the databse and <c>AUTOINCREMENT</c> is used to say that this column will be created automatically.  Both the key and the autoincrementing is often desireable for a database to help with both joining to other databases and indexing.
+        </p>
+      </li>
+
+      <li>
+        <title><c>DATE</c></title>
+
+        <p>
+          The date will be stored as a string (TEXT).  Although other databases have a native Date type, SQLite does not and strings are generally sufficient.
+        </p>
+      </li>
+
+      <li>
+        <title><c>HI_TEMP</c></title>
+
+        <p>
+          The forecast high temperature of the day as a integer.
+        </p>
+      </li>
+
+      <li>
+        <title><c>LO_TEMP</c></title>
+
+        <p>
+          The forecast low temperature of the day as a integer.
+        </p>
+      </li>
+
+      <li>
+        <title><c>PRECIP</c></title>
+
+        <p>
+          The forecast percent chance of precipitation (rain or snow) as an integer.
+        </p>
+      </li>
+
+      <li>
+        <title><c>COND</c></title>
+
+        <p>
+          The forecast conditions (Sunny, Partly Cloudy, etc.) as a string (TEXT).
+        </p>
+      </li>
+      </dl>
+    </p>
+
+    <p>
+      Before going on, let's see if we can take a look at this database using a command line tool called <c>sqlite3</c><fn>Add some information to get this on mac/windows/linux</fn>. Go to a terminal,  or shell (for example, in VSCode, <em>View</em> then <em>Terminal</em>),  make sure you are in the same directory that <c>forecast.sqlite</c> was created and type in <c>sqlite3 forecast.sqlite</c>.
+    </p>
+
+    <p>
+      You will see the following (or similar depending on version):
+    </p>
+
+    <p>
+      <cd>
+      <cline>SQLite version 3.43.2 2023-10-10 13:08:14</cline>
+      <cline>Enter ".help" for usage hints.</cline>
+      <cline>sqlite&gt;</cline>
+      </cd>
+    </p>
+
+    <p>
+      If we enter <c>.tables</c>, this will show all of the database tables in the database.  We only have a single one so <c>FORECAST</c> is the only one listed.  To list the columns as names and other information, enter <c>pragma table_info(FORECAST);</c> and this returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>1|DATE|TEXT|1||0</cline>
+      <cline>2|HI_TEMP|INTEGER|1||0</cline>
+      <cline>3|LO_TEMP|INTEGER|1||0</cline>
+      <cline>4|PRECIP|INTEGER|1||0</cline>
+      <cline>5|COND|TEXT|1||0</cline>
+      </cd>
+    </p>
+
+    <p>
+      and the second column (separated by a <c>|</c>) is the name of the column and the third column is the datatype.  The other three are related to indexing and skipped for now.
+    </p>
+  </section>
+
+  <section>
+    <title>Adding data to a database</title>
+
+    <p>
+      Next, we want to write data to the database.  We will use a SQL command to do this
+    </p>
+
+    <p>
+      <cd>
+      <cline>for fc in forecast </cline>
+      <cline>  DBInterface.execute(db, """INSERT INTO FORECAST </cline>
+      <cline>    (DATE, HI_TEMP, LO_TEMP, PRECIP, COND) VALUES</cline>
+      <cline>    ('$(fc.date)', $(fc.high), $(fc.low), $(fc.precip), '$(fc.cond)');""" )</cline>
+      <cline>end</cline>
+      </cd>
+    </p>
+
+    <p>
+      where we have used the <c>INSERT</c> command to do this.  <c>INSERT</c> is more like an append command, but the general way this works is
+    </p>
+
+    <p>
+      <cd>
+      <cline>INSERT INTO TABLE (COL1, COL2, ...) VALUE (VAL1, VAL2, ...); </cline>
+      </cd>
+    </p>
+
+    <p>
+      where <c>TABLE</c> is the name of the table and then the values <c>VAL1, VAL2, ...</c> are placed in the columns <c>COL1, COL2, ...</c>.  If you created a column with <c>NOT NULL</c> then a value will need to be written, but if not, this column can be missing.  Text columns need to be put in surrounded by single quotes (this is a SQL/SQLITE requirement not a Julia one).  Also, we have splite the <c>INSERT</c> command over three lines just for readibility.  This single command can be broken up in any way desired.  Because we wrote this over 3 times, we use the multiline version of string that are fenced with <c>"""</c>.
+    </p>
+  </section>
+
+  <section>
+    <title>Examining the Database in a Database</title>
+
+    <p>
+      Next, let's look the data in the database to ensure it was read in correctly.  First, let's use the <c>sqlite3</c> command line program first.  Again, go to a terminal or shell and enter <c>sqlite3 forecast.sqlite</c>. To examine the entire table, we enter
+    </p>
+    <p>
+      <cd>
+        <cline>SELECT * FROM FORECAST;</cline>
+      </cd>
+    </p>
+
+    <p>
+      <cd>
+      <cline>1|2024-12-07|37|23|0|Partly Cloudy</cline>
+      <cline>2|2024-12-08|44|28|60|Snow</cline>
+      <cline>3|2024-12-09|44|32|75|Rain</cline>
+      <cline>4|2024-12-10|44|39|70|Rain</cline>
+      <cline>5|2024-12-11|58|40|80|Rain</cline>
+      <cline>6|2024-12-12|48|28|60|Rain</cline>
+      <cline>7|2024-12-13|37|25|0|Sunny</cline>
+      <cline>8|2024-12-14|40|24|0|Sunny</cline>
+      <cline>9|2024-12-15|45|30|0|Cloudy</cline>
+      </cd>
+    </p>
+  </section>
+</chapter>
