@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="robots" content="noindex, nofollow">
+</head>
+<body class="ignore-math">
+<figure class="listing figure-like"><div class="code-box"><pre class="program line-numbers"><code class="language-none">function bisection(f::Function, a::Real, b::Real)
+  local c
+  local n = 0
+  while (b-a) &gt; 1e-6 &amp;&amp; n &lt; 10
+    c = 0.5*(a+b)  # find the midpoint
+    # test if f(a) and f(c) have opposite signs to determine the new interval
+    (a,b) = f(a)*f(c) lt; 0 ? (a,c) : (c,b)
+    n += 1
+  end
+  c
+end
+</code></pre></div>
+<figcaption><span class="type">Listing</span><span class="space"> </span><span class="codenumber">5.5<span class="period">.</span></span><span class="space"> </span>Adapted bisection method to prevent infinite loop</figcaption></figure><span class="incontext"><a class="internal" href="ch-boolean-loops.html#prog-bisection-no-inf">in-context</a></span>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="robots" content="noindex, nofollow">
+</head>
+<body class="ignore-math">
+<figure class="listing figure-like"><div class="code-box"><pre class="program line-numbers"><code class="language-none">function newton(f::Function, x0::Number)
+  local dx = f(x0)/ForwardDiff.derivative(f, x0)
+  local steps = 0
+  x0 -= dx
+  while abs(dx) &gt; 1e-6 &amp;&amp; steps &lt; 10
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
+    steps += 1
+  end
+  x0
+end
+</code></pre></div>
+<figcaption><span class="type">Listing</span><span class="space"> </span><span class="codenumber">10.7<span class="period">.</span></span><span class="space"> </span>Newton’s method with a stopping condition if it doesn’t converge</figcaption></figure><span class="incontext"><a class="internal" href="ch-rootfinding.html#list-newton">in-context</a></span>
+</body>
+</html>

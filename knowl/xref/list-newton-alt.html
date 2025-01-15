@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="robots" content="noindex, nofollow">
+</head>
+<body class="ignore-math">
+<figure class="listing figure-like"><div class="code-box"><pre class="program line-numbers"><code class="language-none">function newton(f::Function, x0::Number)
+  for _ = 1:10
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
+    abs(dx) &lt; 1e-6 &amp;&amp; return x0
+  end
+  x0
+end
+</code></pre></div>
+<figcaption><span class="type">Listing</span><span class="space"> </span><span class="codenumber">10.8<span class="period">.</span></span><span class="space"> </span>Alternative formulation of Newton’s method using a for loop.</figcaption></figure><span class="incontext"><a class="internal" href="ch-rootfinding.html#list-newton-alt">in-context</a></span>
+</body>
+</html>
