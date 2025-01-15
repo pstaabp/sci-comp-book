@@ -777,14 +777,14 @@
 
 
       <program language="Julia" line-numbers="yes">
-        <input>
+        <code>
 @testset "Linear Functions" begin
   @test match(lin, "5x-10") !== nothing
   @test match(lin, "-5x-10") !== nothing
   @test match(lin, "5x+10") !== nothing
   @test match(lin, "-5x+10") !== nothing
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -879,7 +879,7 @@ end
 
 
       <program language="Julia" line-numbers="yes">
-        <input>
+        <code>
         function splitPoly(p::String)
           local terms = String[]
           # if the first character is a +/-, start the index at 2
@@ -897,7 +897,7 @@ end
           end
           terms
         end
-        </input>
+        </code>
       </program>
 
       <p>

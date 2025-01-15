@@ -169,7 +169,7 @@
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 values = 0:3
 heights1 = head_count/sum(head_count)
 heights2 = [1/8, 3/8, 3/8, 1/8]
@@ -185,7 +185,7 @@ labels = ["simulation", "PDF"]
 elements = [PolyElement(polycolor = colors[i]) for i in 1:length(labels)]
 axislegend(ax, elements, labels)
 fig
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -374,11 +374,11 @@ fig
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function nextToEachOther(names::Vector{String})
   # return true or false
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -413,13 +413,13 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function nextToEachOther(names::Vector{String})
   a = findfirst(name -&gt; name=="Alisha",names)
   m = findfirst(name -&gt; name=="Mary",names)
   abs(a-m) == 1 || abs(a-m) == length(names)-1
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -477,7 +477,7 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function numTimes(trials::Integer)
   s = 0  # keeps track of how many times they sit next to each other
   for i=1:trials
@@ -487,7 +487,7 @@ function numTimes(trials::Integer)
   end
   s/trials
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -663,13 +663,13 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function calcPi(total_points::Integer)
   pts=rand(total_points,2)
   dist=mapslices(pt -&gt; pt[1]^2+pt[2]^2, pts; dims=[2])
   4*count(d -&gt; d &lt; 1,dist)/total_points
 end
-				</input>
+				</code>
 			</program>
 
 			<p>

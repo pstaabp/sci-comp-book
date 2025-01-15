@@ -19,6 +19,7 @@
   <xi:include href="appendices/append-getting-started.ptx" />
   <xi:include href="appendices/append-packages.ptx" />
   <xi:include href="appendices/append-num-rep.ptx" />
+  <xi:include href="advanced/ch-dates.ptx" />
 
   <colophon>
     <p> This book was authored in <pretext />. </p>

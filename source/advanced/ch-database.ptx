@@ -16,7 +16,7 @@
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 forecast = [
   (date = "2024-12-07", high = 37, low = 23, precip = 0, cond = "Partly Cloudy"),
   (date = "2024-12-08", high = 44, low = 28, precip = 60, cond = "Snow"),
@@ -28,7 +28,7 @@ forecast = [
   (date = "2024-12-14", high = 40, low = 24, precip = 0, cond = "Sunny"),
   (date = "2024-12-15", high = 45, low = 30, precip = 0, cond = "Cloudy"),
 ]
-      </input>
+      </code>
     </program>
 
     <p>
@@ -221,5 +221,50 @@ forecast = [
       <cline>9|2024-12-15|45|30|0|Cloudy</cline>
       </cd>
     </p>
+
+    <p>
+      We can do the same within Julia itself using the method <c>DBInterface.execute</c>, which is a general method to make database calls.  However if we make a call that generates output, like
+
+    </p>
+
+    <p>
+      <cd>
+        <cline>DBInterface.execute(db, "SELECT * FROM FORECAST")</cline>
+      </cd>
+    </p>
+    <p>the result is </p>
+      <p>
+        <cd>
+          <cline>SQLite.Query{false}(SQLite.Stmt(SQLite.DB("forecast.sqlite"), Base.RefValue{Ptr{SQLite.C.sqlite3_stmt}}(Ptr{SQLite.C.sqlite3_stmt} @0x00000001380f3b80), Dict{Int64, Any}()), Base.RefValue{Int32}(100), [:DATE_ID, :DATE, :HI_TEMP, :LO_TEMP, :PRECIP, :COND], Type[Union{Missing, Int64}, Union{Missing, String}, Union{Missing, Int64}, Union{Missing, Int64}, Union{Missing, Int64}, Union{Missing, String}], Dict(:COND   =&gt; 6, :HI_TEMP   =&gt; 3, :DATE   =&gt; 2, :PRECIP   =&gt; 5, :LO_TEMP   =&gt; 4, :DATE_ID   =&gt; 1), Base.RefValue{Int64}(0))</cline>
+        </cd>
+      </p>
+      <p>which seems to have information about the resulting table, like the column names and types, but nothing about the data itself.  In short, this is an iterator  (although it's not very clear that it is) and passing this to a DataFrame will create one as in
+
+      </p>
+
+      <p>
+        <cd>
+          <cline>DataFrame(DBInterface.execute(db, "SELECT * FROM FORECAST"))</cline>
+        </cd>
+      </p>
+      <p> now returns the expected table in a DataFrame:</p>
+
+<p>
+  <cd>
+    <cline>9×6 DataFrame</cline>
+<cline>Row  DATE_ID  DATE        HI_TEMP  LO_TEMP  PRECIP  COND</cline>
+<cline>     Int64    String      Int64    Int64    Int64   String</cline>
+<cline>1    1        2024-12-07  37       23       0       Partly Cloudy</cline>
+<cline>2    2        2024-12-08  44       28       60      Snow</cline>
+<cline>3    3        2024-12-09  44       32       75      Rain</cline>
+<cline>4    4        2024-12-10  44       39       70      Rain</cline>
+<cline>5    5        2024-12-11  58       40       80      Rain</cline>
+<cline>6    6        2024-12-12  48       28       60      Rain</cline>
+<cline>7    7        2024-12-13  37       25       0       Sunny</cline>
+<cline>8    8        2024-12-14  40       24       0       Sunny</cline>
+<cline>9    9        2024-12-15  45       30       0       Cloudy</cline>
+  </cd>
+</p>
+
   </section>
 </chapter>

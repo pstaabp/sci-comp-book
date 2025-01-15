@@ -129,11 +129,11 @@
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain census begin
   combine(:POP10 =&gt; sum =&gt; :TOTAL_POP)
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -164,13 +164,13 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain census_data begin
   select(:NAME, :POP10)
   sort(:POP10, rev = true)
   first(10)
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -210,12 +210,12 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
         @chain census begin
           subset(:INTPTLONG =&gt; long -&gt; long .&lt; -120)
           combine(:POP10 =&gt; sum =&gt; :POP_WEST_120)
         end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -269,13 +269,13 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 b=10 .^(3:0.2:8)
 fig = Figure()
 ax = Axis(fig[1,1], xscale = log10)
 hist!(ax, census.POP10, bins=b, strokewidth=0.5)
 fig
-        </input>
+        </code>
       </program>
 
       <p>
@@ -306,14 +306,14 @@ fig
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain census begin
   transform( [:POP10, :HU10] =&gt; ((p,h)-&gt; p./h) =&gt; :Housing_Density)
   select(:NAME, :Housing_Density)
   sort(:Housing_Density, rev=true)
   first(10)
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -349,11 +349,11 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain census begin
   combine(:HU10 =&gt; sum)
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -371,13 +371,13 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain census begin
   select(:NAME, :ALAND)
   sort(:ALAND, rev=true)
   first(10)
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -413,13 +413,13 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain census_data begin
   select(:NAME, :AWATER)
   sort(:AWATER, rev=true)
   first(10)
 end
-        </input>
+        </code>
       </program>
       <p>
         and the result is
@@ -455,14 +455,14 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
           @chain census begin
           subset(:NAME =&gt; (n -&gt; occursin.("MA",n)))
           sort(:POP10, rev= true)
           first(5)
           select(:NAME, :POP10)
         end
-        </input>
+        </code>
       </program>
       <p>
         and the result is:
@@ -491,12 +491,12 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain census_data begin
   subset(:NAME =&gt; (n -&gt; occursin.("MA",n)))
   combine(:POP10 =&gt; mean, :POP10 =&gt; median, :POP10 =&gt; std)
 end
-        </input>
+        </code>
       </program>
 
       <p>

@@ -18,7 +18,7 @@
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
       str = """
       {
         "first_name": "Homer",
@@ -38,7 +38,7 @@
         }
       }
       """
-      </input>
+      </code>
     </program>
 
     <p>
@@ -85,7 +85,7 @@
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 menu = Dict("items" => [
   Dict("name" => "hamburger", "type" => "sandwich", "price" => 10.99),
   Dict("name" => "Club Sandwich", "type" => "sandwich", "price" => 12.99),
@@ -93,7 +93,7 @@ menu = Dict("items" => [
   Dict("name" => "Caeasar Salad", "type" => "salad", "price" => 7.99),
   Dict("name" => "Chococate Ice Cream", "type" => "dessert", "price" => 6.99),
 ])
-      </input>
+      </code>
     </program>
 
     <p>
@@ -168,7 +168,7 @@ menu = Dict("items" => [
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
         {
   "result" : {
                "addressMatches" : [
@@ -204,7 +204,7 @@ menu = Dict("items" => [
                          },
              },
 }
-      </input>
+      </code>
     </program>
 
     <p>
@@ -281,12 +281,12 @@ menu = Dict("items" => [
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
         for w in weather["list"]
           weath =  (time = w["dt"], temp = w["main"]["temp"], humidity = w["main"]["humidity"], wind = w["wind"]["speed"], conditions = w["weather"][1]["main"])
           @show weath
         end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -295,13 +295,13 @@ menu = Dict("items" => [
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
           for w in weather["list"]
             append!(weather_df, [(time = w["dt"], temp = w["main"]["temp"], humidity = w["main"]
             ["humidity"], wind = w["wind"]["speed"], conditions = w["weather"][1]["main"])])
           end
           weather_df
-      </input>
+      </code>
     </program>
 
     <p>
@@ -310,7 +310,7 @@ menu = Dict("items" => [
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 40×5 DataFrame15 rows omitted
 Row	time	temp	humidity	wind	conditions
 Int64	Float64	Int64	Float64	String
@@ -340,7 +340,7 @@ Int64	Float64	Int64	Float64	String
 38	1734501600	36.18	85	10.18	Clouds
 39	1734512400	35.33	83	9.86	Clouds
 40	1734523200	32.65	91	4.94	Clouds
-      </input>
+      </code>
     </program>
 
     <p>

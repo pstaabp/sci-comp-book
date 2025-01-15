@@ -356,7 +356,7 @@
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 simpsons = DataFrame(
   id = 1:2:13,
   name = ["Homer", "Marge", "Lisa", "Bart", "Maggie", "Apu", "Moe"],
@@ -364,7 +364,7 @@ simpsons = DataFrame(
   salary = [50000, 25000, 10000, missing, missing, 45000, 3000],
   favorite_food = ["pork chops", "casserole", "salad", "hamburger", missing, "saag paneer", "peanuts"]
 )
-				</input>
+				</code>
 			</program>
 
 			<p>

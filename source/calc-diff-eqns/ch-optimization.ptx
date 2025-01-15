@@ -201,7 +201,7 @@
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 function gradientDescent(f::Function,x₀::Vector; γ = 0.25, max_steps = 100)
   local steps = 0
   local ∇f₀ = [1,1] # initialize it to get into while loop
@@ -213,7 +213,7 @@ function gradientDescent(f::Function,x₀::Vector; γ = 0.25, max_steps = 100)
   steps &lt; max_steps || throw(ErrorException("The number of steps has exceeded $max_steps"))
   x₀
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -275,7 +275,7 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 function gradientDescentBB(f::Function,x₀::Vector; max_steps = 100)
   local steps = 0
   local ∇f₀ = ForwardDiff.gradient(f,x₀)
@@ -292,7 +292,7 @@ function gradientDescentBB(f::Function,x₀::Vector; max_steps = 100)
   steps &lt; max_steps || throw(ErrorException("The number of steps has exceeded $max_steps"))
   x₁
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -597,7 +597,7 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
           ******************************************************************************
           This program contains Ipopt, a library for large-scale nonlinear optimization.
            Ipopt is released as open source code under the Eclipse Public License (EPL).
@@ -647,7 +647,7 @@ end
           Number of Lagrangian Hessian evaluations             = 11
           Total seconds in IPOPT                               = 0.032
           EXIT: Optimal Solution Found.
-        </input>
+        </code>
       </program>
 
       <p>

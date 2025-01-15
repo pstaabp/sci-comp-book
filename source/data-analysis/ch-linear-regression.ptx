@@ -23,13 +23,13 @@
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 cars=RDatasets.dataset("datasets","cars")
 fig = Figure()
 ax = Axis(fig[1,1], xlabel="Speed of Car", ylabel = "Distance to Stop")
 scatter!(ax, cars.Speed, cars.Dist)
 fig
-      </input>
+      </code>
     </program>
 
     <p>
@@ -127,13 +127,13 @@ fig
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 Sx = sum(data.x)
 Sy = sum(data.y)
 Sxx = sum(x -&gt; x^2, data.x)
 Sxy = sum(data.x .* data.y)
 Syy = sum(y -&gt; y^2, data.y)
-      </input>
+      </code>
     </program>
 
     <p>
@@ -142,11 +142,11 @@ Syy = sum(y -&gt; y^2, data.y)
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 a = (length(data.x)*Sxy - Sx*Sy)/(length(data.x)*Sxx-Sx^2)
 b = (Sy-a*Sx)/length(data.x)
 a,b
-      </input>
+      </code>
     </program>
 
     <p>

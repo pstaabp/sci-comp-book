@@ -18,7 +18,7 @@
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 module Poly
 export Polynomial
 struct Polynomial{T &lt;: Number}
@@ -28,7 +28,7 @@ function Base.show(io::IO, p::Polynomial)
   print(io, strip(reduce((str, n) -&gt; "$str $(n==1 ? "" : "+") $(p.coeffs[n]) x^$(n-1)", 1:length(p.coeffs), init="")))
 end
 end # of the module Poly
-      </input>
+      </code>
     </program>
 
     <p>
@@ -67,7 +67,7 @@ end # of the module Poly
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 using .Poly
 using Test
 function isequal(x::Polynomial,y::Polynomial)
@@ -94,7 +94,7 @@ poly6 = Polynomial([1,1.5,2//3])
   @test isa(poly6, Polynomial)
   @test typeof(poly6) == Polynomial{Float64}
 end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -248,7 +248,7 @@ end
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 @testset "Creating a Polynomial from a string with integer coefficients" begin
   @test isa(poly21, Polynomial)
   @test typeof(poly21) == Polynomial{Int64}
@@ -260,7 +260,7 @@ end
   @test typeof(poly23) == Polynomial{Int64}
   @test isequal(poly23, Polynomial([-1,2]))
 end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -269,7 +269,7 @@ end
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 poly31 = Polynomial([1.0, 2.0, 3.0])
 poly32 = Polynomial([0,4.0,0,-1.0])
 poly33 = Polynomial([1/2,1/4,1/8,1/10])
@@ -288,7 +288,7 @@ poly53 = Polynomial([im,2,3im,4])
 poly54 = Polynomial("(3-2im)x^2+(2+im)x+im")
 poly55 = Polynomial("im+x^2")
 poly56 = Polynomial("4x^3+3imx^2+2x+im")
-      </input>
+      </code>
     </program>
 
     <p>

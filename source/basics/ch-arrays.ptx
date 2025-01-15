@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <chapter xml:id="ch-arrays">
-	<title>Arrays</title>
+	<title>Vectors and other Collections</title>
 
 	<objectives>
 		<ul>
 			<li>
 				<p>
-					Learn that arrays are ordered collections of things that can be accessed and updated.
+					Learn that vectors are ordered collections of things that can be accessed and updated.
 				</p>
 			</li>
 
 			<li>
 				<p>
-					There are numerous methods including direct entry and comprehensions to construct an array.
+					There are numerous methods including direct entry and comprehensions to construct an vector.
 				</p>
 			</li>
 
 			<li>
 				<p>
-					There are many methods on arrays including some arithmetic ones on both vectors and matrices as well as the sum and product of numeric vectors.
+					There are many methods on vectors including some arithmetic ones on both vectors and matrices as well as the sum and product of numeric vectors.
 				</p>
 			</li>
 
@@ -37,19 +37,21 @@
 
 			<li>
 				<p>
-					The join method takes an array and returns a string and similarly a split method, takes a string and splits into an array.
+					The join method takes an vectors and returns a string and similarly a split method, takes a string and splits into an vector.
 				</p>
 			</li>
 		</ul>
 	</objectives>
 
 	<introduction>
+
 		<p>
-			Arrays are a fundamental data structure for nearly every computer language and it is a crucial for scientific computing as that it is an efficient way of handling large amount of the same datatype.  Additionally, arrays are the computing version of mathematical vectors and matrices.
+			Vectors are a fundamental data structure for nearly every computer language and it is a crucial for scientific computing as that it is an efficient way of handling large amount of the same datatype.
+			Vectors are collections with a single dimension, and Julia has a Matrix type as well for 2 dimensional collections.  These all fit into a general array type.
 		</p>
 
 		<p>
-			In short an array is a collection of data of (typically) the same type under the same name. We have seen arrays before. For example, if we say
+			In short a vector is a collection of data of (typically) the same type under the same name. We have seen arrays before. For example, if we say
 		</p>
 
 		<p>
@@ -59,7 +61,7 @@
 		</p>
 
 		<p>
-			then we get a 1-dimensional array of length 3. Note that when returned, Julia says <c>3-element Vector{Int64}:</c> which means
+			then we get a vector of length 3. Note that when returned, Julia says <c>3-element Vector{Int64}:</c> which means
 		</p>
 
 		<p>
@@ -1099,5 +1101,93 @@
 		<p>
 			An array is one example of a <em>Collection</em> in Julia.  We will cover these in more details in <xref ref="ch-collections"/> and it is helpful to have knowledge of the more abstract idea when handling arrays.
 		</p>
+	</section>
+
+	<section xml:id="sect-tuples">
+		<title>Tuples</title>
+
+		<introduction>
+			<p>
+				Another type that allows one to combine two or more elements of data is called a tuple.  For example, if we want two integers that are combined, we can make:
+				<cd>
+				<cline>(1,2)</cline>
+				</cd>
+			</p>
+
+			<p>
+				For example, this could be a way to store a geometric point in the plane.  Determining the data type with <c>typeof((1,2))</c> returns <c>Tuple{Int64, Int64}</c>, which is another example of a composite type.  The type is a <c>Tuple</c> but there are <c>Int64</c> types for the components of the tuple.
+			</p>
+
+			<p>
+				Tuples can consists of different types for different parts.  For example, <c>t = (5,7.8, "Hello")</c> is a valid tuple and its type is <c>Tuple{Int64, Float64, String}</c>.
+			</p>
+
+			<p>
+				You can access the elements of the tuple using bracket notation.  Using the value of <c>t</c> above, we can get the first element of <c>t</c> with <c>t[1]</c>.  Note, this is similar to array notation, which we will see in <xref ref="ch-arrays"/>. Note: the first element of things like tuples and array is 1, not 0.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Named Tuples</title>
+
+			<p>
+				Sometimes it's easier to associated the individual elements of a tuple with a name instead of an index.  We can generate a <em>named tuple</em> as
+			</p>
+
+			<p>
+				<cd>
+				<cline>pt=(x=1,y=3.2,z=9)</cline>
+				</cd>
+			</p>
+
+			<p>
+				which would be like a point in three dimensions.  We can access the elements using dot notation, such as
+			</p>
+
+			<p>
+				<cd>
+				<cline>pt.x</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>1</c>.
+			</p>
+
+			<p>
+				Named tuples can be helpful to build complex datatypes, where there are multiple fields are associated with the same piece of data.  Another example might be if you have data associated with a person, such as
+			</p>
+
+			<p>
+				<cd>
+				<cline>p = (first_name = "Homer", last_name = "Simpson", age=45) </cline>
+				</cd>
+			</p>
+
+			<p>
+				where there are a mix of strings and integers in the same tuple.  This may be all that you need for an example like this, however, we will see more complex data types in <xref ref="ch-comp-types"/>, which creates a new data type or <c>struct</c>.  Such a type will allow more flexibility.  For example if we define a point using a tuple, it is difficult to do operations on the point.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Tuples are Immutable</title>
+
+			<p>
+				However, if we try to change one of the elements of a tuple, then an error will occur.
+				<cd>
+				<cline>p.age=46</cline>
+				</cd>
+				results in
+				<cd>
+				<cline>setfield!: immutable struct of type NamedTuple cannot be changed</cline>
+				</cd>
+			</p>
+
+			<p>
+				This is because tuples are immutable, meaning once created, any part of the tuple cannot be changed.
+			</p>
+		</subsection>
 	</section>
 </chapter>

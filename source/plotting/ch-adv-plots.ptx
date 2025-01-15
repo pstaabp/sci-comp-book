@@ -25,13 +25,13 @@
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 @recipe function f(poly::Polynomial,xmin::Number=-2,xmax::Number=2)
 xpts = LinRange(xmin,xmax,200)
 ypts = map(x-&gt;eval(poly,x),xpts)
 xpts,ypts
 end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -88,7 +88,7 @@ end
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 @recipe function f(poly::Polynomial,xmin::Number=-2,xmax::Number=2)
 legend --&gt; false
 linecolor --&gt; :green
@@ -96,7 +96,7 @@ xpts = LinRange(xmin,xmax,200)
 ypts = map(x-&gt;eval(poly,x),xpts)
 xpts,ypts
 end
-      </input>
+      </code>
     </program>
 
     <p>

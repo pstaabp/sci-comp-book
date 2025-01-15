@@ -41,7 +41,7 @@
     <title>Abstract Collection and Iteration</title>
 
     <p>
-      A collection is an ordered set of things. The concrete objects we have seen so far in this text include arrays, tuples and ranges.  Any collection has the following functions applied to it
+      A collection is a set of items that have a few common properties including determining how many things are in the collection, whether or not the collection is empty and a way to iterate through all of the items. The concrete objects we have seen so far in this text include arrays, tuples and ranges.  Any collection has the following functions applied to it
     </p>
 
     <p>
@@ -71,6 +71,18 @@
 
         <p>
           Note that a 2D array (Matrix) is also a collection and if <c>C=[1,2; 3, 4; 5, 6]</c> is the 3 by 2 matrix, then <c>length(C)</c> returns <c>6</c>, the total number of elements in the Matrix.  This applies also to higher dimensional arrays.
+        </p>
+      </li>
+
+      <li>
+        <title><c>in</c> or <c>∈</c> and the negations</title>
+
+        <p>
+          These function are boolean and determine if a single item is in or not in the collection.  For example <c>1 ∈ [1,2,3,4]</c> or <c>1 in [1,2,3,4]</c> returns <c>true</c> and <c>3 ∈ 1:3:11</c> returns false.
+        </p>
+
+        <p>
+          The functions <c>notin</c> or the single character <c>∉</c> is the negation of the previous one.  The expression <c>1 ∉ [1,2,3,4]</c> returns <c>false</c>.
         </p>
       </li>
       </dl>
@@ -125,7 +137,28 @@
     </p>
 
     <p>
-      Although this seems quite simple, we will see that what is going on under the hood is that anything that is a collection has a method to go through the elements one at a time in order.  This is called an <em>iterator</em>.
+      Although this seems quite simple, we will see that what is going on under the hood is that anything that is a collection has a method to go through the elements one at a time in order.  This is called an <em>iterator</em>.  In fact the for loop with the range (first example above), can be translated to
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <code>
+range = 1:4
+next = iterate(range)
+while next !== nothing
+    (i, state) = next
+    @show i
+    next = iterate(range, state)
+end
+      </code>
+    </program>
+
+    <p>
+      and as we disccused in <xref ref="ch-boolean-loops"/> a for loop can be written as a while loop.   The important part of this is the <c>iterate</c> method that is called before the loop and within the loop.  The <c>iterate</c> function takes an iterable collection (range, array, tuple) and a state variable that in this case is just the value in the range until the iteration is finished when it returns <c>nothing</c>.
+    </p>
+
+    <p>
+      All collections need to define the function <c>iterate</c> and in <xref ref="sect-user-defined-collection"/> we show an example of a user-defined collection that defines <c>iterate</c>.
     </p>
   </section>
 
@@ -247,7 +280,7 @@
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 homer = Dict(
   "first_name" =&gt; "Homer",
   "last_name" =&gt; "Simpson",
@@ -264,7 +297,7 @@ homer = Dict(
     "city" =&gt; "Springfield"
   )
 )
-      </input>
+      </code>
     </program>
 
     <p>
@@ -276,7 +309,7 @@ homer = Dict(
     </p>
   </section>
 
-  <section>
+  <section xml:id="sect-user-defined-collection">
     <title>User-created collections</title>
 
     <p>
@@ -289,15 +322,15 @@ homer = Dict(
 
 
     <program language="julia" line-numbers="yes">
-      <input>
-struct Fibonnacci
+      <code>
+struct Fibonacci
   n::Integer
-  function Fibonnacci(n)
+  function Fibonacci(n)
     n &gt;= 0 || throw(ArgumentError("This must be called with a nonnegative integer"))
     new(n)
   end
 end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -306,8 +339,8 @@ end
 
     <p>
       <cd>
-      <cline>Base.isempty(f::Fibonnacci) = f.n == 0</cline>
-      <cline>Base.length(f::Fibonnacci) = f.n</cline>
+      <cline>Base.isempty(f::Fibonacci) = f.n == 0</cline>
+      <cline>Base.length(f::Fibonacci) = f.n</cline>
       </cd>
     </p>
 
@@ -321,8 +354,8 @@ end
 
 
     <program language="julia" line-numbers="yes">
-      <input>
-      function Base.iterate(f::Fibonnacci, state = 1)
+      <code>
+      function Base.iterate(f::Fibonacci, state = 1)
         if state &gt; f.n
          return nothing
         end
@@ -332,7 +365,7 @@ end
         end
         (x, state + 1)
      end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -345,7 +378,7 @@ end
 
     <p>
       <cd>
-      <cline>for i in Fibonnacci(10)</cline>
+      <cline>for i in Fibonacci(10)</cline>
       <cline>  @show i</cline>
       <cline>end</cline>
       </cd>
@@ -354,6 +387,156 @@ end
     <p>
       will produce the first 10 fibonacci numbers.  Also, <c>collect(Fibonacci(10))</c> will create an array of length 10 with the Fibonacci numbers or <c>[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]</c>.
     </p>
+  </section>
+
+  <section>
+    <title>Iterable Collection</title>
+
+    <p>
+      There are a few different types of collections in Julia.  As we discussed above, a collection can be thought of as a bunch of things.  The most general type of this is a <term>iterable collection</term>, which can be iterated over (or you can think that you can run a for loop over these).  All of the collections in this chapter (arrays, tuples, ranges, sets, dictionaries) all have this property and the Fibonacci collection is as well.
+    </p>
+  </section>
+
+  <section>
+    <title>Indexable Collection</title>
+
+    <introduction>
+      <p>
+        Many collections are also indexable and in general if a collection is ordered, then the collection is iterable.  Vectors (and arrays in general) are indexable as are tuples, ranges and strings.  However Sets, Dicts and named tuples are not.
+      </p>
+
+      <p>
+        If you have a indexable collection then <c>getindex</c> is the way to access it.  For example, if <c>A=[1,3,5,7,9]</c>, then <c>getindex(A,3)</c> returns the third element or <c>5</c>.  This is generally done with the notation <c>A[3]</c>.
+      </p>
+
+      <p>
+        Related, is the <c>setindex!</c> function that assigns a value to a index.  For example, <c>setindex!(A,11,3)</c> will update the array <c>A</c> so the 3rd element has the value 11. Note: the order of the elements is that the element is the 2nd argument and the index is the 3rd one.  This is the formal method of the shorthand <c>A[3]=11</c>.
+      </p>
+
+      <note>
+        <p>
+          Although as discussed, strings are indexable collections, the <c>setindex!</c> method does not apply to them, since strings are immutable.
+        </p>
+      </note>
+    </introduction>
+
+
+    <subsection>
+      <title>Listing of Methods for Indexable Collection</title>
+
+      <p>
+        We just saw that <c>getindex</c> and <c>setindex!</c> are applicable (and probably one of the most important methods) to such collections.  Here's some other helpful methods. For examples below, consider <c>A=[5,7,9,11,13,15]</c>.
+      </p>
+
+      <p>
+        <dl>
+        <li>
+          <title>first</title>
+
+          <p>
+            return the first element of a collection.   <c>first(A)</c> returns <c>5</c>.
+          </p>
+        </li>
+
+        <li>
+          <title>last</title>
+
+          <p>
+            returns the last element of a collection.  <c>last(A)</c> returns <c>15</c>.
+          </p>
+        </li>
+
+        <li>
+          <title>firstindex</title>
+
+          <p>
+            returns the first index of the collection. <c>firstindex(A)</c> returns 1.  In general this is 1, but some collections may start at other indices.
+          </p>
+        </li>
+
+        <li>
+          <title>lastindex</title>
+
+          <p>
+            returns the last index of the collection.  <c>lastindex(A)</c> returns <c>6</c>.
+          </p>
+        </li>
+        </dl>
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Indexing on other collections</title>
+
+      <p>
+        We mentioned that Sets and Dicts are not indexable.  Let's take a look at what happens if we treat it as such.  Let <c>S = Set([1,2,3,4,5])</c>.  If you run this, you will probably get the elements returned in a different order.  If you run any of the above methods on this set, you will get an error.  For example, <c>last(S)</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>MethodError: no method matching lastindex(::Set{Int64})</cline>
+        <cline>The function `lastindex` exists, but no method is defined for this combination of argument types.</cline>
+        </cd>
+      </p>
+
+      <p>
+        This is as expected in that there are not indices associated with sets.  It's odd that if your run <c>first(S)</c> you will get an answer in that <c>firstindex(S)</c> returns a value.
+      </p>
+
+      <p>
+        If we try access either <c>getindex</c>, <c>last</c> or <c>lastindex</c> of our user-defined Fibonacci collection, then we will get errors.  These seem like reasonable methods to have with this collection, so we can defined it.
+      </p>
+
+      <p>
+        The <c>lastindex</c> of a Fibonacci collection should be <c>n</c> and we can defined it as
+      </p>
+
+      <p>
+        <cd>
+        <cline>Base.lastindex(f::Fibonacci) = f.n</cline>
+        </cd>
+      </p>
+
+      <p>
+        And to test this, let's define <c>f = Fibonacci(10)</c>, then <c>lastindex(f)</c> will return <c>10</c>.  Now to create the <c>getindex</c> method on this, we will use the <c>iterate</c> method that we have already created above.  Note, if we evaluate <c>iterate(f,7)</c>, then we get the tuple <c>(13, 8)</c> where the first is the 7th Fibonacci number and the second element just increments the index to 8.  We'd like <c>getindex</c> to return the first number here.   We can do this with
+      </p>
+
+      <p>
+        <cd>
+        <cline>function Base.getindex(f::Fibonacci, i::Int) </cline>
+        <cline>  0 &lt; i &lt;= f.n || throw(ArgumentError("The index must be between 1 and $(f.n)"))</cline>
+        <cline>  iterate(f,i)[1]</cline>
+        <cline>end</cline>
+        </cd>
+      </p>
+
+      <p>
+        Now, we can access any element up to the last Fibonacci number.  For example, if we redefine <c>f = Fibonacci(1000)</c> and then find the 999th fibonnacii number, as <c>f[999]</c> which returns <c>8261794739546030242</c>.  Also <c>last(f)</c> is now defined and returns <c>817770325994397771</c>.
+      </p>
+
+      <p>
+        We can also leverage other methods of iterable collection that are typically associated with vectors and arrays.  Consider the <c>findfirst</c> method which takes a boolean function and a collection and returns the index of the first element that satsifies the first.  Consider finding the first Fibonacci number greater than 1000.  We'd like to do this with <c>findfirst(x -&gt; x &gt; 1000, f)</c>, however evaluating this returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>MethodError: no method matching keys(::Fibonacci)</cline>
+        <cline>The function `keys` exists, but no method is defined for this combination of argument types. </cline>
+        </cd>
+      </p>
+      <p>
+        indicating that under the scene, the <c>keys</c> method (that we saw associated with named tuples and Dicts) is used.  The keys for the fibonacci will be all of the numbers 1 to <c>n</c>, therefore we can define
+      </p>
+      <p>
+        <cd>
+          <cline>Base.keys(f::Fibonacci) = 1:f.n</cline>
+        </cd>
+      </p>
+      <p>
+        and then running <c>findfirst(x -&gt; x &gt; 1000, f)</c> returns <c>17</c> indicating that the 17th Fibonacci number is greater than 1000.  And the value is <c>f[17]</c> or 1597.
+      </p>
+    </subsection>
   </section>
 
   <section>

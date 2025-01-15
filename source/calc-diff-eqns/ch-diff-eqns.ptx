@@ -156,7 +156,7 @@
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 function euler(f::Function, t0:: Real, y0::Real, dt::Real, num_steps::Integer)
   num_steps &gt; 0 || throw(ArgumentError("The number of steps must be positive."))
   dt &gt; 0 || throw(ArgumentError("The step size dt must be positive."))
@@ -168,7 +168,7 @@ function euler(f::Function, t0:: Real, y0::Real, dt::Real, num_steps::Integer)
   end
   (t,y)
 end
-        </input>
+        </code>
       </program>
 
       <example>
@@ -252,7 +252,7 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 function rk4(f::Function, t0:: Real, y0::Real, dt::Real, num_steps::Integer)
   num_steps &gt; 0 || throw(ArgumentError("The number of steps must be positive."))
   dt &gt; 0 || throw(ArgumentError("The step size dt must be positive."))
@@ -268,7 +268,7 @@ function rk4(f::Function, t0:: Real, y0::Real, dt::Real, num_steps::Integer)
   end
   (t,y)
 end
-        </input>
+        </code>
       </program>
 
       <p>

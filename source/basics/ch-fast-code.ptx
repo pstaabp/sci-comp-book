@@ -40,7 +40,7 @@
 
 
     <program language="Julia" line-numbers="yes">
-      <input>
+      <code>
 function sum1(n::Int)
   local arr = collect(1:n)
   local sum = 0
@@ -49,7 +49,7 @@ function sum1(n::Int)
   end
   sum
 end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -109,7 +109,7 @@ end
 
 
     <program language="Julia" line-numbers="yes">
-      <input>
+      <code>
 function sum2(n::Integer)
   local sum = 0
   for i=1:n
@@ -117,7 +117,7 @@ function sum2(n::Integer)
   end
   sum
 end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -146,7 +146,7 @@ end
 
 
     <program language="Julia" line-numbers="yes">
-      <input>
+      <code>
 function sum3(n::Int)
   local sum = big(0)
   for i=1:n
@@ -154,7 +154,7 @@ function sum3(n::Int)
   end
   sum
 end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -205,11 +205,11 @@ end
 
 
     <program language="Julia" line-numbers="yes">
-      <input>
+      <code>
 function sum4(n::Int)
     reduce(+,1:big(n))
 end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -422,7 +422,7 @@ end
 
 
       <program language="Julia" line-numbers="yes">
-        <input>
+        <code>
 function fibonacciEval(n::Integer)
   global num_evals
   if n==1 || n==2
@@ -433,7 +433,7 @@ function fibonacciEval(n::Integer)
     return fibonacciEval(n-1) + fibonacciEval(n-2)
   end
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -488,7 +488,7 @@ end
 
 
       <program language="Julia" line-numbers="yes">
-        <input>
+        <code>
 function fibonacci2(n::Integer)
   local x,y = (1,1)
   for i = 1:n-1
@@ -496,7 +496,7 @@ function fibonacci2(n::Integer)
   end
   x
 end
-        </input>
+        </code>
       </program>
 
       <p>

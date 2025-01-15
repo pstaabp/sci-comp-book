@@ -227,14 +227,14 @@
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function absValue(x::Real)
   if x &gt;= 0
      return x
   end
   return -1*x
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -247,7 +247,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function absValue(x::Real)
   if x &gt;= 0
     return x
@@ -255,7 +255,7 @@ function absValue(x::Real)
     return -1*x
   end
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -277,21 +277,21 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
-					function quadrant(x::Real,y::Real)
-					if x &gt; 0 &amp;&amp; y &gt; 0
-						return "I"
-					elseif x &lt; 0 &amp;&amp; y &gt; 0
-						return "II"
-					elseif x &lt; 0 &amp;&amp; y &lt; 0
-						return "III"
-					elseif x &gt; 0 &amp;&amp; y &lt; 0
-						return "IV"
-					else
-						return "NONE"
-					end
+				<code>
+				function quadrant(x::Real,y::Real)
+				  if x &gt; 0 &amp;&amp; y &gt; 0
+				    return "I"
+				  elseif x &lt; 0 &amp;&amp; y &gt; 0
+				    return "II"
+				  elseif x &lt; 0 &amp;&amp; y &lt; 0
+				    return "III"
+				  elseif x &gt; 0 &amp;&amp; y &lt; 0
+				    return "IV"
+				  else
+				    return "NONE"
+				  end
 				end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -332,6 +332,92 @@ end
 					</statement>
 				</task>
 			</exercise>
+		</subsection>
+
+
+		<subsection>
+			<title>Indentation in if statements</title>
+
+			<p>
+				We mentioned in <xref ref="ch-intro-functions" /> that spacing in functions doesn't matter and also doesn't in if statement either.  Note this is different in other languages such as Python.  Throughout this text, statement within other blocks (like functions or if statements or we will see loops below) are indented 2 spaces.  The number of spaces doesn't matter and many others prefer 4 spaces, but it is helpful to understand which statements are within the if block or the else block.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Using Short-Circuiting for simple branches</title>
+
+			<p>
+				Sometimes an <c>if</c> statement has one element in its block.  In cases like this, we can shorten it.  Here's a for loop (that we will see that below)
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+for n=1:8
+  @show n
+  if n%2 == 0
+    println("$n is even")
+  end
+end
+				</code>
+			</program>
+
+			<p>
+				We are going to replace the <c>if</c> statement with <c>n%2 == 0 &amp;&amp; println("$n is even")</c> to the following:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+				for n=1:8
+				  @show n
+				  n%2 == 0 &amp;&amp; println("$n is even")
+				end
+				</code>
+			</program>
+
+			<p>
+				The reason this works is that the boolean and (<c>&amp;&amp;</c>) evaluates using short-circuting.  If the left side of <c>&amp;&amp;</c> evaluates to <c>true</c>, then the right side is then evaluated.  However if the left side is <c>false</c>, then the statement short-circuits and skips the right side evaluation.
+			</p>
+
+			<p>
+				An alternative using the or (<c>||</c>) short-circuit.  Consider the <c>isOdd</c> method we wrote in <xref ref="ch-intro-functions"/> in which we check if an integer is odd.  We may want to restrict the input to nonnegative numbers and can with
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+function isOdd(n::Integer)
+  n &gt;=0 || error("The input $n must be non negative")
+  n%2 == 1
+end
+				</code>
+			</program>
+
+			<p>
+				Line #2 translates to n is greater than or equal to 0 or print an error.  The left side of the <c>||</c> is always evaluted.  If it is <c>true</c> then the right side is not evaluated.  This is similar to
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+function isOdd(n::Integer)
+  if !(n &gt;=0)
+    error("The input $n must be non negative")
+  end
+  n%2 == 1
+end
+				</code>
+			</program>
+
+			<p>
+				This example using the <c>||</c> short-circuit to check an argument.  We will show this more extensively in <xref ref="ch-adv-functions" />.  However, it can be used anywhere.  In short, if you have a simple if statement and you want to check the condition is true, you can replace it with the <c> cond &amp;&amp; statement </c>.  Alternatively, if you want to check that a condition is not true, then <c>cond || statement</c> can be used.
+			</p>
+
+			<p>
+				One can also replace an <c>if-else</c> statement with a short version of it.  This is discussed in the next section.
+			</p>
 		</subsection>
 	</section>
 
@@ -392,18 +478,18 @@ end
 
 
 		<program language="Julia" line-numbers="yes">
-			<input>
+			<code>
 function quadrant2(x::Real, y::Real)
   x &gt; 0 &amp;&amp; y &gt; 0 ? "I" :
     x &lt; 0 &amp;&amp; y &gt; 0 ? "II" :
     x &lt; 0 &amp;&amp; y &lt; 0 ? "III" :
     x &gt; 0 &amp;&amp; y &lt; 0 ? "IV" : "NONE"
 end
-			</input>
+			</code>
 		</program>
 
 		<p>
-			Note that although this can be written on a single line (it is a single nested statement), it has been split on lines for clarity.  Also, the precedence order is that <c>:</c> is higher that <c>?</c> in order for this to evaluate as expected without parentheses.
+			Note that although this can be written on a single line (it is a single nested statement), it has been split on lines for clarity.  Also, the precedence order is that <c>:</c> is higher that <c>?</c> in order for this to evaluate as expected without parentheses. Also, since this is one line, the <c>return</c> statement is not added since the result of this will be the element returned.
 		</p>
 	</section>
 
@@ -426,7 +512,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 let
   local n=1
   while n &lt; 10
@@ -434,7 +520,7 @@ let
     n+=1
   end
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -447,7 +533,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function bisection(f::Function, a::Real, b::Real)
 	local c
 	while (b-a) &gt; 1e-6
@@ -457,7 +543,7 @@ function bisection(f::Function, a::Real, b::Real)
 	end
 	c
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -494,6 +580,176 @@ end
 
 			<p>
 				This was used as a practical example and we will explore this and other rootfinding techniques in <xref ref="ch-rootfinding"/>.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Bailing out of a While loop</title>
+
+			<p>
+				Generally the way to stop a while loop is in the test condition.  However, another nice way to do this is using the <c>break</c> statement.  Consider the following.
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+				let
+					n = 1
+					while n &lt; 10
+						@show n
+						if n &gt; 5
+							break
+						end
+						n += 1
+					end
+				end
+				</code>
+			</program>
+
+			<p>
+				and the result will be the integers 1 to 6 shown. Note that if the <c>if n &gt; 5</c> block is not present then you will get the integers up to 10. (try this by commenting out lines 5-7) and rerunning.  With this statemnt as soon as <c>n</c> gets larger than 5, then the execution is jumped out of the loop.
+			</p>
+
+			<p>
+				We can often shorten this using the shortcut if statement shown above, replacing the <c>if n &gt; 5</c> block with <c>n &gt; 5 &amp;&amp; break</c> as in
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+let
+  n = 1
+  while n &lt; 10
+    @show n
+    n &gt; 5 &amp;&amp; break
+    n += 1
+  end
+end
+				</code>
+			</program>
+
+			<p>
+				and recall that if <c>n &gt; 5</c>on line 5 is executed and when <c>false</c> then the statement is short-circuited and the second part (<c>break</c>) is not executed, however when <c>n &gt; 5</c> is <c>true</c>, then the second part is executed and the while loop is broken out of. Consider
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				let
+				n = 1
+				while true
+				@show n
+				n &gt; 5 &amp;&amp; break
+				n += 1
+				end
+				end
+			</program>
+		</subsection>
+
+
+		<subsection>
+			<title>A <c>while true</c> loop</title>
+
+			<p>
+				Notice that with this <c>while</c>loop that the condition of the loop <c>n &lt; 10</c> is never false and therefore we don't need that condition, however we do need something and that is often to replace the condition with <c>true</c>, which seems like a bad idea, but conisder:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+let
+  n = 1
+  while true
+    @show n
+    n &gt; 5 &amp;&amp; break
+    n += 1
+  end
+end
+				</code>
+			</program>
+
+			<p>
+				For while loops like this, the <c>while true</c> basically runs the loop indefinitely.  To ensure that the loop stops, make sure that there is something like line 5 that breaks out of the loop.
+			</p>
+
+			<exercise>
+				<statement>
+					<p>
+						Rewrite the bisection method above using a <c>while true</c> and use the short-circuit with the <c>break</c> statement to ensure there is an exit from the loop.
+					</p>
+				</statement>
+
+				<answer>
+					<program language="julia" line-numbers="yes">
+						<code>
+function bisection(f::Function, a::Real, b::Real)
+  local c
+  while true
+    c = 0.5*(a+b)  # find the midpoint
+    # test if f(a) and f(c) have opposite signs to determine the new interval
+    (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
+    b-a &amp;&amp; break
+    n += 1
+  end
+  c
+end
+						</code>
+					</program>
+				</answer>
+			</exercise>
+		</subsection>
+
+
+		<subsection>
+			<title>Skipping statements in a loop</title>
+
+			<p>
+				In the previous section, we used the <c>break</c> statement to break out of a loop.  An alternative is if there is some lines of code that we wish to skip in the loop we could put them in an if statement, however another nice way to handle this is to use the <c>continue</c> statement.  We'll show this with an example
+			</p>
+
+			<p>
+				The following will produce the numbers 1 to 6:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+let
+  n = 1
+  while true
+    n &gt; 6 &amp;&amp; break
+    @show n
+    n += 1
+  end
+end
+				</code>
+			</program>
+
+			<p>
+				Let's say we want to not print the odd numbers.  Although there are many ways to do this, we will skip line 6 in the following way.
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+let
+  n = 0
+  while true
+    n &gt; 6 &amp;&amp; break
+    n += 1
+    n % 2 == 1 &amp;&amp; continue
+    @show n
+  end
+end
+				</code>
+			</program>
+
+			<p>
+				When line 6 is reached and <c>n % 2 == 1</c> then the right side of the <c>&amp;&amp;</c> is evaluated, then <c>continue</c> means we go to the top of the loop.
+			</p>
+
+			<p>
+				As with doing anything with a loop, careful about using <c>continue</c>.  It will skip all lines below this.  If you wrote this loop with the <c>n += 1</c> below the <c>continue</c> line then it will not be evaluated and will thus be an infinite loop, which we discuss moreso below.
 			</p>
 		</subsection>
 
@@ -579,21 +835,25 @@ end
 			</p>
 
 
-			<program language="Julia" line-numbers="yes">
-				<input>
+
+			<listing xml:id="prog-bisection-no-inf">
+				<caption>Adapted bisection method to prevent infinite loop</caption>
+				<program language="Julia" line-numbers="yes">
+					<code>
 function bisection(f::Function, a::Real, b::Real)
   local c
   local n = 0
-  while (b-a) &gt; 1e-6 &amp;&amp; n lt; 10
+  while (b-a) &gt; 1e-6 &amp;&amp; n &lt; 10
     c = 0.5*(a+b)  # find the midpoint
     # test if f(a) and f(c) have opposite signs to determine the new interval
-    (a,b) = f(a)*f(c) lt; 0 ? (a,c) : (c,b)
+    (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
     n += 1
   end
   c
 end
-				</input>
-			</program>
+					</code>
+				</program>
+			</listing>
 		</subsection>
 	</section>
 
@@ -659,14 +919,15 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
-function theMean(x::Number...) local sum=0
+				<code>
+function theMean(x::Number...)
+  local s = 0
   for val in x
-    sum += val
+    s += val
   end
-  sum/length(x)
+  s/length(x)
 end
-				</input>
+				</code>
 			</program>
 		</introduction>
 
@@ -675,7 +936,7 @@ end
 			<title>While Loops Versus For Loops</title>
 
 			<p>
-				No this, isn't a smackdown between these while and for loops. A big question often is when I have a problem that I want to solve and I know a loop is needed, when should I use a <c>while</c> loop and when should I use a <c>for</c> loop. The general rule of thumb is:
+				No this, isn't a smackdown between while and for loops. A big question often is when I have a problem that I want to solve and I know a loop is needed, when should I use a <c>while</c> loop and when should I use a <c>for</c> loop. The general rule of thumb is:
 			</p>
 
 			<p>
@@ -702,6 +963,172 @@ end
 				In the summing of the terms for the mean, a for loop was used because of the fixed number of values in the tuple <c>x</c>.
 			</p>
 		</subsection>
+
+
+		<subsection>
+			<title>Adapting While loops as For Loops</title>
+
+			<p>
+				As just mentioned above, generally if we don't know how many times we go through a loop that a while loop should be used.  Let's say we have a game that we roll a die. If we roll the die 10 times without rolling a 1, we win and if a 1 appears fewer than 10 times, we lose.   Here's a function that we can use to play this game.
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+function playDieGame()
+  local roll = rand(1:6)
+  @show roll
+  local n = 1
+  local win = roll != 1
+  while roll != 1 &amp;&amp; n &lt;=10
+    roll = rand(1:6)
+    @show roll
+    win = false
+    n += 1
+  end
+  win
+end
+				</code>
+			</program>
+
+			<p>
+				This starts with a roll of the die with <c>rand(1:6)</c>.  We also have the variable <c>n</c> that will store the number of rolls and <c>win</c> is whether or not we win the game.  At this point <c>win</c> is assumed <c>true</c> unless <c>roll == 1</c>.   The condition on the while loop is that the roll is not 1 and that the number of rolls is less than or equal to 10.  A possible output is
+			</p>
+
+			<p>
+				<cd>
+				<cline>roll = 6</cline>
+				<cline>roll = 5</cline>
+				<cline>roll = 1</cline>
+				<cline>false</cline>
+				</cd>
+			</p>
+
+			<p>
+				We will discuss random numbers in detail in <xref ref="ch-probability-random"/> and if you run this function, you will get different results, but should see rolls until a 1 is reached. If it 1, the result is <c>false</c> that you win and <c>true</c> if not.  Try running this function a number of times.
+			</p>
+
+			<p>
+				If this seems complicated, it is more complicated than it needs to be.  If we take the premise that since we don't know how many times this is run, we need to use a <c>while</c> then that complicates things then we need to have conditions on both the roll and the number of rolls (this is how the game is determined) and these both need to be set before the while loop.
+			</p>
+
+			<p>
+				Instead, we will use a <c>for</c> loop and break out (or actually just <c>return</c>) during the winning and losing conditions.  Here's an update of the code:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+function playDieGame()
+  for n=1:10
+    local roll = rand(1:6)
+    @show roll
+    roll == 1 &amp;&amp; return false
+    n == 10 &amp;&amp; return true
+  end
+end
+				</code>
+			</program>
+
+			<p>
+				Try running this code and you should see that it behaves the same way as above.
+			</p>
+
+			<p>
+				Notice that first we didn't need to define <c>roll</c> before the loop and <c>n</c> is now the index of the for loop.  Also, we didn't define a <c>win</c> variable. Instead, notice that if <c>roll == 1</c> we just <c>return false</c> and if <c>n == 10</c> we <c>return true</c>.
+			</p>
+
+			<p>
+				If also, we don't care about seeing the rolls, we can simplify this further with
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+function playDieGame()
+  for n = 1:10
+    rand(1:6) == 1 &amp;&amp; return false
+    n == 10 &amp;&amp; return true
+  end
+end
+				</code>
+			</program>
+
+			<p>
+				We simplify further in that there is no reason to check that <c>n == 10</c> each time through the loop.  If we make it through the loop, then we have gone 10 times and thus we win.  Here's an even shorter version of the game:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+function playDieGame()
+  for n = 1:10
+    rand(1:6) == 1 &amp;&amp; return false
+  end
+  true
+end
+				</code>
+			</program>
+
+			<p>
+				And if you compare this to the original function above, it's much shorter.  There is only one other feature to note.  The variable <c>n</c> is never used, it is simply there as the index of the for loop.  If this is true, in Julia style, we replace the variable with the _ character (which is technically a variable name) so our final version is
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+function playDieGame()
+  for _ = 1:10
+    rand(1:6) == 1 &amp;&amp; return false
+  end
+  true
+end
+				</code>
+			</program>
+		</subsection>
+
+
+		<subsection>
+			<title>Using <c>break</c> and <c>continue</c> with for loops</title>
+
+			<p>
+				Although we introduced both <c>break</c> and <c>continue</c> statements in while loops above, they can also be used in for loops.  Although these are not very practical examples, nevertheless this shows how they are used.
+			</p>
+
+			<p>
+				In this example, we will defined a loop from 1 to 10 and then break out of it after going through 5 times.
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+for n=1:10
+  @show n
+  n == 5 &amp;&amp; break
+end
+				</code>
+			</program>
+
+			<p>
+				And in this example, we will print out only odd numbers
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+for n=1:10
+  n % 2 == 0 &amp;&amp; continue
+  @show n
+end
+				</code>
+			</program>
+
+			<note>
+				<p>
+					Although most of the examples we have used with <c>break</c> and <c>continue</c> involve the short-circuit if statements, they can be used anywhere, however are typically using this or inside a standard if statement.
+				</p>
+			</note>
+		</subsection>
 	</section>
 
 	<section>
@@ -721,7 +1148,7 @@ end
 			</p>
 
 			<p>
-				The syntax <c>1:4</c> is called a <c>Range</c> and is shorthand for all integer between 1 and 4 inclusively. Technically, this is called a <c>UnitRange</c> because the skip size between numbers is 1.
+				The syntax <c>1:4</c> is called a <c>Range</c> and is shorthand for all integers between 1 and 4 inclusively. Technically, this is called a <c>UnitRange</c> because the skip size between numbers is 1.
 			</p>
 
 			<p>

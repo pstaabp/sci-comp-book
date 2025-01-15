@@ -39,7 +39,7 @@
 
 	<introduction>
 		<p>
-			Although there are many standard Julia data types that are useful for Scientific Computing, we can make new types called a composite data type.  We will start with developing a <c>PlayingCard</c> type that simplifies the poker hand simulations that we will see in <xref ref="ch-poker"/>.  We will also look at a <c>Polynomial</c> data type and finally create a <c>Root</c> type that will help with the rootfinding from <xref ref="ch-rootfinding"/>.
+			Although there are many standard Julia data types that are useful for Scientific Computing, we can make new types called a composite data type.  We will start with developing <c>Card</c> and <c>Hand</c> types that simplify the poker hand simulations that we will see in <xref ref="ch-poker"/>.  We will also look at a <c>Polynomial</c> data type and finally create a <c>Root</c> type that will help with the rootfinding from <xref ref="ch-rootfinding"/>.
 		</p>
 	</introduction>
 
@@ -52,7 +52,7 @@
 
 		<p>
 			<cd>
-			<cline>struct Mystruct</cline>
+			<cline>struct MyStruct</cline>
 			<cline>  num::Integer</cline>
 			<cline>  str::String</cline>
 			<cline>end</cline>
@@ -60,17 +60,33 @@
 		</p>
 
 		<p>
-			which has the two fields <c>num</c> and <c>str</c>. We are using the standard naming convention of a struct in Pascal case, which starts with a capital letter and and other words capitalized.   We can create an object<fn>Although a Julia struct is not an object in the sense of an object-oriented language, the terminology is pervasive in the Julia community.</fn> of type <c>Mystruct</c> by
+			which has the two fields <c>num</c> and <c>str</c>. We are using the standard naming convention of a struct in Pascal case, which starts with a capital letter and and other words capitalized.   We can create an object<fn>Although a Julia struct is not an object in the sense of an object-oriented language, the terminology is pervasive in the Julia community.</fn> of type <c>MyStruct</c> by
 		</p>
 
 		<p>
 			<cd>
-			<cline>m = Mystruct(13,"hello")</cline>
+			<cline>m = MyStruct(13,"hello")</cline>
 			</cd>
 		</p>
 
 		<p>
-			and we can access the fields of the struct with <c>m.num</c> and <c>m.str</c>. They will return <c>13</c> and <c>"hello"</c> respectively. Also, you can get an array of the names of the fields with <c>fieldnames(Mystruct)</c>. Note that the <c>fieldnames</c> command needs the datatype, not a variable of the datatype. This example is not very realistic, but the rest of the chapter will include more-practical examples.
+			and we can access the fields of the struct with <c>m.num</c> and <c>m.str</c>. They will return <c>13</c> and <c>"hello"</c> respectively. Also, you can get an array of the names of the fields with <c>fieldnames(MyStruct)</c>. Note that the <c>fieldnames</c> command needs the datatype, not a variable of the datatype. This example is not very realistic, but the rest of the chapter will include more-practical examples.
+		</p>
+
+		<p>
+			A helpful method associated with objects is the <c>dump</c> method.  If we type <c>dump(m)</c> then we get:
+		</p>
+
+		<p>
+			<cd>
+			<cline>MyStruct</cline>
+			<cline>  num: Int64 13</cline>
+			<cline>  str: String "hello"</cline>
+			</cd>
+		</p>
+
+		<p>
+			showing the name of the type: <c>MyStruct</c>, the fields and their types as well as the values.
 		</p>
 
 		<p>
@@ -79,7 +95,7 @@
 
 		<p>
 			<cd>
-			<cline>setfield!: immutable struct of type Mystruct cannot be changed</cline>
+			<cline>setfield!: immutable struct of type MyStruct cannot be changed</cline>
 			</cd>
 		</p>
 
@@ -102,7 +118,7 @@
 
 		<p>
 			<cd>
-			<cline>s=MutableStruct(1,2)</cline>
+			<cline>s = MutableStruct(1,2)</cline>
 			</cd>
 		</p>
 
@@ -200,7 +216,7 @@
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 struct Card
   rank::Int
   suit::Int
@@ -211,7 +227,7 @@ struct Card
     new(r,s)
   end
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -226,6 +242,10 @@ end
 
 			<p>
 				Recall, from the beginning of this chapter, this is because a <c>struct</c> is fixed, much like if a constant is declared and then it is redefined.  We want to replace the first <c>struct</c> with this one, so we will restart the kernel<fn> Recall, in Juypter, select <em>restart kernel</em> at the top and if you are using VS Code, the <em>restart</em> button will do the same. </fn>	You will need to reenter all of the needed cells, like the one with the ranks and suits as well as the one that starts <c>Base.show</c>.  In <xref ref="ch-modules"/>, we will put structs inside a module and not have to restart the kernel as you develop a new datatype.
+			</p>
+
+			<p>
+				Also note that on lines 6 and 7 we have used the standard Julia style for checking arguments, that is, give the range of valid choice and then with the short-circuit <c>||</c> throw the error.
 			</p>
 
 			<p>
@@ -274,7 +294,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 struct Card
   rank::Int
   suit::Int
@@ -287,10 +307,10 @@ struct Card
   # construct a card based on the number in a deck
   function Card(i::Int)
     1 &lt;= i &lt;= 52 || throw(ArgumentError("The argument must be an integer between 1 and 52"))
-    mod(i,13)==0 ? new(13,div(i,13)) : new(mod(i,13),div(i,13)+1)
+    new(mod1(i,13), div(i-1,13)+1)
   end
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -301,25 +321,25 @@ end
 				<ul>
 					<li>
 						<p>
-							Line 13 defines the input of the constructor.  The only input is a single integer.
+							Line 11 is the Card constructor for a single integer.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							Line 14 checks that the input <c>i</c> is between 1 and 52.  If not an error is thrown.
+							Line 12 checks that the input <c>i</c> is between 1 and 52.  If not an error is thrown.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							Line 15 defines the new <c>Card</c>. First, notice that there is a ternary <c>if-then-else</c>.  A check is made if <c>i mod 13</c> is zero. That is, 13, 26, 39 or 52.  If that is the case, set the rank to 13 (King) and the rank is i/13 (using <c>div</c> for integer division). Recall that <c>new</c> is used to set <c>rank</c> and <c>suit</c> of the struct.
+							Line 15 defines the new <c>Card</c>.  First, the <c>mod1</c> function performs modular division except that instead of <c>mod(4,4)=0</c>, then <c>mod1(4,4)=4</c>, it shifts the 0 remainder to remainder <c>n</c>.  This is helpful for situations like this or accessing arrays that are 1-indexed.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							If <c>i mod 13</c> is not zero, then the rank is <c>mod(i,13)</c>. It will be an integer 1 through 12.  The suit is <c>div(i,13)+1</c>, which ensures that suit will be between 1 and 4.
+							The second part of the <c>Card</c> is <c>div(i-1,13)+1</c>.  This will also shift values that have 0 modulus to the proper rank.
 						</p>
 					</li>
 				</ul>
@@ -331,7 +351,7 @@ end
 				</p>
 
 				<p>
-					If you do use a constructor, define it as a function with the same name as the type (the case must be the same as well). The last line in constructor function must be the <c>new</c> function that fills the member fields in the same order as listed in the struct. See <url href="https://docs.Julialang.org/en/latest/manual/constructors/\#man-constructors-1" visual="Julialang.org">additional information about constructors in the Julia Documentation</url>
+					If you do use a constructor, define it as a function with the same name as the type (the case must be the same as well). The last line in constructor function should either be the <c>new</c> function that fills the member fields in the same order as listed in the struct or you can call other constructors. See <url href="https://docs.Julialang.org/en/latest/manual/constructors/\#man-constructors-1" visual="Julialang.org">additional information about constructors in the Julia Documentation</url>
 				</p>
 			</remark>
 		</subsection>
@@ -347,7 +367,7 @@ end
 			<p>
 				<cd>
 				<cline>struct Hand</cline>
-				<cline>cards::Vector{Card}</cline>
+				<cline>  cards::Vector{Card}</cline>
 				<cline>end</cline>
 				</cd>
 			</p>
@@ -358,7 +378,7 @@ end
 
 			<p>
 				<cd>
-				<cline>h1=Hand([Card(2,3),Card(12,1),Card(10,1),Card(10,4),Card(5,2)])</cline>
+				<cline>h1 = Hand([Card(2,3),Card(12,1),Card(10,1),Card(10,4),Card(5,2)])</cline>
 				</cd>
 			</p>
 
@@ -373,17 +393,7 @@ end
 			</p>
 
 			<p>
-				Then let's define a card using the following:
-			</p>
-
-			<p>
-				<cd>
-				<cline>h1=Hand([Card(2,3),Card(12,1),Card(10,1),Card(10,4),Card(5,2)])</cline>
-				</cd>
-			</p>
-
-			<p>
-				now <c>h1</c> should now return <c>[2♢, Q♠, T♠, T♣, 5♡]</c>.
+				Then evaluating <c>h1</c> should now return <c>[2♢, Q♠, T♠, T♣, 5♡]</c>.
 			</p>
 
 			<p>
@@ -493,7 +503,7 @@ end
 			<p>
 				<cd>
 				<cline>function Base.show(io::IO, p::Polynomial)</cline>
-				<cline>  print(io, mapreduce(i -&gt; "$(coeffs[i]) x^$(i-1)", (str, term) -&gt; "$str + $term " , 1:length(coeffs)))</cline>
+				<cline>  print(io, mapreduce(i -&gt; "$(p.coeffs[i]) x^$(i-1)", (str, term) -&gt; "$str + $term " , 1:length(p.coeffs)))</cline>
 				<cline>end</cline>
 				</cd>
 			</p>
@@ -512,19 +522,25 @@ end
 
 					<li>
 						<p>
-							The output as before is a <c>print</c> with first argument <c>io</c> and second argument a string using the <c>reduce</c> function.
+							The output as before is a <c>print</c> with first argument <c>io</c> and second argument a string using the <c>mapreduce</c> function.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							Recall from section <xref ref="sect-reduce-array"/> that the <c>reduce</c> function takes an array and a function and returns a single value.  In this case, our array is the integers from 1 to the length of the <c>coeffs</c> field of the struct. The function is the first argument and returns a string representing a term of the polynomial.
+							Recall from section <xref ref="sect-reduce-array"/> that the <c>mapreduce</c> function takes an array and two functions and returns a single value.  In this case, our array is the integers from 1 to the length of the <c>coeffs</c> field of the struct (or more precisely the range <c>1:length(p.coeffs)</c>).
 						</p>
 					</li>
 
 					<li>
 						<p>
-							The string consists of four parts, <c>$str</c> is the current value of the string.  This is basically string concatenation. <c>$((n==1) ? "" : "+")</c> puts a "+" in front of each coefficient except the first one and <c>$(p.coeffs[n])</c> is the coefficients and <c>x^$(n-1)</c> is the power of x.
+							The first function is the mapping function.  It takes the indices of the array and in case produces the term of the polynomial.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							The second function of the <c>mapreduce</c> function performs a concatentation.  The current string is <c>str</c>, which is the cumulating string and <c>term</c> is the result of the mapping function.  This concatenation is just that using string interpolation.
 						</p>
 					</li>
 
@@ -536,13 +552,13 @@ end
 
 					<li>
 						<p>
-							This isn't perfect.  For example, if there are negative coefficients, then you'll see a +- for a term.  This can be taken care of with another ternary <c>if-then-else</c>. Also, it would be nice to eliminate the <c>x^0</c> term (because it is just 1 as well as instead of writing <c>x^1</c> write <c>x</c>, but this is just a little icing).
+							This isn't perfect.  For example, if there are negative coefficients, then you'll see a +- for a term.  This can be taken care of with another ternary <c>if-then-else</c>. Also, it would be nice to eliminate the <c>x^0</c> term (because it is just 1 as well as instead of writing <c>x^1</c> write <c>x</c>, but this is just a little icing).  Lastly, if you have a term with a 0 coefficient, you will see it and it might be nice to just skip writing the term.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							Note that there are many other ways to write this <c>Base.show</c> for a polynomial.  One way would be to use a <c>for</c> loop to go through the polynomials.  I used a <c>reduce</c> to show another example of how to use this function in practical way.
+							Note that there are many other ways to write this <c>Base.show</c> for a polynomial.  One way would be to use a <c>for</c> loop to go through the polynomials.  I used a <c>mapreduce</c> to show another example of how to use this function in practical way.
 						</p>
 					</li>
 				</ul>
@@ -580,7 +596,7 @@ end
 
 			<p>
 				<cd>
-				<cline>function +(p1::Polynomial{T}, p2::Polynomial{S}) where {T &lt;: Number, S &lt;: Number}</cline>
+				<cline>function +(p1::Polynomial{&lt;: Number}, p2::Polynomial{&lt;: Number})</cline>
 				<cline>  Polynomial(p1.coeffs+p2.coeffs)</cline>
 				<cline>end</cline>
 				</cd>
@@ -640,7 +656,7 @@ end
 
 			<p>
 				<cd>
-				<cline>function eval(poly::Polynomial{T}, x::Number) where T &lt;: Number</cline>
+				<cline>function eval(poly::Polynomial{&lt;:Number}, x::Number)</cline>
 				<cline>  reduce((val,i) -&gt; val + poly.coeffs[i]*x^(i-1), 1:length(poly.coeffs))</cline>
 				<cline>end</cline>
 				</cd>
@@ -656,7 +672,7 @@ end
 
 			<p>
 				<cd>
-				<cline>function eval(poly::Polynomial{T}, x::Number) where T &lt;: Number</cline>
+				<cline>function eval(poly::Polynomial{&lt;:Number}, x::Number)</cline>
 				<cline>  reduce((val,c) -&gt; x*val+c, reverse(poly.coeffs))</cline>
 				<cline>end</cline>
 				</cd>
@@ -670,7 +686,7 @@ end
 				<ul>
 					<li>
 						<p>
-							The definition of the function is identical in both methods.  Recall that since <c>Polynomial</c> is a parametric type (that is, it has multiple subtypes) we need to specify the type with <c>T</c> and say that <c>T &lt;: Number</c>.
+							The definition of the function is identical in both methods.  Recall that since <c>Polynomial</c> is a parametric type (that is, it has multiple subtypes) and we want the type to be a subtype of <c>Number</c>.
 						</p>
 					</li>
 
@@ -688,7 +704,7 @@ end
 
 					<li>
 						<p>
-							Reduce also has an <c>init</c> option that we didn't use here.  This is because initially these are both 0 and that is the default.  This differs from the <c>Base.show</c> above, in that initially we needed the empty string to start.
+							Reduce also has an <c>init</c> option that we didn't use here.  This is because initially these are both 0 and that is the default.
 						</p>
 					</li>
 				</ul>
@@ -709,24 +725,21 @@ end
 
 
 		<program language="Julia" line-numbers="yes">
-			<input>
+			<code>
 using ForwardDiff
-function newton(f::Function, x0::Number)
-  local dx = 1
-  local x1 = x0
-  local steps = 0
-  while abs(dx) &gt; 1e-6 &amp;&amp; steps &lt; 10
-    dx = f(x1)/ForwardDiff.derivative(f,x1)
-    x1 -= dx
-    steps += 1
+function newton(f::Function, x0::Number; tol::Real = 1e-6, max_steps = 10)
+  for _ = 1:max_steps
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
+    abs(dx) &gt; tol &amp;&amp; return x0
   end
-  x1
+  x0
 end
-			</input>
+			</code>
 		</program>
 
 		<p>
-			Although if the function has a root and the method converges to it, then this method will probably find it, however, just running it, we don't know if it has exceeded the total number of steps (hardcoded as 10 steps in this example) or reached the root.
+			Although if the function has a root and the method converges to it, then this method will probably find it, however, just running it, we don't know if it has exceeded the total number of steps defaulted to 10 or specified or reached the root.
 		</p>
 
 		<p>
@@ -735,7 +748,7 @@ end
 
 
 		<program language="Julia" line-numbers="yes">
-			<input>
+			<code>
 struct Root
   root::Float64    #  approximate value of the root
   x_eps::Float64   #  estimate of the error in the x variable
@@ -744,7 +757,7 @@ struct Root
   converged::Bool  #  whether or not the stopping criterion was reached
   max_steps::Int   #  the maximum number of steps allowed
 end
-			</input>
+			</code>
 		</program>
 
 		<p>
@@ -753,23 +766,24 @@ end
 
 
 		<program language="Julia" line-numbers="yes">
-			<input>
-function newton(f::Function, x0::Number)
-  local dx = 1
-  local x1 = x0
-  local steps = 0
-  while abs(dx) &gt; 1e-6 &amp;&amp; steps &lt; 10
-    dx = f(x1)/ForwardDiff.derivative(f,x1)
-    x1 -= dx
-    steps += 1
+			<code>
+function newton(f::Function, x0::Number; tol::Real = 1e-6, max_steps = 10)
+  local dx
+  for i = 1:max_steps
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
+    abs(dx) &lt; 1e-6 &amp;&amp; return Root(x0, dx, f(x0), i, true, max_steps)
   end
-  Root(x1, dx, f(x1), steps, steps &lt; 10, 10)
+  Root(x0, dx, f(x0), max_steps, false, 10)
 end
-			</input>
+			</code>
 		</program>
 
+<p>
+			and note that we store extra information that is returned.  Note that are a few main changes.  First, we need to declare <c>dx</c> outside the loop because it is needed below. Secondly, we added the index of the loop to be the variable <c>i</c> since we need it for the number of steps returned.  Lastly, we return the <c>Root</c> object in two different ways.  Inside the loop we test if the <c>dx</c> value is within <c>tol</c>, the we return the <c>Root</c> with all of the values.
+</p>
 		<p>
-			and note that we store extra information that is returned.  Let's run Newton's method on <m>f(x)=x^2-2</m> as an example by evaluating
+	 If we reach the end of the for loop, the last line is reached, which means Newton's method doesn't converge.  Let's run Newton's method on <m>f(x)=x^2-2</m> as an example by evaluating
 		</p>
 
 		<p>
@@ -782,7 +796,7 @@ end
 
 
 		<program language="Julia" line-numbers="yes">
-			<input>
+			<code>
 function Base.show(io::IO,r::Root)
   str = r.converged ? """The root is approximately x̂ = $(r.root)
     An estimate for the error is $(r.x_eps)
@@ -794,7 +808,7 @@ function Base.show(io::IO,r::Root)
     with f(x̂) = $(r.f_eps)."""
   print(io,str)
 end
-			</input>
+			</code>
 		</program>
 
 		<p>

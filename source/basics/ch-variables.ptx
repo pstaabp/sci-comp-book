@@ -388,11 +388,11 @@
 
 
 		<program language="Julia" line-numbers="yes">
-			<input>
+			<code>
 # This calculates the area of a circle
 r = 3
 pi*r^2 # this is the actual formula for the area
-			</input>
+			</code>
 		</program>
 
 		<p>

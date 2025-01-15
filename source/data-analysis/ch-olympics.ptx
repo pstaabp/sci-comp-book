@@ -227,12 +227,12 @@
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain olympics begin
   dropmissing(:Medal)
   nrow
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -264,7 +264,7 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain olympics begin
   dropmissing(:Medal)
   subset([:Season, :Medal] =  &gt; (s, m)  -  &gt; s .== "Summer" .&amp;&amp; m .== "Gold")
@@ -273,7 +273,7 @@ end
   sort(:nrow, rev = true)
   first(10)
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -309,7 +309,7 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain olympics begin
   subset(:Season =&gt; s-&gt; s .== "Winter")
   subset(:Medal =&gt; m -&gt; m .!= "NA")
@@ -317,7 +317,7 @@ end
   combine(nrow)
   sort(:nrow, rev = true)
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -353,13 +353,13 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain olympics begin
   dropmissing(:Weight)
   groupby([:Year, :Sex])
   combine(:Weight =&gt; mean =gt; :Mean_weight)
 end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -391,13 +391,13 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 weight = @chain olympics begin
   dropmissing(:Weight)
   groupby([:Year, :Sex])
   combine(:Weight =&gt; mean =&gt; :Mean_weight)
   unstack(:Sex, :Mean_weight)
-end        </input>
+end        </code>
       </program>
 
       <p>
@@ -436,7 +436,7 @@ end        </input>
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @chain olympics begin
   dropmissing(:Medal)
   subset(:NOC => name -> name .== "USA")
@@ -444,7 +444,7 @@ end        </input>
   combine(nrow => :num_medals)
   barplot(_.Year, _.num_medals)
 end
-        </input>
+        </code>
       </program>
 
       <p>

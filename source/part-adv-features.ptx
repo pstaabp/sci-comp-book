@@ -4,9 +4,10 @@
   <title>Advanced Features of Julia</title>
 
   <!-- include sections -->
-  <xi:include href="advanced/ch-adv-functions.ptx" />
+  <xi:include href="advanced/ch-adv-types.ptx" />
   <xi:include href="advanced/ch-collections.ptx" />
   <xi:include href="advanced/ch-modules.ptx" />
+  <xi:include href="advanced/ch-algo-anal.ptx" />
   <xi:include href="advanced/ch-parallel.ptx" />
   <xi:include href="advanced/ch-regular-expr.ptx" />
   <xi:include href="advanced/ch-file-system.ptx" />

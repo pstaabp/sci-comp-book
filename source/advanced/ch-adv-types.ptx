@@ -1,0 +1,281 @@
+<chapter xml:id="ch-adv-types">
+  <title>The Typing System in Julia</title>
+
+  <objectives>
+    <ol>
+      <li>
+        <p>
+          Details of subtypes and supertypes in Julia.
+        </p>
+      </li>
+
+      <li>
+        <p>
+          How the typing system working.
+        </p>
+      </li>
+
+      <li>
+        <p>
+          Union types
+        </p>
+      </li>
+
+      <li>
+        <p>
+          Parametric Types.
+        </p>
+      </li>
+
+      <li>
+        <p>
+          The Missing type
+        </p>
+      </li>
+    </ol>
+  </objectives>
+
+  <introduction>
+    <p>
+      This chapters covers more details of the types of variables in Julia.
+    </p>
+  </introduction>
+
+  <section>
+    <title>The Type System in Julia</title>
+
+    <p>
+      <xref ref="ch-data-types"/> covered various numbers types in Julia, however did not go into depth into the system.  We cover this in more detail in this section. Recall that there are various integer types in Julia.  We discussed signed and unsigned integers and listed the types.  We will see how these fit together and throughout this chapter will show how this type system can be leverage to reduce code.
+    </p>
+
+    <p>
+      Most of the number types that we saw in <xref ref="ch-data-types"/> are types that we can actually create values with that given type.  Examples include <c>Float64</c>, <c>UInt8</c> and <c>Int128</c>. These and the related ones are all examples of <term>concrete data types</term>, which are types that can be created.  Although not specificially dicussed as a type in <xref ref="ch-data-types"/>, the types <c>Signed</c> and <c>Unsigned</c> are integer types that are collections of other types.  Such are called <term>abstract data types</term>.  Every type in Julia is one of these types and the methods <c>isconcretetype</c> and <c>isabstracttype</c> can be used to determine the type.  For example <c>isabstracttype(Signed)</c> returns <c>true</c> whereas <c>isconcretetype(Signed)</c> returns <c>false</c>, but <c>isconcretetype(Int64)</c> returns true.
+    </p>
+
+    <p>
+      All concrete data types belong to some abstract data type.  We can use the method <c>supertype</c> to list this type.  For example, <c>supertype(Int64)</c> returns <c>Signed</c>.  The other related method is <c>subtypes</c> which lists all subtypes of a given abstract type.  For example, <c>subtypes(Signed)</c> returns:
+    </p>
+
+    <p>
+      <cd>
+      <cline>6-element Vector{Any}:</cline>
+      <cline> BigInt</cline>
+      <cline> Int128</cline>
+      <cline> Int16</cline>
+      <cline> Int32</cline>
+      <cline> Int64</cline>
+      <cline> Int8</cline>
+      </cd>
+    </p>
+
+    <p>
+      and we talked about all of these types in <xref ref="ch-data-types"/>.  And another example, <c>subtypes(Unsigned)</c> returns the array <c>[5-element Vector{Any} UInt128, UInt16, UInt32, UInt64, UInt8]</c>.  The type system can be thought of as a tree in the graph-theory sense of nodes and edges.  The leaves of the tree are the concrete data types.  Using <c>supertype(Signed)</c> and <c>supertype(Unsigned)</c> both return <c>Integer</c> indicating that this is the common supertype of these types.  And using <c>subtypes(Integer)</c> returns the array <c>[Bool, Signed, Unsigned]</c>, which are all of type <c>Integer</c>.
+    </p>
+
+    <p>
+      We can actually create the part of the tree that are all Integer types as the following:
+    </p>
+    		<figure xml:id="fig-plot-type-tree">
+			<caption>The type tree of integers in Julia</caption>
+			<image width="75%" xml:id="plot-type-tree-integers">
+				<latex-image>
+				<![CDATA[
+				\begin{tikzpicture}
+[
+    level 1/.style={sibling distance=25mm},
+    level 2/.style={sibling distance=15mm},
+]
+	\node {Integer}
+		child {node {Bool}}
+		child {
+		    node {Signed}
+		    child {node {Int8}}
+		    child {node {Int16}}
+				child {node {Int32}}
+				child {node {Int64}}
+				child {node {Int128}}
+		}
+		child {
+			node {Unsigned}
+			child {node {UInt8}}
+			child {node {UInt16}}
+		};
+\end{tikzpicture}
+				]]>
+				</latex-image>
+			</image>
+		</figure>
+
+
+  </section>
+
+  <section>
+    <title>Details of Integer Types</title>
+
+    <p>
+      Maybe move this into the appendix??
+    </p>
+
+    <p>
+      In Julia, we can use the <c>bitstring</c> function to give the binary representation of integers and floating points.  For example
+      <cd>
+      <cline>bitstring(UInt8(18))</cline>
+      </cd>
+    </p>
+
+    <p>
+      returns <c>00010010</c>.   Notice that <c>bitstring(UInt8(255))</c> returns <c>11111111</c>.
+    </p>
+
+    <p>
+      Similarly, the unsigned integers with more bits work the same with largest range of integers. For example <c>bitstring(UInt64(100000))</c> returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>"0000000000000000000000000000000000000000000000011000011010100000"</cline>
+      </cd>
+    </p>
+
+    <p>
+      which is a string of length 64.
+    </p>
+  </section>
+
+	<section xml:id="sect-abstract-type">
+		<title>Abstract and Concrete Number Types</title>
+
+		<introduction>
+			<p>
+				The numerical data types we have seen in this chapter are examples of <term>concrete data types</term> in that we can create data (usually numbers) with those types.  These include the integer types <c>Int8, Int16, Int32, Int64, Int128, BigInt</c> and floating-point versions <c>Float16, Float32, Float64, BigFloat</c>. The rational and complex types are composite, however the internal part is a concrete type.
+			</p>
+
+			<p>
+				Julia is a bit different than other languages in that there are also <term>abstract data types</term> that 1) you can't make data in the type and 2) are collections of other types.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Abstract Number types</title>
+
+			<p>
+				For example, <c>Integer</c> is the abstract type (also called a supertype) of all integer types.  The other abstract number types are:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							<c>Signed</c>: supertype of all signed integers like <c>Int32, BigInt</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Unsigned</c>: supertype of all unsigned integers like <c>UInt32,UInt128</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Integer</c>: supertype of all signed and unsigned integers.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>AbstractFloat</c>: supertype of all floating-point numbers.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>AbstractIrrational</c>: supertype of irrational numbers.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Real</c>: supertype of all floating-point, rational, irrational and integer numbers.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Number</c>: supertype of all numbers.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				See a bare-bones description of all of <url href="https://docs.Julialang.org/en/v1/base/numbers/" visual="docs.Julialang.org"> Julia's standard number types</url>.
+			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Concrete Number Types</title>
+
+			<p>
+				The numbers shown above are concrete number types like:
+			</p>
+
+			<p>
+				<ul>
+					<li>
+						<p>
+							<c>Float16</c>, <c>Float32</c>, <c>Float64</c>, <c>BigFloat</c> which are all subtypes of <c>AbstractFloat</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>UInt8</c>, <c>UInt16</c>,<c>UInt32</c>,<c>UInt64</c>,<c>UInt128</c>: which are all subtypes of <c>Unsigned</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Int8</c>, <c>Int16</c>, <c>Int32</c>, <c>Int64</c>, <c>Int128</c>, <c>BigInt</c>: which are all subtypes of <c>Signed</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Rational</c> types are subtypes of <c>Real</c>
+						</p>
+					</li>
+
+					<li>
+						<p>
+							<c>Complex</c> types of subtypes of <c>Number</c>.
+						</p>
+					</li>
+				</ul>
+			</p>
+
+			<p>
+				To test if something is a subtype of another use the <c>&lt;:</c> operation. For example
+			</p>
+
+			<p>
+				<cd>
+				<cline>UInt8 &lt;: Integer</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>true</c>, but
+				<cd>
+				<cline>Float16 &lt;: Signed</cline>
+				</cd>
+			</p>
+
+			<p>
+				returns <c>false</c>.
+			</p>
+		</subsection>
+	</section>
+</chapter>

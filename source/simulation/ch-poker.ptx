@@ -195,12 +195,12 @@
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function isFullHouse(h::Hand)
   local r=sort(map(c -&gt;  c.rank,h.cards))
   r[2]==r[1] &amp;&amp; r[5]==r[4] &amp;&amp; r[2] != r[4] &amp;&amp; (r[3]==r[2] || r[4]==r[3])
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -229,7 +229,7 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 using Random
 function runTrials(f::Function, trials::Integer)
   local deck=collect(1:52) # creates the array [1,2,3,...,52]
@@ -243,7 +243,7 @@ function runTrials(f::Function, trials::Integer)
   end
   num_hands/trials
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -338,12 +338,12 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function isOneSuit(h::Hand)
   local s = map(c -&gt; c.suit,h.cards)
   s[1]==s[2]==s[3]==s[4]==s[5]
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -363,13 +363,13 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function hasRun(h::Hand)
   local r = sort(map(c-&gt;c.rank,h.cards))
   r[2]==r[1]+1 &amp;&amp; r[3]==r[2]+1 &amp;&amp; r[4]==r[3]+1 &amp;&amp; r[5]==r[4]+1 ||
   r[1]==1 &amp;&amp; r[2]==10 &amp;&amp; r[3]==11 &amp;&amp; r[4]==12 &amp;&amp; r[5]==13 ## ace high run
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -417,12 +417,12 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function isRoyalFlush(h::Hand)
   local r = sort(map(c -&gt;  c.rank,h.cards))
   r[1]==1 &amp;&amp; r[2]==10 &amp;&amp; r[3]==11 &amp;&amp; r[4]==12 &amp;&amp; r[5]==13 &amp;&amp; isOneSuit(h)
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -502,14 +502,14 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function isTwoPair(h::Hand)
   local r = sort(map(c -&gt;  c.rank,h.cards))
   (r[1]==r[2] &amp;&amp; r[3] == r[4]) ||
   (r[1]==r[2] &amp;&amp; r[4] == r[5]) ||
   (r[2]==r[3] &amp;&amp; r[4] == r[5])
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -532,7 +532,7 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function isTwoPair(h::Hand)
   local r = sort(map(c -&gt;  c.rank,h.cards))
   ! isFullHouse(h) &amp;&amp;
@@ -541,7 +541,7 @@ function isTwoPair(h::Hand)
     (r[1]==r[2] &amp;&amp; r[4] == r[5]) ||
     (r[2]==r[3] &amp;&amp; r[4] == r[5]) )
 end
-				</input>
+				</code>
 			</program>
 
 			<exercise>

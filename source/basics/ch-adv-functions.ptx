@@ -1,0 +1,856 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<chapter xml:id="ch-adv-functions">
+	<title>Advanced Function Features of Julia</title>
+
+	<objectives>
+		<ul>
+			<li>
+				<p>
+					How and why to test arguments of functions.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Adding optional arguments to functions.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Handling other conditions, like possible errors.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Using keyword arguments.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					How and why to use parametric methods.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Understanding function arguments at a deeper level.
+				</p>
+			</li>
+		</ul>
+	</objectives>
+
+	<introduction>
+		<p>
+			This chapter covers a bit more on functions in Julia.  These feature allow the ability to write code that is easier to use, read and debug.  We will perform error checking for arguments to ensure that only valid arguments are considered.  Additionally, to make functions more robust, we'll use optional arguments and keyword arguments.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Testing Arguments</title>
+
+		<p>
+			Let's return to the factorial function that we saw in <xref ref="sect-factorial"/>:
+		</p>
+
+		<p>
+			<cd>
+			<cline>fact(n::Integer) = n==0 ? 1 : n*fact(n-1)</cline>
+			</cd>
+		</p>
+
+		<p>
+			We saw before that if we call this with a non-integer number like 3.2 that we will get an error, because <c>3.2</c> does not match the argument type of <c>Integer</c> but what if we include a negative number? If you run <c>fact(-5)</c> you will see:
+		</p>
+
+		<p>
+			<cd>
+			<cline>StackOverflowError:</cline>
+			<cline>	</cline>
+			<cline>  Stacktrace:</cline>
+			<cline>   [1] fact(n::Int64) (repeats 2 times)</cline>
+			<cline>   @ Main ~/code/sci-comp-book/Julia-output/adv-functions.ipynb:1</cline>
+			</cd>
+		</p>
+
+		<p>
+			This occurs because when a negative number is put into the <c>fact</c> function that since <m>n</m> is not 0, it computes <c>n*fact(n-1)</c> which will evaluate <c>fact</c> again at a more negative number. Subsequent calls to <c>fact</c> with more negative numbers would never end except that recursive functions are evaluated on what is called the stack and there is a maximum number of items that can be put on the stack and thus this error occurs.  We can alert the user to an invalid argument with the following:
+		</p>
+
+
+		<program language="Julia" line-numbers="yes">
+			<code>
+function fact(n::Integer)
+	n&gt;=0 || throw(ArgumentError("The argument must be a nonnegative integer."))
+	n==0 ? 1 : n*fact(n-1)
+end
+			</code>
+		</program>
+
+		<p>
+			The first line of this evaluates <c>n &gt;= 0</c>.  If that is false, the statement after the <c>||</c> is evaluated and an error is thrown.  Alternatively, if you enter a positive number for <c>n</c>, then the first line <c>n&gt;=0</c> evaluates as <c>true</c> and then shortcircuits, which means as soon as the first part of the compound or statement hits true, it stops evaluating.
+		</p>
+
+		<p>
+			An astute reader will ask, "Why not just use an if statement?"  And of course the answer is, "you may".  That is the first line of the function (line 2 in the block above) can be replaced with:
+		</p>
+
+		<p>
+			<cd>
+			<cline>if n &lt; 0</cline>
+			<cline>  throw(ArgumentError("The argument must be a nonnegative integer.")) </cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the same result will occur.  We'll use the style of the one-line version because it is shorter and is common in the Julia packages, however everyone's style is their own.
+		</p>
+
+		<p>
+			If we use this newer version of <c>fact</c> by calling <c>fact(-5)</c>,  we get
+		</p>
+
+		<p>
+			<cd>
+			<cline>ArgumentError: The argument must be a nonnegative integer.</cline>
+			</cd>
+		</p>
+
+		<p>
+			which is a much more helpful error than the Stack Overflow error.
+		</p>
+
+		<exercise>
+			<p>
+				In <xref ref="ch-number-theory"/>, the <c>findAllFactors</c> function doesn't make any sense if the number is less than 1.  Add a line to the function that throws an appropriate error.
+			</p>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Optional arguments</title>
+
+		<p>
+			Let's return to Newton's method, which we wrote<fn>for this section, we will consider the code from <xref ref="ch-rootfinding"/>, not that from <xref ref="ch-comp-types"/>, which introduces the <c>Root</c> struct.  We will comment on this later this chapter. </fn> before as
+		</p>
+
+
+		<program language="Julia" line-numbers="yes">
+			<code>
+using ForwardDiff
+function newton(f::Function, x0::Number)
+  for _ = 1:10
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
+    abs(dx) &lt; 1e-6 &amp;&amp; return x0
+  end
+  x0
+end
+			</code>
+		</program>
+
+		<p>
+			Notice that we hard-coded the stopping criteria and the max number of steps.  This is not good practice and will use a default value as an <em>optional argument</em>.
+		</p>
+
+		<p>
+			Let's define the tolerance (<c>tol</c>) and the maximum number of steps (<c>max_steps</c>) in the following way:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<code>
+function newton(f::Function, x0::Number, tol::Real = 1e-6, max_steps::Integer = 10)
+  for _ = 1:max_steps
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
+    abs(dx) &lt; tol &amp;&amp; return x0
+  end
+  x0
+end
+			</code>
+		</program>
+
+		<p>
+			Note that when entering this, it says there are 3 methods with the name <c>newton</c>.  This is because Julia will build three different function signatures.  One with 2 arguments (and both <c>tol</c> and <c>max_steps</c> use the default values), one with 3 arguments (and <c>max_steps</c> using it's default value) and one with all 4 arguments. Also remember that <c>1e-6</c> means <m>10^{-6}</m>, which is the default tolerance.
+		</p>
+
+		<p>
+			This seems more robust in that we can now call Newton's method with different values of tolerance and steps. So:
+		</p>
+
+		<p>
+			<cd>
+			<cline>newton(x -&gt; x^2-5,2) </cline>
+			</cd>
+		</p>
+
+		<p>
+			returns <c>2.236067977915804</c>. But if we use a lower tolerance:
+		</p>
+
+		<p>
+			<cd>
+			<cline>newton(x -&gt; x^2-5,2,1e-3)</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns <c>2.236111111111111</c>, which is slightly different than before.  Probably the number of steps of Newton was a bit different.
+		</p>
+
+		<p>
+			If we want to change the number of steps, however, we need to include the tolerance as well like:
+		</p>
+
+		<p>
+			<cd>
+			<cline>newton(x -&gt; x^2-5,2,1e-6,5)</cline>
+			</cd>
+		</p>
+
+		<p>
+			which results in <c>2.236111111111111</c>.  We will see later an alternative way to handle these parameters, called <em>keyword parameters</em> which requires names of parameters, not the order, which is helpful as the number of arguments/parameters for a function gets large.
+		</p>
+
+		<p>
+			This is quite an improvement, however, the arguments <c>tol</c> and <c>max_steps</c> optional parameters should both be positive, so we will add checks on these as
+		</p>
+
+
+		<program language="Julia" line-numbers="yes">
+			<code>
+function newton(f::Function, x0::Number, tol::Real = 1e-6, max_steps::Integer = 10)
+  tol &gt; 0 || throw(ArgumentError("The parameter tol must be positive"))
+  max_steps &gt; 0 || throw(ArgumentError("The parameter max_steps must be positive"))
+  for _ = 1:max_steps
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
+    abs(dx) &lt; tol &amp;&amp; return x0
+  end
+  x0
+end
+			</code>
+		</program>
+
+		<p>
+			and including negative numbers for either of these two now throws an error.
+		</p>
+
+		<exercise>
+			<introduction>
+				<p>
+					Complete the following:
+				</p>
+			</introduction>
+
+
+			<task>
+				<statement>
+					<p>
+						Recall that the positive root of <m>f(x)=x^2-10</m> is <m>\sqrt{10}</m>.  Use the function above to find <m>\sqrt{10}</m> with a tolerance of <m>10^{-10}</m>.
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						Find the absolute and relative error.  Use <c>sqrt(10)</c> as the actual value and the result from the <c>newton</c> function as the Hint: recall this from <xref ref="ch-rootfinding"/>.
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						Put in arguments for the tolerance and maximum number of steps that will throw an error. Check that this actually occurs.
+					</p>
+				</statement>
+			</task>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Handling Special Cases</title>
+
+		<p>
+			As we saw in <xref ref="ch-rootfinding"/>,
+		</p>
+
+		<p>
+			<cd>
+			<cline>root=newton(x -&gt; x^2+1,2)</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns <c>2.4008803928468465</c>, but if we evaluate the function at the root, with <c>f(root)</c> the result is <c>6.764226660756428</c>, which is definitely not 0 (or very close), so this doesn't appear to be a root.  Recall this occurred because the function <m>f(x)=x^2+1</m> doesn't have a root.  If we temporarily print out the values of <c>x1</c> within the loop, we'll see that the x values bounce all around and then just stops.<fn>In the Newton method, add the line <c>@show x0</c> just after the line with the <c>while</c> statement.  Rerun the function then and try <c>root=newton(f,2)</c> again.</fn>  It's not clear, but what happens here is that the max number of steps is reached, but you are not alerted.
+		</p>
+
+		<p>
+			Note that if it never reaches the case the <c>dx &lt; tol</c>, then it doesn't return from within the loop.  When this case happens, the for loop ends, therefore if we replace line 9 with
+		</p>
+
+		<p>
+			<cd>
+			<cline>throw(ErrorException("The maximum number of steps: $max_steps was reached without convergence"))</cline>
+			</cd>
+		</p>
+
+		<p>
+			and then rerunning  <c>newton(x -&gt; x^2+1,2)</c> gives the error <c>The maximum number of steps: 10 was reached without convergence</c> which explains to the user that a root was not reached.
+		</p>
+
+		<p>
+			You, the astute reader, probably noticed that we had an alternative way to handle this case in <xref ref="ch-comp-types"/>, in which we created a struct called <c>Root</c> to handle all of the information from Newton's method.  Either using the <c>Root</c> structure of the method of throwing an exception like above is fine as you may need to know how you will use this code.
+		</p>
+	</section>
+
+	<section>
+		<title>Keyword Arguments</title>
+
+		<introduction>
+			<p>
+				Although optional arguments are quite helpful, there are two situations that they can be annoying.
+			</p>
+
+			<p>
+				<ol>
+					<li>
+						<p>
+							If you want to change one optional argument without the others, we may not be able to.  In the Newton's method example, if we want to change <c>max_steps</c>, which is the 4th argument without changing the 3rd argument, we can't just put in the value of <c>max_steps</c>.
+						</p>
+					</li>
+
+					<li>
+						<p>
+							For more complex functions, there may be a lot of possible parameters, most of which could be optional. The order of the arguments are important, and if you mix them up, you may either get an error or get unexpected results.
+						</p>
+					</li>
+				</ol>
+			</p>
+
+			<p>
+				Using keyword arguments can solving both of these problems and we can rewrite newton's method as
+			</p>
+
+
+			<program language="Julia" line-numbers="yes">
+				<code>
+function newton(f::Function, x0::Number; tol::Real = 1e-6, max_steps::Integer = 10)
+  tol &gt; 0 || throw(ArgumentError("The parameter tol must be positive"))
+  max_steps &gt; 0 || throw(ArgumentError("The parameter max_steps must be positive"))
+  for _ = 1:max_steps
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
+    abs(dx) &lt; tol &amp;&amp; return x0
+  end
+  throw(ErrorException("The maximum number of steps: $max_steps was reached without convergence"))
+end
+				</code>
+			</program>
+
+			<p>
+				and it is important to note that there is a semicolon separating the arguments from the keyword arguments.
+			</p>
+
+			<p>
+				Now we can use this more easily.  The function call
+			</p>
+
+			<p>
+				<cd>
+				<cline>newton(x -&gt; x^2-2,1,tol=1e-3)</cline>
+				</cd>
+			</p>
+
+			<p>
+				results in <c>1.4142156862745099</c> and if we only want to change the number of <c>max_steps</c> is
+			</p>
+
+			<p>
+				<cd>
+				<cline>newton(x -&gt; x^2-2,100,max_steps=20)</cline>
+				</cd>
+			</p>
+
+			<p>
+				results in <c>1.41421356237384</c>.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Keyword Arguments for complex functions</title>
+
+			<p>
+				The main place that we have used keywords in this text is in either the <c>Makie</c> or the <c>Plots</c> packages. All of the ways to adjust a plot is with keywords.  There are perhaps about 100 keyword arguments to adjust for a plot and since each one of them has a default value, you only need to enter the ones that you want to change.
+			</p>
+
+			<p>
+				This was just a quick introduction to this and for further information, look at the <url href="https://docs.Julialang.org/en/v1/manual/functions/#Keyword-Arguments-1" visual=""> Julia documentation on keyword arguments</url>.
+			</p>
+
+			<exercise>
+				<introduction>
+					<p>
+						In <xref ref="ch-num-int"/>, we'll see the <url href="https://en.wikipedia.org/wiki/Trapezoidal_rule" visual=""> trapezoid rule</url>, which is used for numerical integration or area under a curve. The technique subdivides the interval <m>[a,b]</m> into <m>n</m> equal pieces and approximates the area under the curve with the area of a trapezoid.  In Julia this is
+					</p>
+
+
+					<program language="Julia" line-numbers="yes">
+						<code>
+function trapRule(f::Function,a::Number,b::Number)
+  local h = (b-a)/10
+  0.5*h*sum(map(f,a:h:b-h)+map(f,a+h:h:b))
+end
+						</code>
+					</program>
+
+					<p>
+						where <m>n=10</m>. We can estimate the area under the curve <m>y=x^3</m> on the interval <m>[0,4]</m> by entering
+					</p>
+
+					<p>
+						<cd>
+						<cline>trapRule(x -&gt; x^3,0,4)</cline>
+						</cd>
+					</p>
+
+					<p>
+						and the result is <c>64.64000000000001</c>.
+					</p>
+				</introduction>
+
+
+				<task>
+					<statement>
+						<p>
+							Change the arguments <c>a</c> and <c>b</c> to be optional arguments with the default values of 0 and 1 respectively.
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							Rewrite the code above to make a keyword argument of the number of subdivisions (10) and set the initial value to 10.
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							Check that the argument <c>a</c> is less than <c>b</c> and that <c>n</c> is greater than 1.
+						</p>
+					</statement>
+				</task>
+
+
+				<task>
+					<statement>
+						<p>
+							Find a better estimate for the area under <m>y=x^3</m> on <m>[0,4]</m> using 100 and 1000 subdivisions.
+						</p>
+					</statement>
+				</task>
+			</exercise>
+		</subsection>
+	</section>
+
+	<section xml:id="sect-parametric-methods">
+		<title>Parametric Methods</title>
+
+		<p>
+			Let's look at writing a function that finds the maximum of some number of real values. There is a built-in function for this, but going through this will illustrate a point.
+		</p>
+
+		<p>
+			If we want to find the maximum of two reals, then
+		</p>
+
+		<p>
+			<cd>
+			<cline>findMax(x::Real,y::Real) = x &gt; y ? x : y</cline>
+			</cd>
+		</p>
+
+		<p>
+			and if we want any number of reals then as we saw in <xref ref="sect-varargs"/>, we can use variable arguments (varargs) like:
+		</p>
+
+
+		<program language="Julia" line-numbers="yes">
+			<code>
+function findMax(nums::Real...)
+	local max = -Inf
+	for num in nums
+		if num &gt; max
+			max = num
+		end
+	end
+	max
+end
+			</code>
+		</program>
+
+		<p>
+			Another <c>findMax</c> function that would be helpful is in an array of  <c>Real</c>s (mainly because we will need to do something different for <c>Complex</c> arrays). This will look a lot like the one above:
+		</p>
+
+
+		<program language="Julia" line-numbers="yes">
+			<code>
+function findMax(arr::Vector{Real})
+	local max = -Inf
+	for num in arr
+		if num &gt; max
+			max = num
+		end
+	end
+	max
+end
+			</code>
+		</program>
+
+		<p>
+			Testing it with the array <c>x=collect(1:10)</c> using <c>findMax(x)</c> we get the error:
+		</p>
+
+		<p>
+			<cd>
+			<cline>MethodError: no method matching findMax(::Vector{Int64})</cline>
+			<cline>The function `findMax` exists, but no method is defined for this combination of argument types.</cline>
+			</cd>
+		</p>
+
+		<p>
+			and this is because even though <c>x</c> is of type <c>Vector{Int64}</c> that doesn't fit the signature <c>Vector{Real}</c>.
+		</p>
+
+		<p>
+			One way to get around this is to write a function for each number type we may want to find the max of (<c>Int128</c>, <c>Int64</c>, ..., <c>BigInt</c>, <c>Float64</c>, <c>Float32</c>, <c>Float16</c>) and all of the flavors of <c>Rational</c> but if you notice every function will be nearly identical and this would be painful and a lot of code copying.  Also, this is a nightmare for maintenance, in that if there was a bug in one it would need to be tracked down in each one.
+		</p>
+
+		<p>
+			Instead, we will use something in Julia called a <url href="https://docs.Julialang.org/en/latest/manual/methods/\#Parametric-Methods-1" visual="Julialang.org">parametric function</url> which allows us to write a single function that works on a set of different types. To do this with the <c>findMax</c> function, we will write:
+		</p>
+
+
+		<program language="Julia" line-numbers="yes">
+			<code>
+function findMax(arr::Vector{&lt;:Real})
+	local max = -Inf
+	for num in arr
+		if num &gt; max
+			max = num
+		end
+	end
+	max
+end
+			</code>
+		</program>
+
+		<p>
+			and this will now match a vector of any type that is a subtype of <c>Real</c> (including integers, floats and rational) and then <c>findMax(x)</c> returns <c>10</c>. Also if we have
+		</p>
+
+		<p>
+			<cd> findMax(collect(1.0:10.0)) </cd>
+		</p>
+
+		<p>
+			returns <c>10.0</c> and
+		</p>
+
+		<p>
+			<cd> findMax(collect(big(1):big(10))) </cd>
+		</p>
+
+		<p>
+			returns <c>10</c> (as a <c>BigInt</c>).
+		</p>
+
+		<p>
+			The function signature for the <c>findMax</c> function is a shorthand notation for
+		</p>
+
+		<p>
+			<cd>
+			<cline>function findMax(arr::Vector{T}) where T &lt;: Real</cline>
+			</cd>
+		</p>
+
+		<p>
+			which will match <c>Vector{T}</c> for any subtypeof <c>T</c> being <c>Real</c>. In the case above, we didn't need to know the type of vector, however consider a function that calculates the product of all of the elements of a real vector.  The following does this:
+		</p>
+
+
+		<program language="julia" line-numbers="yes">
+			<code>
+function findProduct(arr::Vector{T}) where T &lt;: Number
+  local prod = one(T)
+  for x in arr
+    prod *= x
+  end
+  prod
+end
+			</code>
+		</program>
+
+		<p>
+			and the type is needed to call the <c>one</c> function which return the number <c>1</c> for the type <c>T</c>.  (Try calling <c>one(Float64), one(Int), one(Rational{Int64})</c> to determine that this does what is intended.)
+		</p>
+
+		<exercise>
+			<introduction>
+				<p>
+					Create a <c>median</c> method on an array of reals.  It should be parametric with either of the following two sigatures:
+				</p>
+
+				<p>
+					<cd>
+					<cline>function median(arr::Vector{T}) where T &lt;: Real</cline>
+					<cline></cline>
+					<cline>end</cline>
+					</cd>
+				</p>
+
+				<p>
+					or
+				</p>
+
+				<p>
+					<cd>
+					<cline>function median(arr::Vector{&lt;Real})</cline>
+					<cline></cline>
+					<cline>end</cline>
+					</cd>
+				</p>
+
+				<p>
+					depending on if you need to know the type <c>T</c> or not.  Recall that the median of a set of sorted numbers is either the middle number if the length is odd or the mean of the middle two numbers if the length is even.
+				</p>
+
+				<p>
+					Try the function with each of the following
+				</p>
+			</introduction>
+
+
+			<task>
+				<statement>
+					<p>
+						<c>arr1=collect(1:10)</c>
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						<c>arr2=collect(big(1):big(10))</c>
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						<c>arr3=collect(3.0:4.0:56.0)</c>
+					</p>
+				</statement>
+			</task>
+
+
+			<task>
+				<statement>
+					<p>
+						<c>arr4=collect(1:1//3:7//3)</c>
+					</p>
+				</statement>
+			</task>
+		</exercise>
+	</section>
+
+	<section xml:id="sect-variable-scope">
+		<title>Variable Scope</title>
+
+		<p>
+			If you are using the command line Julia (also called the REPL) or in a notebook, then entering <c>x=6</c> will create <c>x</c> as a global variable, even without saying so explicitly. If we consider the factorial function above:
+		</p>
+
+
+		<program language="Julia" line-numbers="yes">
+			<code>
+function fact(n::Integer)
+  prod=1
+  for i=1:n
+    prod *= i
+  end
+  prod
+end
+			</code>
+		</program>
+
+		<p>
+			then recall that <c>n</c> is the function argument and the variable <c>prod</c> is actually declared locally implicitly and it is good form to say it is local by
+		</p>
+
+
+		<program language="Julia" line-numbers="yes">
+			<code>
+function fact(n::Integer)
+  local prod=1
+  for i=1:n
+    prod *= i
+  end
+  prod
+end
+			</code>
+		</program>
+
+		<p>
+			The variable <c>prod</c> is not defined or visible outside the function. If we type <c>2*prod</c> outside the function for example, an error will occur saying that <c>prod</c> is not defined.  It is actually a good thing that variables inside a function is only visible inside the function (that is has local scope), because this encapsulates the code inside a function in  that the function doesn't affect anything outside of it.
+		</p>
+
+		<p>
+			Let's look at local a global variables in a bit more detail, by the following function whose only purpose is to understand global and local variables.
+		</p>
+
+
+		<program language="Julia" line-numbers="yes">
+			<code>
+x=3
+function f()
+  local x=2
+  x
+end
+f()
+			</code>
+		</program>
+
+		<p>
+			then evaluating the function with <c>f()</c> this will return <c>2</c> and typing <c>x</c> outside the function just to see it's  (to see it's value) returns <c>3</c>, indicating that there are two different <c>x</c> variables.
+		</p>
+
+		<p>
+			If we indeed need a variable inside of a function to use a global variable, we can use the <c>global</c> keyword.  If instead we have
+		</p>
+
+
+		<program language="Julia" line-numbers="yes">
+			<code>
+x=3
+function g()
+	global x
+	x += 1
+end
+			</code>
+		</program>
+
+		<p>
+			then executing <c>g()</c> results in <c>4</c> showing that it is using the global value.  Entering <c>x</c> after evaluating the function, also will return <c>4</c>.  Although it is rare to need to use a global variable,  we will use this technique to determine the number of function evaluations to test a function in <xref ref="sect-faster-fibonacci"/>.
+		</p>
+	</section>
+
+	<section xml:id="sect-function-arguments">
+		<title>Function Arguments</title>
+
+		<p>
+			As described in the <url href="https://docs.Julialang.org/en/v1/manual/functions/#man-argument-passing">Julia documentation on functions</url>,  arguments follow what is called "pass-by-sharing", which means that values are not copied when they are passed to functions.  Instead, the argument is a local variable that is passed the value when the function is called.  Consider
+		</p>
+
+		<p>
+			<cd>
+			<cline>function g(x::Number)</cline>
+			<cline>  2*x</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and if we make a function call like <c>g(4)</c>, then within the function <c>x</c> is a variable that is given the value <c>4</c>. We can update the variable.  For example.
+		</p>
+
+		<p>
+			<cd>
+			<cline>function g(x::Number)</cline>
+			<cline>  x *= 2</cline>
+			<cline>  x += 7</cline>
+			<cline>  x</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			where recall that the <c>*=</c> and <c>+=</c> updates the value on the left.  When called as
+		</p>
+
+		<p>
+			<cd>
+			<cline>x=4</cline>
+			<cline>g(4)</cline>
+			</cd>
+		</p>
+
+		<p>
+			it returns <c>15</c> and the value of <c>x</c> remains as <c>4</c>.  This is because the <c>x</c> within the function is now a local function that starts with the value 4.
+		</p>
+
+		<p>
+			You may recall some functions seem to update the value of its arguments.  For example,
+		</p>
+
+		<p>
+			<cd>
+			<cline>A = [4,5,2,3,1]</cline>
+			<cline>sort!(A)</cline>
+			<cline>A</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns the sorted array <c>[1,2,3,4,5]</c>.  So how does this work, you may ask?  Let's write our own function that may do this.
+		</p>
+
+		<p>
+			<cd>
+			<cline>function change3!(A::Vector{T}) where T &lt;: Number</cline>
+			<cline>  A[3] *= 2</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			which takes a vector of numbers and double the 3rd element of the vector.  We used the convention in Julia that if the arguments are changed we append a <c>!</c> to the name.  If we enter
+		</p>
+
+		<p>
+			<cd>
+			<cline>A = [1,2,3,4]</cline>
+			<cline>change3!(A)</cline>
+			</cd>
+		</p>
+
+		<p>
+			which returns 6 (recall that since the last line of the function is the double of the 3rd element, we get 6).  And if we type <c>A</c> to view it again, we get the vector <c>[1,2,6,4]</c> indicating that indeed the vector <c>A</c> has been updated.
+		</p>
+
+		<p>
+			The reason that <c>A</c> is updated with this function whereas the <c>x</c> above is not is the way that array variables differ from scalar variables (like numbers and strings).  The assignment <c>A=[1,2,3,4]</c>, means that <c>A</c> is a reference to the array instead of the array itself.<fn>This is similar to other languages, although some (like C and C++) use the term <term>pointer</term> instead.</fn>  Thus, when you call <c>change3!(A)</c> the variable <c>A</c> within the function takes on the reference to the original function.  Thus, when values are updated within the function, then the array is actually updated.  When <c>x</c> is updated in the function above, one can think that this is a copy of the passed in value, which doesn't leave the function.
+		</p>
+	</section>
+</chapter>

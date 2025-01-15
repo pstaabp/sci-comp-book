@@ -58,7 +58,7 @@
 
 
 		<program language="julia" line-numbers="yes">
-			<input>
+			<code>
         module PlayingCards
         import Base.show
         export Card, Hand, isFullHouse
@@ -107,7 +107,7 @@
           cranks[2] != cranks[4]
         end
         end #module PlayingCards
-			</input>
+			</code>
 		</program>
 
 		<p>
@@ -369,11 +369,11 @@
 
 
 		<program language="julia" line-numbers="yes">
-			<input>
+			<code>
 function isequal(x::Card,y::Card)
   x.rank==y.rank &amp;&amp; x.suit==y.suit
 end
-			</input>
+			</code>
 		</program>
 
 		<p>
@@ -560,7 +560,7 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 module Rootfinding
 using ForwardDiff
 import Base.show
@@ -598,7 +598,7 @@ function newton(f::Function, x0::Number; tol=1e-6, max_steps=10)
   Root(x1,dx,f(x1),steps,steps&lt;max_steps,max_steps)
 end
 end # module Rootfinding
-				</input>
+				</code>
 			</program>
 
 			<p>

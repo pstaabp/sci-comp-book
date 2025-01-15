@@ -155,14 +155,14 @@
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
       function isOdd(n)
         if mod(n,2)==1
           return true
         end
         false
       end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -328,7 +328,7 @@
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 					# 197 methods for generic function + from Base:
 					+(B::BitMatrix, J::LinearAlgebra.UniformScaling) in LinearAlgebra at /Users/XXXXX/.Julia/Juliaup/Julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/Julia/stdlib/v1.11/LinearAlgebra/src/uniformscaling.jl:151
 					+(x::Bool, z::Complex{Bool}) in Base at complex.jl:308
@@ -346,7 +346,7 @@
 					+(x::Dates.DateTime, y::Dates.Period) in Dates at /Users/XXXXX/.Julia/Juliaup/Julia-1.11.0-beta2+0.aarch64.apple.darwin14/share/Julia/stdlib/v1.11/Dates/src/arithmetic.jl:83
 					+(z::Complex{Bool}, x::Bool) in Base at complex.jl:309
 					+(z::Complex{Bool}, x::Real) in Base at complex.jl:323
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -392,7 +392,7 @@
 
 
 		<program language="Julia" line-numbers="yes">
-			<input>
+			<code>
   function theMean(x::Real...)
     local sum=0
     for val in x
@@ -400,7 +400,7 @@
     end
     sum/length(x)
   end
-			</input>
+			</code>
 		</program>
 
 		<p>
@@ -465,7 +465,7 @@
 
 
 		<program language="Julia" line-numbers="yes">
-			<input>
+			<code>
   function fact(n::Integer)
     local prod=1
     for i=1:n
@@ -473,7 +473,7 @@
     end
     prod
   end
-			</input>
+			</code>
 		</program>
 
 		<p>
@@ -540,7 +540,7 @@
 
 
 		<program language="Julia" line-numbers="yes">
-			<input>
+			<code>
 				function factr(n::Integer)
 				  if n == 0
 				    return 1
@@ -548,7 +548,7 @@
 				    return n*factr(n-1)
 				  end
 				end
-			</input>
+			</code>
 		</program>
 
 		<p>
@@ -570,87 +570,6 @@
 				The first few values are 1, 1, 2, 3, 5, 8, 13, 21, ... Write a recursive function that produces fibonacci numbers. Test it on values of <m>n</m> that are smaller than 20<fn>If you play with this a bit, you will that computing the fibonacci numbers in a recursive manner, although simple, is very slow as the values increase.  In <xref ref="sect-faster-fibonacci"/>, we will examine another way to compute this more quickly.</fn>
 			</p>
 		</exercise>
-	</section>
-
-	<section>
-		<title>Variable Scope</title>
-
-		<p>
-			If you are using the command line Julia (also called the REPL) or in a notebook, then entering <c>x=6</c> will create <c>x</c> as a global variable, even without saying so explicitly. If we consider the factorial function above:
-		</p>
-
-
-		<program language="Julia" line-numbers="yes">
-			<input>
-function fact(n::Integer)
-  prod=1
-  for i=1:n
-    prod *= i
-  end
-  prod
-end
-			</input>
-		</program>
-
-		<p>
-			then recall that <c>n</c> is the function argument and the variable <c>prod</c> is actually declared locally implicitly and it is good form to say it is local by
-		</p>
-
-
-		<program language="Julia" line-numbers="yes">
-			<input>
-function fact(n::Integer)
-  local prod=1
-  for i=1:n
-    prod *= i
-  end
-  prod
-end
-			</input>
-		</program>
-
-		<p>
-			The variable <c>prod</c> is not defined or visible outside the function. If we type <c>2*prod</c> outside the function for example, an error will occur saying that <c>prod</c> is not defined.  It is actually a good thing that variables inside a function is only visible inside the function (that is has local scope), because this encapsulates the code inside a function in  that the function doesn't affect anything outside of it.
-		</p>
-
-		<p>
-			Let's look at local a global variables in a bit more detail, by the following function whose only purpose is to understand global and local variables.
-		</p>
-
-
-		<program language="Julia" line-numbers="yes">
-			<input>
-x=3
-function f()
-  local x=2
-  x
-end
-f()
-			</input>
-		</program>
-
-		<p>
-			then evaluating the function with <c>f()</c> this will return <c>2</c> and typing <c>x</c> outside the function just to see it's  (to see it's value) returns <c>3</c>, indicating that there are two different <c>x</c> variables.
-		</p>
-
-		<p>
-			If we indeed need a variable inside of a function to use a global variable, we can use the <c>global</c> keyword.  If instead we have
-		</p>
-
-
-		<program language="Julia" line-numbers="yes">
-			<input>
-x=3
-function g()
-	global x
-	x += 1
-end
-			</input>
-		</program>
-
-		<p>
-			then executing <c>g()</c> results in <c>4</c> showing that it is using the global value.  Entering <c>x</c> after evaluating the function, also will return <c>4</c>.  Although it is rare to need to use a global variable,  we will use this technique to determine the number of function evaluations to test a function in <xref ref="sect-faster-fibonacci"/>.
-		</p>
 	</section>
 
 	<section>

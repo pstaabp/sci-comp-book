@@ -228,7 +228,7 @@
 					<p>The <c>while</c> looks is more challenging.  We will use an index <c>k</c> and set it to 1 initially and every time through the loop call <c>nextPrime(k)</c> to get the next one.  The following function finds the primes:</p>
 
 					<program language="Julia" line-numbers="yes">
-						<input>
+						<code>
 function getPrimes2(n::Integer)
   local primes = Int[]
   local k = 2
@@ -238,7 +238,7 @@ function getPrimes2(n::Integer)
   end
   primes
 end
-</input>
+</code>
 </program>
 				</solution>
 			</task>
@@ -287,13 +287,13 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function isPerfect(n::Integer)
   A=findAllFactors(n)
   pop!(A)
   sum(A)==n
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -526,7 +526,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function isHappy(n::Integer)
   if n==1
     return true
@@ -541,7 +541,7 @@ function isHappy(n::Integer)
     return isHappy(sum)
   end
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -593,7 +593,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function isHappy2(n::Integer)
   if n==1
     return true
@@ -603,7 +603,7 @@ function isHappy2(n::Integer)
     return isHappy2(sum(x-&gt;x^2,digits(n)))
   end
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -740,7 +740,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function findAllFactors2(n::Integer)
   local factors = [1]
   for i=2:n-1
@@ -750,7 +750,7 @@ function findAllFactors2(n::Integer)
   end
   push!(factors,n) # n is always a factor of itself
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -778,7 +778,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function findAllFactors3(n::Integer)
   local factors = [1]
   for i=2:n÷2
@@ -788,7 +788,7 @@ function findAllFactors3(n::Integer)
   end
   push!(factors,n)
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -869,7 +869,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function findAllFactors4(n::Integer)
   local x = round(Int,sqrt(n)) # closest integer to sqrt(n)
   local factors = [1,n]
@@ -884,7 +884,7 @@ function findAllFactors4(n::Integer)
   end
   factors
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -916,7 +916,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function isPrime5(n::Integer)
   for k=2:floor(Int,sqrt(n)) # integer nearest sqrt(n)
     if n%k==0 # if k is a factor of n
@@ -925,7 +925,7 @@ function isPrime5(n::Integer)
   end
   true
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -943,7 +943,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function isPrime6(n::Integer)
   if n == 1
   	return false
@@ -959,7 +959,7 @@ function isPrime6(n::Integer)
   end
   true
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -1033,7 +1033,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function getPrimes(m::Integer) ## return all primes up to n using
   # the sieve of Eratosthenes
   local is_prime=trues(m) ## assume all are prime
@@ -1044,7 +1044,7 @@ function getPrimes(m::Integer) ## return all primes up to n using
   end
   findall(is_prime)[2:end]
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -1057,7 +1057,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function isPrime7(n::Integer)
   if n==1
     return false
@@ -1070,7 +1070,7 @@ function isPrime7(n::Integer)
   end
   true
 end
-				</input>
+				</code>
 			</program>
 
 			<p>

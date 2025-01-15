@@ -124,7 +124,7 @@
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function dec2bin(n::Int)
   -128 &lt;= n &lt;=127 || throw(ArgumentError("The value of n must be between -128 and 127"))
   bdigits=zeros(Bool,8)
@@ -140,7 +140,7 @@ function dec2bin(n::Int)
   calcDigit(n,6)
   bdigits
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -242,7 +242,7 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function dec2bin(n::Int)
   bdigits=zeros(Bool,8)
   ## this function calclates the digit of the decimal number k that goes in slot digit
@@ -262,7 +262,7 @@ function dec2bin(n::Int)
   end
   bdigits
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -334,7 +334,7 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 ## this function takes a 0-1 array (boolean array) and changes it to a decimal.
 # the first element is the 2^0 digits, the 7th digit is the 2^6 digit and the 8th digit is the sign digit
 # this uses the 2's complement representation
@@ -346,7 +346,7 @@ function bin2dec(arr::Array{Bool,1})
   end
   sum - arr[8]*128
 end
-				</input>
+				</code>
 			</program>
 
 			<p>

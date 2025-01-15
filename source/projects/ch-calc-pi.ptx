@@ -109,7 +109,7 @@
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 function calcPi(n::Integer)
   n &gt; 0 || throw(ArgumentError("The input n must be positive."))
   local sum = 1.0
@@ -118,7 +118,7 @@ function calcPi(n::Integer)
   end
   4*sum
 end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -275,7 +275,7 @@ end
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
     function atan_series(x::Real,n::Integer)
       n &gt; 0 || throw(ArgumentError("The input n must be positive."))
       local sum = x
@@ -284,7 +284,7 @@ end
       end
       sum
     end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -511,7 +511,7 @@ end
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
     function atan_series2(x::Real,n::Integer)
       n &gt; 0 || throw(ArgumentError("The input n must be positive."))
       local negxsq = -x^2
@@ -523,7 +523,7 @@ end
       end
       x*sum
     end
-      </input>
+      </code>
     </program>
 
     <p>
@@ -640,7 +640,7 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
     function machin(coeffs::Vector{Int}, xvals::Vector{T},n::Int) where T &lt;: Integer
       length(coeffs) == length(xvals) || throw(ArgumentError("The lengths of the vectors must match"))
       local sum=big(0)
@@ -649,7 +649,7 @@ end
       end
       4*sum
     end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -772,7 +772,7 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
     function chud(n::Integer)
       sum = big(0)
       for k=0:n
@@ -781,7 +781,7 @@ end
       end
       1/(12sum)
     end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -802,7 +802,7 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
     function chudnovsky(n::Integer)
       local sum1 = big(1.0)
       local sum2 = big(0.0)
@@ -817,7 +817,7 @@ end
       end
       426880*sqrt(big(10005))/(13591409*sum1 + 545140134*sum2)
     end
-        </input>
+        </code>
       </program>
 
       <p>
@@ -871,7 +871,7 @@ end
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 @everywhere function paraChud(n1::Integer,n2::Integer,prec::Integer)
   setprecision(prec)
   local C = big(640320)^3
@@ -891,7 +891,7 @@ end
   end
   545140134*sum1 + 13591409*sum2
 end
-        </input>
+        </code>
       </program>
 
       <p>

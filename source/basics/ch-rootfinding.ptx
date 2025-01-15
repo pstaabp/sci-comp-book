@@ -265,11 +265,6 @@
 			<p>
 				Even though the example above was manufactured to produce bad results, you never know if a numerical solution is accurate or not. One way to look at the above example is to not use 16-bit floating point numbers.  This is a good idea, but assume (like we did above) that 64-bit is the actual answer.  There are cases where you will get the wrong answer with 64-bit.
 			</p>
-		</subsection>
-
-
-		<subsection>
-			<title>Can we ever be confident of answers?</title>
 
 			<p>
 				It's crucial to have a good sense of the problem (whether it be mathematical or a scientific question). Additionally, testing is an important part of the solution process. In <xref ref="ch-modules"/>, we will spend some time discussing testing of code.
@@ -323,12 +318,12 @@
 
 
 		<program language="Julia" line-numbers="yes">
-			<input>
+			<code>
 function qSol2(a::Real,b::Real,c::Real)
   d=sqrt(b^2-4*a*c)
-  -2*c/(b+d),(-2*c)/(b-d)
+  -2*c/(b+d), -2*c/(b-d)
 end
-			</input>
+			</code>
 		</program>
 
 		<exercise>
@@ -481,7 +476,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function newton(f::Function, df::Function, x0::Number)
   x1 = x0 - f(x0)/df(x0)
   while abs(x1-x0) &gt; 1e-6 # while the two numbers are larger than 10^(-6)
@@ -490,7 +485,7 @@ function newton(f::Function, df::Function, x0::Number)
   end
   x1
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -513,7 +508,7 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function newton(f::Function, df::Function, x0::Number)
   local dx = f(x0)/df(x0)
   local x1 = x0 - dx
@@ -523,7 +518,7 @@ function newton(f::Function, df::Function, x0::Number)
   end
   x1
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -531,7 +526,30 @@ end
 			</p>
 
 			<p>
-				Lastly, note that we have defined a variable <c>x1</c>, which then is updated within the while loop.  You may ask yourself why not just update the value <c>x0</c>.  It is generally good practice to not update the arguments of a function unless you tip off the programmer that you might do this.  In Julia, recall that we add a ! to the end of a function name that changes the arguments.  If not, there may be unintended consequences resulting in bugs that are hard to track down.  We will show examples of this in <xref ref="ch-adv-functions"/>.
+				Although the basics are here, the following is a bit simpler:
+			</p>
+
+
+			<program language="julia" line-numbers="yes">
+				<code>
+function newton(f::Function, df::Function, x0::Number)
+  local dx = f(x0)/df(x0)
+  x0 -= dx
+  while abs(dx) &gt; 1e-6
+    dx = f(x0)/df(x0)
+    x0 -= dx
+  end
+  x0
+end
+				</code>
+			</program>
+
+			<p>
+				We have changed a few things.  First, note that we decided to reuse the variable <c>x0</c> to keep track of the current root instead of introduce a new variable.  In some languages, this would not be a good idea in that using arguments will change those outside the scope of the function.  However, in Julia is not the case and in <xref ref="sect-function-arguments"/>, we go into details about how function arguments are passed.
+			</p>
+
+			<p>
+				And note that we have used <c>x0 -= dx</c> which is a shortcut for <c>x0 = x0 - dx</c>. One note from a programming point of view is that we have repeated code (lines 2 and 3 are the same as lines 5 and 6). Unfortunately this is needed becuase we need to know <c>dx</c> before entering the loop and then also need to update it within the loop.  We will shorten this a bit later.
 			</p>
 		</subsection>
 
@@ -594,21 +612,25 @@ end
 
 
 			<program language="Julia" line-numbers="yes">
-				<input>
+				<code>
 function newton(f::Function, x0::Number)
-  local dx = f(x0)/ForwardDiff.derivative(f,x0)
-  local x1 = x0 - dx
-  while abs(dx) &gt; 1e-6
-    dx = f(x1)/ForwardDiff.derivative(f,x1)
-    x1 -= dx
+  local dx = f(x0)/ForwardDiff.derivative(f, x0)
+  x0 -= dx
+  while abs(dx) &lt; 1e-6
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
   end
   x0
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
-				And note that if we run this with <c>newton(f,0)</c> we get <c>-0.8000000000000933</c> the same result as above.
+				Notice that we no longer need the derivative for this function, since the ForwardDiff package will compute it for us, thus the function signature has changed.
+			</p>
+
+			<p>
+				If we run this with <c>newton(f,0)</c> we get <c>-0.8000000000000933</c> the same result as above.
 			</p>
 
 			<exercise>
@@ -654,21 +676,25 @@ end
 			</p>
 
 
-			<program language="Julia" line-numbers="yes">
-				<input>
+
+			<listing xml:id="list-newton">
+				<caption>Newton's method with a stopping condition if it doesn't converge</caption>
+				<program language="Julia" line-numbers="yes">
+					<code>
 function newton(f::Function, x0::Number)
-  local dx = f(x0)/ForwardDiff.derivative(f,x0)
-  local x1 = x0 - dx
+  local dx = f(x0)/ForwardDiff.derivative(f, x0)
   local steps = 0
+  x0 -= dx
   while abs(dx) &gt; 1e-6 &amp;&amp; steps &lt; 10
-    dx = f(x1)/ForwardDiff.derivative(f,x1)
-    x1 -= dx
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
     steps += 1
   end
-  x1
+  x0
 end
-				</input>
-			</program>
+					</code>
+				</program>
+			</listing>
 
 			<p>
 				Now if we try:
@@ -687,6 +713,59 @@ end
 			<p>
 				Now, this still isn't perfect because when we run it, we only get a single number out. In this case, the value is not a root, but how do you know?  We will see in <xref ref="ch-comp-types"/> how to develop a new type which stores information about the root and if a solution was reached.
 			</p>
+		</subsection>
+
+
+		<subsection>
+			<title>Newton's method: Alternative Formulation</title>
+
+			<p>
+				Looking at the code in <xref ref="list-newton"/>, recall that we used a while loop to perform this because we don't know the number of steps it takes.  However, we do have a maximum number of steps and in a case like this a for loop might be nicer.
+			</p>
+
+			<p>
+				Consider the following code:
+			</p>
+
+
+
+			<listing xml:id="list-newton-alt">
+				<caption>Alternative formulation of Newton's method using a for loop. </caption>
+				<program language="julia" line-numbers="yes">
+					<code>
+function newton(f::Function, x0::Number)
+  for _ = 1:10
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
+    abs(dx) &lt; 1e-6 &amp;&amp; return x0
+  end
+  x0
+end
+					</code>
+				</program>
+			</listing>
+
+			<p>
+				There are a number of things to notice here.  First, we have started with a for loop.  In <xref ref="list-newton"/> we needed to define some variables before entering the while loop, so the above code is shorter.  Also notice that since we don't really need the index of the loop we have used the convention of the <c>_</c> variable.  Lines 3 and 4 are identical to above to compute <c>dx</c>, which is the step of newton's method and updating <c>x0</c>.  Lastly, we want to break out of the loop (and the function) and return the current value of <c>x0</c> if the step size is small enough.  We use the shorthand if for this on line 5.
+			</p>
+
+			<exercise>
+				<task>
+					<statement>
+						<p>
+							After redefining newton's method with that in <xref ref="list-newton-alt"/>, ensure that it is still working by finding all three roots of <m>f(x) = 15x^3 - 143x^2+266x+280</m>.
+						</p>
+
+					</statement>
+				</task>
+				<task>
+					<statement>
+						<p>
+							What happens when you try to find the roots of a function without a root, like <m>g(x)=\cos(x^2)+2</m>?
+						</p>
+					</statement>
+				</task>
+			</exercise>
 		</subsection>
 	</section>
 
@@ -752,17 +831,17 @@ end
 
 
 		<program language="Julia" line-numbers="yes">
-			<input>
+			<code>
 function bisection(f::Function, a::Real, b::Real)
   local c
-  while (b-a) &gt; 1e-6
+  while b-a &gt; 1e-6
     c = 0.5*(a+b)  # find the midpoint
     # test if f(a) and f(c) have opposite signs to determine the new interval
     (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
   end
   c
 end
-			</input>
+			</code>
 		</program>
 
 		<p>
@@ -770,7 +849,29 @@ end
 		</p>
 
 		<p>
+			You may also question why we have line 2, which doesn't see to do anything.  This is crucial (try commenting out the code and rerunning--you will get an error). This is due to the scope of the variable c, which will be explained in more detail in <xref ref="sect-variable-scope"/>.
+		</p>
+
+		<p>
 			Running the code with <c>x0 = bisect(x -&gt; x^2-2, 1, 2)</c> returns <c>1.4142141342163086</c> and <c>absErr(x0, sqrt(2))</c> returns <c>5.718432134482754e-7</c> showing that in fact the error is with <m>10^{-6}</m>.
 		</p>
+
+		<p>Lastly, we can rewrite this a bit as follows:</p>
+
+			<program language="julia" line-numbers="yes">
+				<code>
+function bisection(f::Function, a::Real, b::Real)
+  while true
+    c = 0.5*(a+b)  # find the midpoint
+    (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
+    (b-a) &lt; 1e-6 &amp;&amp; return c
+  end
+end
+				</code>
+			</program>
+			<p>
+				where we have used the <c>while true</c> loop, which can be dangerous since it may result in an infinite loop, but line 5 is the way to break out of the loop and the function.
+			</p>
+
 	</section>
 </chapter>

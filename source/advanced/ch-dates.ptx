@@ -1,0 +1,461 @@
+<chapter xml:id="ch-dates">
+  <title>Dates and Times</title>
+
+  <introduction>
+    <p>
+      Although generally associated with data, handling dates and times can come up often and it may be necessary to use the <c>Date</c> and <c>DateTime</c> objects that we will see in this chapter. We will start with the <c>Date</c> object that represents dates and if the time is needed as well, we will use a <c>DateTime</c> object.  Lastly, a duration can also be helpful and is shown toward the end of the chapter.  For any of these objects to be created and the associated methods, make sure you use the <c>Dates</c> module.
+    </p>
+  </introduction>
+
+  <section xml:id="sect-dates">
+    <title>Dates</title>
+
+    <introduction>
+      <p>
+        A <c>Date</c> in Julia is a way of representing a date in much the same way.  For example, January 9, 2007 can be created with <c>Date(2007, 1, 9)</c> and must be passed in year, month, day order.  Notice that the string <c>2007-01-09</c> is returned, a common way to represent the date.<fn>Comment on fights about date formats</fn>
+      </p>
+
+      <p>
+        If only the year is passed into <c>Date</c> then the first day of the year (January 1) is assumed and if the year and month is passed it, then the first day of the month is assumed.  Try entering <c>Date(2024)</c> and <c>Date(2024,7)</c> and notice that <c>2024-01-01</c> and <c>2024-07-01</c> are returned.
+      </p>
+    </introduction>
+
+
+    <subsection xml:id="sect-parse-date">
+      <title>Parsing a string to a date</title>
+
+      <p>
+        Also useful is parsing a string as a date.  If a date is in the formal "yyyy-mm-dd", then it will be parsed as expected, like <c>Date("2010-02-12")</c> returns <c>"2010-02-12"</c> and stores the date February 12, 2010.  If you have a different format, like the U.S. standard "mm/dd/yyyy", like "2/12/2010" then you can pass in the format to be parsed like: <c>Date("2/12/2010", dateformat"m/d/yyyy")</c>.
+      </p>
+
+      <p>
+        Details on how to structure strings for parsing are on the <url href="https://docs.julialang.org/en/v1/stdlib/Dates/#Dates.format-Tuple{TimeType,%20AbstractString}">the Julia docs for formatting,</url> but here's a few helpful strings associated with dates:
+      </p>
+
+      <table>
+        <title>String codes for parsing and formatting dates</title>
+
+        <tabular>
+          <row header="yes">
+            <cell>Code</cell>
+            <cell>Comment</cell>
+            <cell>Example</cell>
+          </row>
+
+          <row>
+            <cell>y</cell>
+            <cell>numeric year with a fixed width</cell>
+            <cell>9</cell>
+          </row>
+
+          <row>
+            <cell>Y</cell>
+            <cell>numeric year with a minimum width</cell>
+            <cell>2016</cell>
+          </row>
+
+          <row>
+            <cell>m</cell>
+            <cell>numeric month with a minimum width</cell>
+            <cell>1, 12</cell>
+          </row>
+
+          <row>
+            <cell>u</cell>
+            <cell>Month name shorted to 3 characters.</cell>
+            <cell>Jan</cell>
+          </row>
+
+          <row>
+            <cell>U</cell>
+            <cell>Full month name</cell>
+            <cell>January</cell>
+          </row>
+
+          <row>
+            <cell>d</cell>
+            <cell>Day of the month with minimum width </cell>
+            <cell>25</cell>
+          </row>
+
+          <row>
+            <cell>e</cell>
+            <cell>Abbreviated day of the week </cell>
+            <cell>Mon, Sat</cell>
+          </row>
+
+          <row>
+            <cell>E</cell>
+            <cell>Full name of day of the week </cell>
+            <cell>Monday, Saturday</cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        As another example, if we have a date like <c>"Mar 28, 2015"</c>, we can parse it as <c>Date("Mar 28, 2015", dateformat"u d, Y")</c> and it returns in standard form as <c>2015-03-28</c>. As we will see below, we can use this same formatting to output dates.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Accessor and Query Functions</title>
+
+      <p>
+        Once we have a date, like from <c>d = Date("2010-02-12")</c>, then we can access the individual compoents using the <c>year</c>, <c>month</c> and <c>day</c>.   The output <c>year(d)</c>, <c>month(d)</c> and <c>day(d)</c> returns <c>2010</c>, <c>2</c> and <c>10</c>.
+      </p>
+
+      <p>
+        If you need more than one of these, there are other accessor functions.  <c>yearmonth(d)</c> returns the tuple <c>(2010,2)</c>, <c>monthday(d)</c> returns the tuple <c>(2,10)</c> and <c>yearmonthday(d)</c> returns the tuple <c>(2024,2,10)</c>.
+      </p>
+
+      <p>
+        The other important things we'd like to know about dates falls into what may be called calendar functions.  What day of the week is a day, how many daysare in a given month. Is it a leap year? These are collectively query functions of dates and here are some examples:
+      </p>
+
+      <p>
+        <c>monthname(d)</c> returns <c>"February"</c>, <c>dayofweek(d)</c> returns <c>5</c> and <c>dayname(d)</c>.  Information about the year includes <c>dayofyear(d)</c> which returns <c>43</c> and <c>isleapyear(d)</c> returns <c>false</c>.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Details of a Date</title>
+
+      <p>
+        A <c>Date</c> is a type that is an immutable <c>Int64</c>.  If we have <c>d = Date(1978,11,17)</c>, then if we do <c>dump(d)</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>Date</cline>
+        <cline>  instant: Dates.UTInstant{Day}</cline>
+        <cline>    periods: Day</cline>
+        <cline>      value: Int64 722405</cline>
+        </cd>
+      </p>
+
+      <p>
+        This shows that this particular date is the integer <c>722405</c> which is in short the number of days since January 1, of the year 1 (first day of the common era). The accessor and query functions calculate whatever is desired from the integer value.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Formatting a Date for output</title>
+
+      <p>
+        Another feature that might be important is to format a Date in a certain way.  The <c>format</c> method does this and we use the same characters as the parsing table as shown in <xref ref="sect-parse-date"/>.  As an example, if we have the date <c>d1 = Date(2021, 10, 25)</c>, then we can convert it to a string with the date of the week, month name, day and year with the following:
+      </p>
+
+      <p>
+        <cd>
+        <cline> Dates.format(d1, dateformat"E, U d, yyyy")</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns <c>"Monday, October 25, 2021"</c>.
+      </p>
+    </subsection>
+  </section>
+
+  <section>
+    <title>Times during a Day</title>
+
+    <introduction>
+      <p>
+        Julia has a <c>Time</c> type to handle times during a day.  For example, if we know the hours, minutes and seconds during the day, then we can make a Time object.  For example,
+      </p>
+
+      <p>
+        <cd>
+        <cline>Time(9, 10, 15)</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns <c>09:10:15</c>.   Note that the hours are in 24 hours (so a range of 0 to 23).   For more precise Time objects, you can also include milliseconds, microseconds and nanoseconds.  For example, <c>Time(9,10,15,10,500)</c> returns <c>09:10:15.0105</c>. Also, only the hours are required.  The hour "3PM" would be <c>Time(15)</c> and if you want 7:30, then <c>Time(7,30)</c> would do that.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Parsing and Formatting Times</title>
+
+      <p>
+        Similar to a Date, one can parse a string as a Time.  By default if the hours are in 24 hours and the parts of the Time are separated by a ":", then it will parse the string by a default format.  For example, <c>Time("15:30")</c> returns <c>15:30:00</c> representing 3:30pm.
+      </p>
+
+      <p>
+        If the string is not in default format, we can specify one.  let's say we want to parse "3.30 pm", then <c>Time("3.30 pm", dateformat"H.M p")</c> will parse and return <c>"15:30:00"</c>.
+      </p>
+
+      <p>
+        We saw formatting strings for dates above.  The following table includes those strings for parsing and formatting times.
+      </p>
+
+      <table>
+        <title></title>
+
+        <tabular>
+          <row header="yes">
+            <cell>Code</cell>
+            <cell>Comment</cell>
+            <cell>Examples</cell>
+          </row>
+
+          <row>
+            <cell>H</cell>
+            <cell>Hour (24-hour clock) with minimum width</cell>
+            <cell>7, 18</cell>
+          </row>
+
+          <row>
+            <cell>I</cell>
+            <cell>Hour (12-hour clock) used only for outputting</cell>
+            <cell>7, 12</cell>
+          </row>
+
+          <row>
+            <cell>p</cell>
+            <cell>AM/PM (matches case insensitive)</cell>
+            <cell>AM</cell>
+          </row>
+
+          <row>
+            <cell>M</cell>
+            <cell>Minute with minimum width</cell>
+            <cell>0, 30</cell>
+          </row>
+
+          <row>
+            <cell>S</cell>
+            <cell>Second with minimum width</cell>
+            <cell>0, 30</cell>
+          </row>
+
+          <row>
+            <cell>s</cell>
+            <cell>Millisecond with minimum width</cell>
+            <cell>000, 500</cell>
+          </row>
+        </tabular>
+      </table>
+
+      <p>
+        As another example, let's say that we have a time "18|45|10.600", the we can parse it with <c>t2 = Time("18|45|10.600", dateformat"H|M|S.s")</c> to the default format of "18:45:10.6"
+      </p>
+
+      <p>
+        We can format a time for output.  Using the format example to get this to "6.45 pm", we would execute <c>Dates.format(t2, dateformat"I.M p")</c> and get <c>"6.45 PM"</c>.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Details of Time types</title>
+
+      <p>
+        Similar to the Date, a Time is an integer under the scene.  Because the smallest unit of time for this type is a nanosecond, the integer is the number of nanoseconds (say from the beginning of the day).  If <c>t = Time(15,30)</c>, then <c>dump(t)</c> is
+      </p>
+
+      <p>
+        <cd>
+        <cline>Time</cline>
+        <cline>  instant: Nanosecond</cline>
+        <cline>    value: Int64 55800000000000</cline>
+        </cd>
+      </p>
+
+      <p>
+        and note that the <c>instant</c> field says the unit of time and compare this to the <c>Date</c> object which uses a <c>Day</c> as the unit.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sect-datetime">
+    <title>Handling Dates and Times</title>
+
+    <introduction>
+      <p>
+        If instead of a day or a time (of day), you need both, like to represent a calendar event, then a <c>DateTime</c> is recommended.    This object is the combined Date and Time and in general
+      </p>
+
+      <p>
+        <cd>
+        <cline>DateTime(year, month, day, hours, minutes, second)</cline>
+        </cd>
+      </p>
+
+      <p>
+        such as <c>DateTime(2024,11,20,8,25,37)</c> which returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>2024-11-20T08:25:37</cline>
+        </cd>
+      </p>
+
+      <p>
+        and the date is in year-month-day form with the time in 24-hour notation.
+      </p>
+
+      <p>
+        If you don't have seconds or minutes you can still make a DateTime, such as <c>DateTime(2024,11,20,8,25)</c> or <c>DateTime(2024,11,20,8)</c>. In fact, if you need more precise time, then a 7th argument is the number of miliseconds such as <c>d2 = DateTime(2024,11,20,8,25,37,150)</c> which returns <c>2024-11-20T08:25:37.150</c>
+      </p>
+
+      <p>
+        One can parse a string as a DateTime similar to that of a Date with the constructor.  For example: <c>DateTime("2023-07-04T03:10:15")</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>2023-07-04T03:10:15</cline>
+        </cd>
+      </p>
+
+      <p>
+        One can create a custom date time parser also using the <c>dateformat</c> string.  For example, <c>DateTime("07/04/2023 3:10:15 PM", dateformat"m/d/Y H:M:S p")</c> parses successfully as <c>2023-07-04T15:10:15</c>.
+      </p>
+
+      <p>
+        There are many features for parsing formats.  See <url href="https://docs.julialang.org/en/v1/stdlib/Dates/#Dates.DateFormat">the Julia documentaion on DateTime formatting</url> for more information.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Accessor and Query Functions</title>
+
+      <p>
+        If we need to know the number of hours, minutes and seconds of a DateTime, we can extract that information with the methods <c>hour</c>, <c>minute</c> and <c>second</c>.  If we defined the <c>d2</c> object above then <c>hour(d2)</c>, <c>minute(d2)</c> and <c>second(d2)</c> returns 8, 25 and 37 respectively.  <c>millisecond(d2)</c> will return <c>150</c>.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Details of a DateTime</title>
+
+      <p>
+        Similar to that of a Date, a DateTime object is a wrapper (struct) on an integer that represents the number of milliseconds since midnight on the first day of the common era in UTC (Universal Time Coordinates). See <xref ref="sect-time-zone"/> for more information.   To see details about the internals of a DateTime object, use <c>dump</c>.  The epxression <c>dump(d2)</c> returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>DateTime</cline>
+        <cline>  instant: Dates.UTInstant{Millisecond}</cline>
+        <cline>    periods: Millisecond</cline>
+        <cline>      value: Int64 63867774337150</cline>
+        </cd>
+      </p>
+    </subsection>
+  </section>
+
+  <section>
+    <title>Arithmetic with Dates and Times and Comparisons</title>
+
+    <introduction>
+      <p>
+        Although it is fairly straightforward for us humans to know when days or times occur before or after another time, it is often necessary to perform comparisons.  For example, let's say we have two dates, <c>d1 = Date(2024, 2, 14)</c> and <c>d2 = Date(2024, 3, 17)</c>.   We can check that <c>d2</c> occurs after <c>d1</c> with <c>d2 &gt; d1</c> and this returns <c>true</c>.  The comparison operators <c>&lt;</c>, <c>&lt;=</c>, <c>==</c> and <c>!=</c> all can be used with Dates and DateTimes as expected.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Durations</title>
+
+      <p>
+        We often would like to know the number of days (or amount of time) between two dates or DateTimes.  We can find the using the <c>-</c> operator.  Using the two Dates from above, <c>dur = d2 - d1</c> returns <c>32 days</c> and <c>typeof(dur)</c> returns <c>Day</c> which is a time duration.  Notice that this is returned in days because the internal time period for a Date is a Day.
+      </p>
+
+      <p>
+        Another example using DateTime would be
+      </p>
+
+      <p>
+        <cd>
+        <cline>time_diff = DateTime(2024, 3, 17, 7, 0, 0 ) - DateTime(2024,2,14,4,0,0) </cline>
+        </cd>
+      </p>
+
+      <p>
+        which this time returns <c>2775600000 milliseconds</c>.  Although the time difference should be in hours, the result is in milliseconds because the underlying time period for a DateTime is in milliseconds.  We'll see how to convert this below.
+      </p>
+
+      <p>
+        We can create a time duration directly using the capitalized versions of <c>Year</c>, <c>Month</c>, <c>Day</c>, <c>Hour</c>, <c>Minute</c>, <c>Second</c> and <c>Millisecond</c>.
+      </p>
+    </subsection>
+
+
+    <subsection>
+      <title>Compound Periods</title>
+
+      <p>
+        If we (as humans) were asked how long it was between the two dates listed above, we would not return it in milliseconds.  It is such a big numbers, that we can't get a scale for how long it is.  Instead, we would use combinations of years, months, and days and that it precisely the idea behind a CompoundPeriod.
+      </p>
+
+      <p>
+        An example of a CompoundPeriod would be <c>cp1 = Day(3) + Hour(5)</c> representing 3 days and 5 hours. Note that the capitalizations on the time periods are important.  The output from this is <c>3 days, 5 hours</c>, a human-readable version of the input.
+      </p>
+
+      <p>
+        As shown above, we can use the difference between compound periods, but also the sum.  If we have <c>cp2 = Month(2) + Day(20) + Hour(23)</c> and we add <c>cp1</c> and <c>cp2</c>, then we get:  <c>2 months, 23 days, 28 hours</c>.  Notice that you might scratch your head and wonder why it didn't convert 28 hours to 1 day and 4 hours.  Arithmetic with periods will not automatically do this, but the method <c>canonicalize</c> will do this.  Applying this to the difference results in the expected result: <c>4 weeks, 4 days, 3 hours</c>, and notice that the days were also converted.  You can examine the details in
+      </p>
+
+      <p>
+        And we can use this method to convert the time difference in the previous section by entering <c>canonicalize(time_diff)</c> and resulting in <c>4 weeks, 4 days, 3 hours</c>.  Note that since months are not a fixed length of time, weeks are not converted to months, however if more than 11 months are in a compound period, then they can be converted to years.  As mentioned above, Dates are difficult and we will see even moreso they get more complicated with time zones.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sect-time-zone">
+    <title>Time Zones</title>
+
+    <p>
+      On the surface, dates and times seem to be pretty straightforward.  We understand them because we know dates and times from an entire lifetime of experience.  However, they are quite tricky with two respects.  The first being leap years and the second is time zones.  When using times with the DateTime object, it can be thought of as local time, however, technically it is in Universal Coordinate Time.
+    </p>
+
+    <p>
+      MORE HERE
+    </p>
+  </section>
+
+  <section>
+    <title>Summary of Dates and Times</title>
+
+    <p>
+      As mentioned a few times in this chapter, dates and times can be tricky, however use of a package like <c>Dates</c> can make things simpler.  In short, I would recommend to use the simplest time object that you need that is and make a clear note of a time instance versus a period.
+    </p>
+
+    <p>
+      <ul>
+        <li>
+          <p>
+            Use time instances (Date, Time, DateTime) only when needed specific dates, times during the date or Date with times respectively.
+          </p>
+        </li>
+
+        <li>
+          <p>
+            If a time period (how long something occurs) is needed, then time durations should be used and you have all of arithmetic associated with them.
+          </p>
+        </li>
+
+        <li>
+          <p>
+            Use a DateTime only if specific times on specific dates is needed.  Events include specific observations (maybe astronomical) or calendar events.  If only a date in needed, use the simpler Date object.
+          </p>
+        </li>
+
+        <li>
+          <p>
+            Only use Time zones if needed.  Note that they are in a separate package due to additional complication.  These would only be warranted if either you need precise dates/times on particular location on earth.  Examples would include astronomical data collected at different parts on earth or ensuring times (like meetings) occur for people in different locations on earth.
+          </p>
+        </li>
+      </ul>
+    </p>
+  </section>
+</chapter>

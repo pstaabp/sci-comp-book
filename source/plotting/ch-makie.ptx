@@ -13,19 +13,19 @@
     <title>Basic Plotting</title>
 
     <p>
-      Before plotting, make sure that you have the packages <c>Makie</c> and <c>CairoMakie</c> installed.  The package <c>CairoMakie</c> is the backend package that does the plotting using the common interface (API) in the <c>Makie</c> package.  Once the <c>CairoMakie</c> package is install, to set this to the Makie backend enter:
+      Before plotting, make sure that you have the packages <c>Makie</c> and <c>CairoMakie</c> installed.  The package <c>CairoMakie</c> is the backend package that does the plotting using the common interface (API) in the <c>Makie</c> package.  Once the <c>CairoMakie</c> package is installed, to set this to the Makie backend enter:
     </p>
 
     <p>
       <cd>
-      <cline>using Makie, CairoMakie</cline>
+      <cline>using CairoMakie</cline>
       <cline>CairoMakie.activate!()</cline>
       <cline>Makie.inline!(true)</cline>
       </cd>
     </p>
 
     <p>
-      where the 3rd line above will allow the plots to appear inside a notebook interface instead of as a separate window. As an example, we'll the <c>scatter</c> command on a pair of vectors.
+      where the 3rd line above will allow the plots to appear inside a notebook interface instead of as a separate window. As an example, we'll use the <c>scatter</c> command on a pair of vectors.
     </p>
 
     <p>
@@ -38,7 +38,7 @@
       which results in the plot
     </p>
 
-    <figure xml:id="fig-makie-scatter">
+    <figure xml:id="fig-makie-scatter2">
       <caption>Scatter plot of some sample data</caption>
       <image source="plots/plots/makie-scatter.png" width="90%">
         <shortdescription>
@@ -46,6 +46,33 @@
         </shortdescription>
       </image>
     </figure>
+
+    <p>
+      There are clearly a lot of options available for plots. It is important to understand the difference between altering the plot (say changing the style or color of the markers) and the axes (showing the grid or changing the limits).  We will discuss all of these differences below, but an example to change the marker would be
+    </p>
+
+    <p>
+      <cd>
+      <cline>scatter(x,y, marker = :star8, markersize = 20, color = :red)</cline>
+      </cd>
+    </p>
+
+    <p>
+      resulting in
+    </p>
+
+    <figure xml:id="fig-makie-scatter">
+      <caption>Scatter plot of some sample data with non-standard marker style</caption>
+      <image source="plots/plots/makie-scatter2.png" width="90%">
+        <shortdescription>
+          Scatter plot of points with x values between 1 and 10 and y values between -5 and 8.  The markers are 8-pointed red stars that are about twice the standard size.
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      To examine the list of markers and all other options for <c>scatter</c>, see the <url href="https://docs.makie.org/stable/reference/plots/scatter" >Makie documentation for scatter</url>.  Also, the <url href="https://docs.makie.org/stable/explanations/colors" >Makie documentation for colors</url> is helpful although you can see can get quite complicated.  If you are only interested the the named colors, see the <url href="https://juliagraphics.github.io/Colors.jl/stable/namedcolors/" >listing in the Colors.jl</url> package, which is automatically loaded by Makie.
+    </p>
 
     <p>
       If instead we wish to make a line plot (connect the points by lines), simply use the <c>lines</c> function as in
@@ -110,13 +137,193 @@
     <p>
       indicating that this structure is part of the <c>IntervalsSets</c> package (that is a dependency of <c>Makie</c>).  This makes plotting functions quite nice.
     </p>
+
+    <p>
+      Like shown above with the scatter plot, <c>lines</c> plots have options as well including <c>linestyle</c>, <c>color</c> and  <c>linewidth</c>.  The following is an example of changing all of these:
+    </p>
+
+    <p>
+      <cd>
+      <cline>lines(0..2pi, x -&gt; sin(x), color = :darkgreen, linewidth = 10, linestyle = :dashdot)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which has the following output:
+    </p>
+
+    <figure xml:id="fig-makie-function2">
+      <caption>Scatter plot of some sample data</caption>
+      <image source="plots/plots/makie-function2.png" width="90%">
+        <shortdescription>
+          Scatter plot of points with x values between 1 and 10 and y values between -5 and 8.
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      For all of the options of the <c>lines</c> plots, see the <url href="https://docs.makie.org/stable/reference/plots/lines">Makie documentation for lines</url>.
+    </p>
+  </section>
+
+  <section>
+    <title>Updating the Axis object</title>
+
+    <p>
+      We saw above how to update the options of the plot object, that is the markers for a <c>scatter</c> plot or the line segments in a <c>lines</c> plot.  There are also options to the <c>Axis</c> object, like changing the limits or tick marks or including title or axis labels.  As in common in Makie, there are multiple ways of accomplishing this and we will cover two of these.  First, we will look at passing Axis options via the <c>axis</c> keyword.  Alternatively, we will get a <c>Axis</c> object from a plot and then update the options.
+    </p>
+
+    <p>
+      Let's start with just including a title to the Axis.  The following is a simple way to do this.
+    </p>
+
+    <p>
+      <cd>
+      <cline>lines(0..2pi, sin, axis = (title = "Plot of sin(x)",))</cline>
+      </cd>
+    </p>
+
+    <p>
+      where we use the <c>axis</c> option, which is common to all 2D plots.  The <c>axis</c> option needs to be a named tuple with names coming from options to <url href="https://docs.makie.org/stable/reference/blocks/axis">the Axis object</url>.  Although it may seem like a mistake, there is a comma after the string that is the end of the title, however, without the command, to the right of <c>axis = </c> is not a named tuple and there will be an error. The result of the command above is
+    </p>
+
+    <figure xml:id="fig-sine-options1">
+      <caption>Sine plot with title</caption>
+      <image source="plots/plots/sine-options.png" width="90%">
+        <shortdescription>
+          Sine function plot on 0 to 2pi with title "Plot of sin(x)".
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      If you have multiple options, then it does not need to end with a comma.  For example,
+    </p>
+
+    <p>
+      <cd>
+      <cline>lines(0..2pi, sin, axis = (title = "Plot of sin(x)", xticks=0:pi/2:2pi))</cline>
+      </cd>
+    </p>
+
+    <p>
+      produces the plot
+    </p>
+
+    <figure xml:id="fig-sine-options2">
+      <caption>Sine plot with title and changed xticks</caption>
+      <image source="plots/plots/sine-options2.png" width="90%">
+        <shortdescription>
+          Sine function plot on 0 to 2pi with title "Plot of sin(x)" and xticks from 0 to 2pi with pi/2 spacing.
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      If there are a lot of changes that are to be made to the axis option, this may be confusing if they are all inside the given plotting command.  An alternative is to get the Axis object that the plotting routine created and then update the axis. Here's an example how to both update the xlabel (label on the x-axis) and the tick marks along the x-axis.
+    </p>
+
+    <p>
+      <cd>
+      <cline>fig, ax = scatter(x,y)</cline>
+      <cline>ax.xlabel = "Num"</cline>
+      <cline>ax.xticks = 1:10</cline>
+      <cline>fig</cline>
+      </cd>
+    </p>
+
+    <p>
+      And this results in the plot:
+    </p>
+
+    <figure xml:id="fig-scatter-options">
+      <caption>Scatter plot with updated x-axis label and tick marks</caption>
+      <image source="plots/plots/scatter-options.png" width="90%">
+        <shortdescription>
+          A scatter plot with the x-axis labeled "Num." and the tick marks set for integers 1,2, ..., 10.
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>Some comments about the code above.  Notice that we have assigned the <c>scatter</c> method to the tuple <c>fig, axis</c>.  The first is the Figure object that the scatter plot produces and the second is the Axis object.  This is helpful for updating either, however most aspects of a plot that needs to be updated falls onto the Axis object. The 2nd and 3rd lines above update the Axis, which is technically a mutable struct and we use the same dot notation that we have with <c>struct</c>s and <c>tuples</c>.
+    </p>
+
+    <p>
+      There will be other examples of changing the Axis object later in this and subsequent chapters.  It always a good idea to look at the <url href="https://docs.makie.org/stable/reference/blocks/axis">Axis documentation</url> for all details.  The two methods in this section should work to update any of the axis options.  As yet another alternative, below we will see how to create an Axis object with desired properties, however if there are just a few alterations to an Axis, one of the methods here is preferred.
+    </p>
+  </section>
+
+  <section>
+    <title>Adding Additional plots to an Axis</title>
+
+    <p>
+      We often want two plots (say two function plots or a function and scatter plot) on the same axes.  In short, the way to do this is to get the variable representing the Axis.  The technique in this section is to get the <c>Axis</c> associated with a plot and then add a line plot to the Axis.  In the next section, we see a different technique, especially helpful for more complex layouts.
+    </p>
+
+    <p>
+      As an example, we will plot a sine curve with the following:
+    </p>
+
+    <p>
+      <cd>
+      <cline>fig, ax = lines(0..2pi,sin)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which will produce the following plot:
+    </p>
+
+    <figure xml:id="fig-poly-sine">
+      <caption>A plot of sin(x)</caption>
+      <image source="plots/makie/sine.png" width="90%">
+        <shortdescription>
+          A plot of sin(x) on the interval [0,2pi]
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      The left hand side of the assignment operator is <c>fig, ax</c>, which returns the created Figure and Axis objects when making a plot.  Adding another plot to the one above is now relatively easy:
+    </p>
+
+    <p>
+      <cd>
+      <cline>fig, ax = lines(0..2pi,sin)</cline>
+      <cline>lines!(ax, 0..2pi,cos)</cline>
+      <cline>fig</cline>
+      </cd>
+    </p>
+
+    <p>
+      and note that the command is <c>lines!</c> because it modifies the <c>ax</c> variable.  Also to get this to appear, the last line <c>fig</c> is used to get the plot to show. The result is
+    </p>
+
+    <figure xml:id="fig-poly-sine-cosine">
+      <caption></caption>
+      <image source="plots/makie/sine-cosine.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      It would be helpful to have a legend to distinguish the two curves.  We will learn how to add this to the plot in <xref ref="sect-makie-legend"/>.
+    </p>
+
+    <note>
+      <p>
+        To include mutiple plots (different curves or scatter and a line plot) for example, use the <c>!</c> version of the plot type.  When using the <c>!</c> version, the first argument should be the axis object that you want to place the plot in.
+      </p>
+    </note>
   </section>
 
   <section xml:id="sect-layout-makie">
     <title>Figures and Grid Layout in Makie</title>
 
     <p>
-      Before delving into more of the plotting types in Makie, we will first look at layout and axes, a strength of this package and also shows how to build a plot step by step.  Note: for simple plots, we can generally just call the plotting routine, however adding multiple plots or changing axis labels, it is easier to build a plot as explained here.
+      In the section above, we were able to get the figure and axis associated with a plot.  This was helpful for either adding other plots to an axis or updating the axis.  In this section, we will build a plot starting with <c>Figure</c> and <c>Axis</c> objects.  This is mainly for more complex layouts, but is also an alternative to the methods from the previous sections.
     </p>
 
     <p>
@@ -316,13 +523,13 @@
 
 
       <program language="julia" line-numbers="yes">
-        <input>
-          fig = Figure()
+        <code>
+          fig = Figure()xj
           ax = Axis(fig[1,1])
           scatter!(ax, co2.year, co2.mean)
           lines!(ax, 1959..2023,t -&gt; exp(5.735 + 0.00454*(t-1959)), color = :green)
           fig
-        </input>
+        </code>
       </program>
 
       <p>
@@ -353,7 +560,7 @@
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 fig = Figure()
 ax1 = Axis(fig[1,1], title="Axis 1")
 ax2 = Axis(fig[2,1][1,1], title = "Axis 2")
@@ -362,7 +569,7 @@ lines!(ax1, 0..10,sin)
 lines!(ax2, 0..10, t-&gt; 10*exp(-t))
 scatter!(ax3,0:10,10*rand(11))
 fig
-        </input>
+        </code>
       </program>
 
       <p>
@@ -377,63 +584,6 @@ fig
           </shortdescription>
         </image>
       </figure>
-    </subsection>
-
-
-    <subsection>
-      <title>Alternative for Layout</title>
-
-      <p>
-        In some cases, creating a Figure and an Axis object is overkill to do some things that we wish.  If we are plotting two functions on the same axes, we will see that we can get the needed information to plot additional plots.  Consider
-      </p>
-
-      <p>
-        <cd>
-        <cline>fig, ax = lines(0..2pi,sin)</cline>
-        </cd>
-      </p>
-
-      <p>
-        which will produce the following plot:
-      </p>
-
-      <figure xml:id="fig-poly-sine">
-        <caption></caption>
-        <image source="plots/makie/sine.png" width="90%">
-          <shortdescription>
-            (for accessibility)
-          </shortdescription>
-        </image>
-      </figure>
-
-      <p>
-        The left hand side of the assignment operator is <c>fig, ax</c>, which returns the created Figure and Axis objects when making a plot.  This allows us to add other plots to the same axes without explicitly making an axis object. Adding another plot to the one above is now relatively easy:
-      </p>
-
-      <p>
-        <cd>
-        <cline>fig, ax = lines(0..2pi,sin)</cline>
-        <cline>lines!(ax, 0..2pi,cos)</cline>
-        <cline>fig</cline>
-        </cd>
-      </p>
-
-      <p>
-        and recall that you need to echo <c>fig</c> to get the plot to show. The result is
-      </p>
-
-      <figure xml:id="fig-poly-sine-cosine">
-        <caption></caption>
-        <image source="plots/makie/sine-cosine.png" width="90%">
-          <shortdescription>
-            (for accessibility)
-          </shortdescription>
-        </image>
-      </figure>
-
-      <p>
-        There is also an example using this technique below to add a colorbar to a filled contour plot.
-      </p>
     </subsection>
 
 
@@ -487,12 +637,12 @@ fig
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 fig, ax = lines(0..2pi,sin,label="sin(x)")
 lines!(ax,0..2pi,cos, label="cos(x)")
 axislegend(ax)
 fig
-        </input>
+        </code>
       </program>
 
       <p>
@@ -514,16 +664,19 @@ fig
 
 
       <program language="julia" line-numbers="yes">
-        <input>
+        <code>
 fig, ax = lines(0..2pi,sin,label="sin(x)")
 lines!(ax,0..2pi,cos, label="cos(x)")
 axislegend(ax, position = (0.8, 1))
 fig
-        </input>
+        </code>
       </program>
-      <p>and the result is </p>
 
-         <figure xml:id="fig-legend03">
+      <p>
+        and the result is
+      </p>
+
+      <figure xml:id="fig-legend03">
         <caption></caption>
         <image source="plots/makie/legend03.png" width="90%">
           <shortdescription>
@@ -799,12 +952,12 @@ fig
 
 
     <program language="julia" line-numbers="yes">
-      <input>
+      <code>
 fig = Figure()
 ax = Axis(fig[1,1], title = L"A graph of $x^2$")
 lines!(ax, -2..2, x -&gt; x^2)
 fig
-      </input>
+      </code>
     </program>
 
     <p>

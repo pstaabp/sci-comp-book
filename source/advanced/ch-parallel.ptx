@@ -18,7 +18,7 @@
 
 
 		<program language="julia" line-numbers="yes">
-			<input>
+			<code>
 function countHeads(n::Int)
   c::Int = 0
   for i=1:n
@@ -26,7 +26,7 @@ function countHeads(n::Int)
   end
   c
 end
-			</input>
+			</code>
 		</program>
 
 		<p>
@@ -92,7 +92,7 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 @everywhere function countHeads(n::Int)
   c::Int = 0
   for i=1:n
@@ -100,7 +100,7 @@ end
   end
   c
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -281,13 +281,13 @@ end
 
 
 		<program language="julia" line-numbers="yes">
-			<input>
+			<code>
 @time let
   nheads = @distributed (+) for i = 1:2*10^10
     Int(rand(Bool))
   end
 end
-			</input>
+			</code>
 		</program>
 
 		<p>
@@ -337,7 +337,7 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 function countHands(trials::Int,f::Function)
     local deck=map(Card,1:52)
     local num_hands=0
@@ -350,7 +350,7 @@ function countHands(trials::Int,f::Function)
     end
     num_hands
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -388,7 +388,7 @@ end
 
 
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 @everywhere function paraCountHands(trials::Integer,f::Function)
   local deck=map(Card,1:52)
   function checkHand(f::Function) ## shuffle the deck then check the hand.
@@ -399,7 +399,7 @@ end
     Int(checkHand(f))
   end
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -429,7 +429,7 @@ end
 		<title>A Parallel Map Function</title>
 		<introduction>
 			<program language="julia" line-numbers="yes">
-				<input>
+				<code>
 @everywhere function countHeads(n::Int)
    c::Int = 0
    for i=1:n
@@ -437,7 +437,7 @@ end
    end
    c
 end
-				</input>
+				</code>
 			</program>
 
 			<p>
@@ -522,12 +522,12 @@ end
 
 
 		<program language="julia" line-numbers="yes">
-			<input>
+			<code>
 function windowMean(arr::Vector{T},i::Integer,width::Integer) where T &lt;: Real
   window = max(1,i-width):min(i+width,length(arr))
   sum(arr[window])/(last(window)-first(window)+1)
 end
-			</input>
+			</code>
 		</program>
 
 		<p>
