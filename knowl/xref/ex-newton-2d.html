@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: salem                          *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="robots" content="noindex, nofollow">
+</head>
+<body class="ignore-math">
+<article class="example example-like"><h5 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">39.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h5>
+<div class="para">Let’s run Newton’s method on the function. To do this, we will build the function <span class="process-math">\(\vec{F}(\vec{x})\)</span> using Julia notation. The equations <span class="process-math">\(y=x+1\)</span> and <span class="process-math">\(x^2+y^2=25\)</span> can be combined as the function<div class="autopermalink" data-description="Paragraph"><a href="#ex-newton-2d-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical">
+<pre class="code-display tex2jax_ignore clipboardable">F(x::Vector{&lt;:Real}) = [x[1]^2+x[2]^2-25, x[1]-x[2]+1]
+</pre>
+<div class="autopermalink" data-description="Paragraph"><a href="#ex-newton-2d-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para">where note that the argument <code class="code-inline tex2jax_ignore">x</code> has been declared as a Real vector and that the first argument is the circle and the second is the line. Notice that the variables <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> are encoded as <code class="code-inline tex2jax_ignore">x[1]</code> and <code class="code-inline tex2jax_ignore">x[2]</code><div class="autopermalink" data-description="Paragraph"><a href="#ex-newton-2d-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para">Running Newton’s method at the point <span class="process-math">\((1,1)\)</span>  is accomplished with <code class="code-inline tex2jax_ignore">newton(F,[1,1])</code> and results in<div class="autopermalink" data-description="Paragraph"><a href="#ex-newton-2d-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical">
+<pre class="code-display tex2jax_ignore clipboardable">2-element Vector{Float64}:
+ 3.0000000730550047
+ 4.000000073055005
+</pre>
+<div class="autopermalink" data-description="Paragraph"><a href="#ex-newton-2d-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para">which finds the point <span class="process-math">\((3,4)\)</span> to within the default <span class="process-math">\(10^{-6}\text{.}\)</span> If we start with the initial point <code class="code-inline tex2jax_ignore">[-1,-1]</code> the point <span class="process-math">\((-3,-4)\)</span> is found.<div class="autopermalink" data-description="Paragraph"><a href="#ex-newton-2d-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 39.2"><a href="#ex-newton-2d" title="Copy heading and permalink for Example 39.2" aria-label="Copy heading and permalink for Example 39.2">🔗</a></div></article><span class="incontext"><a class="internal" href="ch-adv-lin-alg.html#ex-newton-2d">in-context</a></span>
+</body>
+</html>
