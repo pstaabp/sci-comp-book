@@ -1,92 +1,108 @@
 <chapter xml:id="ch-adv-types">
-  <title>The Typing System in Julia</title>
+	<title>The Typing System in Julia</title>
 
-  <objectives>
-    <ol>
-      <li>
-        <p>
-          Details of subtypes and supertypes in Julia.
-        </p>
-      </li>
+	<objectives>
+		<ol>
+			<li>
+				<p>
+					Details of subtypes and supertypes in Julia.
+				</p>
+			</li>
 
-      <li>
-        <p>
-          How the typing system working.
-        </p>
-      </li>
+			<li>
+				<p>
+					How the typing system working.
+				</p>
+			</li>
 
-      <li>
-        <p>
-          Union types
-        </p>
-      </li>
+			<li>
+				<p>
+					Union types
+				</p>
+			</li>
 
-      <li>
-        <p>
-          Parametric Types.
-        </p>
-      </li>
+			<li>
+				<p>
+					Parametric Types.
+				</p>
+			</li>
 
-      <li>
-        <p>
-          The Missing type
-        </p>
-      </li>
-    </ol>
-  </objectives>
+			<li>
+				<p>
+					The Missing type
+				</p>
+			</li>
+		</ol>
+	</objectives>
 
-  <introduction>
-    <p>
-      This chapters covers more details of the types of variables in Julia.
-    </p>
-  </introduction>
+	<introduction>
+		<p>
+			This chapters covers more details of the types of variables in Julia.
+		</p>
+	</introduction>
 
-  <section>
-    <title>The Type System in Julia</title>
+	<section>
+		<title>The Type System in Julia</title>
 
-    <p>
-      <xref ref="ch-data-types"/> covered various numbers types in Julia, however did not go into depth into the system.  We cover this in more detail in this section. Recall that there are various integer types in Julia.  We discussed signed and unsigned integers and listed the types.  We will see how these fit together and throughout this chapter will show how this type system can be leverage to reduce code.
-    </p>
+		<p>
+			<xref ref="ch-data-types"/> covered various numbers types in Julia, however did not go into depth into the system.  We cover this in more detail in this section. Recall that there are various integer types in Julia.  We discussed signed and unsigned integers and listed the types.  We will see how these fit together and throughout this chapter will show how this type system can be leverage to reduce code.
+		</p>
 
-    <p>
-      Most of the number types that we saw in <xref ref="ch-data-types"/> are types that we can actually create values with that given type.  Examples include <c>Float64</c>, <c>UInt8</c> and <c>Int128</c>. These and the related ones are all examples of <term>concrete data types</term>, which are types that can be created.  Although not specificially dicussed as a type in <xref ref="ch-data-types"/>, the types <c>Signed</c> and <c>Unsigned</c> are integer types that are collections of other types.  Such are called <term>abstract data types</term>.  Every type in Julia is one of these types and the methods <c>isconcretetype</c> and <c>isabstracttype</c> can be used to determine the type.  For example <c>isabstracttype(Signed)</c> returns <c>true</c> whereas <c>isconcretetype(Signed)</c> returns <c>false</c>, but <c>isconcretetype(Int64)</c> returns true.
-    </p>
+		<p>
+			Most of the number types that we saw in <xref ref="ch-data-types"/> are types that we can actually create values with that given type.
+			Examples include <c>Float64</c>, <c>UInt8</c> and <c>Int128</c>.
+			These and the related ones are all examples of <term>concrete data types</term>, which are types that can be created.
+			Although not specificially dicussed as a type in <xref ref="ch-data-types"/>, the types <c>Signed</c> and <c>Unsigned</c> are integer types that are collections of other types.
+			Such are called <term>abstract data types</term>.
+			Every type in Julia is one of these types and the methods <c>isconcretetype</c> and <c>isabstracttype</c> can be used to determine the type.
+			For example <c>isabstracttype(Signed)</c> returns <c>true</c> whereas <c>isconcretetype(Signed)</c> returns <c>false</c>, but <c>isconcretetype(Int64)</c> returns true.
+		</p>
 
-    <p>
-      All concrete data types belong to some abstract data type.  We can use the method <c>supertype</c> to list this type.  For example, <c>supertype(Int64)</c> returns <c>Signed</c>.  The other related method is <c>subtypes</c> which lists all subtypes of a given abstract type.  For example, <c>subtypes(Signed)</c> returns:
-    </p>
+		<p>
+			All concrete data types belong to some abstract data type.
+			We can use the method <c>supertype</c> to list this type.
+			For example, <c>supertype(Int64)</c> returns <c>Signed</c>.
+			The other related method is <c>subtypes</c> which lists all subtypes of a given abstract type.
+			For example, <c>subtypes(Signed)</c> returns:
+		</p>
 
-    <p>
-      <cd>
-      <cline>6-element Vector{Any}:</cline>
-      <cline> BigInt</cline>
-      <cline> Int128</cline>
-      <cline> Int16</cline>
-      <cline> Int32</cline>
-      <cline> Int64</cline>
-      <cline> Int8</cline>
-      </cd>
-    </p>
+		<p>
+			<cd>
+			<cline>6-element Vector{Any}:</cline>
+			<cline> BigInt</cline>
+			<cline> Int128</cline>
+			<cline> Int16</cline>
+			<cline> Int32</cline>
+			<cline> Int64</cline>
+			<cline> Int8</cline>
+			</cd>
+		</p>
 
-    <p>
-      and we talked about all of these types in <xref ref="ch-data-types"/>.  And another example, <c>subtypes(Unsigned)</c> returns the array <c>[5-element Vector{Any} UInt128, UInt16, UInt32, UInt64, UInt8]</c>.  The type system can be thought of as a tree in the graph-theory sense of nodes and edges.  The leaves of the tree are the concrete data types.  Using <c>supertype(Signed)</c> and <c>supertype(Unsigned)</c> both return <c>Integer</c> indicating that this is the common supertype of these types.  And using <c>subtypes(Integer)</c> returns the array <c>[Bool, Signed, Unsigned]</c>, which are all of type <c>Integer</c>.
-    </p>
+		<p>
+			and we talked about all of these types in <xref ref="ch-data-types"/>.
+			And another example, <c>subtypes(Unsigned)</c> returns the array <c>[5-element Vector{Any} UInt128, UInt16, UInt32, UInt64, UInt8]</c>.
+			The type system can be thought of as a tree in the graph-theory sense of nodes and edges.
+			The leaves of the tree are the concrete data types.
+			Using <c>supertype(Signed)</c> and <c>supertype(Unsigned)</c> both return <c>Integer</c> indicating that this is the common supertype of these types.
+			And using <c>subtypes(Integer)</c> returns the array <c>[Bool, Signed, Unsigned]</c>, which are all of type <c>Integer</c>.
+		</p>
 
-    <p>
-      We can actually create the part of the tree that are all Integer types as the following:
-    </p>
-    		<figure xml:id="fig-plot-type-tree">
+		<p>
+			We can actually create the part of the tree that are all Integer types as the following:
+		</p>
+
+		<figure xml:id="fig-plot-type-tree">
 			<caption>The type tree of integers in Julia</caption>
 			<image width="75%" xml:id="plot-type-tree-integers">
 				<latex-image>
 				<![CDATA[
-				\begin{tikzpicture}
-[
-    level 1/.style={sibling distance=25mm},
-    level 2/.style={sibling distance=15mm},
+				\begin{tikzpicture}[
+    font=\footnotesize,
+    grow=right,
+    level 1/.style={sibling distance=15mm},
+    level 2/.style={sibling distance=5mm},
 ]
 	\node {Integer}
-		child {node {Bool}}
 		child {
 		    node {Signed}
 		    child {node {Int8}}
@@ -94,60 +110,68 @@
 				child {node {Int32}}
 				child {node {Int64}}
 				child {node {Int128}}
+				child {node {BigInt}}
 		}
+		child {node {Bool}}
 		child {
 			node {Unsigned}
 			child {node {UInt8}}
 			child {node {UInt16}}
+			child {node {UInt32}}
+			child {node {UInt64}}
 		};
 \end{tikzpicture}
 				]]>
 				</latex-image>
 			</image>
 		</figure>
+	</section>
 
+	<section>
+		<title>Details of Integer Types</title>
 
-  </section>
+		<p>
+			An integer in stored in binary with the given number of bits.
+			For example, a 32-bit integer or <c>Int32</c> will allocate 4 bytes (32 bits) of memory for a number.
+		</p>
 
-  <section>
-    <title>Details of Integer Types</title>
+		<p>
+			In Julia, we can use the <c>bitstring</c> function to give the binary representation of integers and floating points.
+			For example
+			<cd>
+			<cline>bitstring(UInt8(18))</cline>
+			</cd>
+		</p>
 
-    <p>
-      Maybe move this into the appendix??
-    </p>
+		<p>
+			returns <c>00010010</c>.
+			Notice that <c>bitstring(UInt8(255))</c> returns <c>11111111</c>.
+		</p>
 
-    <p>
-      In Julia, we can use the <c>bitstring</c> function to give the binary representation of integers and floating points.  For example
-      <cd>
-      <cline>bitstring(UInt8(18))</cline>
-      </cd>
-    </p>
+		<p>
+			Similarly, the unsigned integers with more bits work the same with largest range of integers.
+			For example <c>bitstring(UInt64(100000))</c> returns
+		</p>
 
-    <p>
-      returns <c>00010010</c>.   Notice that <c>bitstring(UInt8(255))</c> returns <c>11111111</c>.
-    </p>
+		<p>
+			<cd>
+			<cline>"0000000000000000000000000000000000000000000000011000011010100000"</cline>
+			</cd>
+		</p>
 
-    <p>
-      Similarly, the unsigned integers with more bits work the same with largest range of integers. For example <c>bitstring(UInt64(100000))</c> returns
-    </p>
-
-    <p>
-      <cd>
-      <cline>"0000000000000000000000000000000000000000000000011000011010100000"</cline>
-      </cd>
-    </p>
-
-    <p>
-      which is a string of length 64.
-    </p>
-  </section>
+		<p>
+			which is a string of length 64.
+		</p>
+	</section>
 
 	<section xml:id="sect-abstract-type">
 		<title>Abstract and Concrete Number Types</title>
 
 		<introduction>
 			<p>
-				The numerical data types we have seen in this chapter are examples of <term>concrete data types</term> in that we can create data (usually numbers) with those types.  These include the integer types <c>Int8, Int16, Int32, Int64, Int128, BigInt</c> and floating-point versions <c>Float16, Float32, Float64, BigFloat</c>. The rational and complex types are composite, however the internal part is a concrete type.
+				The numerical data types we have seen in this chapter are examples of <term>concrete data types</term> in that we can create data (usually numbers) with those types.
+				These include the integer types <c>Int8, Int16, Int32, Int64, Int128, BigInt</c> and floating-point versions <c>Float16, Float32, Float64, BigFloat</c>.
+				The rational and complex types are composite, however the internal part is a concrete type.
 			</p>
 
 			<p>
@@ -160,7 +184,8 @@
 			<title>Abstract Number types</title>
 
 			<p>
-				For example, <c>Integer</c> is the abstract type (also called a supertype) of all integer types.  The other abstract number types are:
+				For example, <c>Integer</c> is the abstract type (also called a supertype) of all integer types.
+				The other abstract number types are:
 			</p>
 
 			<p>
@@ -257,7 +282,8 @@
 			</p>
 
 			<p>
-				To test if something is a subtype of another use the <c>&lt;:</c> operation. For example
+				To test if something is a subtype of another use the <c>&lt;:</c> operation.
+				For example
 			</p>
 
 			<p>
@@ -277,5 +303,169 @@
 				returns <c>false</c>.
 			</p>
 		</subsection>
+	</section>
+
+	<section xml:id="sect-union-types">
+		<title>Union Types</title>
+
+		<introduction>
+			<p>
+				There are cases when it would be nice if a variable could take on more than one type of data.
+				We have already seen above that if a variable has any number type that we can use a supertype for value, that is <c>Real</c> can handle any integer or floating point number, but lets says they are more disparate than this.
+				One way to handle this is to use the <c>Any</c> type, but as we have seen earlier in the text, this both results in both errors in coding as well as slower codee.
+				The Union type takes care of this situation.
+			</p>
+
+			<p>
+				Perhaps we have loaded in some data that either came in as a real number or a string.
+				Julia has a <c>Union</c> type that takes a list of the valid types.
+				So if we declare
+			</p>
+
+			<p>
+				<cd>
+				<cline>x::Union{Real,String} = 4</cline>
+				</cd>
+			</p>
+
+			<p>
+				then this means that type of values that can be stored in <c>x</c> is either a <c>Real</c> or a <c>String</c>.
+				For example, if we reassign with <c>x = "4.5"</c>, then there are no errors.
+				However, if we assign to <c>x</c> another type, like a tuple, we will get an error.
+				For example,
+			</p>
+
+			<p>
+				<cd>
+				<cline>x = (3,4)</cline>
+				</cd>
+			</p>
+
+			<p>
+				results in
+			</p>
+
+			<p>
+				<cd>
+				<cline>MethodError: Cannot `convert` an object of type </cline>
+				<cline>  Tuple{Int64, Int64} to an object of type </cline>
+				<cline>  Union{Real, String}</cline>
+				</cd>
+			</p>
+
+			<p>
+				As another union type, we will see in the section below and more in dataframes in <xref ref="ch-data"/>, both of which have missing data.
+				As an example, let say that
+			</p>
+
+			<p>
+				<cd>
+				<cline>A = [1, missing, 3, 4, 5]</cline>
+				</cd>
+			</p>
+
+			<p>
+				which will return
+			</p>
+
+			<p>
+				<cd>
+				<cline>5-element Vector{Union{Missing, Int64}}:</cline>
+				<cline> 1</cline>
+				<cline>  missing</cline>
+				<cline> 3</cline>
+				<cline> 4</cline>
+				<cline> 5</cline>
+				</cd>
+			</p>
+
+			<p>
+				and note that this is a vector of type <c>Union{Missing, Int64}</c>, which again means that the types inside of the vector can either be of type Missing or Int64.
+			</p>
+		</introduction>
+
+
+		<subsection>
+			<title>Code Efficiency of Union Types</title>
+
+			<p>
+				Let's finish off this section with some code evaluation and load the <c>BenchmarkTools</c> package.
+				You can imagine that using a Union type will have some effect on code speed and we'll see how much here.
+				We'll start by adding up a million random integers and examine them with the <c>@benchmark</c> macro, specifically <c>@benchmark sum(rand(1:100,1_000_000))</c> which returns:
+			</p>
+
+			<p>
+				<cd>
+				<cline>BenchmarkTools.Trial: 1187 samples with 1 evaluation.</cline>
+				<cline>Range (min … max):  3.413 ms …  26.194 ms  ┊ GC (min … max): 0.00% … 31.25%</cline>
+				<cline>Time  (median):     4.083 ms               ┊ GC (median):    0.00%</cline>
+				<cline>Time  (mean ± σ):   4.207 ms ± 821.981 μs  ┊ GC (mean ± σ):  8.52% ±  9.11%</cline>
+				<cline></cline>
+				<cline>        ▅█▅▁▃         ▁▂▁                                     </cline>
+				<cline> ▂▁▁▁▁▁▅██████▅▄▄▂▃▂▅▆███▇▆▅▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▂▂▂▄▃▃▃▃▂▂▂▂▂▂ ▃</cline>
+				<cline> 3.41 ms         Histogram: frequency by time        5.67 ms &lt;</cline>
+				<cline></cline>
+				<cline>Memory estimate: 7.63 MiB, allocs estimate: 3.</cline>
+				</cd>
+			</p>
+
+			<p>
+				and although there is a lot of information here, the median time is 4.083 ms.
+			</p>
+
+			<p>
+				Alternative, we will create variable <c>arr</c> that is an array of a union type with <c>arr::Vector{Union{Real,String}} = collect(1:1_000_000)</c>.
+				The first thing to note that even though the return type was <c>Vector{Int64}</c>, <c>typeof(arr)</c> returns <c>Vector{Union{Real, String}}</c> indicating that this is a vector of union types.
+				Now if we sum these with <c>@benchmark sum(arr)</c>, then we get the result:
+			</p>
+
+			<p>
+				<cd>
+				<cline>BenchmarkTools.Trial: 168 samples with 1 evaluation.</cline>
+				<cline> Range (min … max):  28.256 ms … 65.188 ms  ┊ GC (min … max): 0.00% … 0.88%</cline>
+				<cline> Time  (median):     29.271 ms              ┊ GC (median):    1.90%</cline>
+				<cline> Time  (mean ± σ):   29.788 ms ±  3.049 ms  ┊ GC (mean ± σ):  2.45% ± 1.48%</cline>
+				<cline></cline>
+				<cline>      ▃█▃▃ ▅▂▁                                                 </cline>
+				<cline>  ▆▄▃▆████▇███▄▃▃▄▃▃▄▁▃▁▃▁▃▁▁▃▁▃▁▃▁▁▁▁▁▁▁▁▃▁▁▁▃▁▁▁▁▁▁▁▁▁▁▁▁▁▃ ▃</cline>
+				<cline>  28.3 ms         Histogram: frequency by time        36.1 ms &lt;</cline>
+				<cline></cline>
+				<cline> Memory estimate: 15.26 MiB, allocs estimate: 999969.</cline>
+				</cd>
+			</p>
+
+			<p>
+				and again, note that the median for this is 29.271 ms or about 7 times longer than the previous one.
+			</p>
+		</subsection>
+	</section>
+
+	<section xml:id="sect-missing-type">
+		<title>The Missing type</title>
+
+		<p>
+			The one type that we will see later that has not been covered is the <c>Missing</c> type.
+			This will be seen in <xref ref="ch-data"/> related to Data Analysis.
+			The <c>Missing</c> type has only a single value, <c>missing</c> and is used usually related to data in vectors and data frames.
+		</p>
+
+		<p>
+			The value <c>missing</c> has the property that any operation with it results in <c>missing</c>.
+			For example, <c>missing+1</c> will return <c>missing</c>.
+			Try other operations with <c>missing</c>.
+		</p>
+
+		<p>
+			You may ask yourself, "how helpful is a type like missing?" and that's a great question.
+			As we will see in <xref ref="ch-data"/> that often datasets have missing data and they need to be dealt with and we will see many examples in that chapter.
+		</p>
+
+		<p>
+			Let's say that we have an array with a missing value like <c>A=[1,missing,3,4,5]</c> and try to find the mean<fn>You'll need to do <c>using Statistics</c> for this</fn> of it with <c>mean(A)</c> and hopefully you're not surprised to see that the result is <c>missing</c>.
+		</p>
+
+		<p>
+			When entering the vector <c>A</c> above, you should notice that the type is <c>Vector{Union{Missing, Int64}}</c>
+		</p>
 	</section>
 </chapter>

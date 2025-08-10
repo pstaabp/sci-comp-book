@@ -1,0 +1,332 @@
+<chapter xml:id="ch-missing-data">
+  <title>Missing Data</title>
+
+  <objectives>
+    <ul>
+      <li>
+        <p>
+          Understand the <c>Missing</c> datatype.
+        </p>
+      </li>
+
+      <li>
+        <p>
+          Perform operations with missing data and determine how to find reasonable answers with them.
+        </p>
+      </li>
+
+      <li>
+        <p>
+          Handle datasets with missing data.
+        </p>
+      </li>
+    </ul>
+  </objectives>
+
+  <introduction>
+    <p>
+      The <c>Missing</c> datatype was introduced in <xref ref="sect-missing-type"/> as a special data type that has only a single value <c>missing</c>. This generally isn't a very exciting datatype, but is however important in that many dataset have missing data and want to handle such values easily.
+    </p>
+  </introduction>
+
+  <section xml:id="sect-missing-oper">
+    <title>Operations with Missing data</title>
+
+    <introduction>
+      <p>
+        Before getting into datasets with missing data, let's look at a simpler example. If we execute a expression like <c>1+missing</c>, we get the result <c>missing</c>. In fact all of the standard mathematical functions and operations return <c>missing</c> if any of the arguments are <c>missing</c>. The primary purpose of the <c>Missing</c> datatype.
+      </p>
+
+      <p>
+        This corresponds to other Julia functions as well. Consider <c>v=[1,2,missing,4,5,6,7]</c>. If we want add these values with <c>sum(v)</c> then the result is <c>missing</c> since the sum of any number with <c>missing</c> results in <c>missing</c>.
+      </p>
+
+      <p>
+        One way to handle this is to delete the missing value and sum the remainders. We can use the <c>deleteat!</c> function (see <xref ref="sect-other-array-functions"/>). The following will find the sum of the non-missing values:
+      </p>
+
+
+      <program language="julia">
+        <code>
+    sum(deleteat!(v,3))
+        </code>
+      </program>
+
+      <p>
+        which returns <c>25</c>. This isn't ideal. First, the <c>deleteat!</c> function actually changes the array. We may want to keep the missing value so we know where they occur. Secondly, we need to know the indices of the missing values. Both of these can taken care of with the <c>filter</c> command.
+      </p>
+
+      <p>
+        If we have the vector <c>w = [1,2,missing, 4,5,6,7,missing,9,10,11,missing]</c>, then apply the <c>filter</c> command with
+      </p>
+
+
+      <program language="julia">
+        <code>
+filter(x-> !ismissing(x), w)
+        </code>
+      </program>
+
+      <p>
+        and notice that the result is <c>[1,2, 4,5,6,7,9,10,11]</c>, which filters out the <c>missing</c> values. The <c>ismissing</c> function is used here and just returns <c>true</c> if the argument has the <c>missing</c> value. Then the <c>sum</c> function can be applied to this vector.
+      </p>
+
+      <p>
+        Alternatively, there is a <c>skipmissing</c> function. Applying this to <c>w</c> with <c>skipmissing(w)</c> results in
+      </p>
+
+      <p>
+        <cd>
+        <cline>skipmissing(Union{Missing, Int64}[1, 2, missing, 4, 5, 6, 7, missing, 9, 10, 11, missing])</cline>
+        </cd>
+      </p>
+
+      <p>
+        which doesn't seem to do anything. However, the result is an iterator, that was covered in <xref ref="ch-collections"/> and is a abstract version of an vector. The <c>sum</c> function can be applied directly to this as
+      </p>
+
+
+      <program language="julia">
+        <code>
+sum(skipmissing(w))
+        </code>
+      </program>
+
+      <p>
+        and the result is <c>55</c>. Alternatively, if you want the array of non-missing values, <c>collect(skipmissing(w))</c> results in
+      </p>
+
+      <p>
+        <cd>
+        <cline>[1, 2, 4, 5, 6, 7, 9, 10, 11]</cline>
+        </cd>
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Why skipmissing is an iterator</title>
+
+      <p>
+        If you just wanted the sum of the non-missing values in <c>w</c>, the function <c>sum(skipmissing(w))</c> is probably all you need and you can ignore this section. However, let's deep dive into this a bit because this shows an example of how Julia is designed for speed and efficiency.
+      </p>
+
+      <p>
+        First of all <c>skipmissing</c> can be applied to any other iterator such as vectors, arrays, dictionarys and more importantly as we will see below <c>DataFrame</c>s. <c>sum(skipmissing([1 missing 3; missing 5 6]))</c> returns 15 as expected. Additionally, consider the dictionary:
+      </p>
+
+
+      <program language="julia">
+        <code>
+          D = Dict(
+            "A" => 3,
+            "B" => 11,
+            "C" => missing,
+            "D" => 9
+          )
+        </code>
+      </program>
+
+      <p>
+        if we want the values of <c>D</c>, we can enter <c>values(D)</c> which returns <c>[11 missing 3 9]</c><fn>Recall that the keys and values of a dictionary are not returned in order.</fn> and if the sum of the values can be found with <c>sum(skipmissing(values(D)))</c> resulting in 23.
+      </p>
+
+      <p>
+        The other reason to make <c>skipmissing</c> an iterator is for efficiency. Let's look at another example. The vector <c>C</c> will be a length of 1 million with the following definition:
+      </p>
+
+
+      <program language="julia">
+        <code>
+          C::Vector{Union{Missing,Int64}} = collect(1:1_000_000);
+        </code>
+      </program>
+
+      <p>
+        where we have specifically stated that <c>C</c> is either missing or <c>Int64</c> because we want to fill 100 random values will <c>missing</c>. We'll do this with:
+      </p>
+
+
+      <program language="julia">
+        <code>
+          for _ = 1:100
+            i = rand(1:1_000_000)
+            C[i] = missing
+          end
+        </code>
+      </program>
+
+      <p>
+        The size of <c>C</c> in memory is found with <c>sizeof(C)</c> to be <c>8000000</c>, which makes sense in that each value is 8 bytes (64-bits).
+      </p>
+
+      <p>
+        If we defined <c>C2 = skipmissing(C)</c> and then determine its size with <c>sizeof(C)</c>, we get <c>8</c>. The information in <c>C2</c> is a reference to <c>C</c> and takes only 8 bytes of memory.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sect-missing-in-dataset">
+    <title>Missing Data in a Dataset</title>
+
+    <p>
+      Let's revisit the dataset called <c>simpsons</c> from the previous section which we entered directly with
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <code>
+simpsons = DataFrame(
+  id = 1:2:13,
+  name = ["Homer", "Marge", "Lisa", "Bart", "Maggie", "Apu", "Moe"],
+  age = [45, 42, 8, 10, 1, 38, 59],
+  salary = [50000, 25000, 10000, missing, missing, 45000, 3000],
+  favorite_food = ["pork chops", "casserole", "salad", "hamburger", missing, "saag paneer", "peanuts"]
+)
+      </code>
+    </program>
+
+    <p>
+      Notice that there are a number of missing values have been put in and recall that we first saw the <c>Missing</c> type in <xref ref="sect-missing-type"/>. We'll notice something different about the data types. If we look at the salary column:
+    </p>
+
+    <p>
+      <cd>
+      <cline>typeof(simpsons[!,:salary])</cline>
+      </cd>
+    </p>
+
+    <p>
+      we see that the type is <c>Vector{Union{Missing, Int64}}</c> which means that the type of elements in the array are <c>Union{Missing,Int64</c>} which is julia's way of saying that the type can be either <c>Missing</c> or <c>Int64</c>.  Note that the column header for the last two headers have a "?" after the type.  This is a shorthand for the same type.
+    </p>
+
+    <p>
+      One of the other commands that we saw in <xref ref="ch-data"/> was the <c>describe</c> function.  In this case, <c>describe(simpsons)</c> results in
+    </p>
+
+    <p>
+      <cd>
+      <cline>5×7 DataFrame</cline>
+      <cline>Row      variable  mean      min     median    max     nmissing   eltype</cline>
+      <cline>         Symbol    Union…    Any     Union…    Any     Int64   Type</cline>
+      <cline>1        id            7.0     1       7.0      13       0   Int64</cline>
+      <cline>2        name                Apu               Moe       0  String</cline>
+      <cline>3        age          29.0     1      38.0      59       0   Int64</cline>
+      <cline>4        salary    26600.0  3000   25000.0   50000       2   Union{Missing, Int64}</cline>
+      <cline>5        favorite_food           casserole      salad    1   Union{Missing, String}</cline>
+      </cd>
+    </p>
+
+    <p>
+      Again, we see the types of the last two columns are possibly missing and the column labelled <c>nmissing</c> lists the number of missing values.
+    </p>
+
+    <p>
+      If we perform calculations on the DataFrame itself, consider
+    </p>
+
+    <p>
+      <cd>
+      <cline>mean(simpsons[!,:salary])</cline>
+      </cd>
+    </p>
+
+    <p>
+      this returns <c>missing</c>, which makes sense from the above discussion that nearly every operation with missing returns missing.
+    </p>
+
+    <p>
+      Instead, we may want to ignore the missing values, so we can use the <c>skipmissing</c> function.
+    </p>
+
+    <p>
+      <cd>
+      <cline>s = skipmissing(simpsons[!,:salary])</cline>
+      </cd>
+    </p>
+
+    <p>
+      and then
+    </p>
+
+    <p>
+      <cd>
+      <cline>mean(s)</cline>
+      </cd>
+    </p>
+
+    <p>
+      then it finds the mean of the non-missing values and returns <c>26600.0</c>.
+    </p>
+
+    <p>
+      There is a way to reduce the DataFrame (similar to <c>subset</c>) which drops rows with missing data.  For example
+    </p>
+
+
+    <program language="julia">
+      <code>
+        dropmissing(simpsons)
+      </code>
+    </program>
+
+    <p>
+      and the result is:
+    </p>
+
+    <p>
+      <cd>
+      <cline>5×5 DataFrame</cline>
+      <cline>Row   id  name       age   salary  favorite_food</cline>
+      <cline>     Int64  String  Int64  Int64    String</cline>
+      <cline>1      1    Homer     45   50000    pork chops</cline>
+      <cline>2      3    Marge     42   25000    casserole</cline>
+      <cline>3      5    Lisa       8   10000    salad</cline>
+      <cline>4      11   Apu       38   45000    saag paneer</cline>
+      <cline>5      13   Moe       59    3000    peanuts</cline>
+      </cd>
+    </p>
+
+    <p>
+      and note that the DataFrame has gotten smaller, but also the column types are missing the trailing ? indicating that they do not contain missing values.
+    </p>
+
+    <p>
+      One can also specify only to drop rows with missing values in a particular column, for example:
+    </p>
+
+
+    <program language="julia">
+      <code>
+dropmissing(simpsons, :favorite_food)
+      </code>
+
+      <p>
+        results in
+      </p>
+    </program>
+
+    <p>
+      <cd>
+      <cline>6×5 DataFrame</cline>
+      <cline>Row  id     name    age  salary  favorite_food</cline>
+      <cline>    Int64  String  Int64  Int64?  String</cline>
+      <cline>1     1     Homer    45  50000     pork chops</cline>
+      <cline>2     3     Marge    42  25000     casserole</cline>
+      <cline>3     5     Lisa      8  10000     salad</cline>
+      <cline>4     7     Bart     10  missing   hamburger</cline>
+      <cline>5    11     Apu      38  45000     saag paneer</cline>
+      <cline>6    13     Moe      59   3000     peanuts</cline>
+      </cd>
+    </p>
+    <p>
+      and 1 row has been dropped, however there is still a <c>missing</c> value in the <c>salary</c> column.
+    </p>
+  </section>
+
+  <section xml:id="sect-missing-csv">
+    <title>Handling Missing Data in a CSV File</title>
+
+    <p>This file contains a larger dataset with Simpson's characters.  </p>
+  </section>
+</chapter>

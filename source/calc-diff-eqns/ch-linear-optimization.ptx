@@ -1,0 +1,464 @@
+<chapter xml:id="ch-linear-optimization">
+  <title>Linear Optimization</title>
+
+  <introduction>
+    <p>
+      Although we saw in <xref ref="ch-optimization"/> a number of techniques to optimize functions, if the objective function is linear and in general there are a number of constraints that are linear as well, then problems fall into the field of Linear Optimization and we will see that the solution techniques are different.
+    </p>
+
+    <p>
+      To start with a simple problem, consider a baker with a shop that only makes cookies and muffins<fn>Just go with me on this one, yes, no bakery would do this.</fn>.
+      A batch of cookies takes 5 cups of flour and 6 cups of sugar (among other ingredients) and a batch of muffins takes 4 cups of flour and 3 cups of sugar.
+      One day the bakery has 90 cups of flour and 81 cups of sugar.
+      If the profit on a batch of cookies is $11 and on the muffins in $8, how many batches of each baked good should the baker make?
+    </p>
+
+    <p>
+      Mathematically, if we let <m>x</m> be the number of batches of cookies and <m>y</m> to be the number of batches of muffins, then the objective function is the profit which is <m>z=11x+8y</m>.
+      There are two constraints, one on the total amount of flour and one on the sugar.
+      These can be written
+    </p>
+
+    <p>
+      <md>
+        <mrow> 5x+ 4y\amp \leq 90 </mrow>
+        <mrow> 6x + 3y \amp \leq 81</mrow>
+      </md>
+    </p>
+
+    <p>
+      and lastly, there are two other common constraints that the number of batches produced cannot be negative so <m>x \geq 0, y \geq 0</m>.
+      These four constraints with the objective function are all linear and thus this problem falls into a Linear Optimization problem.
+    </p>
+  </introduction>
+
+  <section>
+    <title>Simplex Method</title>
+
+    <p>
+      The standard technique for solving linear optimization problems fall into what is called the <em>simplex method</em> and we will just touch on this technique here.
+    </p>
+
+    <p>
+      Let's return to the example above.
+      If we plot the 4 contraints above on a set of axes, we get the following:
+    </p>
+
+    <figure xml:id="fig-fs-1">
+      <caption></caption>
+      <image source="plots/diffeqn/fs-1.png" width="90%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      The contraints lead to a <term>feasible set</term> which is the part of the plane that is feasible (satisfies all constraints).
+      The region above is the bounded polygon northeast of the origin.
+    </p>
+
+    <p>
+      This example is in 2D and is then a subset of the <m>\mathbb{R}^2</m> plane.
+      You also may notice that this set is <term>convex</term> (every line segment with endpoints in the set is fully contained in the set).
+      This is true of not only any feasible set in the plane, but any feasible set in any dimensional is convex.
+      See ?? (Hurlbert).
+    </p>
+
+    <p>
+      Since we have noticed (but not proven) that feasible sets are convex, it also goes to show that optimal points (those that minimize or maximum the objective function) are on the boundary of the set.
+      The <term>simplex method</term> is a method that starts at the origin and walks around vertices of the feasible set until the optimal point is found.
+    </p>
+
+    <p>
+      We won't go into details of the simplex method in this book, but leave you to other sources (like Hurlbert) for the details.
+      However, for this simple case as above, if we write down all of the vertices of the feasible and check the objective function at each of these, the result can be found quite easily.
+    </p>
+
+    <p>
+      If we solve for the intersection points of the the appropriate curves, then the following are the vertices of the feasible set above: <m>(0,0), (13.5,0), (6,15), (0,22.5) </m>.
+      If we then plug these points into the objective function <m>z=11x+8y</m> we get:
+    </p>
+
+    <tabular>
+      <row>
+        <cell><m>x</m> </cell>
+        <cell><m>y</m></cell>
+        <cell><m>z</m></cell>
+      </row>
+
+      <row>
+        <cell>0</cell>
+        <cell>0</cell>
+        <cell>0</cell>
+      </row>
+
+      <row>
+        <cell>13.5</cell>
+        <cell>0</cell>
+        <cell>148.5</cell>
+      </row>
+
+      <row>
+        <cell>6</cell>
+        <cell>15</cell>
+        <cell>186</cell>
+      </row>
+
+      <row>
+        <cell>0</cell>
+        <cell>22.5</cell>
+        <cell>180</cell>
+      </row>
+    </tabular>
+
+    <p>
+      And from the table, the profit is maximized at <m>(6,15)</m> in which 6 batches of cookies are made and 15 batches of muffins.
+      The total profit is $186.
+    </p>
+  </section>
+
+  <section>
+    <title>Using JuMP to solve Linear Optimization Problems</title>
+
+    <p>
+      Although we could use the built-in tools to solve linear optimization problems using Julia, we will turn to the <url href="https://jump.dev">the JuMP package</url> of Julia.
+      JuMP is a modeling language that is designed to set up problems in optimization, hand it off to any of a large number of solvers and then get the results back.
+      The way that problems are written out are natural, which makes it quite easy to learn.
+    </p>
+
+    <p>
+      As noted JuMP hands a problem off to a solving routine to do the hard work of solving the problem.
+      In <xref ref="ch-optimization"/>, we used the <c>Ipopt</c> solving package to minimize a function of two variables.
+      In the case of linear optimization we will use the <c>HiGHS</c> package to solve.
+      Let's jump in<fn>Pun intended!</fn>.
+    </p>
+
+    <p>
+      First, use the package manager to download and install the JuMP and HiGHS packages (yes capitalization is important here) and then start with
+    </p>
+
+    <p>
+      <cd>
+      <cline>using JuMP, HiGHS</cline>
+      </cd>
+    </p>
+
+    <p>
+      We now build the model of the problem above with
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <code>
+m = Model(HiGHS.Optimizer)
+@variable(m, x ≥ 0)
+@variable(m, y ≥ 0)
+@objective(m, Max, 11x+8y)
+@constraint(m, 5x+4y ≤ 90)
+@constraint(m, 6x+3y ≤ 81)
+print(m)
+      </code>
+    </program>
+
+    <p>
+      and the result is
+    </p>
+
+    <p>
+      <cd>
+      <cline>Max 11 x + 8 y</cline>
+      <cline>Subject to</cline>
+      <cline> 5 x + 4 y ≤ 90</cline>
+      <cline> 6 x + 3 y ≤ 81</cline>
+      <cline> x ≥ 0</cline>
+      <cline> y ≥ 0</cline>
+      </cd>
+    </p>
+
+    <p>
+      And there isn't much to explain here as each line is self-explanatory.
+      Just notice that you need to create a Model (with an solver from another package), then create variables, objective function and constraints.
+      The last line just prints out the model (not the solution).
+    </p>
+
+    <p>
+      to get the solution, we enter <c>optimize!(m)</c> (remember that the ! on the name of a function changes the input).
+    </p>
+
+
+    <program language="$" line-numbers="yes">
+      <code>
+Running HiGHS 1.9.0 (git hash: 66f735e60): Copyright (c) 2024 HiGHS under MIT licence terms
+Coefficient ranges:
+  Matrix [3e+00, 6e+00]
+  Cost   [8e+00, 1e+01]
+  Bound  [0e+00, 0e+00]
+  RHS    [8e+01, 9e+01]
+Presolving model
+2 rows, 2 cols, 4 nonzeros  0s
+2 rows, 2 cols, 4 nonzeros  0s
+Presolve : Reductions: rows 2(-0); columns 2(-0); elements 4(-0) - Not reduced
+Problem not reduced by presolve: solving the LP
+Using EKK dual simplex solver - serial
+  Iteration        Objective     Infeasibilities num(sum)
+          0    -4.7499947580e+00 Ph1: 2(4.5); Du: 2(4.74999) 0s
+          2     1.8600000000e+02 Pr: 0(0) 0s
+Model status        : Optimal
+Simplex   iterations: 2
+Objective value     :  1.8600000000e+02
+Relative P-D gap    :  0.0000000000e+00
+HiGHS run time      :          0.00
+      </code>
+    </program>
+
+    <p>
+      I won't go through the details of this.
+      You would need to dig into the <c>HiGHS</c> package documentation for all of the details.
+      One thing to note on line 16 is that the result is that it is Optimal (that is there is a solution).
+      The objective is on line 18 and <c>1.860000e+02</c> or <c>186</c> that we found above.
+    </p>
+
+    <p>
+      Typically when I run the <c>optimize!</c> function, I don't look at the output code.
+      We will see how to pull the important important.
+      Adding the line <c>set_silent(m)</c> before calling the <c>optimize!(m)</c> will supress this output.
+      However, it is important to note that the solution is in fact optimized (we will see an example where this isn't the case below).
+      If we call <c>is_solved_and_feasible(m)</c>, then we get <c>true</c> indicating that we have a solution.
+    </p>
+
+    <p>
+      Typically, we want to know the values of the variables and objective function at the optimal point.
+      We can get the values of the two variables <c>x</c> and <c>y</c> here with wrapping the method <c>value</c> around each.
+      Entering <c>value(x), value(y)</c> returns <c>(5.999999999999997, 15.000000000000005)</c> which is close to the result we got above of <c>(6,15)</c>, the difference being some numerical error.
+      The value of the objective function can be found with <c>objective_value(m)</c>, which returns 186.0.
+    </p>
+  </section>
+
+  <section>
+    <title>Integer Problems</title>
+
+    <p>
+      Perhaps it seems odd that we got
+    </p>
+  </section>
+
+  <section>
+    <title>Binary Variables</title>
+
+    <p>
+      There are many problems in which variables take on binary values (0 or 1) depending on if something is present or not.
+      Consider the following problem
+    </p>
+
+
+    <problem>
+      <title>The Mailbox Problem</title>
+
+      <statement>
+        <p>
+          A city is shaped like the following grid:
+        </p>
+
+        <figure xml:id="eq-gridville">
+          <caption></caption>
+          <image width="60%">
+            <latex-image>
+      <![CDATA[
+        \begin{tikzpicture}
+          \draw (0,0) grid (4,2);
+\foreach \y in {0,1,2} {
+\foreach \x in {0,1,2,3,4}
+{\fill (\x,\y) circle (2pt);}
+}
+        \end{tikzpicture}
+        ]]>
+            </latex-image>
+          </image>
+        </figure>
+
+        <p>
+          The city would like to place mailboxes at the intersections of the streets such that no-one needs to travel more than one block to reach a mailbox.
+          To improve the budget of the city, the mayor would like to place the smallest number of mailboxes.
+          Where should they be placed?
+        </p>
+      </statement>
+
+      <solution>
+        <title>Setting up the Problem as a LOP</title>
+
+        <p>
+          First, we will say let the variable <m>x_{i,j}</m> be 1 if there is a mailbox at the intersection of the <m>i</m>th street and the <m>j</m>th avenue.
+          The variable will be 0 if not.
+          The constraints for this problem is that for each intersection, there is only 1 mailbox within one block.
+          For example, the total number of mailboxes with the upper left and the intersection to the east and the south is at least 1 or
+        </p>
+
+        <p>
+          <me>
+            x_{1,1} + x_{1,2} + x_{2,1} \geq 1
+          </me>
+        </p>
+
+        <p>
+          and similarly for each intersection.
+          There will be the following fifteen constraints:
+        </p>
+
+        <p>
+          <md>
+            <mrow> x_{1,1} + x_{1,2} + x_{2,1} \amp \geq 1 \amp x_{1,1} + x_{1,2} + x_{1,3} + x_{2,2} \amp \geq 1 </mrow>
+            <mrow> x_{1,2} + x_{1,3} + x_{1,4} + x_{2,3} \amp \geq 1 \amp x_{1,3} + x_{1,4} + x_{1,5} + x_{2,4} \amp \geq 1 </mrow>
+            <mrow> x_{1,4} + x_{1,5} + x_{2,5} \amp \geq 1  \amp x_{2,1} + x_{1,1} + x_{3,1} + x_{2,2}\amp \geq 1</mrow>
+            <mrow> x_{2,1} + x_{2,2} + x_{2,3} + x_{1,2} + x_{3,2} \amp \geq 1 \amp x_{2,2} + x_{2,3} + x_{2,4} + x_{1,3} + x_{3,3} \amp \geq 1 </mrow>
+            <mrow> x_{2,3} + x_{2,4} + x_{2,5} + x_{1,4} + x_{3,4} \amp \geq 1 \amp  x_{2,4} + x_{2,5} + x_{1,5} + x_{3,5} \amp \geq 1 </mrow>
+            <mrow> x_{3,1} + x_{2,1} + x_{3,2} \amp \geq 1 \amp x_{3,1} + x_{3,2} + x_{3,3} + x_{2,2} \amp \geq 1</mrow>
+            <mrow> x_{3,2} + x_{3,3} + x_{3,4} + x_{2,3} \amp \geq 1 \amp x_{3,3} + x_{3,4} + x_{3,5} + x_{2,4}  \amp \geq 1 </mrow>
+            <mrow> x_{3,4} + x_{3,5} + x_{2,5} \amp \geq 1 </mrow>
+          </md>
+        </p>
+
+        <p>
+          And the objective function is the sum of all of the <m>x_{i,j}</m> is it is to be minimized.
+        </p>
+      </solution>
+
+      <solution>
+        <title>Solving the LOP using JuMP</title>
+
+        <p>
+          We now look at the solution to this problem using JuMP.
+          First, we can define the model in the same way as above with <c>m2 = Model(HiGHS.Optimizer)</c> and then defining the variables as a matrix with  <c>@variable(m2, x[1:3, 1:5], Bin)</c>
+        </p>
+
+        <p>
+          The constraints are put in in the following way.
+          We can enter them in one at a time, however, below we will extend this problem and it is nicer to define them as corners, edges and interior intersections.
+          First the 4 corners can be added as
+        </p>
+
+
+        <program language="julia" line-numbers="yes">
+          <code>
+@constraint(m2, x[1,1]+x[1,2] + x[2,1] ≥ 1)
+@constraint(m2, x[1,4]+x[1,5] + x[2,5] ≥ 1)
+@constraint(m2, x[3,1]+x[2,1] + x[3,2] ≥ 1)
+@constraint(m2, x[3,5]+x[3,4] + x[2,5] ≥ 1)
+          </code>
+        </program>
+
+        <p>
+          Next, the top and bottom edges are added with
+        </p>
+
+
+        <program language="julia" line-numbers="yes">
+          <code>
+for j=2:4
+  @constraint(m2, x[1,j-1]+x[1,j]+x[1,j+1]+x[2,j] ≥ 1)
+  @constraint(m2, x[3,j-1]+x[3,j]+x[3,j+1]+x[2,j] ≥ 1)
+end
+          </code>
+        </program>
+
+        <p>
+          Next, the left are right edges are added with
+        </p>
+
+
+        <program language="julia" line-numbers="yes">
+          <code>
+for i=2:2
+  @constraint(m2, x[i,1]+x[i-1,1] + x[i+1,1] + x[i,2] ≥ 1)
+  @constraint(m2, x[i,5] + x[i-1,5] + x[i+1,5] + x[i,4] ≥ 1)
+end
+          </code>
+        </program>
+
+        <p>
+          where the for loop is unecessary, but will be used below.
+          Lastly, the interior points are
+        </p>
+
+
+        <program language="julia" line-numbers="yes">
+          <code>
+for i=2:2
+  for j=2:4
+    @constraint(m2, x[i,j] + x[i,j-1] + x[i,j+1] + x[i-1,j] + x[i+1,j] ≥ 1)
+  end
+end
+          </code>
+        </program>
+
+        <p>
+          and again the i for loop is unnecessary, but will be adapted below.
+          Lastly, the objective function can be written as
+        </p>
+
+        <p>
+          <cd>
+          <cline>@objective(m2, Min, sum(x[i,j] for i=1:3, j=1:5))</cline>
+          </cd>
+        </p>
+
+        <p>
+          Finally, we set the output to silent and then optimize with
+        </p>
+
+        <p>
+          <cd>
+          <cline>set_silent(m2)</cline>
+          <cline>optimize!(m2)</cline>
+          </cd>
+        </p>
+
+        <p>
+          and since the output has been set to silent, there is no output but checking for a solution with <c>is_solved_and_feasible(m2)</c> results in <c>true</c>, so we have a solution and can see it with <c>value.(x)</c>, where the <c>.</c> indicates broadcasting across the matrix and the output is
+        </p>
+
+        <p>
+          <cd>
+          <cline>3×5 Matrix{Float64}:</cline>
+          <cline> -0.0  -0.0   1.0  -0.0  0.0</cline>
+          <cline>  1.0  -0.0  -0.0  -0.0  1.0</cline>
+          <cline> -0.0  -0.0   1.0  -0.0  0.0</cline>
+          </cd>
+        </p>
+
+        <p>
+          and note that even though the values of <c>x</c> had the constraint that they are binary (therefore integers), the matrix is a matrix of floats due to the method of solution.
+          We can make this look a little more expected with <c>round.(Int,value.(x))</c> and the result is
+        </p>
+
+        <p>
+          <cd>
+          <cline>3×5 Matrix{Int64}:</cline>
+          <cline> 0  0  1  0  0</cline>
+          <cline> 1  0  0  0  1</cline>
+          <cline> 0  0  1  0  0</cline>
+          </cd>
+        </p>
+
+        <p>
+          and the 1s indicate where the mailboxes ought to be placed and that there only need to be 4.
+        </p>
+      </solution>
+    </problem>
+  </section>
+
+  <section>
+    <title>Infeasible Problems</title>
+
+    <p>
+      Let's look at a simple Linear Optimization Problem.  <em>Maximize</em> <m>z = 3x+4y</m> subject to
+    </p>
+    <p><md>
+      <mrow>\text{Maximize}\quad z \amp = 3x+4y \text{subject to}</mrow>
+      <mrow>x + y \amp \leq 10 </mrow>
+      <mrow>-2x + y \amp \geq 2 </mrow>
+      <mrow>x + 3 y \amp \geq 6</mrow>
+      <mrow> x, y \amp \geq 0</mrow>
+      </md></p>
+  </section>
+</chapter>

@@ -39,7 +39,9 @@
 
 	<introduction>
 		<p>
-			Although there are many standard Julia data types that are useful for Scientific Computing, we can make new types called a composite data type.  We will start with developing <c>Card</c> and <c>Hand</c> types that simplify the poker hand simulations that we will see in <xref ref="ch-poker"/>.  We will also look at a <c>Polynomial</c> data type and finally create a <c>Root</c> type that will help with the rootfinding from <xref ref="ch-rootfinding"/>.
+			Although there are many standard Julia data types that are useful for Scientific Computing, we can make new types called a composite data type.
+			We will start with developing <c>Card</c> and <c>Hand</c> types that simplify the poker hand simulations that we will see in <xref ref="ch-poker"/>.
+			We will also look at a <c>Polynomial</c> data type and finally create a <c>Root</c> type that will help with the rootfinding from <xref ref="ch-rootfinding"/>.
 		</p>
 	</introduction>
 
@@ -47,7 +49,8 @@
 		<title>Basics of Julia's Composite Datatype</title>
 
 		<p>
-			The composite data type in Julia is called a <c>struct</c> and consists of some number of fields of an existing type.  A simple one is
+			The composite data type in Julia is called a <c>struct</c> and consists of some number of fields of an existing type.
+			A simple one is
 		</p>
 
 		<p>
@@ -60,7 +63,9 @@
 		</p>
 
 		<p>
-			which has the two fields <c>num</c> and <c>str</c>. We are using the standard naming convention of a struct in Pascal case, which starts with a capital letter and and other words capitalized.   We can create an object<fn>Although a Julia struct is not an object in the sense of an object-oriented language, the terminology is pervasive in the Julia community.</fn> of type <c>MyStruct</c> by
+			which has the two fields <c>num</c> and <c>str</c>.
+			We are using the standard naming convention of a struct in Pascal case, which starts with a capital letter and and other words capitalized.
+			We can create an object<fn>Although a Julia struct is not an object in the sense of an object-oriented language, the terminology is pervasive in the Julia community.</fn> of type <c>MyStruct</c> by
 		</p>
 
 		<p>
@@ -70,11 +75,16 @@
 		</p>
 
 		<p>
-			and we can access the fields of the struct with <c>m.num</c> and <c>m.str</c>. They will return <c>13</c> and <c>"hello"</c> respectively. Also, you can get an array of the names of the fields with <c>fieldnames(MyStruct)</c>. Note that the <c>fieldnames</c> command needs the datatype, not a variable of the datatype. This example is not very realistic, but the rest of the chapter will include more-practical examples.
+			and we can access the fields of the struct with <c>m.num</c> and <c>m.str</c>.
+			They will return <c>13</c> and <c>"hello"</c> respectively.
+			Also, you can get an array of the names of the fields with <c>fieldnames(MyStruct)</c>.
+			Note that the <c>fieldnames</c> command needs the datatype, not a variable of the datatype.
+			This example is not very realistic, but the rest of the chapter will include more-practical examples.
 		</p>
 
 		<p>
-			A helpful method associated with objects is the <c>dump</c> method.  If we type <c>dump(m)</c> then we get:
+			A helpful method associated with objects is the <c>dump</c> method.
+			If we type <c>dump(m)</c> then we get:
 		</p>
 
 		<p>
@@ -90,7 +100,8 @@
 		</p>
 
 		<p>
-			One cannot change the fields of a <c>struct</c>.  If <c>m</c> is defined as above and you try <c>m.str = "goodbye"</c>, then Julia will report the error:
+			One cannot change the fields of a <c>struct</c>.
+			If <c>m</c> is defined as above and you try <c>m.str = "goodbye"</c>, then Julia will report the error:
 		</p>
 
 		<p>
@@ -100,7 +111,9 @@
 		</p>
 
 		<p>
-			This is exactly like trying to redefine a <c>const</c>.  As we will see most of the examples in this text are these constant types of <c>struct</c>s, you can make non-constant <c>structs</c> using the <c>mutable</c> keyword. For example:
+			This is exactly like trying to redefine a <c>const</c>.
+			As we will see most of the examples in this text are these constant types of <c>struct</c>s, you can make non-constant <c>structs</c> using the <c>mutable</c> keyword.
+			For example:
 		</p>
 
 		<p>
@@ -123,7 +136,8 @@
 		</p>
 
 		<p>
-			Then the redefinition <c>s.a=4.5</c> is allowed.  Note: that if you try to do <c>s.b=7.1</c>, the you will get the error:
+			Then the redefinition <c>s.a=4.5</c> is allowed.
+			Note: that if you try to do <c>s.b=7.1</c>, the you will get the error:
 		</p>
 
 		<p>
@@ -142,7 +156,9 @@
 
 		<introduction>
 			<p>
-				In <xref ref="ch-poker"/>, we will use simulations to determine the probabilities of certain poker hands. Although the calculations can be done with built-in types, the result would be difficult to read and hard to understand.  Here, we will create a <c>Card</c> datatype that will help clarify the code by creating a type with a rank (1 to 13 corresponding to Ace, 2, through 10, Jack, Queen, King) and a suit (1 to 4 corresponding to the suits ``spades'', ``hearts'', ``diamonds'', ``clubs''), which we define as the characters arrays:
+				In <xref ref="ch-poker"/>, we will use simulations to determine the probabilities of certain poker hands.
+				Although the calculations can be done with built-in types, the result would be difficult to read and hard to understand.
+				Here, we will create a <c>Card</c> datatype that will help clarify the code by creating a type with a rank (1 to 13 corresponding to Ace, 2, through 10, Jack, Queen, King) and a suit (1 to 4 corresponding to the suits ``spades'', ``hearts'', ``diamonds'', ``clubs''), which we define as the characters arrays:
 			</p>
 
 			<p>
@@ -153,7 +169,10 @@
 			</p>
 
 			<p>
-				where the suits are the unicode characters<fn>See <url href="http://docs.Julialang.org/en/latest/manual/unicode-input/" visual="Julialang.org">the Julia documentation on unicode</url>.</fn> for the suits. (Note: <c>ranks</c> and <c>suits</c> are arrays of characters (not strings). This is because they use single quotes.).  The following datatype:
+				where the suits are the unicode characters<fn>See <url href="http://docs.Julialang.org/en/latest/manual/unicode-input/" visual="Julialang.org">the Julia documentation on unicode</url>.</fn> for the suits.
+				(Note: <c>ranks</c> and <c>suits</c> are arrays of characters (not strings).
+				This is because they use single quotes.).
+				The following datatype:
 			</p>
 
 			<p>
@@ -166,15 +185,20 @@
 			</p>
 
 			<p>
-				will be used to store a <c>Card</c>.  Note that the suits and ranks are each integers, where we uses the suits 1, 2, 3, and 4 (which will corresponds to the actual suits) and the ranks will be the integers 1 to 13.
+				will be used to store a <c>Card</c>.
+				Note that the suits and ranks are each integers, where we uses the suits 1, 2, 3, and 4 (which will corresponds to the actual suits) and the ranks will be the integers 1 to 13.
 			</p>
 
 			<p>
-				To create a <c>Card</c>, just call the struct like a function with the given rank and suit, like <c>c = Card(3,2)</c>, which will create a card of rank 3 and suit 2 (hearts). To access the fields of the type, we use dot notation. For example <c>c.rank</c> will return <c>3</c> and <c>c.suit</c> will return <c>2</c>.
+				To create a <c>Card</c>, just call the struct like a function with the given rank and suit, like <c>c = Card(3,2)</c>, which will create a card of rank 3 and suit 2 (hearts).
+				To access the fields of the type, we use dot notation.
+				For example <c>c.rank</c> will return <c>3</c> and <c>c.suit</c> will return <c>2</c>.
 			</p>
 
 			<p>
-				Notice that the result of the card is <c>Card(3,2)</c>, which isn't very human friendly-I'd rather see the actual rank and suit.  Fortunately, a nice feature of Julia is to override the output using <c>Base.show</c>.  For example,
+				Notice that the result of the card is <c>Card(3,2)</c>, which isn't very human friendly-I'd rather see the actual rank and suit.
+				Fortunately, a nice feature of Julia is to override the output using <c>Base.show</c>.
+				For example,
 			</p>
 
 			<p>
@@ -184,11 +208,16 @@
 			</p>
 
 			<p>
-				where the arguments of <c>Base.show</c> should be of type <c>IO</c> and then the datatype. The output from <c>Base.show</c> should call <c>print</c> as above. The result will be the concatenation of the characters corresponding to the rank and suit of the card.  Any of the forms in <xref ref="ch-variables"/> that do string concatenation will work, I'm a fan of string interpolation. Try this out by typing <c>c</c> and you should get <c>3♡</c>.
+				where the arguments of <c>Base.show</c> should be of type <c>IO</c> and then the datatype.
+				The output from <c>Base.show</c> should call <c>print</c> as above.
+				The result will be the concatenation of the characters corresponding to the rank and suit of the card.
+				Any of the forms in <xref ref="ch-variables"/> that do string concatenation will work, I'm a fan of string interpolation.
+				Try this out by typing <c>c</c> and you should get <c>3♡</c>.
 			</p>
 
 			<p>
-				Note: this is different than just a <c>print</c> or <c>println</c> within a function, which is highly discouraged. This function is called whenever a card type is displayed.
+				Note: this is different than just a <c>print</c> or <c>println</c> within a function, which is highly discouraged.
+				This function is called whenever a card type is displayed.
 			</p>
 		</introduction>
 
@@ -197,7 +226,9 @@
 			<title>Constructors of new data types</title>
 
 			<p>
-				When Julia calls <c>Card(3,2)</c>, actually, it executes a special function called a constructor, which creates an instance of the type, which we have called an object. Although Julia creates the basic constructor--that is the one that fills the fields of the type in the order defined, we may want some additional features.  For example if we call <c>Card(-10,78)</c>, then Julia returns
+				When Julia calls <c>Card(3,2)</c>, actually, it executes a special function called a constructor, which creates an instance of the type, which we have called an object.
+				Although Julia creates the basic constructor--that is the one that fills the fields of the type in the order defined, we may want some additional features.
+				For example if we call <c>Card(-10,78)</c>, then Julia returns
 			</p>
 
 			<p>
@@ -207,7 +238,8 @@
 			</p>
 
 			<p>
-				and we got the error because on <c>Base.show</c> we are trying to access an array outside of it's bounds.  We just told Julia to make a new data type with two integers and <c>Card(-10,78)</c> is the new data type with two integers.
+				and we got the error because on <c>Base.show</c> we are trying to access an array outside of it's bounds.
+				We just told Julia to make a new data type with two integers and <c>Card(-10,78)</c> is the new data type with two integers.
 			</p>
 
 			<p>
@@ -241,7 +273,10 @@ end
 			</p>
 
 			<p>
-				Recall, from the beginning of this chapter, this is because a <c>struct</c> is fixed, much like if a constant is declared and then it is redefined.  We want to replace the first <c>struct</c> with this one, so we will restart the kernel<fn> Recall, in Juypter, select <em>restart kernel</em> at the top and if you are using VS Code, the <em>restart</em> button will do the same. </fn>	You will need to reenter all of the needed cells, like the one with the ranks and suits as well as the one that starts <c>Base.show</c>.  In <xref ref="ch-modules"/>, we will put structs inside a module and not have to restart the kernel as you develop a new datatype.
+				Recall, from the beginning of this chapter, this is because a <c>struct</c> is fixed, much like if a constant is declared and then it is redefined.
+				We want to replace the first <c>struct</c> with this one, so we will restart the kernel<fn> Recall, in Juypter, select <em>restart kernel</em> at the top and if you are using VS Code, the <em>restart</em> button will do the same.
+				</fn>	You will need to reenter all of the needed cells, like the one with the ranks and suits as well as the one that starts <c>Base.show</c>.
+				In <xref ref="ch-modules"/>, we will put structs inside a module and not have to restart the kernel as you develop a new datatype.
 			</p>
 
 			<p>
@@ -259,7 +294,8 @@ end
 			</p>
 
 			<p>
-				which is what we want and should notice that this error is what we said to do when the rank is not between 1 and 13.   Although we haven't covered handling errors yet, the <c>throw</c> function will send an error and we have the ability to catch and handle these errors gracefully if we want.
+				which is what we want and should notice that this error is what we said to do when the rank is not between 1 and 13.
+				Although we haven't covered handling errors yet, the <c>throw</c> function will send an error and we have the ability to catch and handle these errors gracefully if we want.
 			</p>
 
 			<p>
@@ -276,20 +312,26 @@ end
 
 					<li>
 						<p>
-							There is a function defined on lines 5 through 9 now.  This is what is called when <c>Card</c> is called with two integers and is called a <term>constructor</term>. Line 6 checks if the rank (for this function is called <c>r</c>) is between 1 and 13 and similarly on line 7 checks if the suits (called <c>s</c>) is between 1 and 4.  If either of these are outside the bounds an error is thrown.  We'll talk specifically about what <c>throw</c> does later in the text.
+							There is a function defined on lines 5 through 9 now.
+							This is what is called when <c>Card</c> is called with two integers and is called a <term>constructor</term>.
+							Line 6 checks if the rank (for this function is called <c>r</c>) is between 1 and 13 and similarly on line 7 checks if the suits (called <c>s</c>) is between 1 and 4.
+							If either of these are outside the bounds an error is thrown.
+							We'll talk specifically about what <c>throw</c> does later in the text.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							Inside the the constructor, line 8 is <c>new(r,s)</c>.  This assigns the member <c>rank</c> the value <c>r</c> and <c>suit</c> the value <c>s</c>.
+							Inside the the constructor, line 8 is <c>new(r,s)</c>.
+							This assigns the member <c>rank</c> the value <c>r</c> and <c>suit</c> the value <c>s</c>.
 						</p>
 					</li>
 				</ul>
 			</p>
 
 			<p>
-				We would also like another constructor that will take an integer between 1 and 52 and returns the appropriate card. The following example will do this.
+				We would also like another constructor that will take an integer between 1 and 52 and returns the appropriate card.
+				The following example will do this.
 			</p>
 
 
@@ -314,7 +356,9 @@ end
 			</program>
 
 			<p>
-				And if you get the error that you cannot redefine <c>Card</c>, then again, restart the kernel.  The big difference with this definition is a second constructor function on lines 13-16 is another function with name <c>Card</c>. The important parts of this second constructor is
+				And if you get the error that you cannot redefine <c>Card</c>, then again, restart the kernel.
+				The big difference with this definition is a second constructor function on lines 13-16 is another function with name <c>Card</c>.
+				The important parts of this second constructor is
 			</p>
 
 			<p>
@@ -327,19 +371,23 @@ end
 
 					<li>
 						<p>
-							Line 12 checks that the input <c>i</c> is between 1 and 52.  If not an error is thrown.
+							Line 12 checks that the input <c>i</c> is between 1 and 52.
+							If not an error is thrown.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							Line 15 defines the new <c>Card</c>.  First, the <c>mod1</c> function performs modular division except that instead of <c>mod(4,4)=0</c>, then <c>mod1(4,4)=4</c>, it shifts the 0 remainder to remainder <c>n</c>.  This is helpful for situations like this or accessing arrays that are 1-indexed.
+							Line 15 defines the new <c>Card</c>.
+							First, the <c>mod1</c> function performs modular division except that instead of <c>mod(4,4)=0</c>, then <c>mod1(4,4)=4</c>, it shifts the 0 remainder to remainder <c>n</c>.
+							This is helpful for situations like this or accessing arrays that are 1-indexed.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							The second part of the <c>Card</c> is <c>div(i-1,13)+1</c>.  This will also shift values that have 0 modulus to the proper rank.
+							The second part of the <c>Card</c> is <c>div(i-1,13)+1</c>.
+							This will also shift values that have 0 modulus to the proper rank.
 						</p>
 					</li>
 				</ul>
@@ -347,11 +395,16 @@ end
 
 			<remark>
 				<p>
-					Notice that we have 3 different versions of the <c>Card</c> type. In the first version, only the members were defined.  There were no constructors.  Often, this is all that is needed for a type/struct, however, if you need to do some checking on arguments, then you will need to write a constructor or two.
+					Notice that we have 3 different versions of the <c>Card</c> type.
+					In the first version, only the members were defined.
+					There were no constructors.
+					Often, this is all that is needed for a type/struct, however, if you need to do some checking on arguments, then you will need to write a constructor or two.
 				</p>
 
 				<p>
-					If you do use a constructor, define it as a function with the same name as the type (the case must be the same as well). The last line in constructor function should either be the <c>new</c> function that fills the member fields in the same order as listed in the struct or you can call other constructors. See <url href="https://docs.Julialang.org/en/latest/manual/constructors/\#man-constructors-1" visual="Julialang.org">additional information about constructors in the Julia Documentation</url>
+					If you do use a constructor, define it as a function with the same name as the type (the case must be the same as well).
+					The last line in constructor function should either be the <c>new</c> function that fills the member fields in the same order as listed in the struct or you can call other constructors.
+					See <url href="https://docs.Julialang.org/en/latest/manual/constructors/\#man-constructors-1" visual="Julialang.org">additional information about constructors in the Julia Documentation</url>
 				</p>
 			</remark>
 		</subsection>
@@ -373,7 +426,9 @@ end
 			</p>
 
 			<p>
-				which is just an array of cards. (Note: there is nothing here that specifies that the Hand has to be 5 cards, but that could be included by doing some error checking in the constructor).  An example hand would be
+				which is just an array of cards.
+				(Note: there is nothing here that specifies that the Hand has to be 5 cards, but that could be included by doing some error checking in the constructor).
+				An example hand would be
 			</p>
 
 			<p>
@@ -401,7 +456,11 @@ end
 			</p>
 
 			<p>
-				A note about the <c>Base.show</c> function for the <c>Hand</c>.  As with the <c>Base.show</c> for the <c>Card</c> type, the arguments are something of type <c>IO</c> and then something of type <c>Hand</c>. The function then calls <c>print</c> with the second argument a <c>String</c>.  The main part of this is the <c>join</c> command which takes an array of strings and joins (recall this from <xref ref="sect-join-split"/>) them separated by the second argument, <c>", "</c>. The rest of this just surrounds them by square brackets.
+				A note about the <c>Base.show</c> function for the <c>Hand</c>.
+				As with the <c>Base.show</c> for the <c>Card</c> type, the arguments are something of type <c>IO</c> and then something of type <c>Hand</c>.
+				The function then calls <c>print</c> with the second argument a <c>String</c>.
+				The main part of this is the <c>join</c> command which takes an array of strings and joins (recall this from <xref ref="sect-join-split"/>) them separated by the second argument, <c>", "</c>.
+				The rest of this just surrounds them by square brackets.
 			</p>
 		</subsection>
 	</section>
@@ -411,7 +470,8 @@ end
 
 		<introduction>
 			<p>
-				Recall that a polynomial is the sum of nonnegative powers of <m>x</m> with constant coefficients.  That is anything of the form:
+				Recall that a polynomial is the sum of nonnegative powers of <m>x</m> with constant coefficients.
+				That is anything of the form:
 			</p>
 
 			<p>
@@ -421,7 +481,9 @@ end
 			</p>
 
 			<p>
-				and we may want to solve problems with them and it may be helpful to have a data type of this form.  We can represent any polynomial by the coefficients. For example, the following will construct a datatype that is a polynomial with integer coefficients<fn>As well will see in <xref ref="ch-lin-alg-intro"/>, a <c>Vector</c> is shorthand or an alias for a 1D array</fn>:
+				and we may want to solve problems with them and it may be helpful to have a data type of this form.
+				We can represent any polynomial by the coefficients.
+				For example, the following will construct a datatype that is a polynomial with integer coefficients<fn>As well will see in <xref ref="ch-lin-alg-intro"/>, a <c>Vector</c> is shorthand or an alias for a 1D array</fn>:
 			</p>
 
 			<p>
@@ -443,7 +505,8 @@ end
 			</p>
 
 			<p>
-				Let's say that we want to construct methods to add, subtract, multiply two polynomials and perform a scalar multiply as well. However, if we want to allow Polynomials with coefficients other than integer coefficients, such as rational or real or complex, then we would need to write a set of functions to do this for each datatype, which is 1) painfully dull, 2) hard to maintain since there are many copies of the same function and 3) unnecessary because Julia has a nice feature called a parametric type.
+				Let's say that we want to construct methods to add, subtract, multiply two polynomials and perform a scalar multiply as well.
+				However, if we want to allow Polynomials with coefficients other than integer coefficients, such as rational or real or complex, then we would need to write a set of functions to do this for each datatype, which is 1) painfully dull, 2) hard to maintain since there are many copies of the same function and 3) unnecessary because Julia has a nice feature called a parametric type.
 			</p>
 
 			<p>
@@ -459,7 +522,10 @@ end
 			</p>
 
 			<p>
-				which has Polynomial that has a type <c>T</c>. This now allows with one definition to have a polynomial of integers, floats, complex and rationals. However, this would also allow us to define a polynomial of strings or <c>Card</c>s, which doesn't make any sense.  We can restrict the coefficients to number types with
+				which has Polynomial that has a type <c>T</c>.
+				This now allows with one definition to have a polynomial of integers, floats, complex and rationals.
+				However, this would also allow us to define a polynomial of strings or <c>Card</c>s, which doesn't make any sense.
+				We can restrict the coefficients to number types with
 			</p>
 
 			<p>
@@ -471,7 +537,9 @@ end
 			</p>
 
 			<p>
-				which defines the coefficients to be a <c>Vector</c> of type <c>T</c> and <c>T</c> from the first line is any subtype of <c>Number</c>, which is what the notation <c> &lt;: Number</c> means.  Recall that <xref ref="ch-data-types"/> explain the data typing system and how to determine subtypes of a type.  If a <c>struct</c> is created in a way like this to depend on a type, it is called a <term>parametric type</term>.
+				which defines the coefficients to be a <c>Vector</c> of type <c>T</c> and <c>T</c> from the first line is any subtype of <c>Number</c>, which is what the notation <c> &lt;: Number</c> means.
+				Recall that <xref ref="ch-data-types"/> explain the data typing system and how to determine subtypes of a type.
+				If a <c>struct</c> is created in a way like this to depend on a type, it is called a <term>parametric type</term>.
 			</p>
 
 			<p>
@@ -493,11 +561,14 @@ end
 			</p>
 
 			<p>
-				The beginning of the output, <c>Polynomial{Int64}</c> explains that it is a type polynomial.  The <c>Int64</c> within the <c>Polynomial</c> type explains what type the coefficients have.  If you enter the variable name, like <c>poly3</c>, then you will see the type of the coefficient (type <c>Rational{Int64}</c>) for that variable as well.
+				The beginning of the output, <c>Polynomial{Int64}</c> explains that it is a type polynomial.
+				The <c>Int64</c> within the <c>Polynomial</c> type explains what type the coefficients have.
+				If you enter the variable name, like <c>poly3</c>, then you will see the type of the coefficient (type <c>Rational{Int64}</c>) for that variable as well.
 			</p>
 
 			<p>
-				It would be nice if the result looked like a polynomial. In this case, we can use the <c>Base.show</c> command.
+				It would be nice if the result looked like a polynomial.
+				In this case, we can use the <c>Base.show</c> command.
 			</p>
 
 			<p>
@@ -509,14 +580,18 @@ end
 			</p>
 
 			<p>
-				Now, if we reevaluate <c>poly5</c>, then Julia returns <c>1 x^0 + 2 x^1 + 3 x^2 + 4 x^3 + 5 x^4 + 6 x^5</c>. The <c>Base.show</c> command is complicated, so let's break this down a bit
+				Now, if we reevaluate <c>poly5</c>, then Julia returns <c>1 x^0 + 2 x^1 + 3 x^2 + 4 x^3 + 5 x^4 + 6 x^5</c>.
+				The <c>Base.show</c> command is complicated, so let's break this down a bit
 			</p>
 
 			<p>
 				<ul>
 					<li>
 						<p>
-							The first argument is of type <c>IO</c>.  Note that we also call the argument <c>io</c>. It doesn't matter what it is called, but we'll always use <c>io</c> in this book. The second argument is of type <c>Polynomial</c>.
+							The first argument is of type <c>IO</c>.
+							Note that we also call the argument <c>io</c>.
+							It doesn't matter what it is called, but we'll always use <c>io</c> in this book.
+							The second argument is of type <c>Polynomial</c>.
 						</p>
 					</li>
 
@@ -528,37 +603,48 @@ end
 
 					<li>
 						<p>
-							Recall from section <xref ref="sect-reduce-array"/> that the <c>mapreduce</c> function takes an array and two functions and returns a single value.  In this case, our array is the integers from 1 to the length of the <c>coeffs</c> field of the struct (or more precisely the range <c>1:length(p.coeffs)</c>).
+							Recall from section <xref ref="sect-reduce-array"/> that the <c>mapreduce</c> function takes an array and two functions and returns a single value.
+							In this case, our array is the integers from 1 to the length of the <c>coeffs</c> field of the struct (or more precisely the range <c>1:length(p.coeffs)</c>).
 						</p>
 					</li>
 
 					<li>
 						<p>
-							The first function is the mapping function.  It takes the indices of the array and in case produces the term of the polynomial.
+							The first function is the mapping function.
+							It takes the indices of the array and in case produces the term of the polynomial.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							The second function of the <c>mapreduce</c> function performs a concatentation.  The current string is <c>str</c>, which is the cumulating string and <c>term</c> is the result of the mapping function.  This concatenation is just that using string interpolation.
+							The second function of the <c>mapreduce</c> function performs a concatentation.
+							The current string is <c>str</c>, which is the cumulating string and <c>term</c> is the result of the mapping function.
+							This concatenation is just that using string interpolation.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							The array that is used for the <c>reduce</c> is the <c>UnitStep</c> <c>1:length(p.coeffs)</c> instead of the coefficients themselves.  This allows the powers of x to be generated.
+							The array that is used for the <c>reduce</c> is the <c>UnitStep</c> <c>1:length(p.coeffs)</c> instead of the coefficients themselves.
+							This allows the powers of x to be generated.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							This isn't perfect.  For example, if there are negative coefficients, then you'll see a +- for a term.  This can be taken care of with another ternary <c>if-then-else</c>. Also, it would be nice to eliminate the <c>x^0</c> term (because it is just 1 as well as instead of writing <c>x^1</c> write <c>x</c>, but this is just a little icing).  Lastly, if you have a term with a 0 coefficient, you will see it and it might be nice to just skip writing the term.
+							This isn't perfect.
+							For example, if there are negative coefficients, then you'll see a +- for a term.
+							This can be taken care of with another ternary <c>if-then-else</c>.
+							Also, it would be nice to eliminate the <c>x^0</c> term (because it is just 1 as well as instead of writing <c>x^1</c> write <c>x</c>, but this is just a little icing).
+							Lastly, if you have a term with a 0 coefficient, you will see it and it might be nice to just skip writing the term.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							Note that there are many other ways to write this <c>Base.show</c> for a polynomial.  One way would be to use a <c>for</c> loop to go through the polynomials.  I used a <c>mapreduce</c> to show another example of how to use this function in practical way.
+							Note that there are many other ways to write this <c>Base.show</c> for a polynomial.
+							One way would be to use a <c>for</c> loop to go through the polynomials.
+							I used a <c>mapreduce</c> to show another example of how to use this function in practical way.
 						</p>
 					</li>
 				</ul>
@@ -570,7 +656,8 @@ end
 			<title>Adding Two Polynomials</title>
 
 			<p>
-				Another nice thing that we'd like to do is have an add command and use the symbol <c>+</c> for this.  However, if we enter <c>poly1+poly2</c>, then we get the error:
+				Another nice thing that we'd like to do is have an add command and use the symbol <c>+</c> for this.
+				However, if we enter <c>poly1+poly2</c>, then we get the error:
 			</p>
 
 			<p>
@@ -603,7 +690,10 @@ end
 			</p>
 
 			<p>
-				and then we can rerun the function <c>+</c> above.  This is now a function that adds two polynomials.  Note that the coefficients do not need to be the same type, so there are two types, <c>T</c> and <c>S</c> available. If we now enter <c>poly1+poly2</c>, the result is <c>2.0 x^0 + 4.0 x^1 + 6.0 x^2</c>.
+				and then we can rerun the function <c>+</c> above.
+				This is now a function that adds two polynomials.
+				Note that the coefficients do not need to be the same type, so there are two types, <c>T</c> and <c>S</c> available.
+				If we now enter <c>poly1+poly2</c>, the result is <c>2.0 x^0 + 4.0 x^1 + 6.0 x^2</c>.
 			</p>
 
 			<p>
@@ -630,7 +720,8 @@ end
 				<task>
 					<statement>
 						<p>
-							multiply a polynomial by a constant.  (you'll need to <c>import Base.*</c>)
+							multiply a polynomial by a constant.
+							(you'll need to <c>import Base.*</c>)
 						</p>
 					</statement>
 				</task>
@@ -639,7 +730,8 @@ end
 				<task>
 					<statement>
 						<p>
-							multiply two polynomials.  Note: remember to multiply polynomials you need to distribute (aka FOIL), not just multiply the coefficients.
+							multiply two polynomials.
+							Note: remember to multiply polynomials you need to distribute (aka FOIL), not just multiply the coefficients.
 						</p>
 					</statement>
 				</task>
@@ -651,7 +743,9 @@ end
 			<title>Evaluating the polynomial</title>
 
 			<p>
-				Another helpful function is to actually evaluate the polynomial. The basic way to do this is to sum the terms of the polynomial.  A possible way to write this is using the reduce function that we saw in <xref ref="sect-reduce-array"/>.
+				Another helpful function is to actually evaluate the polynomial.
+				The basic way to do this is to sum the terms of the polynomial.
+				A possible way to write this is using the reduce function that we saw in <xref ref="sect-reduce-array"/>.
 			</p>
 
 			<p>
@@ -679,32 +773,38 @@ end
 			</p>
 
 			<p>
-				We have used <c>reduce</c> for each of these evaluation methods. Let's dive into these a bit more
+				We have used <c>reduce</c> for each of these evaluation methods.
+				Let's dive into these a bit more
 			</p>
 
 			<p>
 				<ul>
 					<li>
 						<p>
-							The definition of the function is identical in both methods.  Recall that since <c>Polynomial</c> is a parametric type (that is, it has multiple subtypes) and we want the type to be a subtype of <c>Number</c>.
+							The definition of the function is identical in both methods.
+							Recall that since <c>Polynomial</c> is a parametric type (that is, it has multiple subtypes) and we want the type to be a subtype of <c>Number</c>.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							In the first eval method, the function is the terms themselves, <c>poly.coeffs[i]*x^(i-1)</c> and like the <c>Base.show</c> function above, the array used in <c>1:length(poly.coeffs)</c> not the coefficients.  This allows the use of the powers.
+							In the first eval method, the function is the terms themselves, <c>poly.coeffs[i]*x^(i-1)</c> and like the <c>Base.show</c> function above, the array used in <c>1:length(poly.coeffs)</c> not the coefficients.
+							This allows the use of the powers.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							In the section method (Horner's method), again we use <c>reduce</c> however is much simpler.  First, the innermost part of the method is <c>a_{n-1} + a_n * x</c>, and this is exactly the function used above, where <c>val</c> is the cumulative value going through the coefficients. Also, note that we needed to reverse the coefficient array because it's important that we go inside out--that is, the last coefficient is used first.
+							In the section method (Horner's method), again we use <c>reduce</c> however is much simpler.
+							First, the innermost part of the method is <c>a_{n-1} + a_n * x</c>, and this is exactly the function used above, where <c>val</c> is the cumulative value going through the coefficients.
+							Also, note that we needed to reverse the coefficient array because it's important that we go inside out--that is, the last coefficient is used first.
 						</p>
 					</li>
 
 					<li>
 						<p>
-							Reduce also has an <c>init</c> option that we didn't use here.  This is because initially these are both 0 and that is the default.
+							Reduce also has an <c>init</c> option that we didn't use here.
+							This is because initially these are both 0 and that is the default.
 						</p>
 					</li>
 				</ul>
@@ -716,7 +816,11 @@ end
 		<title>A Rootfinding datatype</title>
 
 		<p>
-			The last example of a new data type will be related to finding the root of a function. We explored this in <xref ref="ch-rootfinding"/>.  One major issue with that function is that if Newton's method did not find the root, it wasn't clear if it was a root or just that the algorithm stopped because it reached 10 steps.  There was no way that you (the user) knew which case occurred.  We will use a <c>struct</c> to store the information about the rootfinding in this section which then conveys what happens.
+			The last example of a new data type will be related to finding the root of a function.
+			We explored this in <xref ref="ch-rootfinding"/>.
+			One major issue with that function is that if Newton's method did not find the root, it wasn't clear if it was a root or just that the algorithm stopped because it reached 10 steps.
+			There was no way that you (the user) knew which case occurred.
+			We will use a <c>struct</c> to store the information about the rootfinding in this section which then conveys what happens.
 		</p>
 
 		<p>
@@ -761,13 +865,16 @@ end
 		</program>
 
 		<p>
-			and then return an object of type <c>Root</c>.  Thus we will replace the function <c>newton</c> above with
+			and then return an object of type <c>Root</c>.
+			Thus we will replace the function <c>newton</c> above with
 		</p>
 
 
 		<program language="Julia" line-numbers="yes">
 			<code>
 function newton(f::Function, x0::Number; tol::Real = 1e-6, max_steps = 10)
+  tol &gt; 0 || throw(ArgumentError("The parameter tol much be positive"))
+  max_steps &gt; 0 || throw(ArgumentError("The parameter max_steps much be positive"))
   local dx
   for i = 1:max_steps
     dx = f(x0)/ForwardDiff.derivative(f, x0)
@@ -779,11 +886,18 @@ end
 			</code>
 		</program>
 
-<p>
-			and note that we store extra information that is returned.  Note that are a few main changes.  First, we need to declare <c>dx</c> outside the loop because it is needed below. Secondly, we added the index of the loop to be the variable <c>i</c> since we need it for the number of steps returned.  Lastly, we return the <c>Root</c> object in two different ways.  Inside the loop we test if the <c>dx</c> value is within <c>tol</c>, the we return the <c>Root</c> with all of the values.
-</p>
 		<p>
-	 If we reach the end of the for loop, the last line is reached, which means Newton's method doesn't converge.  Let's run Newton's method on <m>f(x)=x^2-2</m> as an example by evaluating
+			and note that we store extra information that is returned.
+			Note that are a few main changes.
+			First, we need to declare <c>dx</c> outside the loop because it is needed below.
+			Secondly, we added the index of the loop to be the variable <c>i</c> since we need it for the number of steps returned.
+			Lastly, we return the <c>Root</c> object in two different ways.
+			Inside the loop we test if the <c>dx</c> value is within <c>tol</c>, the we return the <c>Root</c> with all of the values.
+		</p>
+
+		<p>
+			If we reach the end of the for loop, the last line is reached, which means Newton's method doesn't converge.
+			Let's run Newton's method on <m>f(x)=x^2-2</m> as an example by evaluating
 		</p>
 
 		<p>
@@ -791,7 +905,8 @@ end
 		</p>
 
 		<p>
-			returns <c>Root(1.4142135623730951, 1.5947429102833119e-12, 4.440892098500626e-16, 5, true, 10)</c>, which again gives a lot of information, but perhaps not very easy to read since you would need to know each of the fields and what each means.  We could then create a <c>Base.show</c> function to help with readability:
+			returns <c>Root(1.4142135623730951, 1.5947429102833119e-12, 4.440892098500626e-16, 5, true, 10)</c>, which again gives a lot of information, but perhaps not very easy to read since you would need to know each of the fields and what each means.
+			We could then create a <c>Base.show</c> function to help with readability:
 		</p>
 
 
@@ -812,7 +927,9 @@ end
 		</program>
 
 		<p>
-			which will print out different information if it converges or not.  Notice also that we have used the string interpolation <c>$( )</c> explained in <xref ref="ch-variables"/>, however need to include the parentheses around these variables because we want the field to be looked up.  (You can remove the <c>()</c> around one of the variables to see what happens--there will be an error.)
+			which will print out different information if it converges or not.
+			Notice also that we have used the string interpolation <c>$( )</c> explained in <xref ref="ch-variables"/>, however need to include the parentheses around these variables because we want the field to be looked up.
+			(You can remove the <c>()</c> around one of the variables to see what happens--there will be an error.)
 		</p>
 
 		<p>
@@ -829,7 +946,10 @@ end
 		</p>
 
 		<p>
-			and then if we run it on a function that does not have a root. Recall in <xref ref="ch-rootfinding"/>, we ran Newton's method on <m>f(x)=x^2+1</m>.  Since <m>x^2</m> is nonnegative then the function <m>x^2+1</m> is positive and so never is zero.  If we enter <c>newton(x-&gt;x^2+1,1.1)</c> then the result is
+			and then if we run it on a function that does not have a root.
+			Recall in <xref ref="ch-rootfinding"/>, we ran Newton's method on <m>f(x)=x^2+1</m>.
+			Since <m>x^2</m> is nonnegative then the function <m>x^2+1</m> is positive and so never is zero.
+			If we enter <c>newton(x-&gt;x^2+1,1.1)</c> then the result is
 		</p>
 
 		<p>
@@ -856,7 +976,8 @@ end
 			<task>
 				<statement>
 					<p>
-						Extend the <c>Root</c> struct to include an array of the x values that save all of the steps of Newton's method.  (Recall that you will need to restart the kernel to change the <c>struct</c>).
+						Extend the <c>Root</c> struct to include an array of the x values that save all of the steps of Newton's method.
+						(Recall that you will need to restart the kernel to change the <c>struct</c>).
 					</p>
 				</statement>
 			</task>
@@ -865,7 +986,9 @@ end
 			<task>
 				<statement>
 					<p>
-						Store the <c>x</c> values that Newton's method iterates through and then assign them to the <c>Root</c> datatype. You will need to update the <c>newton</c> method. Before the <c>while</c> loop, set the array equal to the initial point <c>x1</c> and each time in the while loop perform, push the new value of <c>x1</c> to the end of the array.
+						Store the <c>x</c> values that Newton's method iterates through and then assign them to the <c>Root</c> datatype.
+						You will need to update the <c>newton</c> method.
+						Before the <c>while</c> loop, set the array equal to the initial point <c>x1</c> and each time in the while loop perform, push the new value of <c>x1</c> to the end of the array.
 					</p>
 				</statement>
 			</task>

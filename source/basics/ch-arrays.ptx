@@ -680,7 +680,7 @@
 		</p>
 	</section>
 
-	<section>
+	<section xml:id="sect-other-array-functions">
 		<title>Other Nice Array Functions</title>
 
 		<introduction>

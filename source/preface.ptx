@@ -5,7 +5,41 @@
     <title>Preface to Instructors</title>
 
     <p>
-      Say some things to instructors
+      This text has arisen from more than ten years of teaching a class called <em>Scientific Computing</em> at <url href="www.fitchburgstate.edu" >Fitchburg State University</url>, a regional state university in the Massachusetts system.
+      When I proposed this class and then starting preparing it, one of the questions I had was what computing language I would use.
+    </p>
+
+    <p>
+      I have often said to my students that it doesn't matter what the language is, it the ideas and the techniques that are transferrable to other language.
+      Possibly because of this philosophy, I felt that I had free reign to explore some less known languages.
+      I was looking at Python in that our Computer Science Department teaches that for the introductory course, so most of the students would already know that.
+      This was when I stumbled across  <url href="https://arstechnica.com/science/2014/05/scientific-computings-future-can-any-coding-language-top-a-1950s-behemoth/"> an interesting article</url> by Lee Philips in Ars Technica about a new langague designed from the ground up for doing Scientific Computing.
+      From it's inception, Julia was designed to be scriptable (for easy of development) as well as the ability to integrate well-established code in Fortran, C and C++ packages.
+      I decided to gamble and use it.
+    </p>
+
+    <p>
+      Needless to say I either had wonderful forsight or just got lucky, but the last decade, Julia has been a juggernaut in this field.
+      I recall from around the turn of the 21st century, there was a big push in using octave, an open-source Matlab clone, but I hear almost nothing about that lately in that if your are doing scientific computing and don't use commercial software that Julia is the place to be.
+    </p>
+
+    <p>
+      It's nice to say (as I did above) that the specific language used doesn't matter, but the concepts are important, but that's not really true.
+      It's basically impossible to write a book where you actually want to get something done and just write pseudocode.
+      That also being said, the techniques that are important are generally dependent on the choice of language.
+    </p>
+
+    <p>
+      Another question may arise, why write a book these days?  Everybody either googles or does using AI to solve all a coding question.
+      Although true, this is perhaps the reason why to do this.
+      If you need to know a single thing, web searches are fine, however if if you are wanting to learn a tool or a language in depth, it better to learn with a single source like book.
+      When discussing a topic, I put it in context and there are references to other sections, the julia documentation or other locations.
+    </p>
+
+    <p>
+      So why choose this book?  I'm a strong believer in Open Education Resources and many books that I have released an open license.
+      This book is free and open source.
+      Also, I teach this class every two years and generally update the book with each time I teach it keeping it fresh with whatever the current items are.
     </p>
   </paragraphs>
 
@@ -14,7 +48,37 @@
     <title>Preface to Students</title>
 
     <p>
-      Say some things to students
+      First, if you are a student and reading this, kudos to you, I would predict less than 1% of student read the preface unless it is assigned to you.
+      It's not necessary to read the preface, but it does give some insight into the author and where they are coming from.
+    </p>
+
+    <p>
+      To you, the student, I would recommend reading the section geared toward instructors.
+      IMHO, there is some interesting discussion about how I ended up with Julia and my background.
+    </p>
+  </paragraphs>
+
+
+  <paragraphs>
+    <title>How to Use This Book</title>
+
+    <p>
+      There is often a section in many textbooks or other technical books on how to use this book and there is the general answer of "Any way you want to."  One aspect of writing a book is that once it is out there and someone is using it, the author has no control--and perhaps this is even more true with a open text with a Create Commons license.
+    </p>
+
+    <p>
+      However, as I have mentioned above, a book will give you more context and hopefully deeper understand than a quick web or AI search.
+      I have tried to give insight into aspects of the Julia language that are important as one has Scientific Computing problems to solve.
+    </p>
+
+    <p>
+      As an example, in <xref ref="part-plotting"/>, I spend time discussing plotting in Julia, an important part of Scientific Computing in that you often show visually difficult or complex structures.
+      It it easy to google for how to do a function, contour or barplot in Makie, for example, but to use Makie effectively and make more complex plots, you need a firm understanding of the plotting system.
+    </p>
+
+    <p>
+      Therefore, I include the caveat that you the reader can use this book in any way that you want, I would highly recommended reading chapters carefully and make sure that you have the proper background.
+      See below on the structure of the textbook for help on understanding how the text is set up.
     </p>
   </paragraphs>
 </preface>

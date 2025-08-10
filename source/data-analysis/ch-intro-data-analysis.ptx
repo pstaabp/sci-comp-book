@@ -1,201 +1,256 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <chapter xml:id="ch-data">
-	<title>Introduction to Data Analysis</title>
+  <title>Introduction to Data Analysis</title>
 
-	<introduction>
-		<p>
-			Data is ubiquitous these days and being able to analyze it is crucial.  In this section, we will first load a dataset that is available as a Julia package, plot the data and do some basic analysis of <c>DataFrame</c>s.  Then, data will be loaded from a file.  In addition, a package will be used to string together operation on dataframes.
-		</p>
-	</introduction>
+  <objectives>
+    <ul>
+      <li>
+        <p>
+          Accessing data and from packages.
+        </p>
+      </li>
 
-	<section>
-		<title>Data from the <c>RDatasets</c> package</title>
+      <li>
+        <p>
+          Basics of dataframes, the essential part of doing data analysis.
+        </p>
+      </li>
 
-		<p>
-			The statistical software/language called R has many built-in and loadable datasets. A julia package called <c>RDatasets</c> has many of these datasets and additionally we will use the  <c>StatsPlots</c> package.  You will probably need to add these packages before
-		</p>
+      <li>
+        <p>
+          Chaining functions together with a pipe command or the chain macro.
+        </p>
+      </li>
 
-		<p>
-			<cd>
-			<cline>using RDatasets, StatsPlots</cline>
-			</cd>
-		</p>
+      <li>
+        <p>
+          Loading data from a CSV or excel file.
+        </p>
+      </li>
+    </ul>
+  </objectives>
 
-		<p>
-			The datasets are subdivided into package and you can see the entire list of the packages with
-		</p>
+  <introduction>
+    <p>
+      Data is ubiquitous these days and being able to analyze it is crucial.
+      In this section, we will first load a dataset that is available as a Julia package, plot the data and do some basic analysis of <c>DataFrame</c>s.
+      Then, data will be loaded from a file.
+      In addition, a package will be used to string together operation on dataframes.
+    </p>
+  </introduction>
 
-		<p>
-			<cd>
-			<cline>RDatasets.packages()</cline>
-			</cd>
-		</p>
+  <section>
+    <title>Data from the <c>RDatasets</c> package</title>
 
-		<p>
-			The top of this output looks like:
-		</p>
+    <p>
+      The statistical software/language called R has many built-in and loadable datasets.
+      A julia package called <c>RDatasets</c> has many of these datasets an ensure that these are downloaded and then use <c>using RDataSets</c>.
+    </p>
 
-		<p>
-			<cd>
-			<cline>34×2 DataFrame                       9 rows omitted</cline>
-			<cline>  Row  Package   Title</cline>
-			<cline>       String15  String</cline>
-			<cline>  1    COUNT     Functions, data and code for count data.</cline>
-			<cline>  2    Ecdat     Data sets for econometrics</cline>
-			<cline>  3    HSAUR     A Handbook of Statistical Analyses Using R (1st Edition)</cline>
-			<cline>  4    HistData  Data sets from the history of statistics and data visualization</cline>
-			</cd>
-		</p>
-
-		<p>
-			Each of these is a package and a listing of all of the datasets in given package can be found with
-		</p>
-
-		<p>
-			<cd>
-			<cline>RDatasets.datasets("datasets")</cline>
-			</cd>
-		</p>
-
-		<p>
-			as an example.  The top of this looks like:
-		</p>
-
-		<p>
-			<cd>
-			<cline>50×5 DataFrame                                        25 rows omitted</cline>
-			<cline> Row Package   Dataset          Title                                   Rows  Columns</cline>
-			<cline>     String15  String31         String                                 Int64  Int64</cline>
-			<cline>  1  datasets  BOD              Biochemical Oxygen Demand                   6  2</cline>
-			<cline>  2  datasets  CO2              Carbon Dioxide Uptake in Grass Plants      84  5</cline>
-			<cline>  3  datasets  Formaldehyde     Determination of Formaldehyde               6  2</cline>
-			<cline>  4  datasets  HairEyeColor     Hair and Eye Color of Statistics Students  32  4</cline>
-			<cline>  5  datasets  InsectSprays     Effectiveness of Insect Sprays             72  2</cline>
-			<cline>  6  datasets  LifeCycleSavings Intercountry Life-Cycle Savings Data       50  6</cline>
-			<cline>  7  datasets  Loblolly         Growth of Loblolly pine trees              84  4</cline>
-			</cd>
-		</p>
-
-		<p>
-			Each row in this table is now a dataset with given number of rows/column.  We can load the dataset with the <c>dataset</c> function and it is not exported from the module, so must be called as the full path.  For example, we can load the classsic <c>iris</c> dataset from this to view:
-		</p>
-
-		<p>
-			<cd>
-			<cline>iris=RDatasets.dataset("datasets","iris")</cline>
-			</cd>
-		</p>
-
-		<p>
-			The top of the dataset returns as:
-		</p>
-
-		<p>
-			<cd>
-			<cline>150×5 DataFrame                                 125 rows omitted</cline>
-			<cline>  Row  SepalLength  SepalWidth	PetalLength   PetalWidth  Species</cline>
-			<cline>       Float64      Float64	    Float64     Float64     Cat…</cline>
-			<cline>  1    5.1          3.5	        1.4         0.2         setosa</cline>
-			<cline>  2    4.9          3.0	        1.4         0.2         setosa</cline>
-			<cline>  3    4.7          3.2	        1.3         0.2         setosa</cline>
-			<cline>  4    4.6          3.1	        1.5         0.2         setosa</cline>
-			<cline>  5    5.0          3.6	        1.4         0.2         setosa</cline>
-			<cline>  6    5.4          3.9	        1.7         0.4         setosa</cline>
-			</cd>
-		</p>
-
-		<p>
-			The first line of the output of the dataset shows the size (number of rows and then number of columns).  The second line is the column names, the third line is the datatype for each column. The first column is row number (not part of the dataset).   The last column is a categorical datatype and more will be said about this later.
-		</p>
-	</section>
-
-	<section>
-		<title>Dataframes</title>
-
-		<introduction>
-			<p>
-				In some ways, a DataFrame is like a 2D array in terms of accessing parts of the array, but in many ways it is very different.  Notice that the columns of the <c>iris</c> <c>DataFrame</c> are different types, but it is important that each column has a fixed data type.  This data type is always at the top of the column.
-			</p>
-
-			<p>
-				This is very different than a 2D array in that the entire array must have the same type. Julia has the ability to have an array of <c>Any</c> and then anything can go there, but anytime julia doesn't know a data type, it slows down calculations tremendously. A better way to think of a DataFrame is that of a collection of Vectors (1D arrays), where each array (column) has a name.
-			</p>
-
-			<p>
-				We can access the DataFrame using some of the syntax from arrays.  For example, <c>iris[2,3]</c> will return the element in the 2nd row and 3rd column. Many of the array accessing methods from <xref ref="ch-arrays"/> also work.
-			</p>
-
-			<p>
-				There are other nice features though as typically we want to do things on columns.   For example: <c>iris[!,:PetalLength]</c> returns a 1D Array (of <c>Float64</c>).  The ! in the first slot means to use all rows.  If we want the 11th through the 20th row of the <c>SepalWidth</c> column, enter
-			</p>
-
-			<p>
-				<cd>
-				<cline>iris[11:20,:SepalWidth]</cline>
-				</cd>
-			</p>
-
-			<p>
-				which returns
-			</p>
-
-			<p>
-				<cd>
-				<cline>10-element Vector{Float64}:</cline>
-				<cline>  3.7</cline>
-				<cline>  3.4</cline>
-				<cline>  3.0</cline>
-				<cline>  3.0</cline>
-				<cline>  4.0</cline>
-				<cline>  4.4</cline>
-				<cline>  3.9</cline>
-				<cline>  3.5</cline>
-				<cline>  3.8</cline>
-				<cline>  3.8</cline>
-				</cd>
-			</p>
-
-			<p>
-				A perhaps-confusing result of using a <c>DataFrame</c> in a Jupyter notebook, is that there is a limit on the number of columns and rows shown.  There is a fixed number of rows (25) shown at the top and bottom of the data frame.  To change this (and often I think it shows too many rows), set the <c>DATAFRAMES_ROWS</c> variable in the following way:
-			</p>
-
-			<p>
-				<cd>
-				<cline>ENV["DATAFRAMES_ROWS"] = 10</cline>
-				</cd>
-			</p>
-
-			<p>
-				You may also see at the top of the output for a DataFrame that it may say that some of the columns are hidden.  The default number of columns is 100 and in most environments, generally you can scroll left and right to see all of the columns. To change the number of columns, set the <c>DATAFRAMES_COLUMNS</c>, like above.  (I haven't had a dataset with more than this number of columns.)
-			</p>
-		</introduction>
+    <p>
+      The datasets are subdivided into package and you can see the entire list of the packages with
+    </p>
 
 
-		<subsection>
-			<title>Constructing a DataFrame</title>
+    <program language="julia">
+      <code>
+    RDatasets.packages()
+      </code>
+    </program>
 
-			<p>
-				Although nearly always, you will use a DataFrame by loading in a dataset, a DataFrame can be created by specifying the columns. Consider:
-			</p>
+    <p>
+      The top of this output looks like:
+    </p>
 
-			<p>
-				<cd>
-				<cline>data = DataFrame(</cline>
-				<cline>  A = 1:2:13,</cline>
-				<cline>  B = ["M", "F", "F", "M", "X", "F", "M"],</cline>
-				<cline>  C = [3.0, 2.5, pi, -2.3, 1/3, 56, 100],</cline>
-				<cline>  D = [(-1)^n//n for n=1:7]</cline>
-				<cline>)</cline>
-				</cd>
-			</p>
+    <p>
+      <cd>
+      <cline>34×2 DataFrame                       9 rows omitted</cline>
+      <cline>  Row  Package   Title</cline>
+      <cline>       String15  String</cline>
+      <cline>  1    COUNT     Functions, data and code for count data.</cline>
+      <cline>  2    Ecdat     Data sets for econometrics</cline>
+      <cline>  3    HSAUR     A Handbook of Statistical Analyses Using R (1st Edition)</cline>
+      <cline>  4    HistData  Data sets from the history of statistics and data visualization</cline>
+      </cd>
+    </p>
 
-			<p>
-				which will create a DataFrame with column names <c>A, B</c> and <c>C</c> and Julia interprets the data types of each column. Note: this can all be put on a single line, but for readibility, the 4 columns are place on separate rows.  The result of this is
-			</p>
+    <p>
+      Each of these is a package and a listing of all of the datasets in given package can be found with
+    </p>
 
-			<p>
-				<cd>
+
+    <program language="julia">
+      <code>
+RDatasets.datasets("datasets")
+      </code>
+    </program>
+
+    <p>
+      as an example.
+      The top of this looks like:
+    </p>
+
+    <p>
+      <cd>
+      <cline>50×5 DataFrame                                        25 rows omitted</cline>
+      <cline> Row Package   Dataset          Title                                   Rows  Columns</cline>
+      <cline>     String15  String31         String                                 Int64  Int64</cline>
+      <cline>  1  datasets  BOD              Biochemical Oxygen Demand                   6  2</cline>
+      <cline>  2  datasets  CO2              Carbon Dioxide Uptake in Grass Plants      84  5</cline>
+      <cline>  3  datasets  Formaldehyde     Determination of Formaldehyde               6  2</cline>
+      <cline>  4  datasets  HairEyeColor     Hair and Eye Color of Statistics Students  32  4</cline>
+      <cline>  5  datasets  InsectSprays     Effectiveness of Insect Sprays             72  2</cline>
+      <cline>  6  datasets  LifeCycleSavings Intercountry Life-Cycle Savings Data       50  6</cline>
+      <cline>  7  datasets  Loblolly         Growth of Loblolly pine trees              84  4</cline>
+      </cd>
+    </p>
+
+    <p>
+      Each row in this table is now a dataset with given number of rows/column.
+      We can load the dataset with the <c>dataset</c> function and it is not exported from the module, so must be called as the full path.
+      For example, we can load the classsic <c>iris</c> dataset from this to view:
+    </p>
+
+
+    <program language="julia">
+      <code>
+    iris=RDatasets.dataset("datasets","iris")
+      </code>
+    </program>
+
+    <p>
+      The top of the dataset returns as:
+    </p>
+
+    <p>
+      <cd>
+      <cline>150×5 DataFrame                                 125 rows omitted</cline>
+      <cline>  Row  SepalLength  SepalWidth	PetalLength   PetalWidth  Species</cline>
+      <cline>       Float64      Float64	    Float64     Float64     Cat…</cline>
+      <cline>  1    5.1          3.5	        1.4         0.2         setosa</cline>
+      <cline>  2    4.9          3.0	        1.4         0.2         setosa</cline>
+      <cline>  3    4.7          3.2	        1.3         0.2         setosa</cline>
+      <cline>  4    4.6          3.1	        1.5         0.2         setosa</cline>
+      <cline>  5    5.0          3.6	        1.4         0.2         setosa</cline>
+      <cline>  6    5.4          3.9	        1.7         0.4         setosa</cline>
+      </cd>
+    </p>
+
+    <p>
+      The first line of the output of the dataset shows the size (number of rows and then number of columns).
+      The second line is the column names, the third line is the datatype for each column.
+      The first column is row number (not part of the dataset).
+      The last column is a categorical datatype and more will be said about this later.
+    </p>
+  </section>
+
+  <section>
+    <title>Dataframes</title>
+
+    <introduction>
+      <p>
+        In some ways, a DataFrame is like a 2D array in terms of accessing parts of the array, but in many ways it is very different.
+        Notice that the columns of the <c>iris</c> <c>DataFrame</c> are different types, but it is important that each column has a fixed data type.
+        This data type is always at the top of the column.
+      </p>
+
+      <p>
+        This is very different than a 2D array in that the entire array must have the same type.
+        Julia has the ability to have an array of <c>Any</c> and then anything can go there, but anytime julia doesn't know a data type, it slows down calculations tremendously.
+        A better way to think of a DataFrame is that of a collection of Vectors (1D arrays), where each array (column) has a name.
+      </p>
+
+      <p>
+        We can access the DataFrame using some of the syntax from arrays.
+        For example, <c>iris[2,3]</c> will return the element in the 2nd row and 3rd column.
+        Many of the array accessing methods from <xref ref="ch-arrays"/> also work.
+      </p>
+
+      <p>
+        There are other nice features though as typically we want to do things on columns.
+        For example: <c>iris[!,:PetalLength]</c> returns a 1D Array (of <c>Float64</c>).
+        The ! in the first slot means to use all rows.
+        If we want the 11th through the 20th row of the <c>SepalWidth</c> column, enter
+      </p>
+
+
+      <program language="julia">
+        <code>
+iris[11:20,:SepalWidth]
+        </code>
+      </program>
+
+      <p>
+        which returns
+      </p>
+
+      <p>
+        <cd>
+        <cline>10-element Vector{Float64}:</cline>
+        <cline>  3.7</cline>
+        <cline>  3.4</cline>
+        <cline>  3.0</cline>
+        <cline>  3.0</cline>
+        <cline>  4.0</cline>
+        <cline>  4.4</cline>
+        <cline>  3.9</cline>
+        <cline>  3.5</cline>
+        <cline>  3.8</cline>
+        <cline>  3.8</cline>
+        </cd>
+      </p>
+
+      <p>
+        A perhaps-confusing result of using a <c>DataFrame</c> in a Jupyter notebook, is that there is a limit on the number of columns and rows shown.
+        There is a fixed number of rows (25) shown at the top and bottom of the data frame.
+        To change this (and often I think it shows too many rows), set the <c>DATAFRAMES_ROWS</c> variable in the following way:
+      </p>
+
+
+      <program language="julia">
+        <code>
+ENV["DATAFRAMES_ROWS"] = 10
+        </code>
+      </program>
+
+      <p>
+        You may also see at the top of the output for a DataFrame that it may say that some of the columns are hidden.
+        The default number of columns is 100 and in most environments, generally you can scroll left and right to see all of the columns.
+        To change the number of columns, set the <c>DATAFRAMES_COLUMNS</c>, like above.
+        (I haven't had a dataset with more than this number of columns.)
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Constructing a DataFrame</title>
+
+      <p>
+        Although nearly always, you will use a DataFrame by loading in a dataset, a <c>DataFrame</c> can be created by specifying the columns.
+        Consider:
+      </p>
+
+
+      <program language="julia">
+        <code>
+data = DataFrame(
+  A = 1:2:13,
+  B = ["M", "F", "F", "M","X","F","M"],
+  C=[3.0,2.5,pi,-2.3,1/3,56,100],
+  D=[(-1)^n//n for n=1:7]
+)
+        </code>
+      </program>
+
+      <p>
+        which will create a DataFrame with column names <c>A</c>, <c>B</c>, <c>C</c> and <c>D</c> and Julia interprets the data types of each column.
+        Note: this can all be put on a single line, but for readibility, the 4 columns are place on separate rows.
+        The result of this is
+      </p>
+
+      <p>
+        <cd>
         <cline>7×4 DataFrame</cline>
         <cline>  Row  A     B      C        D</cline>
         <cline>       Int64 String Float64  Rational…</cline>
@@ -206,157 +261,170 @@
         <cline>  5    9     X       0.333333 -1//5</cline>
         <cline>  6    11    F       56.0      1//6</cline>
         <cline>  7    13    M       100.0     -1//7</cline>
-				</cd>
-			</p>
+        </cd>
+      </p>
 
-			<p>
-				There's a number of helpful functions associated with DataFrames:
-			</p>
+      <p>
+        There's a number of helpful functions associated with DataFrames:
+      </p>
 
-			<p>
-				<ul>
-					<li>
-						<p>
-							<c>size(df)</c>: similar to an array, returns the number of rows and columns.
-						</p>
-					</li>
+      <p>
+        <ul>
+          <li>
+            <p>
+              <c>size(df)</c> similar to an array, returns the number of rows and columns.
+            </p>
+          </li>
 
-					<li>
-						<p>
-							<c>names(df)</c>: Names of the columns as an array
-						</p>
-					</li>
+          <li>
+            <p>
+              <c>names(df)</c> Names of the columns as an array
+            </p>
+          </li>
 
-					<li>
-						<p>
-							<c>describe(df)</c>: summary of basic statistics of each column of the dataframe.
-						</p>
-					</li>
+          <li>
+            <p>
+              <c>describe(df)</c> summary of basic statistics of each column of the dataframe.
+            </p>
+          </li>
 
-					<li>
-						<p>
-							<c>first(df,n)</c> and <c>last(df,n)</c>: prints the top <m>n</m> and bottom <m>n</m> rows of the dataframe.
-						</p>
-					</li>
-				</ul>
-			</p>
-		</subsection>
+          <li>
+            <p>
+              <c>first(df,n)</c> and <c>last(df,n)</c> prints the top <m>n</m> and bottom <m>n</m> rows of the dataframe.
+            </p>
+          </li>
+        </ul>
+      </p>
 
+      <exercise>
+        <statement>
+          <p>
+            Try running the above commands on the dataframe defined as <c>data</c>.
+          </p>
+        </statement>
+      </exercise>
+    </subsection>
+    <!--
+    <subsection>
+      <title>Plotting with <c>StatsPlots</c></title>
 
-		<subsection>
-			<title>Plotting with <c>StatsPlots</c></title>
+      <p>
+        We can do a scatter plot of the first two columns in the following manner:
+      </p>
 
-			<p>
-				We can do a scatter plot of the first two columns in the following manner:
-			</p>
+      <p>
+        <cd>
+        <cline>scatter(iris[!,:SepalLength],iris[!,:SepalWidth], legend=false)</cline>
+        </cd>
+      </p>
 
-			<p>
-				<cd>
-				<cline>scatter(iris[!,:SepalLength],iris[!,:SepalWidth], legend=false)</cline>
-				</cd>
-			</p>
+      <p>
+        and the resulting plot is
+      </p>
 
-			<p>
-				and the resulting plot is
-			</p>
+      <figure xml:id="fig-example-scatter">
+        <caption></caption>
+        <image source="plots/intro-data/scatter.png">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
 
-			<figure xml:id="fig-example-scatter">
-				<caption></caption>
-				<image source="plots/intro-data/scatter.png">
-					<shortdescription>
-						(for accessibility)
-					</shortdescription>
-				</image>
-			</figure>
+      <p>
+        There are some nice features using the package <c>StatsPlots</c>.
+        For example, the following will produce the same plot:
+      </p>
 
-			<p>
-				There are some nice features using the package <c>StatsPlots</c>.  For example, the following will produce the same plot:
-			</p>
+      <p>
+        <cd>
+        <cline>@df iris scatter(:SepalLength,:SepalWidth, legend = false)</cline>
+        </cd>
+      </p>
 
-			<p>
-				<cd>
-				<cline>@df iris scatter(:SepalLength,:SepalWidth, legend = false)</cline>
-				</cd>
-			</p>
+      <p>
+        where the <c>@df</c> macro says to use the DataFrame <c>iris</c> and then any column information is interpreted to be of that DataFrame.
+      </p>
 
-			<p>
-				where the <c>@df</c> macro says to use the DataFrame <c>iris</c> and then any column information is interpreted to be of that DataFrame.
-			</p>
+      <p>
+        Recall above that there was a Categorical datatype in the column <c>Species</c>.
+        The following scatter plot delineates the species with different colors:
+      </p>
 
-			<p>
-				Recall above that there was a Categorical datatype in the column <c>Species</c>. The following scatter plot delineates the species with different colors:
-			</p>
+      <p>
+        <cd>
+        <cline>@df iris scatter(:SepalLength,:SepalWidth,group=:Species)</cline>
+        </cd>
+      </p>
 
-			<p>
-				<cd>
-				<cline>@df iris scatter(:SepalLength,:SepalWidth,group=:Species)</cline>
-				</cd>
-			</p>
+      <p>
+        and this results in
+      </p>
 
-			<p>
-				and this results in
-			</p>
+      <figure xml:id="fig-group-scatter">
+        <caption></caption>
+        <image source="plots/intro-data/group-scatter.png">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+    </subsection>
+    -->
+    <subsection>
+      <title>Basic Statistics</title>
 
-			<figure xml:id="fig-group-scatter">
-				<caption></caption>
-				<image source="plots/intro-data/group-scatter.png">
-					<shortdescription>
-						(for accessibility)
-					</shortdescription>
-				</image>
-			</figure>
-		</subsection>
+      <p>
+        As mentioned above, we can find summary statistics of a <c>DataFrame</c> with the <c>describe</c> function.
+        For example, <c>describe(iris)</c> returns
+      </p>
 
+      <p>
+        <cd>
+        <cline>5×7 DataFrame</cline>
+        <cline>  Row  variable     mean     min      median      max    nmissing  eltype</cline>
+        <cline>       Symbol       Union…   Any      Union…      Any    Int64     DataType</cline>
+        <cline>  1    SepalLength  5.84333  4.3      5.8         7.9    0         Float64</cline>
+        <cline>  2    SepalWidth   3.05733  2.0      3.0         4.4    0         Float64</cline>
+        <cline>  3    PetalLength  3.758    1.0      4.35        6.9    0         Float64</cline>
+        <cline>  4    PetalWidth   1.19933  0.1      1.3         2.5    0         Float64</cline>
+        <cline>  5    Species               setosa         virginica    0         CategoricalValue{String, UInt8}</cline>
+        </cd>
+      </p>
 
-		<subsection>
-			<title>Basic Statistics</title>
+      <p>
+        Note that the output of <c>describe</c> is itself a <c>DataFrame</c>.
+        For numerical data, the mean, min, median and max are clear but for Categorical data, only the min and max are listed with the min and max sorted categories only listed.
+      </p>
 
-			<p>
-				As mentioned above, we can find summary statistics of a DataFrame with the <c>describe</c> function.  For example, <c>describe(iris)</c> returns
-			</p>
-
-			<p>
-				<cd>
-				<cline>5×7 DataFrame</cline>
-				<cline>  Row  variable     mean     min      median      max    nmissing  eltype</cline>
-				<cline>       Symbol       Union…   Any      Union…      Any    Int64     DataType</cline>
-				<cline>  1    SepalLength  5.84333  4.3      5.8         7.9    0         Float64</cline>
-				<cline>  2    SepalWidth   3.05733  2.0      3.0         4.4    0         Float64</cline>
-				<cline>  3    PetalLength  3.758    1.0      4.35        6.9    0         Float64</cline>
-				<cline>  4    PetalWidth   1.19933  0.1      1.3         2.5    0         Float64</cline>
-				<cline>  5    Species               setosa         virginica    0         CategoricalValue{String, UInt8}</cline>
-				</cd>
-			</p>
-
-			<p>
-				Note that the output of <c>describe</c> is itself a DataFrame.  For numerical data, the mean, min, median and max are clear but for Categorical data, only the min and max are listed with the min and max sorted categories only listed.
-			</p>
-
-			<p>
-				You can also call functions like <c>mean</c> or <c>std</c> directly if you have loaded the  <c>Statistics</c> package (which you may have to add) with the command <c>using Statistics</c>. Now, we can find the mean and standard deviation of columns with
-			</p>
-
-			<p>
-				<cd>
-				<cline>mean(iris[!,:SepalLength]),std(iris[!,:SepalLength])</cline>
-				</cd>
-			</p>
-
-			<p>
-				will compute both and return: <c>(5.843333333333334, 0.828066127977863)</c>
-			</p>
-
-			<p>
-				The <c>Statistics</c> package also has the functions to compute the variance, weighted means, median and quartiles. The <url href="https://docs.julialang.org/en/v1/stdlib/Statistics/" visual="">julia documentation on this package</url> has more information.
-			</p>
-
-			<p>
-				For another example that we will also use below, consider this DataFrame:
-			</p>
+      <p>
+        You can also call functions like <c>mean</c> or <c>std</c> directly if you have loaded the  <c>Statistics</c> package (which you may have to add) with the command <c>using Statistics</c>.
+        Now, we can find the mean and standard deviation of columns with
+      </p>
 
 
-			<program language="julia" line-numbers="yes">
-				<code>
+      <program language="julia">
+        <code>
+          mean(iris[!,:SepalLength]),std(iris[!,:SepalLength])
+        </code>
+      </program>
+
+      <p>
+        will compute both and return: <c>(5.843333333333334, 0.828066127977863)</c>
+      </p>
+
+      <p>
+        The <c>Statistics</c> package also has the functions to compute the variance, weighted means, median and quartiles.
+        The <url href="https://docs.julialang.org/en/v1/stdlib/Statistics/" visual="">julia documentation on this package</url> has more information.
+      </p>
+
+      <p>
+        For another example that we will also use below, consider this DataFrame:
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <code>
 simpsons = DataFrame(
   id = 1:2:13,
   name = ["Homer", "Marge", "Lisa", "Bart", "Maggie", "Apu", "Moe"],
@@ -364,456 +432,448 @@ simpsons = DataFrame(
   salary = [50000, 25000, 10000, missing, missing, 45000, 3000],
   favorite_food = ["pork chops", "casserole", "salad", "hamburger", missing, "saag paneer", "peanuts"]
 )
-				</code>
-			</program>
-
-			<p>
-				if we enter <c>describe(simpsons)</c>, we get the following results:
-			</p>
-
-			<p>
-				<cd>
-				<cline>5×7 DataFrame</cline>
-				<cline>Row  variable        mean     min       median   max    nmissing  eltype</cline>
-				<cline>     Symbol          Union…   Any       Union…   Any    Int64     Type</cline>
-				<cline>1    id              7.0      1         7.0      13     0         Int64</cline>
-				<cline>2    name                     Apu                Moe    0         String</cline>
-				<cline>3    age             29.0     1         38.0     59     0         Int64</cline>
-				<cline>4    salary          26600.0  3000      25000.0  50000  2         Union{Missing, Int64}</cline>
-				<cline>5    favorite_food            casserole          salad  1         Union{Missing, String}</cline>
-				</cd>
-			</p>
-
-			<p>
-				There are some new things that occur here.  First of all, we have missing data that we added to this DataFrame explicitly.  Since this is true, the column <c>nmissing</c> which reports the number of missing elements in the column is not zero for the <c>salary</c> and <c>favorite_food</c> columns. Also, the <c>eltype</c> short for element type, is a <c>Union</c> type meaning that element in the column are either of <c>Missing</c> type (explained below) or of another type (either <c>Int64</c> or <c>String</c>).
-			</p>
-		</subsection>
-	</section>
-
-	<section>
-		<title>The pipe command</title>
-
-		<introduction>
-			<p>
-				Although this isn't exclusive to data analysis, piping to commands is common, so we address it here.  First, let's look at a non data example.
-			</p>
-
-			<p>
-				Consider a complicated nested example, like:
-			</p>
-
-			<p>
-				<cd>
-				<cline>sqrt(sin(big(2.0)))</cline>
-				</cd>
-			</p>
-
-			<p>
-				which returns <c>0.9535708819095105398718705441330078869495314128723191646104050462287315327622005</c>.
-			</p>
-
-			<p>
-				In standard parsing rules, we work inside to the outside, which can get complicated. Often, it's easier to start with the value <c>2.0</c> and apply each of the functions as the expression is worked through. In many computing environments, including Julia, this is possible with the pipe <c> |&gt;</c> to rewrite the order of operations.  The above example can be written:
-			</p>
-
-			<p>
-				<cd>
-				<cline>2.0  |&gt; big  |&gt; sin  |&gt; sqrt</cline>
-				</cd>
-			</p>
-
-			<p>
-				and this returns the same result.
-			</p>
-
-			<p>
-				This expression can be thought of as starting with 2.0, then piping to the <c>big</c> function, then to the <c>sin</c> function, then to the <c>sqrt</c> function.  This can also be thought of as Reverse Polish Notation or postfix notation and once understood, it is quite helpful in tackling complex tasks.
-			</p>
-
-			<p>
-				As an example, recall that to remove an element from an array, we can use the <c>deleteat</c> function. Without pipes we would write this as
-			</p>
-
-			<p>
-				<cd>
-				<cline>deleteat!([1,2,3,4,5],3)</cline>
-				</cd>
-			</p>
-
-			<p>
-				and this returns <c>[1, 2, 4, 5]</c>
-			</p>
-
-			<p>
-				To use this starting with the array <c>[1,2,3,4,5]</c> we could do
-			</p>
-
-			<p>
-				<cd>
-				<cline>[1,2,3,4,5]  |&gt; arr  -&gt; deleteat!(arr,3)</cline>
-				</cd>
-			</p>
-
-			<p>
-				and this returns the same array.  We could extend this further in that
-			</p>
-
-			<p>
-				<cd>
-				<cline>1:5  |&gt; collect  |&gt; arr  -&gt; deleteat!(arr,3)</cline>
-				</cd>
-			</p>
-
-			<p>
-				which again returns the same.  Note that since the <c>collect</c> function take only one argument, you don't need to use the anonymous function syntax, however, <c>deleteat</c> needs two arguments, so it does require the anonymous function syntax.
-			</p>
-
-			<p>
-				Lastly, inside of a jupyter cell, we can generally write this as
-			</p>
-
-			<p>
-				<cd>
-				<cline>1:5  |&gt;</cline>
-				<cline>  collect  |&gt;</cline>
-				<cline>  arr  -&gt; deleteat!(arr,3)</cline>
-				</cd>
-			</p>
-
-			<p>
-				where this is often clearer in that each step is on a separate line and does a separate thing.
-			</p>
-		</introduction>
-
-
-		<subsection>
-			<title>Using the <c>Chain</c> package</title>
-
-			<p>
-				The <c>Chain</c> package simplifies some of these steps up.  First, make sure that the package is added and then loaded with <c>using Chain</c>. Overall, a number of steps are done to an initial piece of data.  Above, we saw an array, in the next chapter we will see this with a DataFrame.  The general structure is
-			</p>
-
-			<p>
-				<cd>
-				<cline>@chain data begin</cline>
-				<cline>  # functions applied to data in order</cline>
-				<cline>end</cline>
-				</cd>
-			</p>
-
-			<p>
-				and the functions that are applied are written on separate lines without the <c>|&gt;</c>. For example, the removal of an item from an array can be written:
-			</p>
-
-			<p>
-				<cd>
-				<cline>@chain 1:5 begin</cline>
-				<cline>  collect</cline>
-				<cline>  deleteat!(3)</cline>
-				<cline>end</cline>
-				</cd>
-			</p>
-
-			<p>
-				Hopefully, you can see that this syntax is cleaner and in many ways easier to read. Remember that using <c>@chain</c> results in the previous line always been applied to the function on the current line, so the <c>collect</c> line is really <c>collect(1:10)</c>, what happens with the third line? Since <c>deleteat!</c> requires two arguments, <c>@chain</c> automatically puts the result above into the first slot of the function.  We'll see below if we need to do something different.
-			</p>
-
-			<p>
-				For another example, let's say we want to do the following.  Start with the vector <c>[1,2,3,4,5,6,7,8,9,10]</c>, then
-				<ol>
-					<li>
-						<p>
-							square each element
-						</p>
-					</li>
-
-					<li>
-						<p>
-							keep all even numbers
-						</p>
-					</li>
-
-					<li>
-						<p>
-							find the mean.
-						</p>
-					</li>
-				</ol>
-			</p>
-
-			<p>
-				Basically each of these steps will be on a separate line within a <c>@chain</c> block.
-			</p>
-
-			<p>
-				<cd>
-				<cline>@chain 1:10 begin</cline>
-				<cline>  map(x -&gt; x^2, _)</cline>
-				<cline>  mean</cline>
-				<cline>end</cline>
-				</cd>
-			</p>
-
-			<p>
-				A few things to notice here.  First, instead of starting with the integer vector of numbers between 1 and 10, we use the <c>UnitRange</c> of <c>1:10</c>.  This is just for simplicity. Secondly, you'll notice that there is an underscore character <c>_</c> in the second line. This means that the result of the previous line should be put where the <c>_</c> is.  And since the array (or the Unit Range) needs to be in the second slot of the <c>map</c> function, we need to use the underscore.
-			</p>
-		</subsection>
-	</section>
-
-	<section xml:id="sect-missing">
-		<title>Missing Data</title>
-
-		<introduction>
-			<p>
-				For the example above with the simpsons dataset, there were missing values.  Although this set was manufactured, real datasets often have missing values that one needs to deal with. Julia has a standard data type called <c>Missing</c> and it has a single value of that data called <c>missing</c> (notice the different capitalization for both). The <url href="https://docs.julialang.org/en/latest/manual/missing/" visual="">julia Documentation on Missing Data</url> is a good place to read up on details of this.
-			</p>
-
-			<p>
-				There is some interesting properties of the value <c>missing</c>. For example
-			</p>
-
-			<p>
-				<cd>
-				<cline>missing + 6</cline>
-				</cd>
-			</p>
-
-			<p>
-				returns <c>missing</c> and pretty much any operation on a missing value returns missing because the idea is that if you don't know the value, how can calculate with it.  Another example is
-			</p>
-
-			<p>
-				<cd>
-				<cline>mean([1,missing,3,4,5])</cline>
-				</cd>
-			</p>
-
-			<p>
-				also returns <c>missing</c>.
-			</p>
-		</introduction>
-
-
-		<subsection>
-			<title>Missing Data in a Dataset</title>
-
-			<p>
-				Let's revisit the dataset called <c>simpsons</c> from the previous section. Notice that there are a number of missing values have been put in. We'll notice something different about the data types. If we look at the salary column:
-			</p>
-
-			<p>
-				<cd>
-				<cline>typeof(simpsons[!,:salary])</cline>
-				</cd>
-			</p>
-
-			<p>
-				we see that the type is <c>Vector{Union{Missing, Int64}}</c> which means that the type of elements in the array are <c>Union{Missing,Int64</c>} which is julia's way of saying that the type can be either <c>Missing</c> or <c>Int64</c>.
-			</p>
-
-			<p>
-				Now, let's get down to some analyzing of the data. Let's find the average salary in the dataset with
-			</p>
-
-			<p>
-				<cd>
-				<cline>mean(simpsons[!,:salary])</cline>
-				</cd>
-			</p>
-
-			<p>
-				which returns <c>missing</c>, which makes sense from the above discussion that nearly every operation with missing returns missing.
-			</p>
-
-			<p>
-				Instead, we may want to ignore the missing values, so we can use the <c>skipmissing</c> function.
-			</p>
-
-			<p>
-				<cd>
-				<cline>ages = skipmissing(simpsons[!,:salary])</cline>
-				</cd>
-			</p>
-
-			<p>
-				we get <c>skipmissing(Union{Missing, Int64}[50000, 25000, 10000, missing, missing, 45000, 3000])</c> which seems quite complicated in that we get another array, however, if we
-			</p>
-
-			<p>
-				<cd>
-				<cline>mean(salary)</cline>
-				</cd>
-			</p>
-
-			<p>
-				then it finds the mean of the non-missing values and returns <c>26600.0</c>.
-			</p>
-
-			<p>
-				We will run into missing values in the next few chapters where we use actual datasets and it is very common to have missing data in such datasets.
-			</p>
-		</subsection>
-	</section>
-
-	<section xml:id="sect-csv-file">
-		<title>Loading Data from a CSV File</title>
-
-		<p>
-			As we will see in <xref ref="ch-census"/> and <xref ref="ch-olympics"/>, data will be located in a file instead of typed in directly. In this section, we will look at how to load the data from a <url href="https://en.wikipedia.org/wiki/Comma-separated_values" visual="wikipedia">CSV (comma separated value)</url> file, the most common format for data that has the form in which each row represents a different value with columns representing variables.
-		</p>
-
-		<p>
-			We will use the <c>CSV</c> package to load files.  Recall that you will need to add and load it (with <c>using CSV</c>) before being able to use it.
-		</p>
-
-		<p>
-			Consider the file <c>simple.csv</c>.  Download this and move it into the same directory where your <c>ipynb</c> file is.  We will load it with
-		</p>
-
-		<p>
-			<cd>
-			<cline>simple = CSV.read("simple.csv", DataFrame)</cline>
-			</cd>
-		</p>
-
-		<p>
-			and the result is
-		</p>
-
-		<p>
-			<cd>
-			<cline>6×5 DataFrame</cline>
-			<cline>  Row  Name      Age    Sex      Shoe Size  Pay Rate</cline>
-			<cline>       String15  Int64  String1  Float64    Float64</cline>
-			<cline>  1    Alice     18     F         6.5       15.5</cline>
-			<cline>  2    Barry     24     M        12.0       18.25</cline>
-			<cline>  3    Charlize  45     X         8.0       22.5</cline>
-			<cline>  4    Doreen    72     F         7.5       24.5</cline>
-			<cline>  5    Edgar     64     M        10.0       33.0</cline>
-			<cline>  6    Francine  16     F         9.0       18.75</cline>
-			<cline>  </cline>
-			</cd>
-		</p>
-
-		<p>
-			And you should notice a few different things about this.  First, for the two string datatypes, they are <c>String15</c> and <c>String1</c>.  The number refers to the length of the string used.  This is mainly for efficiency of storage.  Secondly, the column names (top line) have two that have spaces in them.  Although we can deal with this, we will have to refer to name like <c>:"Shoe Size"</c>. We can reload the file with the <c>normalizenames</c> keyword argument as follows:
-		</p>
-
-		<p>
-			<cd>
-			<cline>CSV.read("simple.csv", DataFrame, normalizenames = true)</cline>
-			</cd>
-		</p>
-
-		<p>
-			and the names will replace the space with an underscore <c>_</c>.
-		</p>
-
-		<p>
-			Another nice option that we will see in <xref ref="ch-olympics"/> is that of reading in missing data.  Often a file will use a character or string to denote that the value is missing.  We can use the <c>missingstring</c> option to tell the <c>CSV.read</c> command to covert a string, like <c>"NA"</c> to <c>missing</c>.
-		</p>
-
-		<p>
-			There are many other options to reading in a CSV file and you may need these.  The <url href="https://csv.juliadata.org/stable/index.html" visual="juliadata.org">documentation for the CSV pacakage</url> is quite good with many examples.
-		</p>
-	</section>
-
-	<section xml:id="sect-excel-file">
-		<title>Loading Data from an Excel File</title>
-
-		<p>
-			Another common file format for data is that of a Microsoft Excel file (also known as a <c>xlsx</c> file). This is generally not a good format for data for two main reasons.  First, it is a proprietary format--although a lot of different software can read and write this format.  Secondly, these files can contain spreadsheet functions, so it can contain more than data.
-		</p>
-
-		<p>
-			We will use the <c>XLSX</c> package and take a look at the <url href="https://docs.juliahub.com/General/XLSX/stable/" visual="XSLT documentation">documentation</url>.  Don't forget to download it and load it.  The <c>simple</c> dataset is also stored as an excel file.
-		</p>
-
-		<p>
-			Because excel files have sheets, there is generally extra steps involved into loading the data. Starting with
-		</p>
-
-		<p>
-			<cd>
-			<cline>xf = XLSX.readxlsx("simple.xlsx")</cline>
-			</cd>
-		</p>
-
-		<p>
-			and this returns
-		</p>
-
-		<p>
-			<cd>
-			<cline>XLSXFile("simple.xlsx") containing 1 Worksheet</cline>
-			<cline>sheetname size          range        </cline>
-			<cline>-------------------------------------------------</cline>
-			<cline>   Sheet1 7x5           A1:E7 </cline>
-			</cd>
-		</p>
-
-		<p>
-			Note that this shows that there is only one sheet within the file. It is called <c>Sheet1</c> and the cells where the data is is listed as well.  Since we typically want to load data into a DataFrame, we can do that with
-		</p>
-
-		<p>
-			<cd>
-			<cline>df = DataFrame(XLSX.readtable("simple.xlsx", "Sheet1"))</cline>
-			</cd>
-		</p>
-
-		<p>
-			and this will return:
-		</p>
-
-		<p>
-			<cd>
-			<cline>6×5 DataFrame</cline>
-			<cline>  Row  Name      Age   Sex   Shoe Size  Pay Rate</cline>
-			<cline>       Any       Any   Any   Any        Any</cline>
-			<cline>  1    Alice     18    F      6.5       15.5</cline>
-			<cline>  2    Barry     24    M     12.0       18.25</cline>
-			<cline>  3    Charlize  45    X      8.0       22.5</cline>
-			<cline>  4    Doreen    72    F      7.5       24.5</cline>
-			<cline>  5    Edgar     64    M     10.0       33.0</cline>
-			<cline>  6    Francine  16    F      9.0       18.75</cline>
-			<cline>  </cline>
-			</cd>
-		</p>
-
-		<p>
-			There are a couple of issues with this DataFrame. First, the data types are all <c>Any</c> and recall if performance is important, one main idea in Julia is that DataTypes should be set when possible. The <c>XLSX.readtable</c> function has the option <c>infer_eltypes=true</c> that attempts to determine the type, however, if we reload the file with
-		</p>
-
-		<p>
-			<cd>
-			<cline>df = DataFrame(XLSX.readtable("simple.xlsx", "Sheet1", infer_eltypes=true))</cline>
-			</cd>
-		</p>
-
-		<p>
-			then notice that that this fixed the first three columns, however, the second two are still <c>Any</c> type.  (I think this probably happened because some of the numbers are integers, while others are floats and it isn't smart enough to just make everything a float). We can fix this by converting the last two columns to the proper type.  The following lines will do this:
-		</p>
-
-		<p>
-			<cd>
-			<cline>df[!,:"Shoe Size"] = convert.(Float64, df[!,:"Shoe Size"])</cline>
-			<cline>df[!,:"Pay Rate"] = convert.(Float64, df[!,:"Pay Rate"])</cline>
-			</cd>
-		</p>
-
-		<p>
-			where because these two columns have spaces in the names, we need to put double quotes around the names. Also, let's fix this problem with:
-		</p>
-
-		<p>
-			<cd>
-			<cline>rename!(df, :"Shoe Size" =&gt; :Shoe_Size, :"Pay Rate" =&gt; :Pay_Rate)</cline>
-			</cd>
-		</p>
-
-		<p>
-			where notice that we have used the <c>rename!</c> with the <c>!</c> to replace the existing Dataframe. The result of this should show that the column names have changed.
-		</p>
-	</section>
+        </code>
+      </program>
+
+      <p>
+        if we enter <c>describe(simpsons)</c>, we get the following results:
+      </p>
+
+      <p>
+        <cd>
+        <cline>5×7 DataFrame</cline>
+        <cline>Row  variable        mean     min       median   max    nmissing  eltype</cline>
+        <cline>     Symbol          Union…   Any       Union…   Any    Int64     Type</cline>
+        <cline>1    id              7.0      1         7.0      13     0         Int64</cline>
+        <cline>2    name                     Apu                Moe    0         String</cline>
+        <cline>3    age             29.0     1         38.0     59     0         Int64</cline>
+        <cline>4    salary          26600.0  3000      25000.0  50000  2         Union{Missing, Int64}</cline>
+        <cline>5    favorite_food            casserole          salad  1         Union{Missing, String}</cline>
+        </cd>
+      </p>
+
+      <p>
+        There are some new things that occur here.
+        First of all, we have missing data that we added to this DataFrame explicitly.
+        Since this is true, the column <c>nmissing</c> which reports the number of missing elements in the column is not zero for the <c>salary</c> and <c>favorite_food</c> columns.
+        Also, the <c>eltype</c> short for element type, is a <c>Union</c> type meaning that element in the column are either of <c>Missing</c> type (explained in <xref ref="ch-missing-data"/>) or of another type (either <c>Int64</c> or <c>String</c>).
+      </p>
+    </subsection>
+  </section>
+
+  <section>
+    <title>The pipe command</title>
+
+    <introduction>
+      <p>
+        Although this isn't exclusive to data analysis, piping commands is common, so we address it here.
+        First, let's look at a non data example.
+      </p>
+
+      <p>
+        Consider a complicated nested example, like:
+      </p>
+
+      <p>
+        <cd>
+        <cline>sqrt(sin(big(2.0)))</cline>
+        </cd>
+      </p>
+
+      <p>
+        which returns <c>0.9535708819095105398718705441330078869495314128723191646104050462287315327622005</c>.
+      </p>
+
+      <p>
+        In standard parsing rules, we work inside to the outside, which can get complicated.
+        Often, it's easier to start with the value <c>2.0</c> and apply each of the functions as the expression is worked through.
+        In many computing environments, including Julia, this is possible with the pipe <c> |&gt;</c> to rewrite the order of operations.
+        The above example can be written:
+      </p>
+
+      <p>
+        <cd>
+        <cline>2.0  |&gt; big  |&gt; sin  |&gt; sqrt</cline>
+        </cd>
+      </p>
+
+      <p>
+        and this returns the same result.
+      </p>
+
+      <p>
+        This expression can be thought of as starting with 2.0, then piping to the <c>big</c> function, then to the <c>sin</c> function, then to the <c>sqrt</c> function.
+        This can also be thought of as Reverse Polish Notation or postfix notation and once understood, it is quite helpful in tackling complex tasks.
+      </p>
+
+      <p>
+        Let's look at an example with a vector.
+        We will find the mean of the numbers 1, 2, 3, 5, 6, 7.
+        This can be done with <c>mean([1,2,3,5,6,7])</c>, but let's look at another way.
+      </p>
+
+      <p>
+        <ol>
+          <li>
+            <p>
+              Start with the range <c>1:7</c>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Expand it to the vector <c>1, 2, 3, 4, 5, 6, 7</c>.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Remove the 4th element.
+            </p>
+          </li>
+
+          <li>
+            <p>
+              Take the mean.
+            </p>
+          </li>
+        </ol>
+      </p>
+
+      <p>
+        This is done following these steps with the following:
+      </p>
+
+
+      <program language="julia">
+        <code>
+    1:7 |>
+      collect |>
+      arr -> deleteat!(arr, 3) |>
+      mean
+        </code>
+      </program>
+
+      <p>
+        resuling with <c>4.0</c> where this is often clearer in that each step is on a separate line and does a separate thing.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Using the <c>Chain</c> package</title>
+
+      <p>
+        The <c>Chain</c> package simplifies some of these steps up.
+        First, make sure that the package is added and then loaded with <c>using Chain</c>.
+        Overall, a number of steps are done to an initial piece of data.
+        Above, we saw an array, in the next chapter we will see this with a DataFrame.
+        The general structure is
+      </p>
+
+
+      <program language="julia">
+        <code>
+          @chain data begin
+            # functions applied to data in order
+          end
+        </code>
+      </program>
+
+      <p>
+        <cd>
+        <cline></cline>
+        </cd>
+      </p>
+
+      <p>
+        and the functions that are applied are written on separate lines without the <c>|&gt;</c>.
+        For example, the removal of an item from an array can be written:
+      </p>
+
+
+      <program language="julia">
+        <code>
+          @chain 1:7 begin
+            collect
+            deleteat!(4)
+            mean
+          end
+        </code>
+      </program>
+
+      <p>
+        Hopefully, you can see that this syntax is cleaner and in many ways easier to read.
+        Remember that using <c>@chain</c> results in the previous line always been applied to the function on the current line, so the <c>collect</c> line is really <c>collect(1:10)</c>, what happens with the third line? Since <c>deleteat!</c> requires two arguments, <c>@chain</c> automatically puts the result above into the first slot of the function.
+        We'll see below if we need to do something different.
+      </p>
+
+      <p>
+        For another example, let's say we want to do the following.
+        Start with the vector <c>[1,2,3,4,5,6,7,8,9,10]</c>, then
+        <ol>
+          <li>
+            <p>
+              square each element
+            </p>
+          </li>
+
+          <li>
+            <p>
+              keep all even numbers
+            </p>
+          </li>
+
+          <li>
+            <p>
+              find the standard deviation.
+            </p>
+          </li>
+        </ol>
+      </p>
+
+      <p>
+        Basically each of these steps will be on a separate line within a <c>@chain</c> block.
+      </p>
+
+
+      <program language="julia">
+        <code>
+          @chain 1:10 begin
+            map(x -> x^2, _)
+            filter(x -> x % 2 == 0, _)
+            std
+          end
+        </code>
+      </program>
+
+      <p>
+        A few things to notice here.
+        First, instead of starting with the integer vector of numbers between 1 and 10, we use the <c>UnitRange</c> of <c>1:10</c>.
+        This is just for simplicity.
+        Secondly, you'll notice that there is an underscore character <c>_</c> in the second and third lines.
+        This means that the result of the previous line should be put where the <c>_</c> is.
+        And since the array (or the Unit Range) needs to be in the second slot of the <c>map</c> function, we need to use the underscore.
+      </p>
+    </subsection>
+  </section>
+
+  <section xml:id="sect-csv-file">
+    <title>Loading Data from a CSV File</title>
+
+    <p>
+      As we will see in <xref ref="ch-census"/> and <xref ref="ch-olympics"/>, data will be located in a file instead of typed in directly.
+      In this section, we will look at how to load the data from a <url href="https://en.wikipedia.org/wiki/Comma-separated_values" visual="wikipedia">CSV (comma separated value)</url> file, the most common format for data that has the form in which each row represents a different value with columns representing variables.
+    </p>
+
+    <p>
+      We will use the <c>CSV</c> package to load files.
+      Recall that you will need to add and load it (with <c>using CSV</c>) before being able to use it.
+    </p>
+
+    <p>
+      Consider a simple CVS file.
+      Download <url href="/assets/datasets/simple.csv">simple.csv</url>  and move it into the same directory where your <c>ipynb</c> file is.
+      We will load it with
+    </p>
+
+
+    <program language="julia">
+      <code>
+        simple = CSV.read("simple.csv", DataFrame)
+      </code>
+    </program>
+
+    <p>
+      and the result is
+    </p>
+
+    <p>
+      <cd>
+      <cline>6×5 DataFrame</cline>
+      <cline>  Row  Name      Age    Sex      Shoe Size  Pay Rate</cline>
+      <cline>       String15  Int64  String1  Float64    Float64</cline>
+      <cline>  1    Alice     18     F         6.5       15.5</cline>
+      <cline>  2    Barry     24     M        12.0       18.25</cline>
+      <cline>  3    Charlize  45     X         8.0       22.5</cline>
+      <cline>  4    Doreen    72     F         7.5       24.5</cline>
+      <cline>  5    Edgar     64     M        10.0       33.0</cline>
+      <cline>  6    Francine  16     F         9.0       18.75</cline>
+      <cline>  </cline>
+      </cd>
+    </p>
+
+    <p>
+      The command <c>CSV.read</c> requires that the 2nd argument is the output of the read (what do we want to do with the result of the file?).
+      Although there are other options, <c>DataFrame</c> is the standard.
+    </p>
+
+    <p>
+      With the output, notice a few different things about this:
+    </p>
+
+    <p>
+      <ul>
+        <li>
+          <p>
+            The <c>Name</c> column has the datatype <c>String15</c> and the <c>Sex</c> column has datatype <c>String1</c>.
+            These are defined in the package <c>InlineStrings</c> and there are a few related datatypes that can be used to store Strings in an efficient manner.
+          </p>
+        </li>
+
+        <li>
+          <p>
+            The columns <c>Shoe Size</c> and <c>Pay Rate</c> have spaces in them.
+            Although we can deal with this, we will have to refer to name like <c>:"Shoe Size"</c>.
+            We can reload the file with the <c>normalizenames</c> keyword argument as follows:
+          </p>
+        </li>
+      </ul>
+    </p>
+
+
+    <program language="julia">
+      <code>
+simple = CSV.read("simple.csv", DataFrame, normalizenames = true)
+      </code>
+    </program>
+
+    <p>
+      and the names will replace the space with an underscore <c>_</c>.
+    </p>
+
+    <p>
+      Another nice option that we will see in <xref ref="ch-olympics"/> is that of reading in missing data.
+      Often a file will use a character or string to denote that the value is missing.
+      We can use the <c>missingstring</c> option to tell the <c>CSV.read</c> command to covert a string, like <c>"NA"</c> to <c>missing</c>.
+    </p>
+
+    <p>
+      There are many other options to reading in a CSV file and you may need these.
+      The <url href="https://csv.juliadata.org/stable/index.html" visual="juliadata.org">documentation for the CSV pacakage</url> is quite good with many examples.
+    </p>
+  </section>
+
+  <section xml:id="sect-excel-file">
+    <title>Loading Data from an Excel File</title>
+
+    <p>
+      Another common file format for data is that of a Microsoft Excel file (also known as a <c>xlsx</c> file).
+      This is generally not a good format for data for two main reasons.
+      First, it is a proprietary format<mdash/>although a lot of different software can read and write this format.
+      Secondly, these files can contain spreadsheet functions, so it can contain more than data.
+    </p>
+
+    <p>
+      We will use the <c>XLSX</c> package and take a look at the <url href="https://docs.juliahub.com/General/XLSX/stable/" visual="XSLT documentation">documentation</url>.
+      Don't forget to download it and load it.
+      The same dataset from <xref ref="sect-csv-file"/> is available for download as <url href="/assets/datasets/simple.xlsx">simple.xlsx</url> and make sure that is file is located in the same directory as your <c>.ipynb</c> file.
+    </p>
+
+    <p>
+      Because excel files have sheets, there is generally extra steps involved into loading the data.
+      Starting with
+    </p>
+
+
+    <program language="julia">
+      <code>
+        xf = XLSX.readxlsx("simple.xlsx")
+      </code>
+    </program>
+
+    <p>
+      and this returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>XLSXFile("simple.xlsx") containing 1 Worksheet</cline>
+      <cline>sheetname size          range        </cline>
+      <cline>-------------------------------------------------</cline>
+      <cline>   Sheet1 7x5           A1:E7 </cline>
+      </cd>
+    </p>
+
+    <p>
+      Note that this shows that there is only one sheet within the file.
+      It is called <c>Sheet1</c> and the cells where the data is is listed as well.
+      Since we typically want to load data into a DataFrame, we can do that with
+    </p>
+
+
+    <program language="julia">
+      <code>
+        df = DataFrame(XLSX.readtable("simple.xlsx", "Sheet1"))
+      </code>
+    </program>
+
+    <p>
+      and this will return:
+    </p>
+
+    <p>
+      <cd>
+      <cline>6×5 DataFrame</cline>
+      <cline>  Row  Name      Age   Sex   Shoe Size  Pay Rate</cline>
+      <cline>       Any       Any   Any   Any        Any</cline>
+      <cline>  1    Alice     18    F      6.5       15.5</cline>
+      <cline>  2    Barry     24    M     12.0       18.25</cline>
+      <cline>  3    Charlize  45    X      8.0       22.5</cline>
+      <cline>  4    Doreen    72    F      7.5       24.5</cline>
+      <cline>  5    Edgar     64    M     10.0       33.0</cline>
+      <cline>  6    Francine  16    F      9.0       18.75</cline>
+      <cline>  </cline>
+      </cd>
+    </p>
+
+    <p>
+      There are a couple of issues with this DataFrame.
+      First, the data types are all <c>Any</c> and recall if performance is important, one main idea in Julia is that DataTypes should be set when possible.
+      The <c>XLSX.readtable</c> function has the option <c>infer_eltypes=true</c> that attempts to determine the type, however, if we reload the file with
+    </p>
+
+
+    <program language="julia">
+      <code>
+        df = DataFrame(XLSX.readtable("simple.xlsx", "Sheet1", infer_eltypes=true))
+      </code>
+    </program>
+
+    <p>
+      and the results are that the column types are now <c>String, Int64, String, Float64</c> and <c>Float64</c>.
+      Notice that the String columns did not use the more efficient <c>String15</c> and <c>String1</c> type.
+      This isn't a big deal in this small case, but may with a larger dataframe.
+      This can be updated with (I think this probably happened because some of the numbers are integers, while others are floats and it isn't smart enough to just make everything a float).
+      We can fix this by converting the last two columns to the proper type.
+      The following lines will do this:
+    </p>
+
+
+    <program language="julia">
+      <code>
+        df[!,:Name] = convert.(String15, df[!,:Name])
+        df[!,:Sex] = convert.(String1, df[!,:Sex])
+      </code>
+    </program>
+
+    <p>
+      and if you just type <c>df</c> in its own cell, you'll see that the column datatypes now match the types above.
+    </p>
+
+    <p>
+      Another issue with this is the spaces in the column names that CSV had a fix for.  <c>XLSX</c> does not, but can fix this problem with:
+    </p>
+
+    <program language="julia">
+  <code>
+rename!(df, :"Shoe Size" =&gt; :Shoe_Size, :"Pay Rate" =&gt; :Pay_Rate)
+  </code>
+</program>
+
+    <p>
+      where notice that we have used the <c>rename!</c> with the <c>!</c> to replace the existing Dataframe.
+      The result of this should show that the column names have changed.
+    </p>
+  </section>
 </chapter>

@@ -1,37 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <chapter xml:id="ch-plotting-data" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <title>Plotting Data</title>
+  <title>Plotting Data using Makie</title>
 
   <introduction>
     <p>
-      Many of the examples above have involved plotting functions.  This section gives some overview of how to think about data.  In particular, recall that data is generally either discrete (that is there are either a finite or countable number of possibilities) like categories or numerical data that can be counted or continuous like data that is measured with real numbers (inches of rain, heights of people, etc.)  It's important to understand the difference to understand plots. This chapter covers plotting data using both Makie and Plots.jl.
+      Many of the examples above have involved plotting functions.
+      This section gives some overview of how to think about data.
+      In particular, recall that data is generally either discrete (that is there are either a finite or countable number of possibilities) like categories or numerical data that can be counted or continuous like data that is measured with real numbers (inches of rain, heights of people, etc.)  It's important to understand the difference to understand plots.
+      This chapter covers plotting data using primarily <c>Makie</c>
+    </p>
+
+    <p>
+      Recall that we covered plotting in Makie in <xref ref="ch-plotting-makie"/>.
+      It's important to have a grasp of the plotting basics including the backends.
+      We will mainly be using <c>CairoMakie</c> here, but that is not required.
+      Recall to set the <c>CairoMakie</c> backend, we need to do:
+    </p>
+
+    <p>
+      <cd>
+      <cline>using CairoMakie</cline>
+      <cline>CairoMakie.activate!()</cline>
+      <cline>Makie.inline!(true)</cline>
+      </cd>
     </p>
   </introduction>
 
   <section>
-    <title>Plotting Data in Makie</title>
+    <title>Plotting Continuous</title>
 
     <introduction>
       <p>
-        Recall that we covered plotting in Makie in <xref ref="ch-plotting-makie"/>. It's important to have a grasp of the plotting basics including the backends.  We will mainly be using <c>CairoMakie</c> here, but that is not required.  Recall to set the <c>CairoMakie</c> backend, we need to do:
-      </p>
-
-      <p>
-        <cd>
-        <cline>using CairoMakie</cline>
-        <cline>CairoMakie.activate!()</cline>
-        <cline>Makie.inline!(true)</cline>
-        </cd>
+        We first start with plotting continuous data.
       </p>
     </introduction>
 
 
-    <subsection>
-      <title>Plotting Continuous Data</title>
+    <subsection xml:id="sect-histograms">
+      <title>Histograms</title>
 
       <p>
-        We have already seen examples of plotting continuous data with the CO₂ data above.  This data is the mean CO₂ level over each year and although the year seems like a discrete variable, time is actually continuous.  Because of this, a scatter plot is a good way to present this data.
+        If one has univariate data<fn>Recall that this means that for every observation, there is only one value associated with it.</fn> which is continuous, the standard way to understand the distribution of the data is to do a <term>histogram</term>.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="sect-scatter-plots">
+      <title>Scatter Plots</title>
+
+      <p>
+        We have already seen examples of plotting continuous data with the CO₂ data above.
+        This data is the mean CO₂ level over each year and although the year seems like a discrete variable, time is actually continuous.
+        Because of this, a scatter plot is a good way to present this data.
       </p>
     </subsection>
   </section>
@@ -41,7 +62,10 @@
 
     <introduction>
       <p>
-        In contrast, let's look at discrete data.  I have done a lot of research recently using sports data and one project involved scoring in the National Basketball Association (NBA).  Consider a season and looking at the number of points every team has scored.   For the 2023-2024 season, if we consider the home and visiting teams, then here is the first few games:
+        In contrast, let's look at discrete data.
+        I have done a lot of research recently using sports data and one project involved scoring in the National Basketball Association (NBA).
+        Consider a season and looking at the number of points every team has scored.
+        For the 2023-2024 season, if we consider the home and visiting teams, then here is the first few games:
       </p>
     </introduction>
 
@@ -50,7 +74,9 @@
       <title>Barplots in Makie</title>
 
       <p>
-        We saw barplots in <xref ref="ch-prob-models"/>, but didn't explain how to generate them.  A barplot is a good plot to use if there is a sequence of discrete data.  For example, the probability distribution function for rolling two dice seen in <xref ref="ch-probability-random"/> resulted in the distribution:
+        We saw barplots in <xref ref="ch-prob-models"/>, but didn't explain how to generate them.
+        A barplot is a good plot to use if there is a sequence of discrete data.
+        For example, the probability distribution function for rolling two dice seen in <xref ref="ch-probability-random"/> resulted in the distribution:
       </p>
 
       <table>
@@ -120,7 +146,9 @@
       </table>
 
       <p>
-        A bar plot of this data is plotted with the <c>barplot</c> command. The call <c>barplot(x,y)</c> for vectors <c>x</c> and <c>y</c> plot a bar located at each value of <c>x</c> with height <c>y</c>. The heights from the table above can be generated with <c>[(6-abs(i-7))//36 for i = 2:12]</c> and then
+        A bar plot of this data is plotted with the <c>barplot</c> command.
+        The call <c>barplot(x,y)</c> for vectors <c>x</c> and <c>y</c> plot a bar located at each value of <c>x</c> with height <c>y</c>.
+        The heights from the table above can be generated with <c>[(6-abs(i-7))//36 for i = 2:12]</c> and then
       </p>
 
       <p>
@@ -143,7 +171,10 @@
       </figure>
 
       <p>
-        and note that the horizontal axis has underisable tick marks.  We'll fix this building a Axis object and changing the <c>xticks</c> option.  Additionally, I think it looks nice with small black borders around the bars and give it a title.  If we run the following:
+        and note that the horizontal axis has underisable tick marks.
+        We'll fix this building a Axis object and changing the <c>xticks</c> option.
+        Additionally, I think it looks nice with small black borders around the bars and give it a title.
+        If we run the following:
       </p>
 
       <p>
@@ -169,7 +200,8 @@
       </figure>
 
       <p>
-        If one desires for the bars to run horizontal, then use the option <c>direction = :x</c> on the <c>barplot</c> method.  For example:
+        If one desires for the bars to run horizontal, then use the option <c>direction = :x</c> on the <c>barplot</c> method.
+        For example:
       </p>
 
       <p>
@@ -182,7 +214,8 @@
       </p>
 
       <p>
-        and note that we have switched the tick marks to <c>yticks</c>.  This produces the plot
+        and note that we have switched the tick marks to <c>yticks</c>.
+        This produces the plot
       </p>
 
       <figure xml:id="fig-dice-pdf3">
@@ -200,7 +233,10 @@
       <title>Grouped Barplots in Makie</title>
 
       <p>
-        Another common way to display data is to compare a set to another one.  If the data would often be displayed as a bar plot, then to compare it we can use a grouped bar plot.  A grouped bar plot can either be stacked (which the bars are stacked above each other) or dodged (in which the bars are side by side).  Let's say we have the data
+        Another common way to display data is to compare a set to another one.
+        If the data would often be displayed as a bar plot, then to compare it we can use a grouped bar plot.
+        A grouped bar plot can either be stacked (which the bars are stacked above each other) or dodged (in which the bars are side by side).
+        Let's say we have the data
       </p>
 
       <p>
@@ -212,7 +248,8 @@
       </p>
 
       <p>
-        where we want to plot both <c>h1</c> and <c>h2</c> on the same axes. A stacked bar plot can be made with
+        where we want to plot both <c>h1</c> and <c>h2</c> on the same axes.
+        A stacked bar plot can be made with
       </p>
 
       <p>
@@ -225,7 +262,11 @@
       </p>
 
       <p>
-        where we have used array concatenation explained in <xref ref="sect-array-concat"/> and the <c>repeat</c> method from <xref ref="sect-array-repeat"/>.  First, the <c>stack</c> of the <c>barplot</c> explains that the data is to be stacked and how to stack the results.  Without the <c>color</c> option, the bars are stacked, but can't be distinguished (try it!). Also, again, typing this on multiple lines is mainly for clarity--the same results occur if this was a single line. The results are:
+        where we have used array concatenation explained in <xref ref="sect-array-concat"/> and the <c>repeat</c> method from <xref ref="sect-array-repeat"/>.
+        First, the <c>stack</c> of the <c>barplot</c> explains that the data is to be stacked and how to stack the results.
+        Without the <c>color</c> option, the bars are stacked, but can't be distinguished (try it!).
+        Also, again, typing this on multiple lines is mainly for clarity--the same results occur if this was a single line.
+        The results are:
       </p>
 
       <figure xml:id="fig-stacked-bar01">
@@ -238,7 +279,11 @@
       </figure>
 
       <p>
-        I'm not a fan of the default colors that are used.  One can choose any of the named colors.  See <url href="https://docs.makie.org/stable/explanations/colors">Makie page on colors</url> for more details.  A common color grouping which works well for bar colors (that is there is contrast between colors) is the built-in <c>Makie.wong_colors()</c>. The above plot can be changed with
+        I'm not a fan of the default colors that are used.
+        One can choose any of the named colors.
+        See <url href="https://docs.makie.org/stable/explanations/colors">Makie page on colors</url> for more details.
+        A common color grouping which works well for bar colors (that is there is contrast between colors) is the built-in <c>Makie.wong_colors()</c>.
+        The above plot can be changed with
       </p>
 
       <p>
@@ -265,7 +310,8 @@
       </figure>
 
       <p>
-        If you want to specify the colors, simply replace the first line above, with an array of named colors.  For example,
+        If you want to specify the colors, simply replace the first line above, with an array of named colors.
+        For example,
       </p>
 
       <p>
@@ -292,7 +338,8 @@
       </figure>
 
       <p>
-        However, if the desire of plotting two sets of data is to compare them, often plotting them side by side is better.  This can be accomplished with the dodge option as in
+        However, if the desire of plotting two sets of data is to compare them, often plotting them side by side is better.
+        This can be accomplished with the dodge option as in
       </p>
 
       <p>
@@ -304,7 +351,10 @@
         <cline>  strokewidth = 0.5)</cline>
         </cd>
       </p>
-      <p>resulting in </p>
+
+      <p>
+        resulting in
+      </p>
 
       <figure xml:id="fig-simple-dodged-bar">
         <caption></caption>
@@ -315,7 +365,10 @@
         </image>
       </figure>
 
-      <p>Note that the <c>dodge</c> option determines the order of each group of bars for each <c>x</c> value.  Although not shown, you can use more than two sets of bars for a group. </p>
+      <p>
+        Note that the <c>dodge</c> option determines the order of each group of bars for each <c>x</c> value.
+        Although not shown, you can use more than two sets of bars for a group.
+      </p>
     </subsection>
 
 
@@ -323,7 +376,9 @@
       <title>Example of Realistic Barplot in Makie</title>
 
       <p>
-        To plot every score (which is discrete), let's consider a bar plot in which the height of a bar at a given score is the number of games with that score.  To generate this, we load in the <c>nba2024.csv</c> file.  Note you will need to download/install <c>CSV</c> and <c>DataFrames</c>.
+        To plot every score (which is discrete), let's consider a bar plot in which the height of a bar at a given score is the number of games with that score.
+        To generate this, we load in the <c>nba2024.csv</c> file.
+        Note you will need to download/install <c>CSV</c> and <c>DataFrames</c>.
       </p>
 
       <p>
@@ -334,7 +389,8 @@
       </p>
 
       <p>
-        and this lists about 15 rows of the file.  The top of the file looks like:
+        and this lists about 15 rows of the file.
+        The top of the file looks like:
       </p>
 
       <p>
@@ -349,7 +405,10 @@
       </p>
 
       <p>
-        We won't go into what a DataFrame is, but in short it is a common data structure for working with data that comes in columns with common types.  These work well with spreadsheets.  The details of a <c>DataFrame</c> is presented starting in <xref ref="ch-data"/>. To plot the number of home games with a given score (also called the score distribution), we use the <c>counts</c> function in the <c>StatsBase</c> package (so install it) and perform <c>using StatsBase</c>.
+        We won't go into what a DataFrame is, but in short it is a common data structure for working with data that comes in columns with common types.
+        These work well with spreadsheets.
+        The details of a <c>DataFrame</c> is presented starting in <xref ref="ch-data"/>.
+        To plot the number of home games with a given score (also called the score distribution), we use the <c>counts</c> function in the <c>StatsBase</c> package (so install it) and perform <c>using StatsBase</c>.
       </p>
 
       <p>
@@ -359,7 +418,8 @@
       </p>
 
       <p>
-        which returns a vector of the number of games with the score 70, 71, ..., 160.  We can then plot the results with <c>barplot</c> using
+        which returns a vector of the number of games with the score 70, 71, ..., 160.
+        We can then plot the results with <c>barplot</c> using
       </p>
 
       <p>
@@ -382,7 +442,10 @@
       </figure>
 
       <p>
-        Another interesting plot is to place bars side by side for the home and visitor scores.  This is a little but possible with the <c>barplot</c> command.  We just need to include all of the data together and then including a vector of grouping.  The following is the code to do this:
+        Another interesting plot is to place bars side by side for the home and visitor scores.
+        This is a little but possible with the <c>barplot</c> command.
+        We just need to include all of the data together and then including a vector of grouping.
+        The following is the code to do this:
       </p>
 
       <p>
@@ -399,7 +462,12 @@
       </p>
 
       <p>
-        where this is one command but split onto lines for readability.  The 2nd line is the horizontal axis which is just the same as the plot above except that we need to repeat it twice.  The third line concatenates vertically (<c>vcat</c>) the two distributions.  The fourth line explain how to group the data (<c>dodge</c> is used to include it side by side or <c>stack</c> is to stack it vertically). The color attribute (line 5) sets the color for each bar--again, this is needed to be a repeated vector.  The result of this is
+        where this is one command but split onto lines for readability.
+        The 2nd line is the horizontal axis which is just the same as the plot above except that we need to repeat it twice.
+        The third line concatenates vertically (<c>vcat</c>) the two distributions.
+        The fourth line explain how to group the data (<c>dodge</c> is used to include it side by side or <c>stack</c> is to stack it vertically).
+        The color attribute (line 5) sets the color for each bar--again, this is needed to be a repeated vector.
+        The result of this is
       </p>
 
       <figure xml:id="fig-nba-compare">

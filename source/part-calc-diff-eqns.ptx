@@ -2,8 +2,10 @@
 
 <part xml:id="part-calc-diff-eqns" xmlns:xi="http://www.w3.org/2001/XInclude">
   <title>Calculus and Differential Equations</title>
+
   <xi:include href="calc-diff-eqns/ch-numerical-integration.ptx" />
   <xi:include href="calc-diff-eqns/ch-diff-eqns.ptx" />
   <xi:include href="calc-diff-eqns/ch-optimization.ptx" />
   <xi:include href="calc-diff-eqns/ch-complex.ptx" />
+  <xi:include href="calc-diff-eqns/ch-linear-optimization.ptx" />
 </part>

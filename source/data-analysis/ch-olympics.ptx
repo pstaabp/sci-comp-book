@@ -5,7 +5,8 @@
 
   <introduction>
     <p>
-      The data sets for this chapter contain all athletes that have participated in the Olympic games between 1896 and 2016.  We use the dataset to answer a number of questions.
+      The data sets for this chapter contain all athletes that have participated in the Olympic games between 1896 and 2016.
+      We use the dataset to answer a number of questions.
       <ol>
         <li>
           <p>
@@ -33,7 +34,8 @@
 
         <li>
           <p>
-            Plot the number of medals that the U.S. collected over each olympic year.
+            Plot the number of medals that the U.S.
+            collected over each olympic year.
           </p>
         </li>
 
@@ -50,18 +52,22 @@
     <title>Downloading the Data and Loading the Packages</title>
 
     <p>
-      The dataset will be on a site called <url href="https://www.kaggle.com" visual="kaggle.com">kaggle.com</url>. More specifically, go to <url href="https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results" visual="kaggle.com"> this site </url> and click the download button on the upper right.  The download is a zip file and within that there are two files.  The one we are interested in is called <c>athlete_events.csv</c>.
+      The dataset will be on a site called <url href="https://www.kaggle.com" visual="kaggle.com">kaggle.com</url>.
+      More specifically, go to <url href="https://www.kaggle.com/datasets/heesoo37/120-years-of-olympic-history-athletes-and-results" visual="kaggle.com"> this site </url> and click the download button on the upper right.
+      The download is a zip file and within that there are two files.
+      The one we are interested in is called <c>athlete_events.csv</c>.
     </p>
 
     <p>
       For this chapter, we need the following packages.
     </p>
 
-    <p>
-      <cd>
-      <cline>using DataFrames, Chain, Statistics, CSV, StatsPlots</cline>
-      </cd>
-    </p>
+
+    <program language="julia">
+      <code>
+    using DataFrames, Chain, Statistics, CSV, StatsPlots
+      </code>
+    </program>
   </section>
 
   <section>
@@ -78,7 +84,8 @@
     </p>
 
     <p>
-      where the option <c>missingstring = "NA"</c> is used to replace any NA with the <c>missing</c> value explained in <xref ref="sect-missing"/>.  The first few rows of this DataFrame is:
+      where the option <c>missingstring = "NA"</c> is used to replace any NA with the <c>missing</c> value explained in <xref ref="sect-missing-in-dataset"/>.
+      The first few rows of this DataFrame is:
     </p>
 
     <p>
@@ -95,7 +102,10 @@
     </p>
 
     <p>
-      Each row of the dataset is each event that has occurred in each Olympics for each athlete that has participated. This will be called an athlete-event in this chapter. Also, note that there are 271,116 rows in this DataFrame. The columns of the dataset are
+      Each row of the dataset is each event that has occurred in each Olympics for each athlete that has participated.
+      This will be called an athlete-event in this chapter.
+      Also, note that there are 271,116 rows in this DataFrame.
+      The columns of the dataset are
     </p>
 
     <p>
@@ -245,11 +255,18 @@ end
       <title>Collectively taking each summer Olympics, give the top 10 athletes by number of medals</title>
 
       <p>
-        This is a classic split-apply-combine example as shown in <xref ref="sect-split-apply-combine"/>. For this, we first drop all rows without a medal and then filter by only Summer games. Since we are asking for the individual medals, we will next group by the athlete <c>ID</c>.  This is the first 3 lines within the <c>@chain</c> block and is a good idea to run these lines.
+        This is a classic split-apply-combine example as shown in <xref ref="sect-split-apply-combine"/>.
+        For this, we first drop all rows without a medal and then filter by only Summer games.
+        Since we are asking for the individual medals, we will next group by the athlete <c>ID</c>.
+        This is the first 3 lines within the <c>@chain</c> block and is a good idea to run these lines.
       </p>
 
       <p>
-        Next, we want to combine the groups. In short, we want the total number of medals (this is simply found by calling <c>nrow</c>) and the name, which is a little trickier.  When using <c>combine</c> on a column in a grouped DataFrame, each of the functions that are called take in an array (or an iterator). That is, when extracting <c>Name</c> from the DataFrame, it returns an array of names.  The line
+        Next, we want to combine the groups.
+        In short, we want the total number of medals (this is simply found by calling <c>nrow</c>) and the name, which is a little trickier.
+        When using <c>combine</c> on a column in a grouped DataFrame, each of the functions that are called take in an array (or an iterator).
+        That is, when extracting <c>Name</c> from the DataFrame, it returns an array of names.
+        The line
       </p>
 
       <p>
@@ -259,7 +276,8 @@ end
       </p>
 
       <p>
-        will extract the <c>first</c> element of the array of names.  And then we will rename this to <c>Name</c>.
+        will extract the <c>first</c> element of the array of names.
+        And then we will rename this to <c>Name</c>.
       </p>
 
 
@@ -304,7 +322,10 @@ end
       <title>List the top 10 countries by medals in only winter Olympics.</title>
 
       <p>
-        To start off, we again filter only by those with medals and in this case the <c>Season</c> column has the value <c>Winter</c>. Then we group by the <c>NOC</c> column, which represents the Country.  We then define <c>Total_Medals</c> to be the number within each group.  Finally, we order (descending) by <c>Total_Medals</c> and print the first 10 rows.
+        To start off, we again filter only by those with medals and in this case the <c>Season</c> column has the value <c>Winter</c>.
+        Then we group by the <c>NOC</c> column, which represents the Country.
+        We then define <c>Total_Medals</c> to be the number within each group.
+        Finally, we order (descending) by <c>Total_Medals</c> and print the first 10 rows.
       </p>
 
 
@@ -326,19 +347,19 @@ end
 
       <p>
         <cd>
-          <cline>10×2 DataFrame</cline>
-<cline>Row  NOC       Num_Medals</cline>
-<cline>     String3   Int64</cline>
-<cline>1    USA       635</cline>
-<cline>2    CAN       611</cline>
-<cline>3    NOR       443</cline>
-<cline>4    URS       440</cline>
-<cline>5    SWE       428</cline>
-<cline>6    FIN       426</cline>
-<cline>7    GER       386</cline>
-<cline>8    AUT       280</cline>
-<cline>9    SUI       275</cline>
-<cline>10   RUS       260</cline>
+        <cline>10×2 DataFrame</cline>
+        <cline>Row  NOC       Num_Medals</cline>
+        <cline>     String3   Int64</cline>
+        <cline>1    USA       635</cline>
+        <cline>2    CAN       611</cline>
+        <cline>3    NOR       443</cline>
+        <cline>4    URS       440</cline>
+        <cline>5    SWE       428</cline>
+        <cline>6    FIN       426</cline>
+        <cline>7    GER       386</cline>
+        <cline>8    AUT       280</cline>
+        <cline>9    SUI       275</cline>
+        <cline>10   RUS       260</cline>
         </cd>
       </p>
     </subsection>
@@ -348,7 +369,8 @@ end
       <title>Produce a line plot the average weight for male and female in each year over the entire span of the Olympic games.</title>
 
       <p>
-        In this case, first we'll drop all rows in which the weight is missing.  Then we will group by both sex and year (the year in which the games took place) and then `combine` by finding the mean weight with:
+        In this case, first we'll drop all rows in which the weight is missing.
+        Then we will group by both sex and year (the year in which the games took place) and then `combine` by finding the mean weight with:
       </p>
 
 
@@ -386,7 +408,9 @@ end
       </p>
 
       <p>
-        It would be nice if we could rearrange the dataframe to make a M(ale) and F(emale) column and then that would be easily plotted.  This can be done with the <c>unstack</c> function. Specifically, we can do the following:
+        It would be nice if we could rearrange the dataframe to make a M(ale) and F(emale) column and then that would be easily plotted.
+        This can be done with the <c>unstack</c> function.
+        Specifically, we can do the following:
       </p>
 
 
@@ -461,7 +485,10 @@ end
       </figure>
 
       <p>
-        It is interesting to note that this database lists some medals from 1906<fn>Suprising to the author, there was an event called the <url href="https://en.wikipedia.org/wiki/1906_Intercalated_Games">1906 Intercalated Games</url> in Athens, Greece.  This is listed in this database.</fn> Also, it hard not to notice that the 1904 games sent a lot medals to the U.S.<fn>The 1904 Olympic games were held in St. Louis, Missouri, which was quite difficult to get to from Europe and other places around the world. This resulted in a large number of American athletes winning medals.</fn>
+        It is interesting to note that this database lists some medals from 1906<fn>Suprising to the author, there was an event called the <url href="https://en.wikipedia.org/wiki/1906_Intercalated_Games">1906 Intercalated Games</url> in Athens, Greece.
+        This is listed in this database.</fn> Also, it hard not to notice that the 1904 games sent a lot medals to the U.S.<fn>The 1904 Olympic games were held in St.
+        Louis, Missouri, which was quite difficult to get to from Europe and other places around the world.
+        This resulted in a large number of American athletes winning medals.</fn>
       </p>
     </subsection>
 
@@ -470,7 +497,9 @@ end
       <title>What are the top 5 sports (not events) by total medals given for winter olympics between 1950 and 1970?</title>
 
       <p>
-        Again, like above, since we are looking for total medals, we will drop all rows with a missing value in the <c>Medal</c> column.  Then we subset (filter) rows to get winter games between 1950 and 1970.  Since we are looking for the top 5 events, we group by <c>Event</c>, total the results then sort
+        Again, like above, since we are looking for total medals, we will drop all rows with a missing value in the <c>Medal</c> column.
+        Then we subset (filter) rows to get winter games between 1950 and 1970.
+        Since we are looking for the top 5 events, we group by <c>Event</c>, total the results then sort
       </p>
 
       <p>
@@ -504,7 +533,8 @@ end
       </p>
 
       <p>
-        It may seem shocking to see a huge number of ice hockey medals in the timeframe, but since this is a team sport, every member of the team gets the medal.  There are generally about 20-25 players on an ice hockey team.
+        It may seem shocking to see a huge number of ice hockey medals in the timeframe, but since this is a team sport, every member of the team gets the medal.
+        There are generally about 20-25 players on an ice hockey team.
       </p>
     </subsection>
   </section>
@@ -541,7 +571,9 @@ end
       <task>
         <statement>
           <p>
-            Note that one of the question asked was about the number of medals the U.S. has won in each Olympics and the 1904 games were a bonanza for the United States.  How many countries participated in these Games?  Determine the number of athletes from each country for this event.
+            Note that one of the question asked was about the number of medals the U.S.
+            has won in each Olympics and the 1904 games were a bonanza for the United States.
+            How many countries participated in these Games?  Determine the number of athletes from each country for this event.
           </p>
         </statement>
       </task>

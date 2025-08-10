@@ -44,9 +44,16 @@ fig
       Before finding the linear model for the above example, let's look at a simpler dataset.  Consider
     </p>
 
+
+    <program language="julia">
+      <code>
+data = DataFrame(x=[1,3,4,6,7,9, 10], y = [10, 9, 7, 6, 5, 4, 2])
+      </code>
+    </program>
+
     <p>
       <cd>
-      <cline>data = DataFrame(x=[1,3,4,6,7,9, 10], y = [10, 9, 7, 6, 5, 4, 2])</cline>
+      <cline></cline>
       </cd>
     </p>
 
@@ -153,11 +160,18 @@ a,b
       and this returns <c>(-0.8468468468468469, 10.981981981981983)</c> for <c>a</c> and <c>b</c> respectivley.  The best fit line is then <m>y=10.98198 - 0.8468 x</m>. We can use this to plot the data and the best-fit line as follows:
     </p>
 
+
+    <program language="julia">
+      <code>
+      fig, ax = scatter(data.x,data.y)
+      lines!(ax, 0..10, x -&gt; a*x+b, color = :darkgreen)
+      fig
+      </code>
+    </program>
+
     <p>
       <cd>
-      <cline>fig, ax = scatter(data.x,data.y)</cline>
-      <cline>lines!(ax,0..10,x -&gt; c[2]*x+c[1], color = :darkgreen)</cline>
-      <cline>fig</cline>
+      <cline></cline>
       </cd>
     </p>
 
@@ -716,6 +730,7 @@ a,b
         <cline>──────────────────────────────────────────────────────────────────────────</cline>
         </cd>
       </p>
+
       <p>
         and finding the <m>r^2</m> value with <c>f2(model3)</c> returns <c>0.9905202860004992</c>, a very good fit and examining the <c>Pr(&gt;|t|)</c> column all of the coefficients are significant.
       </p>

@@ -5,89 +5,32 @@
 
   <introduction>
     <p>
-      This chapter is mostly about strings.  We haven't spent a lot of time in this book with strings mainly because scientific computing tends to use mostly numbers.  However, strings are often how data is entered and we need to parse this data. We will start with some functions that determine if strings match another string and the move on to regular expressions, the main topic of this chapter. From a scientific computing standpoint, we will use regular expressions to take a string and typically pull out numbers and other syntax. There will be two places that we will use regular expression. 1) to determine if a string matches some pattern and 2) extract information out of a string.  Often the first step will need to be done for the latter step.
+      Regular Expressions is all about matching strings and extracting substrings from strings.
+      Make sure that you have read through <xref ref="ch-strings"/> first to get an important basis for the details of a string.
     </p>
 
     <p>
-      As with much of this text, although the examples here will be done using Julia, regular expressions are ubiquitous and every language has support for them. In general they all use the same syntax for the regular expressions.
+      The main way that regular expressions come up is that often there is data involved in scientific computing and we may need to parse strings to extract the needed data.
+      Regular Expressions are a nice way to do this.
+      There will be two places that we will use regular expression.
+      1) to determine if a string matches some pattern and 2) extract information out of a string.
+      Often the first step will need to be done for the latter step.
+    </p>
+
+    <p>
+      As with much of this text, although the examples here will be done using Julia, regular expressions are ubiquitous and every language has support for them.
+      In general they all use the same syntax for the regular expressions.
     </p>
   </introduction>
 
   <section>
-    <title>Simple Pattern Matching</title>
+    <title>Motivating Example: parsing a polynomial</title>
 
     <p>
-      Let's start with some examples of pattern matching.  If we want to determine if a string matches a pattern, we can use the exact string.  For example, let's see if a string matches <c>"cat"</c>.  We can do this with the <c>occursin</c> function like:
-    </p>
-
-    <p>
-      <cd>
-      <cline>occursin("cat","cat")</cline>
-      </cd>
-    </p>
-
-    <p>
-      which will return <c>true</c>. Of course, we don't need to use <c>occursin</c> to test that two strings are equal,
-    </p>
-
-    <p>
-      <cd>
-      <cline>"cat"=="cat"</cline>
-      </cd>
-    </p>
-
-    <p>
-      will do this. The <c>occursin</c> command will just determine if there is the first string somewhere inside the second string.  So <c>occursin("cat", "scatter")</c> will return <c>true</c>, but <c>occursin("cat", "cottage")</c> will return <c>false</c>.  Throughout this chapter, we will be testing a few different strings to determine how matches occur, we may do both of these matches together with
-    </p>
-
-    <p>
-      <cd>
-      <cline>map(s -&gt; occursin("cat", s), ["scatter", "cottage"])</cline>
-      </cd>
-    </p>
-
-    <p>
-      and this returns
-    </p>
-
-    <p>
-      <cd>
-      <cline>2-element Vector{Bool}:</cline>
-      <cline>  1</cline>
-      <cline>  0</cline>
-      </cd>
-    </p>
-
-    <p>
-      and recall that boolean vectors show values of 1 for true and 0 for false.  Thus "scatter" matches, but "cottage" does not.
-    </p>
-
-    <p>
-      There are also the methods <c>startswith</c> and <c>endswith</c> that matches a string at the beginning or end.
-    </p>
-
-    <p>
-      <cd>
-      <cline>map(s-&gt;startswith(s, "cat"), ["catastrophe", "scatter", "tigercat"])</cline>
-      </cd>
-    </p>
-
-    <p>
-      returns the vector <c>[1, 0, 0]</c> indicating that only the first string matched.  Note that the <c>startswith</c> function has the argument list switched from that of the <c>occursin</c> function.  And example with <c>endswith</c> is
-    </p>
-
-    <p>
-      <cd>
-      <cline>map(s-&gt;endswith(s, "cat"), ["catastrophe", "scatter", "tigercat"])</cline>
-      </cd>
-    </p>
-
-    <p>
-      returns <c>[0,0,1]</c> indicating that only the last string matched.
-    </p>
-
-    <p>
-      We haven't used a regular expression yet.  A regular expression is much more flexible that the matching options above and we will spend the rest of this chapter showing this.
+      As with most chapters in this book, we start with a motivating example.
+      Polynomials are a very important mathematics object/structure and as we saw in <xref ref="sect-poly-parametric"/>, we create a <c>struct</c> to handle Polynomials and we will create a relatively full-featured module for them in <xref ref="ch-polynomial"/>.
+      For example if we have a polynomial in the following form: <c>"3x^2-9x+10"</c> as a string, we would like to parse it as a polynomial (that is determine the coefficients and powers).
+      We will see how do to this at the end of this chapter.
     </p>
   </section>
 
@@ -96,11 +39,16 @@
 
     <introduction>
       <p>
-        A <term>regular expression</term> is a sequence of characters (like a string) that is used to match other strings.  Some of the characters are <em>regular</em> characters, which will match the corresponding character.  The other type are <em>special</em> characters which often match multiple characters (for example any digit).
+        A <term>regular expression</term> is a sequence of characters (like a string) that is used to match other strings.
+        Some of the characters are <em>regular</em> characters, which will match the corresponding character.
+        The other type are <em>special</em> characters which often match multiple characters (for example any digit).
       </p>
 
       <p>
-        In Julia, we can make a regular expression by prepending a string with an <c>r</c>. For example, let's say that we want match the string <c>"cat"</c>.  These are all regular characters, so the regular expression is <c>r"cat"</c>.  If we run
+        In Julia, we can make a regular expression by prepending a string with an <c>r</c>.
+        For example, let's say that we want match the string <c>"cat"</c>.
+        These are all regular characters, so the regular expression is <c>r"cat"</c>.
+        If we run
       </p>
 
       <p>
@@ -110,11 +58,14 @@
       </p>
 
       <p>
-        which returns <c>[1, 1, 1]</c>, indicating that all three match.  Note that this is the same matching as using <c>occursin</c> with <c>"cat"</c> and this always works if the regular expression is regular characters.
+        which returns <c>[1, 1, 1]</c>, indicating that all three match.
+        Note that this is the same matching as using <c>occursin</c> with <c>"cat"</c> and this always works if the regular expression is regular characters.
       </p>
 
       <p>
-        We can also match the beginning and end of the string with a regular expression.  The special character <c>^</c> at the beginning of the regular expression will match the rest of the string at the beginning or <c>r"^cat"</c> as an example.  The following:
+        We can also match the beginning and end of the string with a regular expression.
+        The special character <c>^</c> at the beginning of the regular expression will match the rest of the string at the beginning or <c>r"^cat"</c> as an example.
+        The following:
       </p>
 
       <p>
@@ -128,7 +79,8 @@
       </p>
 
       <p>
-        Another special character is the <c>$</c> which means to match the end of the string.  So
+        Another special character is the <c>$</c> which means to match the end of the string.
+        So
       </p>
 
       <p>
@@ -147,7 +99,9 @@
       <title>Character Class and Ranges</title>
 
       <p>
-        Typically we want more flexibility with regular expressions.  For example, instead of matching <c>"cat"</c>, what if we want to match <c>"cat"</c>, <c>"cot"</c> or <c>"cut"</c>?  We can do this with a set of <c>[]</c>.  For example a regular expression <c>r"c[aou]t"</c> will match <c>"cat"</c>, <c>"cot"</c> or <c>"cut"</c> such as
+        Typically we want more flexibility with regular expressions.
+        For example, instead of matching <c>"cat"</c>, what if we want to match <c>"cat"</c>, <c>"cot"</c> or <c>"cut"</c>?  We can do this with a set of <c>[]</c>.
+        For example a regular expression <c>r"c[aou]t"</c> will match <c>"cat"</c>, <c>"cot"</c> or <c>"cut"</c> such as
       </p>
 
       <p>
@@ -161,7 +115,9 @@
       </p>
 
       <p>
-        If we want a range of values, we can use a <c>-</c> within the <c>[]</c>, which is known as a <em>character class</em> in the world of regular expressions.  For example, finding words that start with the lower case letters <c>a</c> through <c>f</c>, we can use the regular expression <c>r"^[a-f]"</c>.  A test for this would be
+        If we want a range of values, we can use a <c>-</c> within the <c>[]</c>, which is known as a <em>character class</em> in the world of regular expressions.
+        For example, finding words that start with the lower case letters <c>a</c> through <c>f</c>, we can use the regular expression <c>r"^[a-f]"</c>.
+        A test for this would be
       </p>
 
       <p>
@@ -171,7 +127,10 @@
       </p>
 
       <p>
-        returns <c>[1, 1, 1, 0]</c>, showing that the first 3 match, but the 4th does not.   Now to confuse things, <c>^</c> can be used within the <c>[]</c> for a <em>not</em> in.  Let's say we don't what a string to start with <c>a</c> through <c>f</c>. Entering
+        returns <c>[1, 1, 1, 0]</c>, showing that the first 3 match, but the 4th does not.
+        Now to confuse things, <c>^</c> can be used within the <c>[]</c> for a <em>not</em> in.
+        Let's say we don't what a string to start with <c>a</c> through <c>f</c>.
+        Entering
       </p>
 
       <p>
@@ -185,7 +144,8 @@
       </p>
 
       <p>
-        If we want any character matched, we use a <c>.</c>.  For example, if the the regular expression <c>r"c.t"</c> can be used
+        If we want any character matched, we use a <c>.</c>.
+        For example, if the the regular expression <c>r"c.t"</c> can be used
       </p>
 
       <p>
@@ -204,7 +164,9 @@
       <title>Optional sets of characters</title>
 
       <p>
-        Another important regular expression is that of a optional set of characters.  If we want to match "cat" or "dog" we can construct a regular expression with these string separated with a <c>|</c> (like an or).  Consider the following:
+        Another important regular expression is that of a optional set of characters.
+        If we want to match "cat" or "dog" we can construct a regular expression with these string separated with a <c>|</c> (like an or).
+        Consider the following:
       </p>
 
       <p>
@@ -214,7 +176,10 @@
       </p>
 
       <p>
-        which results in <c>[1, 1, 0]</c>.  Often if we want to match an option with other strings, we can add parentheses to group the option. (We will use parentheses for other grouping later).  For example
+        which results in <c>[1, 1, 0]</c>.
+        Often if we want to match an option with other strings, we can add parentheses to group the option.
+        (We will use parentheses for other grouping later).
+        For example
       </p>
 
       <p>
@@ -230,7 +195,8 @@
       <exercise>
         <statement>
           <p>
-            Write a regular expression that tests for four-letter words that have "oo" or "ee" in the middle like <c>fool</c> or <c>seen</c>.  Test on these words as well as ones that aren't four letters and don't have the double "o" or "e".
+            Write a regular expression that tests for four-letter words that have "oo" or "ee" in the middle like <c>fool</c> or <c>seen</c>.
+            Test on these words as well as ones that aren't four letters and don't have the double "o" or "e".
           </p>
         </statement>
       </exercise>
@@ -241,7 +207,8 @@
       <title>Digits and alphabetic characters</title>
 
       <p>
-        Using the technique in the previous section, we can match a digit with the regular expression <c>r"[0-9]"</c>.  For example,
+        Using the technique in the previous section, we can match a digit with the regular expression <c>r"[0-9]"</c>.
+        For example,
       </p>
 
       <p>
@@ -251,7 +218,9 @@
       </p>
 
       <p>
-        returns <c>true</c>. However since matching digits is a common occurrence, <c>\d</c> can be used to match digits.  Therefore,
+        returns <c>true</c>.
+        However since matching digits is a common occurrence, <c>\d</c> can be used to match digits.
+        Therefore,
       </p>
 
       <p>
@@ -261,7 +230,11 @@
       </p>
 
       <p>
-        returns <c>true</c> as well. To match alphabetic characters, there are a couple of options.  If you are looking for precisely the 26 lowercase latin characters then <c>[a-z]</c> is the best way to do this.  However, there are many characters (such as letters with accents) or unicode characters that are alphabetic and there is a <c>[[:alpha:]]</c>.  Some examples are:
+        returns <c>true</c> as well.
+        To match alphabetic characters, there are a couple of options.
+        If you are looking for precisely the 26 lowercase latin characters then <c>[a-z]</c> is the best way to do this.
+        However, there are many characters (such as letters with accents) or unicode characters that are alphabetic and there is a <c>[[:alpha:]]</c>.
+        Some examples are:
       </p>
 
       <p>
@@ -271,7 +244,8 @@
       </p>
 
       <p>
-        returns true for the first two and false for the third. To use the broader <c>[:alpha:]</c> class of characters, as an example
+        returns true for the first two and false for the third.
+        To use the broader <c>[:alpha:]</c> class of characters, as an example
       </p>
 
       <p>
@@ -281,11 +255,14 @@
       </p>
 
       <p>
-        returns true for the first two and false for the third one. Note that typically it is used within a <c>[]</c> block as well since it is a set of optional characters.
+        returns true for the first two and false for the third one.
+        Note that typically it is used within a <c>[]</c> block as well since it is a set of optional characters.
       </p>
 
       <p>
-        Lastly, another helpful special character is that of a <em>word</em> character, <c>\w</c>.  This will match an alphabetic character, a digit or an underscore <c>_</c>.  An example is
+        Lastly, another helpful special character is that of a <em>word</em> character, <c>\w</c>.
+        This will match an alphabetic character, a digit or an underscore <c>_</c>.
+        An example is
       </p>
 
       <p>
@@ -295,11 +272,15 @@
       </p>
 
       <p>
-        which returns true, true and false.  The last one because the 2nd character is a space.
+        which returns true, true and false.
+        The last one because the 2nd character is a space.
       </p>
 
       <p>
-        White space is also something to detect. Although, it can be used with <c>occursin</c>, a more practical way to use this is with <c>split</c>, which takes a string and splits it.  We saw this in <xref ref="sect-join-split"/>, but in that section only specific strings were allowed.   For example,
+        White space is also something to detect.
+        Although, it can be used with <c>occursin</c>, a more practical way to use this is with <c>split</c>, which takes a string and splits it.
+        We saw this in <xref ref="sect-join-split"/>, but in that section only specific strings were allowed.
+        For example,
       </p>
 
       <p>
@@ -309,7 +290,8 @@
       </p>
 
       <p>
-        where some of the spaces are tabs and others are a space character.  This returns the array
+        where some of the spaces are tabs and others are a space character.
+        This returns the array
       </p>
 
       <p>
@@ -335,7 +317,9 @@
       <exercise xml:id="exer-four-letter">
         <statement>
           <p>
-            Write a regular expression to match five-letter words (which may be useful for solving Wordle). Start first with the lower-case latin characters and then allow other characters like the greek letters.  Test against 4, 5 and 6 letter words that should and should not match.
+            Write a regular expression to match five-letter words (which may be useful for solving Wordle).
+            Start first with the lower-case latin characters and then allow other characters like the greek letters.
+            Test against 4, 5 and 6 letter words that should and should not match.
           </p>
         </statement>
       </exercise>
@@ -346,7 +330,10 @@
       <title>Quantifiers</title>
 
       <p>
-        We often want to know if a character is repeated some number of times.  For example, if we want to check that <c>c</c> is repeated three times, we can use <c>r"ccc"</c>, however, we can also write this as <c>r"c{3}"</c>, which is actually longer, but sometimes easier to read.  If we want to test if there are between 2 and 4 consecutive <c>c</c>s, then we can use <c>r"c{2,4}"</c>.  As an example, consider:
+        We often want to know if a character is repeated some number of times.
+        For example, if we want to check that <c>c</c> is repeated three times, we can use <c>r"ccc"</c>, however, we can also write this as <c>r"c{3}"</c>, which is actually longer, but sometimes easier to read.
+        If we want to test if there are between 2 and 4 consecutive <c>c</c>s, then we can use <c>r"c{2,4}"</c>.
+        As an example, consider:
       </p>
 
       <p>
@@ -356,7 +343,8 @@
       </p>
 
       <p>
-        which returns <c>[false, true, true, true, false]</c> and note that the regular expression includes a <c>^</c> and <c>$</c> indicating that it needs to match at the beginning and end. If we want to say it matches 3 or more times, we can use <c>r"c{3,}"</c> as in
+        which returns <c>[false, true, true, true, false]</c> and note that the regular expression includes a <c>^</c> and <c>$</c> indicating that it needs to match at the beginning and end.
+        If we want to say it matches 3 or more times, we can use <c>r"c{3,}"</c> as in
       </p>
 
       <p>
@@ -376,7 +364,11 @@
       </p>
 
       <p>
-        which returns <c>[true, true, true, false, false]</c>. There are two quantifiers that are used more than any other: matching 0 or more times and 1 or more times.  Because of this, these have special characters <c>*</c> and <c>+</c>.  For example to match 0 or more <c>c</c>, then we use <c>r"c*"</c>.  For example,
+        which returns <c>[true, true, true, false, false]</c>.
+        There are two quantifiers that are used more than any other: matching 0 or more times and 1 or more times.
+        Because of this, these have special characters <c>*</c> and <c>+</c>.
+        For example to match 0 or more <c>c</c>, then we use <c>r"c*"</c>.
+        For example,
       </p>
 
       <p>
@@ -386,7 +378,9 @@
       </p>
 
       <p>
-        will match zero or more <c>c</c> at the beginning of the string.  All five of the above match.  In contrast if we use <c>r"^c+a"</c>, then
+        will match zero or more <c>c</c> at the beginning of the string.
+        All five of the above match.
+        In contrast if we use <c>r"^c+a"</c>, then
       </p>
 
       <p>
@@ -396,7 +390,9 @@
       </p>
 
       <p>
-        then the first one does not match, but the others do.  The last example of this is the regular expression <c>.*</c>, which matches any character 0 or more times.  At first glance this doesn't seem useful
+        then the first one does not match, but the others do.
+        The last example of this is the regular expression <c>.*</c>, which matches any character 0 or more times.
+        At first glance this doesn't seem useful
       </p>
 
       <exercise>
@@ -413,7 +409,11 @@
     <title>Extracting substrings with Regular Expressions</title>
 
     <p>
-      Although often it is nice to know whether or not a string matches a particular pattern, the power of regular expressions comes with extracting information.  Let's start with an example.  Sports scores are stored as strings in the form "X-X", where "X" is an integer and the home team is listed first.  These could be "4-3", "123-97".  First, we can determine if these match with the following
+      Although often it is nice to know whether or not a string matches a particular pattern, the power of regular expressions comes with extracting information.
+      Let's start with an example.
+      Sports scores are stored as strings in the form "X-X", where "X" is an integer and the home team is listed first.
+      These could be "4-3", "123-97".
+      First, we can determine if these match with the following
     </p>
 
     <p>
@@ -423,11 +423,16 @@
     </p>
 
     <p>
-      which returns <c>[1, 1, 1]</c>, therefore all true.  Note that although <c>-</c> seems to be a special character, which would need escaping, it is only special in the character ranges <c> [ ]</c>, and since this doesn't use that, no escaping is needed.
+      which returns <c>[1, 1, 1]</c>, therefore all true.
+      Note that although <c>-</c> seems to be a special character, which would need escaping, it is only special in the character ranges <c> [ ]</c>, and since this doesn't use that, no escaping is needed.
     </p>
 
     <p>
-      Ultimately, we want to extract the integer information, so we will group these by using parentheses.  Instead, we use the regular expression <c>r"(\d+)-(\d+)"</c>.  If you replace this with that above, you will still see that it matches (returns true).  Intead, we will use the <c>match</c> method which returns more information.   If we enter:
+      Ultimately, we want to extract the integer information, so we will group these by using parentheses.
+      Instead, we use the regular expression <c>r"(\d+)-(\d+)"</c>.
+      If you replace this with that above, you will still see that it matches (returns true).
+      Intead, we will use the <c>match</c> method which returns more information.
+      If we enter:
     </p>
 
     <p>
@@ -447,36 +452,46 @@
     </p>
 
     <p>
-      and this is a object of type <c>RegexMatch</c>, the first argument is the matched string and the other parts are the matched substrings.  We can get those substrings with <c>m[1]</c> and <c>m[2]</c>.
+      and this is a object of type <c>RegexMatch</c>, the first argument is the matched string and the other parts are the matched substrings.
+      We can get those substrings with <c>m[1]</c> and <c>m[2]</c>.
     </p>
 
-    <p>Next, let's parse the substrings as numbers.  For this we can use the <c>parse</c> method and we'll make it a tuple with:
+    <p>
+      Next, let's parse the substrings as numbers.
+      For this we can use the <c>parse</c> method and we'll make it a tuple with:
     </p>
 
     <p>
       <cd>
-        <cline>(home = parse(Int,m[1]), away = parse(m[2], m[2]))</cline>
+      <cline>(home = parse(Int,m[1]), away = parse(m[2], m[2]))</cline>
       </cd>
     </p>
 
     <note>
-      <p>The author has done a lot of work with sport scores over the years and uses both Julia and this exact method of extracting scores using webpages with the scores.  The extraction of scoring on a webpage can be automated so that years worth of data can be combed through quickly.  Generally once the scores are extracted, they are stored in a database (see <xref ref="ch-databases"/>) for processing later.
+      <p>
+        The author has done a lot of work with sport scores over the years and uses both Julia and this exact method of extracting scores using webpages with the scores.
+        The extraction of scoring on a webpage can be automated so that years worth of data can be combed through quickly.
+        Generally once the scores are extracted, they are stored in a database (see <xref ref="ch-databases"/>) for processing later.
       </p>
     </note>
 
     <remark>
       <p>
-        If you only need to test if a string matches a pattern (using a regular expression), use <c>occursin</c>. If you need to extract substrings, use <c>match</c>.
+        If you only need to test if a string matches a pattern (using a regular expression), use <c>occursin</c>.
+        If you need to extract substrings, use <c>match</c>.
       </p>
     </remark>
 
     <exercise>
       <p>
-        Although the parts of a U.S. phone number have little meaning these days, the first 3 digits are the area code, the second three are the region (or region code) and the last 4 are the number within the region.
+        Although the parts of a U.S.
+        phone number have little meaning these days, the first 3 digits are the area code, the second three are the region (or region code) and the last 4 are the number within the region.
       </p>
 
       <p>
-        First, extract phone numbers in the U.S. form of "XXX-XXX-XXXX" or "(XXX) XXX-XXXX" where the separator <c>-</c> can be a <c>.</c>.  Secondly, parse the three substrings as integers.
+        First, extract phone numbers in the U.S.
+        form of "XXX-XXX-XXXX" or "(XXX) XXX-XXXX" where the separator <c>-</c> can be a <c>.</c>.
+        Secondly, parse the three substrings as integers.
       </p>
     </exercise>
   </section>
@@ -485,7 +500,10 @@
     <title>Matching integers and decimals</title>
 
     <p>
-      Examples below will parse integers and decimals from a string and we'll use regular expressions to do this work.  As we saw above, to match a digit, we will use <c>\d</c> and if we want more than one decimal, we can follow that with the <c>+</c>.  For a positive integer, the regular expression can match with <c>r"\d+"</c>.   For example,
+      Examples below will parse integers and decimals from a string and we'll use regular expressions to do this work.
+      As we saw above, to match a digit, we will use <c>\d</c> and if we want more than one decimal, we can follow that with the <c>+</c>.
+      For a positive integer, the regular expression can match with <c>r"\d+"</c>.
+      For example,
     </p>
 
     <p>
@@ -495,7 +513,9 @@
     </p>
 
     <p>
-      returns <c>true</c>. If we want to include a + or - sign with the integer, we can use a <c>[+-]?</c> in front of the number.  Therefore,
+      returns <c>true</c>.
+      If we want to include a + or - sign with the integer, we can use a <c>[+-]?</c> in front of the number.
+      Therefore,
     </p>
 
     <p>
@@ -506,11 +526,13 @@
     </p>
 
     <p>
-      which returns true for all three (as a boolean vector).   Note: below, we'll do a better job with testing these.
+      which returns true for all three (as a boolean vector).
+      Note: below, we'll do a better job with testing these.
     </p>
 
     <p>
-      To match a decimal, we can start with the integer match and tack on a decimal point (<c>\.</c>, where it needs to be escaped) as well as additional decimals.  A reasonably robust decimal regular expression is:
+      To match a decimal, we can start with the integer match and tack on a decimal point (<c>\.</c>, where it needs to be escaped) as well as additional decimals.
+      A reasonably robust decimal regular expression is:
     </p>
 
     <p>
@@ -533,7 +555,9 @@
 
         <li>
           <p>
-            The remaining part of the regular expression (<c>\.\d*</c>) is for the decimal point and any trailing digits.  The decimal point is escaped because <c>.</c> matches any character.  The result matches any number (0 or more) of digits.
+            The remaining part of the regular expression (<c>\.\d*</c>) is for the decimal point and any trailing digits.
+            The decimal point is escaped because <c>.</c> matches any character.
+            The result matches any number (0 or more) of digits.
           </p>
         </li>
       </ul>
@@ -550,7 +574,10 @@
     </p>
 
     <p>
-      and the first three return true. The last two do not since they are missing decimal points. Lastly, if we want this to match either of the integer or decimal number (which we will do below), we'll take the decimal point and training digits as a group and make it optional.  That is,
+      and the first three return true.
+      The last two do not since they are missing decimal points.
+      Lastly, if we want this to match either of the integer or decimal number (which we will do below), we'll take the decimal point and training digits as a group and make it optional.
+      That is,
     </p>
 
     <p>
@@ -576,7 +603,9 @@
     <exercise>
       <statement>
         <p>
-          Recall that floating point numbers that are written in scientific notation like <c>1.234e-4</c> which represents <m>1.234 \times 10^{-4}</m>. Update the regular expression above to handle these type of numbers, recalling that the front is just a decimal, so you can just handle the <c>e-4</c> above.  Make this part optional.
+          Recall that floating point numbers that are written in scientific notation like <c>1.234e-4</c> which represents <m>1.234 \times 10^{-4}</m>.
+          Update the regular expression above to handle these type of numbers, recalling that the front is just a decimal, so you can just handle the <c>e-4</c> above.
+          Make this part optional.
         </p>
       </statement>
     </exercise>
@@ -586,11 +615,15 @@
     <title>Matching and Capture Groups</title>
 
     <p>
-      Generally, it is desirable to pull out a substring from a string and regular expression are good at this.  For example, we may want to pass along a string and pull out an integer or decimal for parsing to a <c>Int</c> or <c>Float</c>.
+      Generally, it is desirable to pull out a substring from a string and regular expression are good at this.
+      For example, we may want to pass along a string and pull out an integer or decimal for parsing to a <c>Int</c> or <c>Float</c>.
     </p>
 
     <p>
-      Let's say that we have a string <c>"(14,-34)"</c> that we wish to parse as a point in the plane.  We will start with a pair of integers.  Since we want to capture both numbers, we will surround these by <c>( )</c>.   Define
+      Let's say that we have a string <c>"(14,-34)"</c> that we wish to parse as a point in the plane.
+      We will start with a pair of integers.
+      Since we want to capture both numbers, we will surround these by <c>( )</c>.
+      Define
     </p>
 
     <p>
@@ -600,7 +633,8 @@
     </p>
 
     <p>
-      where the parentheses at the beginning and end need to be escaped at <c>\(</c> and <c>\)</c>.  If we then test for matching with
+      where the parentheses at the beginning and end need to be escaped at <c>\(</c> and <c>\)</c>.
+      If we then test for matching with
     </p>
 
     <p>
@@ -610,7 +644,9 @@
     </p>
 
     <p>
-      which returns <c>true</c>. This is nice that if say it matches, but we would like to determine the substrings for the two points.  We can do this with the <c>match</c> function like
+      which returns <c>true</c>.
+      This is nice that if say it matches, but we would like to determine the substrings for the two points.
+      We can do this with the <c>match</c> function like
     </p>
 
     <p>
@@ -630,12 +666,16 @@
     </p>
 
     <p>
-      which is an object (struct) that captures information about the match.  The first argument is the string that matches the regular expression, which is the full string.  The next two are the two capture groups.  We can access these with <c>m1[1]</c> and <c>m1[2]</c>.
+      which is an object (struct) that captures information about the match.
+      The first argument is the string that matches the regular expression, which is the full string.
+      The next two are the two capture groups.
+      We can access these with <c>m1[1]</c> and <c>m1[2]</c>.
     </p>
 
     <exercise>
       <p>
-        Update the regular expression above to handle a point of two integers or floating point numbers.  Test your regular expression with the <c>match</c> command.
+        Update the regular expression above to handle a point of two integers or floating point numbers.
+        Test your regular expression with the <c>match</c> command.
       </p>
     </exercise>
   </section>
@@ -644,11 +684,16 @@
     <title>Replacing substrings with regular expressions. </title>
 
     <p>
-      Above, we used regular expressions in three ways.  <c>occursin</c>, which returns true or false if there is a substring within or regular expression that matches a larger string.  Secondly, we used the <c>match</c> function to extract parts of a string.  Lastly, we used a regular expression to split a string into an array of other strings.  In this section, we will see a couple of other ways regular expressions can be used.
+      Above, we used regular expressions in three ways.
+      <c>occursin</c>, which returns true or false if there is a substring within or regular expression that matches a larger string.
+      Secondly, we used the <c>match</c> function to extract parts of a string.
+      Lastly, we used a regular expression to split a string into an array of other strings.
+      In this section, we will see a couple of other ways regular expressions can be used.
     </p>
 
     <p>
-      Replacing strings with another string is quite helpful.  A simple non-regex versions is the following:
+      Replacing strings with another string is quite helpful.
+      A simple non-regex versions is the following:
     </p>
 
     <p>
@@ -668,7 +713,9 @@
     </p>
 
     <p>
-      Replace is more powerful that just simple string.  We can use a regular expression as well.  Consider
+      Replace is more powerful that just simple string.
+      We can use a regular expression as well.
+      Consider
     </p>
 
     <p>
@@ -688,7 +735,8 @@
     </p>
 
     <p>
-      And lastly, we can use capture groups as well.  Consider the following:
+      And lastly, we can use capture groups as well.
+      Consider the following:
     </p>
 
     <p>
@@ -698,7 +746,11 @@
     </p>
 
     <p>
-      returns <c>"Is the kid still in the pond?  Is the adult sitting on the beach?"</c>.  First, notice that we have multiple replacements. Also, on the replacements, we have a regular expression with a capture group (with parentheses) and we have a substitution string <c>s" \1 "</c> which starts with an <c>s</c>.  Note that the substitution string has a <c>\1</c>, which will be the matched capture group.  This allow us to replace both <c>adults</c> and <c>kids</c>.
+      returns <c>"Is the kid still in the pond?  Is the adult sitting on the beach?"</c>.
+      First, notice that we have multiple replacements.
+      Also, on the replacements, we have a regular expression with a capture group (with parentheses) and we have a substitution string <c>s" \1 "</c> which starts with an <c>s</c>.
+      Note that the substitution string has a <c>\1</c>, which will be the matched capture group.
+      This allow us to replace both <c>adults</c> and <c>kids</c>.
     </p>
   </section>
 
@@ -707,7 +759,9 @@
 
     <introduction>
       <p>
-        We now turn to an example of parsing a string to interpret as a polynomial.  A goal will be to add a constructor to our <c>Polynomial</c> module that will take a string and if it can be written as a polynomial, to parse it and store it as a polynomial.  For example, here are some examples
+        We now turn to an example of parsing a string to interpret as a polynomial.
+        A goal will be to add a constructor to our <c>Polynomial</c> module that will take a string and if it can be written as a polynomial, to parse it and store it as a polynomial.
+        For example, here are some examples
       </p>
 
       <p>
@@ -719,7 +773,10 @@
       </p>
 
       <p>
-        Although we hope to eventually do general polynomials, let's start with a linear function, like the top one above. Also for simplicity, we'll assume that the coefficients are integers and that the variable is <c>x</c>.  To start, let's build a regular expression that will start with an integer (to be captured) followed by an <c>x</c> followed by another integer (to be captured). The following will do this
+        Although we hope to eventually do general polynomials, let's start with a linear function, like the top one above.
+        Also for simplicity, we'll assume that the coefficients are integers and that the variable is <c>x</c>.
+        To start, let's build a regular expression that will start with an integer (to be captured) followed by an <c>x</c> followed by another integer (to be captured).
+        The following will do this
       </p>
 
       <p>
@@ -754,7 +811,8 @@
 
           <li>
             <p>
-              The sign and the digits are surrounded by <c>()</c>, so this is our first capture group.  This will be parsed as our first coefficient.
+              The sign and the digits are surrounded by <c>()</c>, so this is our first capture group.
+              This will be parsed as our first coefficient.
             </p>
           </li>
 
@@ -772,7 +830,9 @@
       <title>Testing the regular expression</title>
 
       <p>
-        Clearly the regular expression should be tested.  We will use the tools from the <c>Test</c> package that was explained in  <xref ref="ch-modules"/>.  To start with we'll make a <c>testset</c> for linear functions using
+        Clearly the regular expression should be tested.
+        We will use the tools from the <c>Test</c> package that was explained in  <xref ref="ch-modules"/>.
+        To start with we'll make a <c>testset</c> for linear functions using
       </p>
 
 
@@ -788,7 +848,11 @@ end
       </program>
 
       <p>
-        Right now, we just want to make sure that four strings above match the regular expression for linear relationships.  Note that this seems to take care of all linear functions (with integer coefficients) in that either of the coefficients can be positive or negative.   Running this you will see that all test pass.  However, did we capture all linear relationships?  A couple stand out to me after thinking a bit.  <c>"5x"</c> itself is a linear function as is <c>5*x+10</c> and if we add these to the tests, they will fail.
+        Right now, we just want to make sure that four strings above match the regular expression for linear relationships.
+        Note that this seems to take care of all linear functions (with integer coefficients) in that either of the coefficients can be positive or negative.
+        Running this you will see that all test pass.
+        However, did we capture all linear relationships?  A couple stand out to me after thinking a bit.
+        <c>"5x"</c> itself is a linear function as is <c>5*x+10</c> and if we add these to the tests, they will fail.
       </p>
 
       <p>
@@ -802,7 +866,8 @@ end
       </p>
 
       <p>
-        noting that <c>*</c> is a special character so needs to be escaped as <c>\*</c>. Now the test set:
+        noting that <c>*</c> is a special character so needs to be escaped as <c>\*</c>.
+        Now the test set:
       </p>
 
       <p>
@@ -828,7 +893,8 @@ end
       <title>Linear Functions with decimal coefficients</title>
 
       <p>
-        As we saw above, we have a regular expression to handle decimal coefficients. This is
+        As we saw above, we have a regular expression to handle decimal coefficients.
+        This is
       </p>
 
       <p>
@@ -848,7 +914,8 @@ end
       </p>
 
       <p>
-        the above set of sets can be updated to use this instead. (Try it!) and also include a new set of tests with decimal coefficients:
+        the above set of sets can be updated to use this instead.
+        (Try it!) and also include a new set of tests with decimal coefficients:
       </p>
 
       <p>
@@ -874,7 +941,10 @@ end
       </p>
 
       <p>
-        Instead, we will split up the polynomial into terms.  For an example, let's start with <m>4x^3-2x^2+6</m> which we will write as the string <c>4x^3-2x^2+6</c>.  To split the polynomial, there is a <c>split</c> function that we can split on either a <c>+</c> or <c>-</c>, however that sign is not saved. Instead, the following will do what we want:
+        Instead, we will split up the polynomial into terms.
+        For an example, let's start with <m>4x^3-2x^2+6</m> which we will write as the string <c>4x^3-2x^2+6</c>.
+        To split the polynomial, there is a <c>split</c> function that we can split on either a <c>+</c> or <c>-</c>, however that sign is not saved.
+        Instead, the following will do what we want:
       </p>
 
 
@@ -908,25 +978,30 @@ end
         <ul>
           <li>
             <p>
-              Line 2: <c>terms</c> stores the terms as an array of strings.  This will act like a stack.
+              Line 2: <c>terms</c> stores the terms as an array of strings.
+              This will act like a stack.
             </p>
           </li>
 
           <li>
             <p>
-              Line 4: the variable <c>ind1</c> will be the first index of the array substring.  Later in the function, we will pull out from the polynomial string between <c>ind1</c> and <c>ind2</c> (or adjusted a bit).  If the polynomial string has a sign, then we start the index at 2, otherwise at 1.
+              Line 4: the variable <c>ind1</c> will be the first index of the array substring.
+              Later in the function, we will pull out from the polynomial string between <c>ind1</c> and <c>ind2</c> (or adjusted a bit).
+              If the polynomial string has a sign, then we start the index at 2, otherwise at 1.
             </p>
           </li>
 
           <li>
             <p>
-              Line 6: in general, <c>while true</c> is a surefire way to get an infinite loop since there is no stopping condition.  However, the <c>if</c> statement starting on line 8 will check if we're done and break out of the loop.
+              Line 6: in general, <c>while true</c> is a surefire way to get an infinite loop since there is no stopping condition.
+              However, the <c>if</c> statement starting on line 8 will check if we're done and break out of the loop.
             </p>
           </li>
 
           <li>
             <p>
-              Line 7: this determines the second index which will extract the substring from the polynomial string.  Note that result of this is a <c>UnitRange</c>.
+              Line 7: this determines the second index which will extract the substring from the polynomial string.
+              Note that result of this is a <c>UnitRange</c>.
             </p>
           </li>
 
@@ -938,13 +1013,17 @@ end
 
           <li>
             <p>
-              Line 10: As the comment says, we are at the end of the string, and push the last terms onto the <c>terms</c> array.  When <c>SubString</c> is called with only one index, it takes the end of the string.   Also, we covert the <c>SubString</c> to a <c>String</c> with the <c>string</c> command.
+              Line 10: As the comment says, we are at the end of the string, and push the last terms onto the <c>terms</c> array.
+              When <c>SubString</c> is called with only one index, it takes the end of the string.
+              Also, we covert the <c>SubString</c> to a <c>String</c> with the <c>string</c> command.
             </p>
           </li>
 
           <li>
             <p>
-              Line 14: For a match on a +/-, we push the proper substring onto the <c>terms</c> array.  If <c>ind1</c> is 1, we need to adjust the string (beginning of the string).  Also, note that since <c>ind2</c> is a <c>UnitRange</c>, we take the first value of the range.
+              Line 14: For a match on a +/-, we push the proper substring onto the <c>terms</c> array.
+              If <c>ind1</c> is 1, we need to adjust the string (beginning of the string).
+              Also, note that since <c>ind2</c> is a <c>UnitRange</c>, we take the first value of the range.
             </p>
           </li>
 
@@ -957,7 +1036,8 @@ end
       </p>
 
       <p>
-        Let's check with the string <c>4x^3-2x+6</c> that this works.  Calling
+        Let's check with the string <c>4x^3-2x+6</c> that this works.
+        Calling
       </p>
 
       <p>
@@ -980,7 +1060,8 @@ end
       </p>
 
       <p>
-        which appears to work well.  (Note: later, we will do some testing after converting to <c>Polynomial</c> objects.)
+        which appears to work well.
+        (Note: later, we will do some testing after converting to <c>Polynomial</c> objects.)
       </p>
     </subsection>
 
@@ -989,7 +1070,10 @@ end
       <title>Parsing Polynomial Terms</title>
 
       <p>
-        The next step is to parse the individual terms of the polynomial.  For this, we will use a a regular expression to handle this.  For first step, let's assume that the constant out front is an integer.   The following will parse these terms:
+        The next step is to parse the individual terms of the polynomial.
+        For this, we will use a a regular expression to handle this.
+        For first step, let's assume that the constant out front is an integer.
+        The following will parse these terms:
       </p>
 
       <p>
@@ -1019,7 +1103,8 @@ end
       </p>
 
       <p>
-        and you should notice that <c>m[1]</c> will be the coefficient and <c>m[4]</c> will be the power. If we test the next term with
+        and you should notice that <c>m[1]</c> will be the coefficient and <c>m[4]</c> will be the power.
+        If we test the next term with
       </p>
 
       <p>
@@ -1039,7 +1124,8 @@ end
       </p>
 
       <p>
-        and you should notice that again <c>m2[1]</c> is the coefficient and since <c>m2[4]</c> is <c>nothing</c> that this is a linear term. And finally,
+        and you should notice that again <c>m2[1]</c> is the coefficient and since <c>m2[4]</c> is <c>nothing</c> that this is a linear term.
+        And finally,
       </p>
 
       <p>
@@ -1063,7 +1149,8 @@ end
       </p>
 
       <p>
-        Although this looks good, thinking a bit ahead, if we have a polynomial term like <c>-x^2</c>, this will not parse this. Try
+        Although this looks good, thinking a bit ahead, if we have a polynomial term like <c>-x^2</c>, this will not parse this.
+        Try
       </p>
 
       <p>
@@ -1073,7 +1160,8 @@ end
       </p>
 
       <p>
-        returns nothing.  We will tweak the regular expression above to allow a + or - with no number in front of the <c>x</c> term.
+        returns nothing.
+        We will tweak the regular expression above to allow a + or - with no number in front of the <c>x</c> term.
       </p>
 
       <p>
@@ -1093,7 +1181,9 @@ end
       </p>
 
       <p>
-        which shows that it matches.  Note that these are different than the matches above--there are 5 capture groups now.  It is noted that the 2nd group matched nothing because there was no numerical coefficient before the <c>x^2</c> term.
+        which shows that it matches.
+        Note that these are different than the matches above--there are 5 capture groups now.
+        It is noted that the 2nd group matched nothing because there was no numerical coefficient before the <c>x^2</c> term.
       </p>
     </subsection>
   </section>

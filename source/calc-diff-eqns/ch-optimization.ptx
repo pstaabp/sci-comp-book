@@ -5,7 +5,9 @@
 
   <introduction>
     <p>
-      Optimization is an extremely useful subject in Scientific Computation and is often used in other fields.  In short, optimization is the selection of some parameters in order to minimization or maximize some function.  A simple example is if we have a function like <m>f(x) = x^2</m> which has the plot:
+      Optimization is an extremely useful subject in Scientific Computation and is often used in other fields.
+      In short, optimization is the selection of some parameters in order to minimization or maximize some function.
+      A simple example is if we have a function like <m>f(x) = x^2</m> which has the plot:
     </p>
 
     <figure xml:id="fig-opt-xsq">
@@ -50,7 +52,8 @@
     </definition>
 
     <p>
-      We can extend this to functions of more that one variable.  The following is the definition of optimal points of functions of two variables and further can be found in [REF??]
+      We can extend this to functions of more that one variable.
+      The following is the definition of optimal points of functions of two variables and further can be found in [REF??]
     </p>
 
     <definition xml:id="def-local-rn">
@@ -82,7 +85,8 @@
     <title>Newton's Method</title>
 
     <p>
-      We saw Newton's Method in <xref ref="ch-rootfinding"/> which found values where <m>f(x)=0</m>.  If a function is differentiable, then we can use Newton's Method on <m>f'(x)</m> to find minima and maxima.
+      We saw Newton's Method in <xref ref="ch-rootfinding"/> which found values where <m>f(x)=0</m>.
+      If a function is differentiable, then we can use Newton's Method on <m>f'(x)</m> to find minima and maxima.
     </p>
 
     <p>
@@ -107,17 +111,18 @@
     </p>
 
     <p>
-      by
+      with the command
     </p>
 
     <p>
       <cd>
-      <cline>newton(x -&gt; ForwardDiff.derivative(f,x),0)</cline>
+      <cline>Main.Rootfinding.newton(x -&gt; ForwardDiff.derivative(f,x),0)</cline>
       </cd>
     </p>
 
     <p>
-      which returns
+      where we have used the full name to the <c>newton</c> method in the <c>Rootfinding</c> module due to name clashing.
+      The result is:
     </p>
 
     <p>
@@ -130,8 +135,22 @@
     </p>
 
     <p>
-      This method works reasonably well to find local minima or maxima of functions of 1 variable if the function is differentiable.  However, often, functions are of more than one variable and not differentiable and we would still like to find optimum points. There are other more robust methods that we start with below.
+      This method works reasonably well to find local minima or maxima of functions of 1 variable if the function is differentiable.
+      However, often, functions are of more than one variable and not differentiable and we would still like to find optimum points.
+      There are other more robust methods that we start with below.
     </p>
+
+    <exercise>
+      <p>
+        Find all local minima of the function <m>f(x) = x^2/2 + \sin(3x)</m> on the interval <m>[-4,4]</m>.
+        Use newton's method from the Rootfinding module to find the roots.
+      </p>
+
+      <p>
+        Hint: graph the function, which will give approximate values of the minima.
+        Use these as initial points.
+      </p>
+    </exercise>
   </section>
 
   <section>
@@ -139,7 +158,8 @@
 
     <introduction>
       <p>
-        The basic method for optimizing functions of more than 1 variable is called gradient descent.  Consider
+        The basic method for optimizing functions of more than 1 variable is called gradient descent.
+        Consider
       </p>
 
       <p>
@@ -173,11 +193,14 @@
       </figure>
 
       <p>
-        The colors of the contours have heights given on the bar to the side.  There is a local minimum near the point <m>(1,2)</m> and we will use a gradient descent method to find this.
+        The colors of the contours have heights given on the bar to the side.
+        There is a local minimum near the point <m>(1,2)</m> and we will use a gradient descent method to find this.
       </p>
 
       <p>
-        The idea with gradient descent is that a starting point is chosen in a manner similar to that of Newton's method.  The gradient of a function, <m>\nabla f</m>, denotes a vector showing the direction of greatest increase.  Since we are seeking a minimum, the direction of greatest descent is the opposite direction or <m>-\nabla f</m>.
+        The idea with gradient descent is that a starting point is chosen in a manner similar to that of Newton's method.
+        The gradient of a function, <m>\nabla f</m>, denotes a vector showing the direction of greatest increase.
+        Since we are seeking a minimum, the direction of greatest descent is the opposite direction or <m>-\nabla f</m>.
       </p>
 
       <p>
@@ -217,7 +240,9 @@ end
       </program>
 
       <p>
-        and we can use this code<fn>To get the <m>\nabla</m> symbol above, type <c>\nabla</c>, then hit TAB. To get subscripts like <c>x₀</c>, type <c>x</c>then <c>\_0</c>then hit tab.  You can get other numerical subscripts with other digits after the underscore.</fn> to find a minimum of the function in <xref ref="eq-f"/>, first we define it as
+        and we can use this code<fn>To get the <m>\nabla</m> symbol above, type <c>\nabla</c>, then hit TAB.
+        To get subscripts like <c>x₀</c>, type <c>x</c>then <c>\_0</c>then hit tab.
+        You can get other numerical subscripts with other digits after the underscore.</fn> to find a minimum of the function in <xref ref="eq-f"/>, first we define it as
       </p>
 
       <p>
@@ -227,7 +252,9 @@ end
       </p>
 
       <p>
-        where the value <c>x</c> needs to be a <c>Vector</c>, which is a 1D array, for the ease of taking gradients with the <c>ForwardDiff.gradient</c>function. The standard <m>x</m> and <m>y</m> variables are <c>x[1]</c>and <c>x[2]</c>respectively.  To find the minimum with this function use:
+        where the value <c>x</c> needs to be a <c>Vector</c>, which is a 1D array, for the ease of taking gradients with the <c>ForwardDiff.gradient</c>function.
+        The standard <m>x</m> and <m>y</m> variables are <c>x[1]</c>and <c>x[2]</c>respectively.
+        To find the minimum with this function use:
       </p>
 
       <p>
@@ -250,7 +277,8 @@ end
 
       <exercise>
         <p>
-          The maximum can be found using this same method by finding the minimum of the negative of this function.  Find the maximum of this same function near the point <m>(2.5,0.5)</m>.
+          The maximum can be found using this same method by finding the minimum of the negative of this function.
+          Find the maximum of this same function near the point <m>(2.5,0.5)</m>.
         </p>
       </exercise>
     </subsection>
@@ -270,7 +298,8 @@ end
       </p>
 
       <p>
-        Note, though that <m>\gamma_n</m> requires knowing information at the previous step (both <m>\mathbf{x}_{n-1}</m> and <m>\nabla f(\mathbf{x}_{n-1})</m>) which is not available on the first step.  We can use the simple gradient descent (where we used a constant value of <m>\gamma</m>) on the first step and then
+        Note, though that <m>\gamma_n</m> requires knowing information at the previous step (both <m>\mathbf{x}_{n-1}</m> and <m>\nabla f(\mathbf{x}_{n-1})</m>) which is not available on the first step.
+        We can use the simple gradient descent (where we used a constant value of <m>\gamma</m>) on the first step and then
       </p>
 
 
@@ -322,7 +351,11 @@ end
 
     <introduction>
       <p>
-        We saw in <xref ref="ch-algorithm-analysis"/> of fitting various functions to data.  We skipped over a lot of details there by using a package called <c>LsqFit</c>.  We're going to revisit this by using the techniques here, which allows use to find fits in more generally ways than using that package.  We'll start with a common task of finding the best fit line through a set of points and let's just take a small example.  Let
+        We saw in <xref ref="ch-algorithm-analysis"/> of fitting various functions to data.
+        We skipped over a lot of details there by using a package called <c>LsqFit</c>.
+        We're going to revisit this by using the techniques here, which allows use to find fits in more generally ways than using that package.
+        We'll start with a common task of finding the best fit line through a set of points and let's just take a small example.
+        Let
       </p>
 
       <p>
@@ -358,7 +391,9 @@ end
       </p>
 
       <p>
-        and we want to minimize this recalling that the variables are <m>m</m> and <m>b</m> (note that <m>x</m> and <m>y</m> are the data).  Basically, this comes down to defining the function <m>E</m> in julia and using one of the methods from above. We can write <m>E</m> down like
+        and we want to minimize this recalling that the variables are <m>m</m> and <m>b</m> (note that <m>x</m> and <m>y</m> are the data).
+        Basically, this comes down to defining the function <m>E</m> in julia and using one of the methods from above.
+        We can write <m>E</m> down like
       </p>
 
       <p>
@@ -368,7 +403,8 @@ end
       </p>
 
       <p>
-        where <c>pts</c>is defined above.  If we try
+        where <c>pts</c>is defined above.
+        If we try
       </p>
 
       <p>
@@ -378,7 +414,9 @@ end
       </p>
 
       <p>
-        the result is <c>The number of steps has exceeded 100.</c> Oops.  This is common for some functions of more that one variable.  If we look at a contour plot with the command:
+        the result is <c>The number of steps has exceeded 100.</c> Oops.
+        This is common for some functions of more that one variable.
+        If we look at a contour plot with the command:
       </p>
 
       <p>
@@ -399,7 +437,9 @@ end
       </figure>
 
       <p>
-        you can see that there appears to be a minimum, however it is in a long narrow canyon.  This is a common example where gradient descent does not work well, even if we try different values of <m>\gamma</m>. (Try it!!) Instead, if we use the  Barzilai–Borwein method,
+        you can see that there appears to be a minimum, however it is in a long narrow canyon.
+        This is a common example where gradient descent does not work well, even if we try different values of <m>\gamma</m>.
+        (Try it!!) Instead, if we use the  Barzilai–Borwein method,
       </p>
 
       <p>
@@ -458,11 +498,16 @@ end
       <title>Fitting Data to Polynomial</title>
 
       <p>
-        As discussed elsewhere, a polynomial has many nice properties for a function.  This includes 1) there are only multiplications, additions and subtractions of numerical values to evaluate it (these are all fast operations on a CPU) and 2) horner's form of the polynomial make them super fast to evaluate. Because of this, using a polynomial as way to calculate other functions is common.
+        As discussed elsewhere, a polynomial has many nice properties for a function.
+        This includes 1) there are only multiplications, additions and subtractions of numerical values to evaluate it (these are all fast operations on a CPU) and 2) horner's form of the polynomial make them super fast to evaluate.
+        Because of this, using a polynomial as way to calculate other functions is common.
       </p>
 
       <p>
-        In this section, we will fit a polynomial to a natural logarithm. It will be similar to fitting data to a line, except the data will be generated from a function and we will use a polynomial (of some degree as the fit).  Let's try to fit a cubic to a set of data generated by <m>y=\ln (x)</m> on <m>[1,5]</m>.  We first generate the x points with
+        In this section, we will fit a polynomial to a natural logarithm.
+        It will be similar to fitting data to a line, except the data will be generated from a function and we will use a polynomial (of some degree as the fit).
+        Let's try to fit a cubic to a set of data generated by <m>y=\ln (x)</m> on <m>[1,5]</m>.
+        We first generate the x points with
       </p>
 
       <p>
@@ -528,7 +573,8 @@ end
       </figure>
 
       <p>
-        showing that they are almost identical.  The error which is the difference between the polynomial and the log function can be plotted with:
+        showing that they are almost identical.
+        The error which is the difference between the polynomial and the log function can be plotted with:
       </p>
 
       <p>
@@ -549,7 +595,8 @@ end
       </figure>
 
       <p>
-        and this shows that with just a cubic, we can approximate the natural log to 0.016 (almost 2 digits).  If we choose a higher-degree polynomial, we can do better and in fact, using polynomials as approximations is often the way that many mathematical functions are evaluated.
+        and this shows that with just a cubic, we can approximate the natural log to 0.016 (almost 2 digits).
+        If we choose a higher-degree polynomial, we can do better and in fact, using polynomials as approximations is often the way that many mathematical functions are evaluated.
       </p>
     </subsection>
   </section>
@@ -559,7 +606,8 @@ end
 
     <introduction>
       <p>
-        There is a very nice package for optimization called the <c>JuMP</c> package \cite{DunningHuchetteLubin2017} which allows the ability to set up a problem, then optimize it. Make sure you add the following packages and then
+        There is a very nice package for optimization called the <c>JuMP</c> package \cite{DunningHuchetteLubin2017} which allows the ability to set up a problem, then optimize it.
+        Make sure you add the following packages and then
       </p>
 
       <p>
@@ -580,7 +628,8 @@ end
       </p>
 
       <p>
-        and note that there was no output.  This only adds the two variables as well as the objective function and since it is nonlinear, we use the <c>@NLobjective</c>macro.
+        and note that there was no output.
+        This only adds the two variables as well as the objective function and since it is nonlinear, we use the <c>@NLobjective</c>macro.
       </p>
 
       <p>
@@ -658,13 +707,16 @@ end
         <ul>
           <li>
             <p>
-              All of the steps are shown.  This took 11 steps and you see the objective column reports the value of the objective starting at the point <m>(0.1,0.1)</m> with value <c>8.901e-01</c>and decreasing to <c>-1.0e+00</c>
+              All of the steps are shown.
+              This took 11 steps and you see the objective column reports the value of the objective starting at the point <m>(0.1,0.1)</m> with value <c>8.901e-01</c>and decreasing to <c>-1.0e+00</c>
             </p>
           </li>
 
           <li>
             <p>
-              There are total number of function, gradient, Jacobian and Hessian evaluations, where the latter two are matrices of derivatives.  Like we did in defining our gradient descent function, these are done with the <c>ForwardDiff</c>package.  This is helpful if your function takes a long time to compute to see where time is spent.
+              There are total number of function, gradient, Jacobian and Hessian evaluations, where the latter two are matrices of derivatives.
+              Like we did in defining our gradient descent function, these are done with the <c>ForwardDiff</c>package.
+              This is helpful if your function takes a long time to compute to see where time is spent.
             </p>
           </li>
 
@@ -677,7 +729,8 @@ end
       </p>
 
       <p>
-        Note that the point itself is not listed.  We can get this with the <c>value</c>function, so
+        Note that the point itself is not listed.
+        We can get this with the <c>value</c>function, so
       </p>
 
       <p>
@@ -719,7 +772,9 @@ end
       </p>
 
       <p>
-        where we have set the <c>print_level</c>attribute of the <c>Ipopt</c> solver to 3 to print out less information. Also, note that the way the objective function is called  And we haven't shown the information here, but the most important aspect is that it found the solution. The values are
+        where we have set the <c>print_level</c>attribute of the <c>Ipopt</c> solver to 3 to print out less information.
+        Also, note that the way the objective function is called  And we haven't shown the information here, but the most important aspect is that it found the solution.
+        The values are
       </p>
 
       <p>
@@ -768,20 +823,28 @@ end
     <subsection>
       <title>Fitting to an Exponential</title>
 
-      % %For this section, we going to fit a dataset to an exponential curve.  First, the data found at the site  \href{https://www.esrl.noaa.gov/gmd/ccgg/trends/data.html}{https://www.esrl.noaa.gov/gmd/ccgg/trends/data.html} and look for the link to <term> Mauna Loa CO2 annual mean growth rates</term>. Click the CSV link to get a file that is easier to import. % %Also, we will using some of packages explained in Chapter \ref{ch:data}, so if needed, review that chapter.  We'll be using the following packages: %% %\begin{jlblock}[expfit] %using DataFrames, Query, CSVFiles, StatsPlots %</cd>
+      % %For this section, we going to fit a dataset to an exponential curve.
+      First, the data found at the site  \href{https://www.esrl.noaa.gov/gmd/ccgg/trends/data.html}{https://www.esrl.noaa.gov/gmd/ccgg/trends/data.html} and look for the link to <term> Mauna Loa CO2 annual mean growth rates</term>.
+      Click the CSV link to get a file that is easier to import.
+      % %Also, we will using some of packages explained in Chapter \ref{ch:data}, so if needed, review that chapter.
+      We'll be using the following packages: %% %\begin{jlblock}[expfit] %using DataFrames, Query, CSVFiles, StatsPlots %</cd>
       %
       <cd> %using PGFPlotsX, JuMP, Ipopt %pgfplotsx() %</cd>
-      %First, we need to load the data from the file.  If you open up the file, you will notice that there are many lines that start with a <c>#</c>which is meant to be a comment, but needs to be explicitly said: %\begin{jlverbatim} %CO2_data = load("co2_annmean_mlo.csv",skiplines_begin=55) |> DataFrame; %</cd>
+      %First, we need to load the data from the file.
+      If you open up the file, you will notice that there are many lines that start with a <c>#</c>which is meant to be a comment, but needs to be explicitly said: %\begin{jlverbatim} %CO2_data = load("co2_annmean_mlo.csv",skiplines_begin=55) |> DataFrame; %</cd>
       %
       <cd> %CO2_data = load("../common-code/co2_annmean_mlo.csv",skiplines_begin=55) |> DataFrame; %</cd>
       %and a plot of this is given with the following: %\begin{jlblock}[expfit] %@df CO2_data scatter(:year,:mean, markersize=2, legend=:topleft, label="data") %</cd>
-      %\begin{center} %\pgfplotsset{scale=0.7} %\plot{plots/opt/co2scatter.tex}{expfit} %\end{center} %This plot seems to show that perhaps the function is an exponential.  We'll first try to fit to the following function: %
+      %\begin{center} %\pgfplotsset{scale=0.7} %\plot{plots/opt/co2scatter.tex}{expfit} %\end{center} %This plot seems to show that perhaps the function is an exponential.
+      We'll first try to fit to the following function: %
       <men>
         %f(t) & = C e^{kt} \label{eq:exp1} %
       </men>
-      % %To make the data a bit easier to handle, we'll shift all of the years by 1959, so the variable <m>t</m> will be the number of since since 1959.  Also, to make things consistent with what we did above, we create an array of tuples (acting like points) %% %\begin{jlblock}[expfit] %co2_pts = map(i->(CO2_data[i,:year]-1959,CO2_data[i,:mean]), 1:nrow(CO2_data)) %</cd>
+      % %To make the data a bit easier to handle, we'll shift all of the years by 1959, so the variable <m>t</m> will be the number of since since 1959.
+      Also, to make things consistent with what we did above, we create an array of tuples (acting like points) %% %\begin{jlblock}[expfit] %co2_pts = map(i->(CO2_data[i,:year]-1959,CO2_data[i,:mean]), 1:nrow(CO2_data)) %</cd>
       %where the first 10 values are \jlc[expfit]{display(co2_pts[1:10])}\printpythontex[verbatim] % %Next, we'll set up and optimize the least squares function as: %\begin{jlblock}[expfit] %model = Model(Ipopt.Optimizer) %set_optimizer_attribute(model,"print_level",5) %@variable(model,C,start=300) %@variable(model,k,start=0.01) % %@NLobjective(model,Min,  sum((C*exp(k*pt[1])-pt[2])^2 for pt in co2_pts)) %optimize!(model) %</cd>
-      %where the function in the <c>@NLobjective</c>macro is the desired function in (\ref{eq:exp1}). % %\begin{jlblock}[expfit] %value(C),value(k) %</cd>
+      %where the function in the <c>@NLobjective</c>macro is the desired function in (\ref{eq:exp1}).
+      % %\begin{jlblock}[expfit] %value(C),value(k) %</cd>
       %
       <cd> %using Printf %display((value(C),value(k))) %</cd>
       %\printpythontex[verbatim] %\jlc[expfit]{print(@sprintf "%7.3f" value(C))} \saveprintpythontex{cval} %\jlc[expfit]{print(@sprintf "%7.5f" value(k))} \saveprintpythontex{kval} %and this means that the function fit is: %
@@ -789,12 +852,15 @@ end
         %f(t) & = \useprintpythontex{cval} e^{\useprintpythontex{kval} t} %
       </me>
       %\begin{jlblock}[expfit] %plot!(t->value(C)*exp(value(k)*(t-1959)),1959,2020,label="f(t)") %</cd>
-      %\begin{center} %\pgfplotsset{scale=0.7} %\plot{plots/opt/exp-overlay.tex}{expfit} %\end{center} % %Note that although the fit isn't bad, it doesn't seem like it is a great fit.  This is probably due to the function not having enough parameters to get a better fit.  If instead we try a function of the form: %
+      %\begin{center} %\pgfplotsset{scale=0.7} %\plot{plots/opt/exp-overlay.tex}{expfit} %\end{center} % %Note that although the fit isn't bad, it doesn't seem like it is a great fit.
+      This is probably due to the function not having enough parameters to get a better fit.
+      If instead we try a function of the form: %
       <men>
         %g(t) = A + C e^{kt} \label{eq:exp2} %
       </men>
       %we can try fitting this with the following: %\begin{jlblock}[expfit] %model2 = Model(Ipopt.Optimizer) %set_optimizer_attribute(model2,"print_level",5) %@variable(model2,C,start=1) %@variable(model2,k,start=0.01) %@variable(model2,A,start=200) % %@NLobjective(model2,Min,  sum((A+C*exp(k*pt[1])-pt[2])^2 for pt in co2_pts)) %optimize!(model2) %</cd>
-      %where we have added the extra variable <m>A</m> as well as added it to the <c>@NLobjective</c>macro. % %\begin{jlblock}[expfit] %value(C),value(k),value(A) %</cd>
+      %where we have added the extra variable <m>A</m> as well as added it to the <c>@NLobjective</c>macro.
+      % %\begin{jlblock}[expfit] %value(C),value(k),value(A) %</cd>
       %
       <cd> %display((value(C),value(k),value(A))) %</cd>
       %\printpythontex[verbatim] %\jlc[expfit]{print(@sprintf "%6.3f" value(C))} \saveprintpythontex{cval2} %\jlc[expfit]{print(@sprintf "%7.5f" value(k))} \saveprintpythontex{kval2} %\jlc[expfit]{print(@sprintf "%7.3f" value(A))} \saveprintpythontex{aval2} %and this means that the function fit is: %
@@ -802,7 +868,8 @@ end
         %g(t) & = \useprintpythontex{aval2}+\useprintpythontex{cval2} e^{\useprintpythontex{kval2} t} %
       </me>
       % %\begin{jlblock}[expfit] %plot!(t->value(A)+value(C)*exp(value(k)*(t-1959)),1959,2020,label="g(t)") %</cd>
-      %\begin{center} %\pgfplotsset{scale=0.7} %\plot{plots/opt/exp-overlay2.tex}{expfit} %\end{center} %and this shows that it appears to be a pretty solid fit. -->
+      %\begin{center} %\pgfplotsset{scale=0.7} %\plot{plots/opt/exp-overlay2.tex}{expfit} %\end{center} %and this shows that it appears to be a pretty solid fit.
+      -->
     </subsection>
   </section>
 </chapter>

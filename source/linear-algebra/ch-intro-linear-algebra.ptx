@@ -5,11 +5,13 @@
 
   <introduction>
     <p>
-      Linear Algebra is probably the most important mathematical field for Scientific Computation<fn>And if you ask someone in the field, they will say most important field PERIOD!</fn>.  This chapter covers the basics of Linear Algebra in Julia and how it can be used to solve scientific problems.
+      Linear Algebra is probably the most important mathematical field for Scientific Computation<fn>And if you ask someone in the field, they will say most important field PERIOD!</fn>.
+      This chapter covers the basics of Linear Algebra in Julia and how it can be used to solve scientific problems.
     </p>
 
     <p>
-      Also, a lot of these functions described here are standard functions (that is, part of the <c>Base</c> package which is automatically loaded), however many are also part of the <c>LinearAlgebra</c> package, which should be downloaded, but you will need to perform <c>using LinearAlgebra</c>.  It is pointed out when you need this package.
+      Also, a lot of these functions described here are standard functions (that is, part of the <c>Base</c> package which is automatically loaded), however many are also part of the <c>LinearAlgebra</c> package, which should be downloaded, but you will need to perform <c>using LinearAlgebra</c>.
+      It is pointed out when you need this package.
     </p>
   </introduction>
 
@@ -18,7 +20,10 @@
 
     <introduction>
       <p>
-        Vector and matrices are the building blocks of linear algebra.  In short a Vector is simply a 1D array and in julia the type <c>Vector&lt;T&gt;</c> is shorthand for <c>Array{T,1}</c>.  We can make a vector just like we did with an array.  For example, <c>x = [1,2,3]</c> makes an array of length three and the output:
+        Vector and matrices are the building blocks of linear algebra.
+        In short a Vector is simply a 1D array and in julia the type <c>Vector&lt;T&gt;</c> is shorthand for <c>Array{T,1}</c>.
+        We can make a vector just like we did with an array.
+        For example, <c>x = [1,2,3]</c> makes an array of length three and the output:
       </p>
 
       <p>
@@ -35,7 +40,8 @@
       </p>
 
       <p>
-        Similarly, there is a <c>Matrix</c> type which is an alias for a 2D array.  If
+        Similarly, there is a <c>Matrix</c> type which is an alias for a 2D array.
+        If
       </p>
 
       <p>
@@ -63,7 +69,8 @@
       <title>Addition and Subtraction of Vectors and Matrices</title>
 
       <p>
-        All of the construction methods for arrays of both 1D and 2D as seen in Chapter \ref{ch:arrays} can be used.   If we have
+        All of the construction methods for arrays of both 1D and 2D as seen in Chapter \ref{ch:arrays} can be used.
+        If we have
       </p>
 
       <p>
@@ -131,7 +138,8 @@
       <title>scalar multiplication</title>
 
       <p>
-        Scalar multiplication of vectors and matrix work as expected using the <c>*</c> operator, which is implied if multiplying on the left by a number. Using <c>A</c> and <c>x</c> above, <c>3x</c> returns
+        Scalar multiplication of vectors and matrix work as expected using the <c>*</c> operator, which is implied if multiplying on the left by a number.
+        Using <c>A</c> and <c>x</c> above, <c>3x</c> returns
       </p>
 
       <p>
@@ -164,7 +172,8 @@
       <title>Matrix-vector products</title>
 
       <p>
-        Let <c>x=[1, 4, 5]</c>, and <c>A</c> and <c>B</c> as defined above.  The vector-matrix product <c>A*x</c> returns
+        Let <c>x=[1, 4, 5]</c>, and <c>A</c> and <c>B</c> as defined above.
+        The vector-matrix product <c>A*x</c> returns
       </p>
 
       <p>
@@ -199,7 +208,9 @@
       <title>Matrix Transpose</title>
 
       <p>
-        Recall that the tranpose of a matrix <m>A</m> is a matrix where the <m>i</m>th row and <m>j</m> column of A becomes the <m>i</m>th column and <m>j</m>th row of the transpose.  In julia, the <c>transpose</c> function performs like.  For example,
+        Recall that the tranpose of a matrix <m>A</m> is a matrix where the <m>i</m>th row and <m>j</m> column of A becomes the <m>i</m>th column and <m>j</m>th row of the transpose.
+        In julia, the <c>transpose</c> function performs like.
+        For example,
       </p>
 
       <p>
@@ -222,7 +233,11 @@
       </p>
 
       <p>
-        Notice that the type of a transpose is not a simple <c>Matrix</c>.  It has <c>transpose</c> in the type.  This is mainly for efficiency. For large matrices (say ones that take up a Gb of memory or more), simply a copy of a matrix is more efficient than doing the transpose operation.  Julia will then known if it is a transpose then perform the correct operation using the transpose when needed.
+        Notice that the type of a transpose is not a simple <c>Matrix</c>.
+        It has <c>transpose</c> in the type.
+        This is mainly for efficiency.
+        For large matrices (say ones that take up a Gb of memory or more), simply a copy of a matrix is more efficient than doing the transpose operation.
+        Julia will then known if it is a transpose then perform the correct operation using the transpose when needed.
       </p>
     </subsection>
 
@@ -231,7 +246,9 @@
       <title>Trace and Determinant of a Matrix</title>
 
       <p>
-        The trace of a matrix <m>A</m> is the sum of the elements along the diagonal.  In julia, you can use the <c>tr</c> function in the <c>LinearAlgebra</c> package. The function
+        The trace of a matrix <m>A</m> is the sum of the elements along the diagonal.
+        In julia, you can use the <c>tr</c> function in the <c>LinearAlgebra</c> package.
+        The function
         <cd>
         <cline>tr(A)</cline>
         </cd>
@@ -264,7 +281,9 @@
       <title>Identity Matrix</title>
 
       <p>
-        Recall that the identity matrix, <m>I</m>, is the matrix that satisfies <m>AI=A</m> for any matrix <m>A</m>.  It is matrix with ones along the diagonal and zeros elsewhere.  If needed in julia, you can use
+        Recall that the identity matrix, <m>I</m>, is the matrix that satisfies <m>AI=A</m> for any matrix <m>A</m>.
+        It is matrix with ones along the diagonal and zeros elsewhere.
+        If needed in julia, you can use
       </p>
 
       <p>
@@ -285,7 +304,8 @@
       </p>
 
       <p>
-        Note: the <c>I</c> is part of the <c>LinearAlgebra</c> package and can be used without the size often. For example, <c>I*B</c> returns
+        Note: the <c>I</c> is part of the <c>LinearAlgebra</c> package and can be used without the size often.
+        For example, <c>I*B</c> returns
       </p>
 
       <p>
@@ -311,7 +331,8 @@
     </p>
 
     <p>
-      In julia, we can find the inverse with the <c>inv</c> function.  For example, <c>inv(B)</c> returns
+      In julia, we can find the inverse with the <c>inv</c> function.
+      For example, <c>inv(B)</c> returns
     </p>
 
     <p>
@@ -328,11 +349,12 @@
     </p>
   </section>
 
-  <section>
+  <section xml:id="sect-solve-linear-systems">
     <title>Solving Linear Systems</title>
 
     <p>
-      One of the most important aspects of linear algebra is that of solving a linear system.  In general, this is solving the linear system:
+      One of the most important aspects of linear algebra is that of solving a linear system.
+      In general, this is solving the linear system:
     </p>
 
     <p>
@@ -342,7 +364,8 @@
     </p>
 
     <p>
-      for known matrix <m>A</m> and vector <m>\mathbf{b}</m>.  If
+      for known matrix <m>A</m> and vector <m>\mathbf{b}</m>.
+      If
     </p>
 
     <p>
@@ -440,11 +463,13 @@
     </p>
 
     <p>
-      where the eigenvectors are the columns of the resulting matrix.  The eigenvectors are in the same order as the eigenvalues, which is important in that they form pairs.
+      where the eigenvectors are the columns of the resulting matrix.
+      The eigenvectors are in the same order as the eigenvalues, which is important in that they form pairs.
     </p>
 
     <p>
-      To get a particular eigenvector, you can use the standard array notation to pull out a particular column.  For example, <c>eigvecs(A)[:,2]</c> will return the 2nd eigenvector.
+      To get a particular eigenvector, you can use the standard array notation to pull out a particular column.
+      For example, <c>eigvecs(A)[:,2]</c> will return the 2nd eigenvector.
     </p>
   </section>
 
@@ -462,7 +487,8 @@
       <title>Diagonal Matrices</title>
 
       <p>
-        For example, the identity matrix, can be thought of as a diagonal matrix and in julia there is a matrix type called <c>Diagonal</c>.  For example,
+        For example, the identity matrix, can be thought of as a diagonal matrix and in julia there is a matrix type called <c>Diagonal</c>.
+        For example,
       </p>
 
       <p>
@@ -486,7 +512,11 @@
       </p>
 
       <p>
-        and you'll notice that it doesn't just create a matrix where there are zeros on the off-diagonal.  It will print out like a regular matrix, but it will only store the diagonal elements. This is precisely for saving on storage. However, you can still do operations with this matrix.  For example, finding the eigenvalues of this with
+        and you'll notice that it doesn't just create a matrix where there are zeros on the off-diagonal.
+        It will print out like a regular matrix, but it will only store the diagonal elements.
+        This is precisely for saving on storage.
+        However, you can still do operations with this matrix.
+        For example, finding the eigenvalues of this with
       </p>
 
       <p>
@@ -517,7 +547,8 @@
       <title>Tridiagonal Matrices</title>
 
       <p>
-        Another matrix that shows up often are tridiagonal matrices.  For example, the following arises from discretizes a differential equation:
+        Another matrix that shows up often are tridiagonal matrices.
+        For example, the following arises from discretizes a differential equation:
         <cd>
         <cline>T = Tridiagonal([1 for i=1:9],[-2 for i=1:10],[1 for i=1:9])</cline>
         </cd>
@@ -546,11 +577,14 @@
 
     <introduction>
       <p>
-        As with number types that we discussed in <xref ref="sect-abstract-type"/>, matrices in julia are subtypes of the abstract type <c>AbstractMatrix</c>.  There are a few functions that are common to all matrices and understanding this is helpful in working with different types of special matrices.
+        As with number types that we discussed in <xref ref="sect-abstract-type"/>, matrices in julia are subtypes of the abstract type <c>AbstractMatrix</c>.
+        There are a few functions that are common to all matrices and understanding this is helpful in working with different types of special matrices.
       </p>
 
       <p>
-        In short, an <c>AbstractMatrix</c> is the supertype of all matrices in julia.  For example the multiplication of two matrices with <c>*</c>. If
+        In short, an <c>AbstractMatrix</c> is the supertype of all matrices in julia.
+        For example the multiplication of two matrices with <c>*</c>.
+        If
       </p>
 
       <p>
@@ -576,7 +610,8 @@
       </p>
 
       <p>
-        and notice that the type is a <c>Tridiagonal</c>.  Depending on the types of the two input matrices, the multiplication will result in the appropriate output type.
+        and notice that the type is a <c>Tridiagonal</c>.
+        Depending on the types of the two input matrices, the multiplication will result in the appropriate output type.
       </p>
     </introduction>
 

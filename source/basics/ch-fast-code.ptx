@@ -31,6 +31,28 @@
     </p>
   </introduction>
 
+	<section>
+		<title>Timing Code</title>
+
+		<p>
+			Although we all want our code to run fast, it is often the difference between solving a problem or not being able to solve it or perhaps restricting the size of the problem.  Let's look at an example of timing code in which we multiply two matrices of size <c>n</c> by <c>n</c>
+		</p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+function matrixMult(n::Integer)
+  local A = rand(n,n)
+  local B = rand(n,n)
+  A*B
+end
+      </code>
+    </program>
+
+    <p>
+      We can time the command using the <c>@time</c> macro.  An example is <c>@time matrixMult(100)</c> and the first line of the output might be <c>0.000229 seconds (9 allocations: 234.609 KiB)</c>.
+    </p>
+	</section>
+
   <section>
     <title>Attempt #1</title>
 

@@ -1,21 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <chapter xml:id="ch-modules">
 	<title>Creating Modules and using Unit Tests</title>
+
+	<objectives>
+		<ul>
+			<li>
+				<p>
+					Writing modules to separate common code.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Using the Revise module to develop modules.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Understand how to import other code into a module and how to export methods and types.
+				</p>
+			</li>
+
+			<li>
+				<p>
+					Using unit tests in conjunction with modules.
+				</p>
+			</li>
+		</ul>
+	</objectives>
+
 	<introduction>
 		<p>
-			Throughout this text, we have added and loaded packages or modules. These were generally
-			official ones. In this section, we will now learn how to write our own module. We will
-			learn how to do this by creating a <c>PlayingCards</c> module with all of the types and
-			functions associated with it from <xref ref="ch-poker"/> as well as the rootfinding functions
-			and structs of <xref ref="ch-rootfinding"/>. As needed, you should review the material in those chapters.
+			Throughout this text, we have added and loaded packages or modules. These were generally official ones. In this section, we will now learn how to write our own module. We will learn how to do this by creating a <c>PlayingCards</c> module with all of the types and functions associated with it from <xref ref="ch-poker"/> as well as the rootfinding functions and structs of <xref ref="ch-rootfinding"/>. As needed, you should review the material in those chapters.
 		</p>
 	</introduction>
 
 	<section>
 		<title>The <c>Revise</c></title>
+
 		<p>
-			Although this isn't necessary, the <c>Revise</c> package makes developing a module much easier.
-			You should add and the load it with
+			Although this isn't necessary, the <c>Revise</c> package makes developing a module much easier. You should add and the load it with
 		</p>
 
 		<p>
@@ -25,13 +51,13 @@
 		</p>
 
 		<p>
-			This will allow changes to a module updated automatically.  You can use this with either the
-			REPL or a Jupyter notebook.
+			This will allow changes to a module updated automatically.  You can use this with either the REPL or a Jupyter notebook.
 		</p>
 	</section>
 
 	<section>
 		<title>Creating a Module</title>
+
 		<p>
 			To begin with, let's look at a module template:
 		</p>
@@ -45,15 +71,11 @@
 		</p>
 
 		<p>
-			As you can see above, a module has a name (in this case <c>PlayingCards</c>) and ends with the
-			keyword <c>end</c>. We will next put a number of types and functions inside the module, but in order
-			for someone loading the module, you need to export anything to be used.  We have used the naming
-			convention of capital letters (often called Pascal case) for a Module name.
+			As you can see above, a module has a name (in this case <c>PlayingCards</c>) and ends with the keyword <c>end</c>. We will next put a number of types and functions inside the module, but in order for someone loading the module, you need to export anything to be used.  We have used the naming convention of capital letters (often called Pascal case) for a Module name.
 		</p>
 
 		<p>
-			We will take all of the structs, constructors and functions associated with playing cards that we
-			developed earlier and place them in the module.
+			We will take all of the structs, constructors and functions associated with playing cards that we developed earlier and place them in the module.
 		</p>
 
 
@@ -75,15 +97,15 @@
             end
             # construct a card based on the number in a deck
             function Card(i::Int)
-                1 &lt;= i &lt;= 52 || throw(ArgumentError("The argument must be an integer between 1 and 52"))
-                i%13==0 ? new(13,div(i,13)) : new(i%13,div(i,13)+1)
+              1 &lt;= i &lt;= 52 || throw(ArgumentError("The argument must be an integer between 1 and 52"))
+              new(mod1(i,13), div(i-1,13)+1)
             end
             # construct a card based on a string representation of the card
             function Card(str::String)
                 length(str)==2 || throw(ArgumentError("The string should only be 2 characters"))
                 local r = findfirst(a-&gt;a==str[1],ranks)
                 r != nothing &amp;&amp;  1 &lt;= r &lt;= 13 || throw(ArgumentError(string("The first character should be one of ",join(ranks,","))))
-                local s=findfirst(a-&gt;a==str[2],suits)
+                local s = findfirst(a-&gt;a==str[2],suits)
                 s != nothing &amp;&amp; 1&lt;= s &lt;= 4 || throw(ArgumentError(string("The second character should be one of ",join(suits,","))))
                 new(r,s)
             end
@@ -111,10 +133,7 @@
 		</program>
 
 		<p>
-			Open a new text file in jupyter and copy-paste the above module
-			into the empty file. It will need to be called <c>PlayingCards.jl</c> and should be
-			in the same directory as the file you're working on. Note: in Jupyter, it is important to have
-			the <c>.jl</c> suffix on the filename so the coloring/formatting is correct for the file.
+			Open a new text file in jupyter and copy-paste the above module into the empty file. It will need to be called <c>PlayingCards.jl</c> and should be in the same directory as the file you're working on. Note: in most editors, it is important to have the <c>.jl</c> suffix on the filename so the coloring/formatting is correct for the file.
 		</p>
 
 		<p>
@@ -129,10 +148,7 @@
 		</p>
 
 		<p>
-			where the <c>includet</c> function is in the <c>Revise</c> package.  It includes the file and the
-			t stands for tracking.  What will happen if you update anything in the file and then make any
-			call to those that are in the package, you will get the new revised code without restarting the
-			kernel or reloading the package.
+			where the <c>includet</c> function is in the <c>Revise</c> package.  It includes the file and the t stands for tracking.  What will happen if you update anything in the file and then make any call to those that are in the package, you will get the new revised code without restarting the kernel or reloading the package.
 		</p>
 
 		<p>
@@ -140,37 +156,31 @@
 			<ul>
 				<li>
 					<p>
-						Line 3: <c>import Base.show</c> will import the <c>show</c> command from <c>Base</c>, and
-						will be needed to develop good format for cards and hands.
+						Line 3: <c>import Base.show</c> will import the <c>show</c> command from <c>Base</c>, and will be needed to develop good format for cards and hands.
 					</p>
 				</li>
 
 				<li>
 					<p>
-						Line 5:  <c>export Card, Hand, isFullHouse</c> says what will be available if the module is
-						loaded.
+						Line 5:  <c>export Card, Hand, isFullHouse</c> says what will be available if the module is loaded.
 					</p>
 				</li>
 
 				<li>
 					<p>
-						Staring on Line 10, the <c>Card</c> struct is defined as we saw in <xref ref="ch-comp-types"/>.
-						We have added an additional constructor starting at line 28, that creates a card based on a
-						string.
+						Staring on Line 10, the <c>Card</c> struct is defined as we saw in <xref ref="ch-comp-types"/>. We have added an additional constructor starting at line 28, that creates a card based on a string.
 					</p>
 				</li>
 
 				<li>
 					<p>
-						Staring on Line 39, the <c>Hand</c> struct is defined as we saw in <xref ref="ch-comp-types"/>.
-						This one is a bit different in that chapter because we have added to additional constructors.
+						Staring on Line 39, the <c>Hand</c> struct is defined as we saw in <xref ref="ch-comp-types"/>. This one is a bit different in that chapter because we have added to additional constructors.
 					</p>
 				</li>
 
 				<li>
 					<p>
-						the functions <c>Base.show</c> functions for both <c>Card</c> and <c>Hand</c> are defined on
-						lines 48 and 52.   The command <c>Base.show</c> is automatically loaded, so these didn't need to be exported.
+						the functions <c>Base.show</c> functions for both <c>Card</c> and <c>Hand</c> are defined on lines 48 and 52.   The command <c>Base.show</c> is automatically loaded, so these didn't need to be exported.
 					</p>
 				</li>
 
@@ -183,8 +193,7 @@
 		</p>
 
 		<p>
-			Once you have saved and successfully loaded the module, let's test it a bit.  First let's build
-			some of the hands that we did in <xref ref="ch-poker"/>:
+			Once you have saved and successfully loaded the module, let's test it a bit.  First let's build some of the hands that we did in <xref ref="ch-poker"/>:
 		</p>
 
 		<p>
@@ -203,8 +212,7 @@
 			<task>
 				<statement>
 					<p>
-						Add the <c>isOneSuit</c>, <c>hasRun</c>, <c>royalFlush</c>, <c>isTwoPair</c>
-						and <c>runTrials</c> functions from <xref ref="ch-poker"/> to the module.
+						Add the <c>isOneSuit</c>, <c>hasRun</c>, <c>royalFlush</c>, <c>isTwoPair</c> and <c>runTrials</c> functions from <xref ref="ch-poker"/> to the module.
 					</p>
 				</statement>
 			</task>
@@ -213,8 +221,7 @@
 			<task>
 				<statement>
 					<p>
-						Add the <c>royalFlush</c>, <c>isTwoPair</c> and <c>runTrials</c> functions
-						to be exported (top of the module).
+						Add the <c>royalFlush</c>, <c>isTwoPair</c> and <c>runTrials</c> functions to be exported (top of the module).
 					</p>
 				</statement>
 			</task>
@@ -241,8 +248,7 @@
 			<task>
 				<statement>
 					<p>
-						Test that the <c>runTrials</c> function is working by testing the
-						functions.
+						Test that the <c>runTrials</c> function is working by testing the functions.
 					</p>
 				</statement>
 			</task>
@@ -251,55 +257,20 @@
 	</section>
 
 	<section>
-		<title>Debugging a module</title>\label{debugging-a-module}
-		%
-		%All is great now if you have a bug-free module, but even the best
-		%programmers are not capable of bug-free code the first time. Notice that
-		%if you make changes to the module, then the changes won't be present.
-		%And if you reload the file and the module, from the lines:
-		%
-		%<cd>
-		%include("PlayingCards.jl")
-		%using .PlayingCards
-		%</cd>
-		%
-		%The first line should report:
-		%
-		%\begin{Verbatim}
-		%WARNING: replacing module PlayingCards.
-		%\end{Verbatim}
-		%
-		%and any syntax errors that you may have, and the second line reports:
-		%
-		%\begin{Verbatim}
-		%WARNING: using PlayingCards.Hand in module Main conflicts with an existing identifier.
-		%WARNING: using PlayingCards.Card in module Main conflicts with an existing identifier.
-		%\end{Verbatim}
-		%%
-		%and any changes won't be made. (Try altering the Base.show function on a <c>Card</c>). If you want changes to be able to be used, you will need to restart the kernel.
-		%
-		%So while debugging a module, we will use the <c>Revise</c> package instead. Make sure you add it first, then restart the kernel, then enter
-		%
-		%<cd>
-		%using Revise
-		%includet("PlayingCards.jl")
-		%using .PlayingCards
-		%</cd>
-		%%
-		%where <c>includet</c> is a command that tracks changes and automatically reloads after any changes.
-		%
-		%\jlc[modules]{using .PlayingCards} -->
+		<title>Debugging a module</title>\
+
+		label{debugging-a-module} % %All is great now if you have a bug-free module, but even the best %programmers are not capable of bug-free code the first time. Notice that %if you make changes to the module, then the changes won't be present. %And if you reload the file and the module, from the lines: % %
+		<cd> %include("PlayingCards.jl") %using .PlayingCards %</cd>
+		% %The first line should report: % %\begin{Verbatim} %WARNING: replacing module PlayingCards. %\end{Verbatim} % %and any syntax errors that you may have, and the second line reports: % %\begin{Verbatim} %WARNING: using PlayingCards.Hand in module Main conflicts with an existing identifier. %WARNING: using PlayingCards.Card in module Main conflicts with an existing identifier. %\end{Verbatim} %% %and any changes won't be made. (Try altering the Base.show function on a <c>Card</c>). If you want changes to be able to be used, you will need to restart the kernel. % %So while debugging a module, we will use the <c>Revise</c> package instead. Make sure you add it first, then restart the kernel, then enter % %
+		<cd> %using Revise %includet("PlayingCards.jl") %using .PlayingCards %</cd>
+		%% %where <c>includet</c> is a command that tracks changes and automatically reloads after any changes. % %\jlc[modules]{using .PlayingCards} -->
 	</section>
 
-	<section xml:id="sect-unit-tests"><title>Unit Tests</title>
+	<section xml:id="sect-unit-tests">
+		<title>Unit Tests</title>
+
 		<p>
-			Writing a module is important, but making sure it does what it is
-			supposed to is just as important. At first, when you start writing code,
-			you typically make sure there are no bugs, but after time, code changes
-			and you're not sure that the code still works. The notion of a unit test
-			is a set of tests to determine if you get out from the code what you
-			expect. This is a language-independent idea and should be created once
-			you write any level of substantial code.
+			Writing a module is important, but making sure it does what it is supposed to is just as important. At first, when you start writing code, you typically make sure there are no bugs, but after time, code changes and you're not sure that the code still works. The notion of a unit test is a set of tests to determine if you get out from the code what you expect. This is a language-independent idea and should be created once you write any level of substantial code.
 		</p>
 
 		<p>
@@ -313,9 +284,7 @@
 		</p>
 
 		<p>
-			To do a test, we'll use the <c>@test</c> macro and it's a good idea to check
-			out the <url href="https://docs.julialang.org/en/latest/stdlib/Test/" visual="">Julia documentation on Test</url>.
-			For this module, let's first test that the constructor is working using the <c>isa</c> function.
+			To do a test, we'll use the <c>@test</c> macro and it's a good idea to check out the <url href="https://docs.julialang.org/en/latest/stdlib/Test/" visual="">Julia documentation on Test</url>. For this module, let's first test that the constructor is working using the <c>isa</c> function.
 		</p>
 
 		<p>
@@ -325,8 +294,7 @@
 		</p>
 
 		<p>
-			should return <c>Test Passed</c>.
-			Recall also that we can pass in an integer between 1 and 52, so
+			should return <c>Test Passed</c>. Recall also that we can pass in an integer between 1 and 52, so
 		</p>
 
 		<p>
@@ -336,8 +304,7 @@
 		</p>
 
 		<p>
-			should also return <c>Test Passed</c>. If we try to create a card that is
-			not valid, then we won't get a Test Passed. For example:
+			should also return <c>Test Passed</c>. If we try to create a card that is not valid, then we won't get a Test Passed. For example:
 		</p>
 
 		<p>
@@ -347,8 +314,7 @@
 		</p>
 
 		<p>
-			will return <c>Error During Test</c>. A better way to test for this is
-			using the <c>@test_throws</c> method to test if an error is thrown:
+			will return <c>Error During Test</c>. A better way to test for this is using the <c>@test_throws</c> method to test if an error is thrown:
 		</p>
 
 		<p>
@@ -362,17 +328,13 @@
 		</p>
 
 		<p>
-			Here's another nice test that will check if the two different ways to
-			create Cards are the same. For this we will need a way to test if two
-			Cards are equal.  Add the following to the Playing Cards module.
+			Here's another nice test that will check if the two different ways to create Cards are the same. For this we will need a way to test if two Cards are equal.  Add the following to the Playing Cards module.
 		</p>
 
 
 		<program language="julia" line-numbers="yes">
 			<code>
-function isequal(x::Card,y::Card)
-  x.rank==y.rank &amp;&amp; x.suit==y.suit
-end
+isequal(x::Card,y::Card) = x.rank==y.rank &amp;&amp; x.suit==y.suit
 			</code>
 		</program>
 
@@ -419,8 +381,7 @@ end
 			<task>
 				<statement>
 					<p>
-						Create a third hand called <c>h3</c> that is not a full house and test it. To get the
-						test to return passed, perform <c>@test !isFullHouse(h3)</c>.
+						Create a third hand called <c>h3</c> that is not a full house and test it. To get the test to return passed, perform <c>@test !isFullHouse(h3)</c>.
 					</p>
 				</statement>
 			</task>
@@ -429,11 +390,10 @@ end
 
 	<section>
 		<title>Creating a test suite</title>
+
 		<introduction>
 			<p>
-				Often in a set of tests, there are mulitple tests that go together. For
-				example, if we just want to test that the construction of Cards are
-				working, we can create a test set in the following:
+				Often in a set of tests, there are mulitple tests that go together. For example, if we just want to test that the construction of Cards are working, we can create a test set in the following:
 			</p>
 
 			<p>
@@ -447,8 +407,7 @@ end
 			</p>
 
 			<p>
-				where all three methods to construct a card are used and all should
-				work. If you run this, you should get:
+				where all three methods to construct a card are used and all should work. If you run this, you should get:
 			</p>
 
 			<p>
@@ -459,18 +418,16 @@ end
 			</p>
 
 			<p>
-				which just shows that we passed all of the tests. If one of them doesn't
-				pass, you will get information about the one that wasn't passed. Try
-				changing one of the tests above to get an illegal card.
+				which just shows that we passed all of the tests. If one of them doesn't pass, you will get information about the one that wasn't passed. Try changing one of the tests above to get an illegal card.
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>Putting all tests in a file</title>
+
 			<p>
-				The <url href="test-playing-cards.jl" visual="">Playing Card test file</url> is a better way
-				to run a set of tests. To use this, download the file, put it in the
-				current directory of jupyter and then run it with:
+				The <url href="test-playing-cards.jl" visual="">Playing Card test file</url> is a better way to run a set of tests. To use this, download the file, put it in the current directory of jupyter and then run it with:
 			</p>
 
 			<p>
@@ -536,26 +493,22 @@ end
 
 	<section>
 		<title>Modules and Unit Tests</title>
+
 		<p>
-			Once you have enough code to write a module, the first thing should be to start writing unit tests
-			to make sure it is correct. In fact, good programming practice is to write the API (Application
-			Programming Interface), which is just the function signatures with no function bodies, then the
-			test cases before any working code is written.
+			Once you have enough code to write a module, the first thing should be to start writing unit tests to make sure it is correct. In fact, good programming practice is to write the API (Application Programming Interface), which is just the function signatures with no function bodies, then the test cases before any working code is written.
 		</p>
 
 		<p>
-			In any case, once you have unit tests working, you should write and revise any code and after
-			any changes are made, rerun any unit tests.
+			In any case, once you have unit tests working, you should write and revise any code and after any changes are made, rerun any unit tests.
 		</p>
 	</section>
 
 	<section>
 		<title>A Rootfinding Module</title>
+
 		<introduction>
 			<p>
-				We now develop a rootfinding module based on what we've developed in
-				<xref ref="ch-rootfinding"/>, <xref ref="ch-comp-types"/> and <xref ref="ch-adv-functions"/>.
-				We will pull a few of the structs and functions in as:
+				We now develop a rootfinding module based on what we've developed in <xref ref="ch-rootfinding"/>, <xref ref="ch-adv-functions"/> and <xref ref="ch-comp-types"/>. We will pull a few of the structs and functions in as:
 			</p>
 
 
@@ -587,15 +540,13 @@ end
 function newton(f::Function, x0::Number; tol=1e-6, max_steps=10)
   tol &gt; 0 || throw(ArgumentError("The parameter tol much be positive"))
   max_steps &gt; 0 || throw(ArgumentError("The parameter max_steps much be positive"))
-  local x1 = x0
-  local dx = f(x1)/ForwardDiff.derivative(f,x1)
-  local steps = 0
-  while abs(dx)&gt;tol &amp;&amp; steps&lt;max_steps
-    x1 -= dx
-    dx = f(x1)/ForwardDiff.derivative(f,x1)
-    steps += 1
+  local dx
+  for i = 1:max_steps
+    dx = f(x0)/ForwardDiff.derivative(f, x0)
+    x0 -= dx
+    abs(dx) &lt; 1e-6 &amp;&amp; return Root(x0, dx, f(x0), i, true, max_steps)
   end
-  Root(x1,dx,f(x1),steps,steps&lt;max_steps,max_steps)
+  Root(x0, dx, f(x0), max_steps, false, 10)
 end
 end # module Rootfinding
 				</code>
@@ -636,23 +587,20 @@ end # module Rootfinding
 			</p>
 		</introduction>
 
+
 		<subsection>
 			<title>A Test Suite for Rootfinding</title>
+
 			<p>
-				One of the themes of the text is knowing when computational algorithms succeed and fail.
-				We have seen throughout a few chapters now that Newton's method fails for functions without roots.
-				It is important to check how well it is working.
+				One of the themes of the text is knowing when computational algorithms succeed and fail. We have seen throughout a few chapters now that Newton's method fails for functions without roots. It is important to check how well it is working.
 			</p>
 
 			<p>
-				In an exercise in <xref ref="ch-adv-functions"/>, you were asked to try to
-				find <m>\sqrt{10}</m>.  We will do this formally now with a test.  Recall, if you haven't
-				yet, enter <c>using Test</c>.
+				In an exercise in <xref ref="ch-adv-functions"/>, you were asked to try to find <m>\sqrt{10}</m>.  We will do this formally now with a test.  Recall, if you haven't yet, enter <c>using Test</c>.
 			</p>
 
 			<p>
-				If we want to test Newton's method, we need to choose a function that has a root that we know.
-				You may think that since <m>f(x)=x^2-2</m> has a root at <m>\sqrt{2}</m>, we can test that.  Let's try.
+				If we want to test Newton's method, we need to choose a function that has a root that we know. You may think that since <m>f(x)=x^2-2</m> has a root at <m>\sqrt{2}</m>, we can test that.  Let's try.
 			</p>
 
 			<p>
@@ -671,10 +619,7 @@ end # module Rootfinding
 			</p>
 
 			<p>
-				The problem occurs when checking equality between two floating-point numbers.  You can see in the error the
-				two values and although they are identical for about 10 digits, they are not exactly the same.
-				In order for any pairs of numbers to be equal, all bits must be the same and that is hard to
-				achieve with floating points.
+				The problem occurs when checking equality between two floating-point numbers.  You can see in the error the two values and although they are identical for about 10 digits, they are not exactly the same. In order for any pairs of numbers to be equal, all bits must be the same and that is hard to achieve with floating points.
 			</p>
 
 			<p>
@@ -704,8 +649,7 @@ end # module Rootfinding
 			</p>
 
 			<p>
-				We also want to make sure that it returns appropriately when there is no root.  We'll return to the
-				function <m>f(x)=x^2+1</m> and look for a root. We will build up a test set to test a number of things:
+				We also want to make sure that it returns appropriately when there is no root.  We'll return to the function <m>f(x)=x^2+1</m> and look for a root. We will build up a test set to test a number of things:
 			</p>
 
 			<p>

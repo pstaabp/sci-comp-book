@@ -1,0 +1,392 @@
+<chapter xml:id="ch-strings">
+	<title>Using Strings</title>
+
+	<introduction>
+		<p>
+			We were introduced to strings in <xref ref="ch-variables"/> which explains how to create strings, concatenate them and use interpolation.
+			This chapter goes in depth into how strings are stored as well as UTF-8 characters and how to load strings from files in an efficient manner.
+		</p>
+	</introduction>
+
+	<section>
+		<title>Loading a file of strings</title>
+
+		<p>
+			To begin with, let's start with our motivating problem, loading a file and reading the results.
+			First, so let's start with an <url href="https://www.kaggle.com/datasets/payamamanat/imbd-dataset/data">IMDB dataset</url> from Kaggle.com.
+			Note: you will need to make an account to download this.
+			Use your finder or explorer window to move the file into the same directory as a Julia notebook directory.
+		</p>
+
+		<p>
+			Check that the file exists with <c>isfile("IMBD.csv")</c> and you should get <c>true</c> returned.
+			If not, double check that the file is in the correct directory.
+			Note that the file is named IMBD.csv not IMDB.csv, perhaps a typo.
+			We can read the lines in with the command
+		</p>
+
+		<p>
+			<cd>
+			<cline>movies = readlines("IMBD.csv")</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the result is a nearly 10,000 length array of strings.<fn>There is a package called <c>CSV</c> that will do a better job loading in files of this type, but we want something simple.
+			</fn>  Each element of the array is a line in the file and consists of 9 values that come from the file.
+		</p>
+
+		<p>
+			Throughout this section, we will examine how to process this file with the intent of understanding strings and how we can manipulate them in Julia.
+		</p>
+	</section>
+
+	<section>
+		<title>Strings of Unicode Characters</title>
+
+		<p>
+			From the previous section, each movie is a string that needs to be parsed.
+			Since the <c>readlines</c> method returns an array of strings, each of which is a line of the file, we can access the first line of the file with <c>m1 = movies[1]</c>.
+			This returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>"title,year,certificate,duration,genre,rating,description,stars,votes"</cline>
+			</cd>
+		</p>
+
+		<p>
+			which are the stored aspects of each movie.
+			You can think of a CSV file as an array of values and these are the headers of the columns.
+			The variable <c>m1</c> is String and has many aspects of an array of characters.
+			For example <c>m1[1]</c> returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>'t': ASCII/Unicode U+0074 (category Ll: Letter, lowercase)</cline>
+			</cd>
+		</p>
+
+		<p>
+			that returns a lot of information.
+			Here's a breakdown of them:
+		</p>
+
+		<p>
+			<ul>
+				<li>
+					<p>
+						<c>'t'</c> is the output of the character. Note that it is surrounded by single quotes which differentiates characters and strings.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<c>ASCII</c> is an old-school way of encoding characters. We'll see this in more detail below.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<c>Unicode U+0074</c> indicates that the character is <url href="https://home.unicode.org">Unicode</url>, a more robust way of encoding characters.  The <c>0074</c> is the numerical code for the 't' character.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						<c>(category Ll: Letter, lowercase)</c>: lists characteristics of the character. <c>Ll</c> is just shorthand for a Letter and lowercase.
+					</p>
+				</li>
+			</ul>
+		</p>
+
+		<p>
+			Unicode characters can be added to a string by prefacing their code with <c>\u</c> or <c>\U</c>, where the lower case <c>\u</c> is used if the unicode is 4 hexadecimal digits and <c>\U</c> if up to eight.
+			For example, as we used in <xref ref="ch-comp-types"/>, we used the suits for the playing cards and <c>\u2660</c> represented the spade suit.
+			Many of the adopted emoji are longer codes such as <c>\U1f602</c> which produces a "😂".
+		</p>
+
+		<p>
+			<url href="https://en.wikipedia.org/wiki/ASCII">ASCII</url> stands for <em>American Standard Code for Information Interchange</em> and was an early form of encoding characters.  It has 128 code points, meaning the ability to only store that many characters and stores the keys on U.S. keyboards as well as some hidden characters such as tabs and line feeds.
+		</p>
+
+		<p>
+			In Julia, we can test if either a character or a string is ascii with the <c>isascii</c> command.
+			For example, <c>isascii('1')</c> and <c>isascii('A')</c> both return <c>true</c>.
+		</p>
+	</section>
+
+	<section>
+		<title>Strings are indexable, really?</title>
+
+		<p>
+			We noted above that that we can access the characters in a string using array notation.
+			Another example might be the following with some non ASCII characters
+		</p>
+
+		<p>
+			<cd>
+			<cline>quad = "(x+1)² = x²+2x+1"</cline>
+			</cd>
+		</p>
+
+		<p>
+			Many of these can be accessed, like <c>quad[1]</c> which returns '(', <c>quad[end-1]</c> which returns '+' and <c>quad[12]</c> returns '²'.
+			We can also put in a range of characters, such as <c>quad[1:6]</c> which will return <c>"(x+1)²"</c>.
+			However, if we access <c>quad[13]</c>, we get the following error:
+		</p>
+
+		<p>
+			<cd>
+			<cline>StringIndexError: invalid index [13], valid nearby indices [12]=&gt;'²', [14]=&gt;'+'</cline>
+			</cd>
+		</p>
+
+		<p>
+			This error seems odd, but that is because unicode characters are a bit odd.
+			Instead of ASCII characters which are a single byte and can be stored as a UInt8, Unicode characters can either be 1, 2, 3 or 4 bytes in size.
+			We'll dig a bit deeper with this.
+			We can determine which indices are valid for this string with <c>collect(eachindex(quad))</c> which returns all integers between 1 and 18 except 7 and 13, which are the slots after the '²'.
+		</p>
+
+		<p>
+			The function <c>codeunits</c> applied to a string will return an array of all of the individual bytes of the string.
+			For example <c>codeunits("²")</c> returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>2-element Base.CodeUnits{UInt8, String}:</cline>
+			<cline> 0xc2</cline>
+			<cline> 0xb2</cline>
+			</cd>
+		</p>
+
+		<p>
+			which shows that a '²' is a 2-byte character.
+			Alternative, the emoji we saw above if examined with <c>codeunits("😂")</c> returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>4-element Base.CodeUnits{UInt8, String}:</cline>
+			<cline> 0xf0</cline>
+			<cline> 0x9f</cline>
+			<cline> 0x98</cline>
+			<cline> 0x82</cline>
+			</cd>
+		</p>
+
+		<p>
+			shows that this is a 4-byte unicode character.
+		</p>
+
+		<p>
+			So this basically means that you can't treat a string line an array of characters, or can you?  If you are careful and selecting the right index of a string, then we're good.
+			And if you understand that Unicode characters can be wider than 1 byte, you're good.
+		</p>
+	</section>
+
+	<section>
+		<title>Strings are immutable</title>
+
+		<p>
+			Another way that strings differ from arrays is that they are immutable.
+			We saw we can access characters using array notation, but we we try to set or update character, then we get an error.
+			<c>quad[1] = '['</c> returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>MethodError: no method matching setindex!(::String, ::Char, ::Int64)</cline>
+			<cline>The function `setindex!` exists, but no method is defined for this combination of argument types. </cline>
+			</cd>
+		</p>
+
+		<p>
+			There are a number of advantages to being immutable with the primary one being that efficiencies can be made for speed if they are immutable.
+			If you need a mutable string, then you can look at arrays of characters instead.
+		</p>
+	</section>
+
+	<section>
+		<title>Splitting up a String</title>
+
+		<p>
+			If we return to the movies files and recall that we stored the first line as <c>m1</c>, which is the headings for the columns (variables) separated by columns.
+			We can split this line up with <c>categories = split(m1,",")</c> which returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>9-element Vector{SubString{String}}:</cline>
+			<cline> "title"</cline>
+			<cline> "year"</cline>
+			<cline> "certificate"</cline>
+			<cline> "duration"</cline>
+			<cline> "genre"</cline>
+			<cline> "rating"</cline>
+			<cline> "description"</cline>
+			<cline> "stars"</cline>
+			<cline> "votes"</cline>
+			</cd>
+		</p>
+
+		<p>
+			which shows that there are 9 header strings in this file.
+			Note however, that instead of getting a vector of <c>String</c>s, this array is of type: <c>Vector{SubString{String}}</c>.
+			What is a something of type <c>SubString</c>?  Just looking at it seems like a regular string.
+		</p>
+
+		<p>
+			A <c>SubString</c> actually points to the original string for some efficiency.
+			<fn>All of the differences between them gets a bit into the weeds and in this case, the current version of the Julia documentation does not reveal this.
+			A <url href="https://discourse.julialang.org/t/a-question-about-substring/123838" >discourse discussion</url> on this gives a little more insight.
+			</fn>
+		</p>
+	</section>
+
+	<section>
+		<title>Writing functions with string arguments</title>
+
+		<p>
+			Although there are plenty of ways to concatenate two (or more) strings, let's write a <c>concat</c> function that does this.
+			For example:
+		</p>
+
+		<p>
+			<cd>
+			<cline>concat(str1::String, str2::String) = str1 * str2</cline>
+			</cd>
+		</p>
+
+		<p>
+			and if we call it like: <c>concat("string 1 and ", "string 2")</c>, then we get the expected result <c>"string 1 and string 2"</c>.
+			This seems great, but if we use a couple of the categories from the previous section, <c>concat(categories[1], categories[2])</c>, we will get the error:
+		</p>
+
+		<p>
+			<cd>
+			<cline>MethodError: no method matching concat(::SubString{String}, ::SubString{String})</cline>
+			<cline>The function `concat` exists, but no method is defined for this combination of argument types.</cline>
+			</cd>
+		</p>
+
+		<p>
+			This is expected in that the arguments called with the <c>categories</c> variable are SubString{String} objects and not String objects.
+			This seems a bit annoying that <c>split</c> returns a SubString, but this is an easy fix because there is a supertype of both of these.
+			We can find this with:
+		</p>
+
+		<p>
+			<c>supertype(String), supertype(SubString{String})</c> returns <c>(AbstractString, AbstractString)</c> showing that <c>AbstractString</c> is a supertype of both.  Therefore, when we write the <c>concat</c> function above, if we declare the arguments to be of type <c>AbstractString</c>, then this will work for both Strings and Substrings.  That is
+		</p>
+
+		<p>
+			<cd>
+			<cline>concat(str1::AbstractString, str2::AbstractString) = str1 * str2</cline>
+			</cd>
+		</p>
+
+		<p>
+			A takeaway message is that anytime that you are writing a function with string types, use <c>AbstractString</c> instead of <c>String</c> and it should work with any type of string.
+		</p>
+
+		<exercise>
+			<p>
+				Another string type that is a subtype of <c>String</c> is called a <c>LazyString</c>.
+				Investigate in the Julia Documentation about the LazyString type and when you might use it.
+			</p>
+		</exercise>
+	</section>
+
+	<section>
+		<title>Simple Pattern Matching in Strings</title>
+
+		<p>
+			Let's start with some examples of pattern matching.
+			If we want to determine if a string matches a pattern, we can use the exact string.
+			For example, let's see if a string matches <c>"cat"</c>.
+			We can do this with the <c>occursin</c> function like:
+		</p>
+
+		<p>
+			<cd>
+			<cline>occursin("cat","cat")</cline>
+			</cd>
+		</p>
+
+		<p>
+			which will return <c>true</c>.
+			Of course, we don't need to use <c>occursin</c> to test that two strings are equal,
+		</p>
+
+		<p>
+			<cd>
+			<cline>"cat"=="cat"</cline>
+			</cd>
+		</p>
+
+		<p>
+			will do this.
+			The <c>occursin</c> command will just determine if there is the first string somewhere inside the second string.
+			So <c>occursin("cat", "scatter")</c> will return <c>true</c>, but <c>occursin("cat", "cottage")</c> will return <c>false</c>.
+			Throughout this chapter, we will be testing a few different strings to determine how matches occur, we may do both of these matches together with
+		</p>
+
+		<p>
+			<cd>
+			<cline>map(s -&gt; occursin("cat", s), ["scatter", "cottage"])</cline>
+			</cd>
+		</p>
+
+		<p>
+			and this returns
+		</p>
+
+		<p>
+			<cd>
+			<cline>2-element Vector{Bool}:</cline>
+			<cline>  1</cline>
+			<cline>  0</cline>
+			</cd>
+		</p>
+
+		<p>
+			and recall that boolean vectors show values of 1 for true and 0 for false.
+			Thus "scatter" matches, but "cottage" does not.
+		</p>
+
+		<p>
+			There are also the methods <c>startswith</c> and <c>endswith</c> that matches a string at the beginning or end.
+		</p>
+
+		<p>
+			<cd>
+			<cline>map(s-&gt;startswith(s, "cat"), ["catastrophe", "scatter", "tigercat"])</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns the vector <c>[1, 0, 0]</c> indicating that only the first string matched.
+			Note that the <c>startswith</c> function has the argument list switched from that of the <c>occursin</c> function.
+			And example with <c>endswith</c> is
+		</p>
+
+		<p>
+			<cd>
+			<cline>map(s-&gt;endswith(s, "cat"), ["catastrophe", "scatter", "tigercat"])</cline>
+			</cd>
+		</p>
+
+		<p>
+			returns <c>[0,0,1]</c> indicating that only the last string matched.
+		</p>
+
+		<p>
+			The next chapter will introduce you to regular expressions which is an extremely robust way to do pattern matching and extraction in strings.
+		</p>
+	</section>
+</chapter>

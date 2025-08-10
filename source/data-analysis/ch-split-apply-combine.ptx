@@ -1,0 +1,107 @@
+<chapter xml:id="ch-split-apply-combine">
+  <title>Split, Combine, Apply a DataFrame</title>
+
+	<section xml:id="sect-split-apply-combine">
+		<title>Split-Apply-Combine</title>
+
+		<p>
+			A common situation with data analysis is to have a dataset and you want to compare means or standard deviations within a dataset.  What needs to often happen is that you first split a dataset, do some analysis on each group then summarize.  This is know as <em>split-apply-combine</em>. We will demonstrate this with an example.  Let's return to the <c>iris</c> dataset that we loaded in the previous chapter.  Recall that the <c>RDatasets</c> package must be loaded and then load the dataset with
+		</p>
+
+		<p>
+			<cd>
+			<cline>iris = RDatasets.dataset("datasets","iris")</cline>
+			</cd>
+		</p>
+
+		<p>
+			First, we will split the dataset by the <c>Species</c> column using the <c>groupby</c> function in the <c>@chain</c> block as
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain iris begin</cline>
+			<cline>  groupby(:Species)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the result shows two DataFrames (actually <c>GroupedDataFrame</c>s), the first and last.  At the top of the output, it says <c>GroupedDataFrame with 3 groups based on key: Species</c> Even though we have ``split'' the dataset, it is all stored in a single variable of type <c>GroupedDataFrame</c>. It shows part of the first group and part of the last group.  This is mainly because of space for the output.
+		</p>
+
+		<p>
+			Next, we may want to compare the variables between these three groups. For example, to compare the mean of the <c>SepalLength</c> variable, we use the <c>combine</c> function like:
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain iris begin</cline>
+			<cline>  groupby(:Species)</cline>
+			<cline>  combine(:SepalLength =&gt; mean)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			and the result is
+		</p>
+
+		<p>
+			<cd>
+			<cline>3×2 DataFrame</cline>
+			<cline>Row  Species      SepalLength_mean</cline>
+			<cline>     Cat…         Float64</cline>
+			<cline>1    setosa       5.006</cline>
+			<cline>2    versicolor   5.936</cline>
+			<cline>3    virginica    6.588</cline>
+			</cd>
+		</p>
+
+		<p>
+			If we want the number of rows in each set:
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain iris begin</cline>
+			<cline>  groupby(:Species)</cline>
+			<cline>  combine(nrow)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			which shows that there are 50 rows in each subset. Notice that this is different than the previous example (mean of the SepalLength) in that no column is needed and the function <c>nrow</c> is applied to the entire Grouped Data Frame.
+		</p>
+
+		<p>
+			We can also use <c>combine</c> to produce many summarizing values. If we want the number of rows, the mean of the SepalLength, the standard deviation of the SepalWidth and the maximum of the PetalWidth, we can do this with one command as in
+		</p>
+
+		<p>
+			<cd>
+			<cline>@chain iris begin</cline>
+			<cline>  groupby(:Species)</cline>
+			<cline>  combine(nrow, :SepalLength =&gt; mean, :SepalWidth =&gt; std, :PetalWidth =&gt; maximum)</cline>
+			<cline>end</cline>
+			</cd>
+		</p>
+
+		<p>
+			resulting in
+		</p>
+
+		<p>
+			<cd>
+			<cline>3×5 DataFrame,</cline>
+			<cline>Row   Species     nrow     SepalLength_mean  SepalWidth_std  PetalWidth_maximum</cline>
+			<cline>      Cat…        Int64    Float64           Float64         Float64</cline>
+			<cline>1     setosa      50       5.006             0.379064        0.6</cline>
+			<cline>2     versicolor  50       5.936             0.313798        1.8</cline>
+			<cline>3     virginica   50       6.588             0.322497        2.5 </cline>
+			</cd>
+		</p>
+	</section>
+
+</chapter>

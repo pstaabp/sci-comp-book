@@ -3,11 +3,266 @@
 <chapter xml:id="ch-adv-lin-alg">
   <title>Advanced Topics in Linear Algebra</title>
 
+  <introduction>
+    <p>
+      We just dipped our toes into the land of Linear Algebra in the previous chapter.
+      There are many other topics.
+      This covers some of them.
+    </p>
+  </introduction>
+
+  <section xml:id="sect-newton-2d">
+    <title>Newton's method for more than one variable</title>
+
+    <introduction>
+      <p>
+        We saw Newton's method in <xref ref="sect-newton"/>
+      </p>
+
+      <p>
+        As an example that we might be interested in is to solve multiple equations for multiple variables.
+        Let's find the intersection between the line <m>y=x+1</m> and the circle <m>x^2+y^2=25</m>.
+        A plot of this situation is
+      </p>
+
+      <figure xml:id="fig-circle-line-intersect">
+        <caption></caption>
+        <image source="plots/linear-algebra/circle-intersect.png">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>
+        Recall that for a function of one variable, Newton's method is used to find a root of an equation, that is, a number <m>x^{\star}</m> such that <m>f(x^{\star}) = 0</m>.
+        We are going to extend this to two functions of two variables.
+        We seek numbers <m>(x^{\star}, y^{\star})</m> such that <m>f(x^{\star},y^{\star}) = 0</m> and <m>g(x^{\star},y^{\star})=0</m>.
+        In the picture above, there are two such pairs of numbers where the two curve intersect.
+      </p>
+
+      <p>
+        To derive Newton's method for this situation, we'll switch some notation.
+        First, let <m>\vec{F}(\vec{x}) = \langle f(x,y), g(x,y) \rangle</m> be the vector function from <m>\mathbb{R}^2</m> to <m>\mathbb{R}^2</m>.
+        We use the Taylor Expansion (REF???) at some point <m>\vec{x}</m> near the root <m>\vec{x}^{\star}</m> as
+      </p>
+
+      <p>
+        <me>
+          \vec{F}(\vec{x}^{\star}) = \vec{F}(\vec{x}) + J(\vec{x}) (\vec{x}^{\star}-\vec{x}) + O(||\vec{x}^{\star} -\vec{x}||^2)
+        </me>
+      </p>
+
+      <p>
+        where <m>J</m> is the Jacobian matrix given by
+      </p>
+
+      <p>
+        <men xml:id="eq-jacobian">
+          J = \begin{bmatrix} \frac{\partial f}{\partial x} \amp \frac{\partial f}{\partial y} \\ \frac{\partial g}{\partial x} \amp \frac{\partial g}{\partial y} \end{bmatrix}
+        </men>
+      </p>
+
+      <p>
+        If we linearize this by dropping the <m>O(||\vec{x}^{\star}-\vec{x}||)</m> term and note that <m>\vec{F}(\vec{x}^{\star}) = \vec{0} </m> because it is a root, then the result is the linear system:
+      </p>
+
+      <p>
+        <me>
+          \vec{F}(\vec{x}) = - J(\vec{x}^{\star} - \vec{x})
+        </me>
+      </p>
+
+      <p>
+        This is now used for Newton's method.
+        Above, let <m>\vec{x} = \vec{x}_n</m> and then we'll estimate <m>\vec{x}_{n+1} = \vec{x}^{\star}</m>.
+        Also, for convience, we'll define <m>\vec{\Delta}_{n+1} = \vec{x}_{n+1} - \vec{x}_n</m>.
+        Thus Newton's method turns into
+      </p>
+
+      <p>
+        <md>
+          <mrow xml:id="eq-newton-multi1" number="yes">J \vec{\Delta}_{n+1} \amp = - \vec{F}(\vec{x}_n) \qquad \text{Solve for \(\vec{\Delta}_{n+1}\)}</mrow>
+          <mrow xml:id="eq-newton-multi2" number="yes"> \vec{x}_{n+1} \amp = \vec{x}_n + \vec{\Delta}_{n+1}</mrow>
+        </md>
+      </p>
+
+      <p>
+        Although we derived this for two functions with two variables each, the above analysis works for vector functions from <m>\mathbb{R}^n</m>to <m>\mathbb{R}^n</m>.
+        The Jacobian matrix shown in <xref ref="eq-jacobian"  /> can be extended as an <m>n \times n</m> matrix and the Newton method in <xref ref="eq-newton-multi1"/> and <xref ref="eq-newton-multi2"/> works in general.
+      </p>
+    </introduction>
+
+
+    <subsection>
+      <title>Implementing Newton's Method for Multidimensions</title>
+
+      <p>
+        Now we turn to implementing this.
+        Although it will be very similar to the 1D Newton's method that we developed in <xref ref="sect-newton"/>, there are some differences here, mainly in that the first step of Newton's method in <xref ref="eq-newton-multi1"/> is a matrix equation and has the form <m>A \vec{x} = \vec{b}</m> that we solved in <xref ref="sect-solve-linear-systems"/>.
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <code>
+function newton(F::Function, x0::Vector{&lt;:Real}; max_steps::Int = 20, eps::Real = 1e-6)
+  for _ = 1:max_steps
+    Δ = -ForwardDiff.jacobian(F,x0) \ F(x0)
+    norm(Δ) &lt; eps &amp;&amp; return x0
+    x0 += Δ
+  end
+  error("Newton's method didn't converge in $max_steps steps.")
+end
+        </code>
+      </program>
+
+      <p>
+        First, notice that this looks much like the same structure as the 1D Newton's method.
+        There are two differences.
+        First, we use one line 3 the <c>jacobian</c> method that is in the <c>ForwardDiff</c> package.
+        This calcuates the Jacobian matrix that we saw in <xref ref="eq-jacobian"/> if we are given a point.
+        Also on line 3, we use the <c>\</c> to do a linear solve.
+        We used this in <xref ref="sect-solve-linear-systems"/>.
+        This gave us the value of <c>Δ</c>.
+      </p>
+
+      <p>
+        Line 4 then checks if the norm (square root of the sum of the squares) is small and if so returns the given point.
+        If not, update and repeat.
+        Note that on line 7 that if we got through the for loop without returning, then it didn't converge and we return an error.
+      </p>
+
+      <example xml:id="ex-newton-2d">
+        <p>
+          Let's run Newton's method on the function.
+          To do this, we will build the function <m>\vec{F}(\vec{x})</m> using Julia notation.
+          The equations <m>y=x+1</m> and <m>x^2+y^2=25</m> can be combined as the function
+        </p>
+
+        <p>
+          <cd>
+          <cline>F(x::Vector{&lt;:Real}) = [x[1]^2+x[2]^2-25, x[1]-x[2]+1]</cline>
+          </cd>
+        </p>
+
+        <p>
+          where note that the argument <c>x</c> has been declared as a Real vector and that the first argument is the circle and the second is the line.
+          Notice that the variables <m>x</m> and <m>y</m> are encoded as <c>x[1]</c> and <c>x[2]</c>
+        </p>
+
+        <p>
+          Running Newton's method at the point <m>(1,1)</m>  is accomplished with <c>newton(F,[1,1])</c> and results in
+        </p>
+
+        <p>
+          <cd>
+          <cline>2-element Vector{Float64}:</cline>
+          <cline> 3.0000000730550047</cline>
+          <cline> 4.000000073055005</cline>
+          </cd>
+        </p>
+
+        <p>
+          which finds the point <m>(3,4)</m> to within the default <m>10^{-6}</m>.
+          If we start with the initial point <c>[-1,-1]</c> the point <m>(-3,-4)</m> is found.
+        </p>
+      </example>
+
+      <exercise>
+        <p>
+          Find a solution to the equations
+        </p>
+
+        <p>
+          <md>
+            <mrow>36x^2+9y^2+4z^2 \amp =72 \amp z^2-x^2 \amp = 6 \amp 2x + 3y \amp =4</mrow>
+          </md>
+        </p>
+      </exercise>
+    </subsection>
+
+
+    <subsection>
+      <title>Problems that can occur for Newton's method</title>
+
+      <p>
+        We saw cases where 1D Newton's method ran in problems.
+        This was usually when the derivative was 0 at an inital (or subsequent) point.
+        This can occur in this situation as well, but even moreso.
+      </p>
+
+      <p>
+        For example, returning to <xref ref="ex-newton-2d"/> let's consider if we select the point to start at as <m>(1,-1)</m>.
+        If we run <c>newton(F,[1,-1])</c>, then we get an error: <c>SingularException(2)</c>.
+      </p>
+
+      <p>
+        To explore what's going on, update newton's method to
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <code>
+function newton(F::Function, x0::Vector{&lt;:Real}; max_steps::Int = 20, eps::Real = 1e-6)
+  for _ = 1:max_steps
+    J = ForwardDiff.jacobian(F, x0)
+    @show J
+    @show det(J)
+    Δ = -J \ F(x0)
+    norm(Δ) &lt; eps &amp;&amp; return x0
+    x0 += Δ
+  end
+  error("Newton's method didn't converge in $max_steps steps.")
+end
+        </code>
+      </program>
+
+      <p>
+        Rerunning now with <c>newton(F,[1,-1])</c> results in
+      </p>
+
+      <p>
+        <cd>
+        <cline>J = [2 -2; 1 -1]</cline>
+        <cline>det(J) = 0.0</cline>
+        <cline>SingularException(2)</cline>
+        </cd>
+      </p>
+
+      <p>
+        Notice that the matrix J has rows that are multiples of each other which results in a 0 determinant means that the matrix is Singular.
+      </p>
+
+      <p>
+        Although this can happen, generally changing an initial point can help with this.
+        However, let's add some information when this happens and update newton's method to
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <code>
+function newton(F::Function, x0::Vector{lt;:Real}; max_steps::Int = 20, eps::Real = 1e-6)
+  for _ = 1:max_steps
+    J = ForwardDiff.jacobian(F,x0)
+    det(J) ≈ 0 &amp;&amp; error("Newton's method reached a singular point of the Jacobian.")
+    Δ = - J \ F(x0)
+    norm(Δ) &lt; eps &amp;&amp; return x0
+    x0 += Δ
+    @show x0
+  end
+  error("Newton's method didn't converge in $max_steps steps.")
+end
+        </code>
+      </program>
+    </subsection>
+  </section>
+
   <section xml:id="sect-sparse-matrices">
     <title>Sparse Matrices</title>
 
     <p>
-      We saw in the previous chapter, some of the matrices contained many zeros.  As matrices get larger, the structure of them (like banded matrices), results in a matrix that is almost all zeros.
+      We saw in the previous chapter, some of the matrices contained many zeros.
+      As matrices get larger, the structure of them (like banded matrices), results in a matrix that is almost all zeros.
     </p>
 
     <p>
@@ -34,11 +289,16 @@
     </p>
 
     <p>
-      and there is no apparent structure to the nonzero elements.  Although this isn't that large, imagine a 1000 by 1000 version of this array with 1% of the elements nonzero.  If we used a regular matrix, then such a matrix would take <m>1000^2 \cdot 8</m> bytes, which is quite large. We can see this with <c>sizeof(A)</c> which returns <c>1352</c>, which is <m>13^2 \cdot 8</m>.
+      and there is no apparent structure to the nonzero elements.
+      Although this isn't that large, imagine a 1000 by 1000 version of this array with 1% of the elements nonzero.
+      If we used a regular matrix, then such a matrix would take <m>1000^2 \cdot 8</m> bytes, which is quite large.
+      We can see this with <c>sizeof(A)</c> which returns <c>1352</c>, which is <m>13^2 \cdot 8</m>.
     </p>
 
     <p>
-      Instead, we will use a <c>SparseMatrixCSC</c> in the <c>SparseArrays</c> package to store these.  There are a couple of ways to create the matrix.  If it is stored as a regular (dense) matrix, then it can be converted easily.
+      Instead, we will use a <c>SparseMatrixCSC</c> in the <c>SparseArrays</c> package to store these.
+      There are a couple of ways to create the matrix.
+      If it is stored as a regular (dense) matrix, then it can be converted easily.
     </p>
 
     <p>
@@ -72,11 +332,41 @@
     </p>
 
     <p>
-      Notice that it only stores the nonzero elements.  To determine that the storage amount is indeed small, entering <c> sizeof(SA) </c> which returns <c>40</c>.
+      Notice that it only stores the nonzero elements.
+      To determine that the storage amount is indeed small, entering <c> sizeof(SA) </c> which returns <c>40</c>.
     </p>
 
     <p>
-      Let's create a sparse vector with the following command: \begin{jlblock}[la2] R = sparsevec([1,5,7,12,13],[-1,5,10,3,0]) \end{jlblock} which returns \jlc[la2]{display(R)}\printpythontex[verbatim] and notice that lists the elements of the vector that are nonzero (except that we included
+      Let's create a sparse vector with the following command:
+    </p>
+
+    <p>
+      <cd>
+      <cline>R = sparsevec([1,5,7,12,13],[-1,5,10,3,5])</cline>
+      </cd>
+    </p>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+      <cline>13-element SparseVector{Int64, Int64} with 5 stored entries:</cline>
+      <cline>  [1 ]  =  -1</cline>
+      <cline>  [5 ]  =  5</cline>
+      <cline>  [7 ]  =  10</cline>
+      <cline>  [12]  =  3</cline>
+      <cline>  [13]  =  5</cline>
+      </cd>
+    </p>
+
+    <p>
+      and notice that lists the elements of the vector that are nonzero.
+    </p>
+
+    <p>
+      Note: This section needs to be filled out a bit.
     </p>
   </section>
 </chapter>
