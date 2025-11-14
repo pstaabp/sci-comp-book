@@ -4,6 +4,7 @@
   <targets>
     <target name="web" format="html" />
     <target name="print" format="pdf" />
+    <target name="latex" format="latex" />
   </targets>
 </project>
 
