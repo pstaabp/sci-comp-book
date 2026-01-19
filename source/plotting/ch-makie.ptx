@@ -5,7 +5,8 @@
 
   <introduction>
     <p>
-      As discussed in <xref ref="ch-plotting-basics"/>, one of the main plotting environments for Julia is Makie, a relatively new plotting environment that had a goal to develop a completely Julia-based environment that was designed to "create publication-quality vector graphics, animated movies and interactive data exploration tools. Most options that are available today lack one or more of the following attributes:" (cite Makie paper).
+      As discussed in <xref ref="ch-plotting-basics"/>, one of the main plotting environments for Julia is Makie, a relatively new plotting environment that had a goal to develop a completely Julia-based environment that was designed to "create publication-quality vector graphics, animated movies and interactive data exploration tools.
+      Most options that are available today lack one or more of the following attributes:" (cite Makie paper).
     </p>
   </introduction>
 
@@ -13,26 +14,32 @@
     <title>Basic Plotting</title>
 
     <p>
-      Before plotting, make sure that you have the packages <c>Makie</c> and <c>CairoMakie</c> installed.  The package <c>CairoMakie</c> is the backend package that does the plotting using the common interface (API) in the <c>Makie</c> package.  Once the <c>CairoMakie</c> package is installed, to set this to the Makie backend enter:
+      Before plotting, make sure that you have the packages <c>Makie</c> and <c>CairoMakie</c> installed.
+      The package <c>CairoMakie</c> is the backend package that does the plotting using the common interface (API) in the <c>Makie</c> package.
+      Once the <c>CairoMakie</c> package is installed, to set this to the Makie backend enter:
     </p>
 
-    <p>
-      <cd>
-      <cline>using CairoMakie</cline>
-      <cline>CairoMakie.activate!()</cline>
-      <cline>Makie.inline!(true)</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        x=1:10
+        y=[3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9]    
+      </code>
+    </program>
 
     <p>
-      where the 3rd line above will allow the plots to appear inside a notebook interface instead of as a separate window. As an example, we'll use the <c>scatter</c> command on a pair of vectors.
+      where the 3rd line above will allow the plots to appear inside a notebook interface instead of as a separate window.
+      As an example, we'll use the <c>scatter</c> command on a pair of vectors.
     </p>
 
-    <p>
-      <cd>
-      <cline>scatter(1:10, 3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9])</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        x=1:10
+        y=[3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9]
+        scatter(x,y)
+      </code>
+    </program>
 
     <p>
       which results in the plot
@@ -40,7 +47,7 @@
 
     <figure xml:id="fig-makie-scatter2">
       <caption>Scatter plot of some sample data</caption>
-      <image source="plots/plots/makie-scatter.png" width="90%">
+      <image source="plots/makie/makie-scatter.png" width="75%">
         <shortdescription>
           Scatter plot of points with x values between 1 and 10 and y values between -5 and 8.
         </shortdescription>
@@ -48,14 +55,17 @@
     </figure>
 
     <p>
-      There are clearly a lot of options available for plots. It is important to understand the difference between altering the plot (say changing the style or color of the markers) and the axes (showing the grid or changing the limits).  We will discuss all of these differences below, but an example to change the marker would be
+      There are clearly a lot of options available for plots.
+      It is important to understand the difference between altering the plot (say changing the style or color of the markers) and the axes (showing the grid or changing the limits).
+      We will discuss all of these differences below, but an example to change the marker would be
     </p>
 
-    <p>
-      <cd>
-      <cline>scatter(x,y, marker = :star8, markersize = 20, color = :red)</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        fig = scatter(x,y, marker = :star8, markersize = 20, color = :red)
+      </code>
+    </program>
 
     <p>
       resulting in
@@ -63,26 +73,30 @@
 
     <figure xml:id="fig-makie-scatter">
       <caption>Scatter plot of some sample data with non-standard marker style</caption>
-      <image source="plots/plots/makie-scatter2.png" width="90%">
+      <image source="plots/makie/makie-scatter2.png" width="75%">
         <shortdescription>
-          Scatter plot of points with x values between 1 and 10 and y values between -5 and 8.  The markers are 8-pointed red stars that are about twice the standard size.
+          Scatter plot of points with x values between 1 and 10 and y values between -5 and 8.
+          The markers are 8-pointed red stars that are about twice the standard size.
         </shortdescription>
       </image>
     </figure>
 
     <p>
-      To examine the list of markers and all other options for <c>scatter</c>, see the <url href="https://docs.makie.org/stable/reference/plots/scatter" >Makie documentation for scatter</url>.  Also, the <url href="https://docs.makie.org/stable/explanations/colors" >Makie documentation for colors</url> is helpful although you can see can get quite complicated.  If you are only interested the the named colors, see the <url href="https://juliagraphics.github.io/Colors.jl/stable/namedcolors/" >listing in the Colors.jl</url> package, which is automatically loaded by Makie.
+      To examine the list of markers and all other options for <c>scatter</c>, see the <url href="https://docs.makie.org/stable/reference/plots/scatter" >Makie documentation for scatter</url>.
+      Also, the <url href="https://docs.makie.org/stable/explanations/colors" >Makie documentation for colors</url> is helpful although you can see that there are many options.
+      If you are only interested the the named colors, see the <url href="https://juliagraphics.github.io/Colors.jl/stable/namedcolors/" >listing in the Colors.jl</url> package, which is automatically loaded by Makie.
     </p>
 
     <p>
       If instead we wish to make a line plot (connect the points by lines), simply use the <c>lines</c> function as in
     </p>
 
-    <p>
-      <cd>
-      <cline>lines(1:10, 3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9])</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        lines(x, y)
+      </code>
+    </program>
 
     <p>
       resulting in
@@ -90,7 +104,7 @@
 
     <figure xml:id="fig-makie-lines">
       <caption>Line plot of some sample data</caption>
-      <image source="plots/plots/makie-lines.png" width="90%">
+      <image source="plots/makie/makie-lines.png" width="75%">
         <shortdescription>
           Line plot of points with x between 1 and 10 and y between -5 and 8.
         </shortdescription>
@@ -98,7 +112,8 @@
     </figure>
 
     <p>
-      to create a function plot, we can use either <c>scatter</c> or <c>lines</c> but typically use a line plot.  For example
+      to create a function plot, we can use either <c>scatter</c> or <c>lines</c> but typically use a line plot.
+      For example
     </p>
 
     <p>
@@ -108,12 +123,14 @@
     </p>
 
     <p>
-      and if the presence of <c>sin</c> by itself in the function seems odd to you, one can use <c>lines(0..2pi, x -&gt; sin(x))</c> that is an anonymous function notation instead.  The first argument is a plotting range explained below. The result is
+      and if the presence of <c>sin</c> by itself in the function seems odd to you, one can use <c>lines(0..2pi, x -&gt; sin(x))</c> that is an anonymous function notation instead.
+      The first argument is a plotting range explained below.
+      The result is
     </p>
 
     <figure xml:id="fig-makie-function">
       <caption>Plot of <m>\sin(x)</m> from 0 to 2<m>\pi</m>.</caption>
-      <image source="plots/plots/makie-function.png" width="90%">
+      <image source="plots/makie/makie-function.png" width="75%">
         <shortdescription>
           Plot of sin(x) from 0 to 2pi.
         </shortdescription>
@@ -125,7 +142,9 @@
     </p>
 
     <p>
-      You may have noticed that for the function plot above, the first argument is <c>0..2pi</c>.  We haven't seen this structure before.  Entering <c>typeof(0..2pi)</c> results in
+      You may have noticed that for the function plot above, the first argument is <c>0..2pi</c>.
+      We haven't seen this structure before.
+      Entering <c>typeof(0..2pi)</c> results in
     </p>
 
     <p>
@@ -135,26 +154,29 @@
     </p>
 
     <p>
-      indicating that this structure is part of the <c>IntervalsSets</c> package (that is a dependency of <c>Makie</c>).  This makes plotting functions quite nice.
+      indicating that this structure is part of the <c>IntervalsSets</c> package (that is a dependency of <c>Makie</c>).
+      This makes plotting functions quite nice.
     </p>
 
     <p>
-      Like shown above with the scatter plot, <c>lines</c> plots have options as well including <c>linestyle</c>, <c>color</c> and  <c>linewidth</c>.  The following is an example of changing all of these:
+      Similar to scatter plots, <c>lines</c> plots have options as well including <c>linestyle</c>, <c>color</c> and  <c>linewidth</c>.
+      The following is an example of changing all of these:
     </p>
 
-    <p>
-      <cd>
-      <cline>lines(0..2pi, x -&gt; sin(x), color = :darkgreen, linewidth = 10, linestyle = :dashdot)</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        fig = lines(0..2pi, x -&gt; sin(x), color = :darkgreen, linewidth = 10, linestyle = :dashdot)
+      </code>
+    </program>
 
     <p>
       which has the following output:
     </p>
 
     <figure xml:id="fig-makie-function2">
-      <caption>Scatter plot of some sample data</caption>
-      <image source="plots/plots/makie-function2.png" width="90%">
+      <caption>Line plot of sine of x with styling on the line.</caption>
+      <image source="plots/makie/makie-function2.png" width="75%">
         <shortdescription>
           Scatter plot of points with x values between 1 and 10 and y values between -5 and 8.
         </shortdescription>
@@ -170,26 +192,35 @@
     <title>Updating the Axis object</title>
 
     <p>
-      We saw above how to update the options of the plot object, that is the markers for a <c>scatter</c> plot or the line segments in a <c>lines</c> plot.  There are also options to the <c>Axis</c> object, like changing the limits or tick marks or including title or axis labels.  As in common in Makie, there are multiple ways of accomplishing this and we will cover two of these.  First, we will look at passing Axis options via the <c>axis</c> keyword.  Alternatively, we will get a <c>Axis</c> object from a plot and then update the options.
+      We saw above how to update the options of the plot object, that is the markers for a <c>scatter</c> plot or the line segments in a <c>lines</c> plot.
+      There are also options to the <c>Axis</c> object, like changing the limits or tick marks or including title or axis labels.
+      As in common in Makie, there are multiple ways of accomplishing this and we will cover two of these.
+      First, we will look at passing Axis options via the <c>axis</c> keyword.
+      Alternatively, we will get a <c>Axis</c> object from a plot and then update the options.
     </p>
 
     <p>
-      Let's start with just including a title to the Axis.  The following is a simple way to do this.
+      Let's start with just including a title to the Axis.
+      The following is a simple way to do this.
     </p>
 
-    <p>
-      <cd>
-      <cline>lines(0..2pi, sin, axis = (title = "Plot of sin(x)",))</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        fig = lines(0..2pi, sin, axis = (title = "Plot of sin(x)",))
+      </code>
+    </program>
 
     <p>
-      where we use the <c>axis</c> option, which is common to all 2D plots.  The <c>axis</c> option needs to be a named tuple with names coming from options to <url href="https://docs.makie.org/stable/reference/blocks/axis">the Axis object</url>.  Although it may seem like a mistake, there is a comma after the string that is the end of the title, however, without the command, to the right of <c>axis = </c> is not a named tuple and there will be an error. The result of the command above is
+      where we use the <c>axis</c> option, which is common to all 2D plots.
+      The <c>axis</c> option needs to be a named tuple with names coming from options to <url href="https://docs.makie.org/stable/reference/blocks/axis">the Axis object</url>.
+      Although it may seem like a mistake, there is a comma after the string that is the end of the title, however, without the command, to the right of <c>axis = </c> is not a named tuple and there will be an error.
+      The result of the command above is
     </p>
 
     <figure xml:id="fig-sine-options1">
       <caption>Sine plot with title</caption>
-      <image source="plots/plots/sine-options.png" width="90%">
+      <image source="plots/makie/sine-options.png" width="75%">
         <shortdescription>
           Sine function plot on 0 to 2pi with title "Plot of sin(x)".
         </shortdescription>
@@ -197,7 +228,8 @@
     </figure>
 
     <p>
-      If you have multiple options, then it does not need to end with a comma.  For example,
+      If you have multiple options, then it does not need to end with a comma.
+      For example,
     </p>
 
     <p>
@@ -212,7 +244,7 @@
 
     <figure xml:id="fig-sine-options2">
       <caption>Sine plot with title and changed xticks</caption>
-      <image source="plots/plots/sine-options2.png" width="90%">
+      <image source="plots/makie/sine-options2.png" width="75%">
         <shortdescription>
           Sine function plot on 0 to 2pi with title "Plot of sin(x)" and xticks from 0 to 2pi with pi/2 spacing.
         </shortdescription>
@@ -220,17 +252,19 @@
     </figure>
 
     <p>
-      If there are a lot of changes that are to be made to the axis option, this may be confusing if they are all inside the given plotting command.  An alternative is to get the Axis object that the plotting routine created and then update the axis. Here's an example how to both update the xlabel (label on the x-axis) and the tick marks along the x-axis.
+      If there are a lot of changes that are to be made to the axis option, this may be confusing if they are all inside the given plotting command.
+      An alternative is to get the Axis object that the plotting routine created and then update the axis.
+      Here's an example how to both update the xlabel (label on the x-axis) and the tick marks along the x-axis.
     </p>
 
-    <p>
-      <cd>
-      <cline>fig, ax = scatter(x,y)</cline>
-      <cline>ax.xlabel = "Num"</cline>
-      <cline>ax.xticks = 1:10</cline>
-      <cline>fig</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        fig, ax = lines(0..2pi, sin)
+        lines!(ax, 0..2pi, cos)
+        fig
+      </code>
+    </program>
 
     <p>
       And this results in the plot:
@@ -238,18 +272,26 @@
 
     <figure xml:id="fig-scatter-options">
       <caption>Scatter plot with updated x-axis label and tick marks</caption>
-      <image source="plots/plots/scatter-options.png" width="90%">
+      <image source="plots/makie/scatter-options.png" width="75%">
         <shortdescription>
           A scatter plot with the x-axis labeled "Num." and the tick marks set for integers 1,2, ..., 10.
         </shortdescription>
       </image>
     </figure>
 
-    <p>Some comments about the code above.  Notice that we have assigned the <c>scatter</c> method to the tuple <c>fig, axis</c>.  The first is the Figure object that the scatter plot produces and the second is the Axis object.  This is helpful for updating either, however most aspects of a plot that needs to be updated falls onto the Axis object. The 2nd and 3rd lines above update the Axis, which is technically a mutable struct and we use the same dot notation that we have with <c>struct</c>s and <c>tuples</c>.
+    <p>
+      Some comments about the code above.
+      Notice that we have assigned the <c>scatter</c> method to the tuple <c>fig, axis</c>.
+      The first is the Figure object that the scatter plot produces and the second is the Axis object.
+      This is helpful for updating either, however most aspects of a plot that needs to be updated falls onto the Axis object.
+      The 2nd and 3rd lines above update the Axis, which is technically a mutable struct and we use the same dot notation that we have with <c>struct</c>s and <c>tuples</c>.
     </p>
 
     <p>
-      There will be other examples of changing the Axis object later in this and subsequent chapters.  It always a good idea to look at the <url href="https://docs.makie.org/stable/reference/blocks/axis">Axis documentation</url> for all details.  The two methods in this section should work to update any of the axis options.  As yet another alternative, below we will see how to create an Axis object with desired properties, however if there are just a few alterations to an Axis, one of the methods here is preferred.
+      There will be other examples of changing the Axis object later in this and subsequent chapters.
+      It always a good idea to look at the <url href="https://docs.makie.org/stable/reference/blocks/axis">Axis documentation</url> for all details.
+      The two methods in this section should work to update any of the axis options.
+      As yet another alternative, below we will see how to create an Axis object with desired properties, however if there are just a few alterations to an Axis, one of the methods here is preferred.
     </p>
   </section>
 
@@ -257,7 +299,10 @@
     <title>Adding Additional plots to an Axis</title>
 
     <p>
-      We often want two plots (say two function plots or a function and scatter plot) on the same axes.  In short, the way to do this is to get the variable representing the Axis.  The technique in this section is to get the <c>Axis</c> associated with a plot and then add a line plot to the Axis.  In the next section, we see a different technique, especially helpful for more complex layouts.
+      We often want two plots (say two function plots or a function and scatter plot) on the same axes.
+      In short, the way to do this is to get the variable representing the Axis.
+      The technique in this section is to get the <c>Axis</c> associated with a plot and then add a line plot to the Axis.
+      In the next section, we see a different technique, especially helpful for more complex layouts.
     </p>
 
     <p>
@@ -276,7 +321,7 @@
 
     <figure xml:id="fig-poly-sine">
       <caption>A plot of sin(x)</caption>
-      <image source="plots/makie/sine.png" width="90%">
+      <image source="plots/makie/sine.png" width="75%">
         <shortdescription>
           A plot of sin(x) on the interval [0,2pi]
         </shortdescription>
@@ -284,24 +329,28 @@
     </figure>
 
     <p>
-      The left hand side of the assignment operator is <c>fig, ax</c>, which returns the created Figure and Axis objects when making a plot.  Adding another plot to the one above is now relatively easy:
+      The left hand side of the assignment operator is <c>fig, ax</c>, which returns the created Figure and Axis objects when making a plot.
+      Adding another plot to the one above is now relatively easy:
     </p>
 
-    <p>
-      <cd>
-      <cline>fig, ax = lines(0..2pi,sin)</cline>
-      <cline>lines!(ax, 0..2pi,cos)</cline>
-      <cline>fig</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        fig, ax = lines(0..2pi, sin)
+        lines!(ax, 0..2pi, cos)
+        fig
+      </code>
+    </program>
 
     <p>
-      and note that the command is <c>lines!</c> because it modifies the <c>ax</c> variable.  Also to get this to appear, the last line <c>fig</c> is used to get the plot to show. The result is
+      and note that the command is <c>lines!</c> because it modifies the <c>ax</c> variable.
+      Also to get this to appear, the last line <c>fig</c> is used to get the plot to show.
+      The result is
     </p>
 
     <figure xml:id="fig-poly-sine-cosine">
-      <caption></caption>
-      <image source="plots/makie/sine-cosine.png" width="90%">
+      <caption>A plot with two function graphs:  sin(x) and cos(x).</caption>
+      <image source="plots/makie/sine-cosine.png" width="75%">
         <shortdescription>
           (for accessibility)
         </shortdescription>
@@ -309,12 +358,15 @@
     </figure>
 
     <p>
-      It would be helpful to have a legend to distinguish the two curves.  We will learn how to add this to the plot in <xref ref="sect-makie-legend"/>.
+      It would be helpful to have a legend to distinguish the two curves.
+      We will learn how to add this to the plot in <xref ref="sect-makie-legend"/>.
     </p>
 
     <note>
       <p>
-        To include mutiple plots (different curves or scatter and a line plot) for example, use the <c>!</c> version of the plot type.  When using the <c>!</c> version, the first argument should be the axis object that you want to place the plot in.
+        To include mutiple plots (different curves or scatter and a line plot) for example, use the <c>!</c> version of the plot type.
+        When using the <c>!</c> version, the first argument should be the axis object that you want to place the plot in.
+        You will see an error if the first argument is not an <c>Axis</c> object.
       </p>
     </note>
   </section>
@@ -323,41 +375,50 @@
     <title>Figures and Grid Layout in Makie</title>
 
     <p>
-      In the section above, we were able to get the figure and axis associated with a plot.  This was helpful for either adding other plots to an axis or updating the axis.  In this section, we will build a plot starting with <c>Figure</c> and <c>Axis</c> objects.  This is mainly for more complex layouts, but is also an alternative to the methods from the previous sections.
+      In the section above, we were able to get the figure and axis associated with a plot.
+      This was helpful for either adding other plots to an axis or updating the axis.
+      In this section, we will build a plot starting with <c>Figure</c> and <c>Axis</c> objects.
+      This is mainly for more complex layouts, but is also an alternative to the methods from the previous sections.
     </p>
 
     <p>
       First, a plot needs a <c>Figure</c> container and this can be created with:
     </p>
 
-    <p>
-      <cd>
-      <cline>fig = Figure()</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        fig = Figure()
+      </code>
+    </program>
 
     <p>
-      And upon running this, you will see an empty figure (white square) that we need to add things to.  Although this is not so interesting, it is important.  There are many things that happen when creating a figure, but most importantly, there is a grid layout that is created.  To place items in the grid, typically plots need to occur on axes, so we will place axes in a layout with row/column indexing.  For example
+      And upon running this, you will see an empty figure (white square) that we need to add things to.
+      Although this is not so interesting, it is important.
+      There are many things that happen when creating a figure, but most importantly, there is a grid layout that is created.
+      To place items in the grid, typically plots need to occur on axes, so we will place axes in a layout with row/column indexing.
+      For example
     </p>
 
-    <p>
-      <cd>
-      <cline>fig = Figure()</cline>
-      <cline>ax1 = Axis(fig[1,1], title = "Axis 1")</cline>
-      <cline>ax2 = Axis(fig[2,1], title = "Axis 2")</cline>
-      <cline>ax3 = Axis(fig[1,2], title = "Axis 3")</cline>
-      <cline>ax4 = Axis(fig[2,2], title = "Axis 4")</cline>
-      <cline>fig</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        fig = Figure()
+        ax1 = Axis(fig[1,1], title = "Axis 1")
+        ax2 = Axis(fig[2,1], title = "Axis 2")
+        ax3 = Axis(fig[1,2], title = "Axis 3")
+        ax4 = Axis(fig[2,2], title = "Axis 4")
+        fig
+      </code>
+    </program>
 
     <p>
       Overall the output of this is
     </p>
 
     <figure xml:id="fig-makie-layout">
-      <caption>2 by 2 grid layout of a figure with 4 axes. </caption>
-      <image source="plots/makie/layout.png" width="90%">
+      <caption>A 2 by 2 grid layout of a figure with 4 axes. </caption>
+      <image source="plots/makie/layout.png" width="75%">
         <shortdescription>
           A figure with four axes in a 2 by 2 grid, labelled "Axis 1", "Axis 3", "Axis 4" and "Axis 2" clockwise from the upper left.
         </shortdescription>
@@ -365,66 +426,53 @@
     </figure>
 
     <p>
-      and you should notice many things.  We can add a Axis to a plot (or four of them) without any plot within them.  We will learn how to add a plot to an axis below.  Above, the axes were placed by adding a row and column to the <c>fig</c> (Figure) above  where the row and column is used in an array like notation.  Notice that <c>fig[1,2]</c> places the axis in the first row, second column.  Also, the default plotting window (limits) for an Axis is between 0 and 10.
+      and you should notice many things.
+      We can add a Axis to a plot (or four of them) without any plot within them.
+      We will learn how to add a plot to an axis below.
+      Above, the axes were placed by adding a row and column to the <c>fig</c> (Figure) above  where the row and column is used in an array like notation.
+      Notice that <c>fig[1,2]</c> places the axis in the first row, second column.
+      Also, the default plotting window (limits) for an Axis is between 0 and 10.
     </p>
 
     <p>
-      If you have multiple plots in the same figure, then generally a simple grid layout will work, however, Makie has the ability to nest axes as well.  For example:
+      You may wish to stretch an Axis across multiple rows or columns.
+      Here's an example where the first row has one axis that stretches across 3 columns and the second row has 3 axes.
     </p>
 
-    <p>
-      <cd>
-      <cline>fig = Figure()</cline>
-      <cline>ax1 = Axis(fig[1,1], title = "Axis 1")</cline>
-      <cline>ax2 = Axis(fig[2,1][1,1], title = "Axis 2")</cline>
-      <cline>ax3 = Axis(fig[2,1][1,2], title = "Axis 3")</cline>
-      <cline>ax4 = Axis(fig[2,1][1,3], title = "Axis 4")</cline>
-      <cline>fig</cline>
-      </cd>
-    </p>
 
-    <p>
-      will produce the following layout where the 2nd row has nested axes.
-    </p>
+    <program language="julia" line-numbers="yes">
+      <code>
+        fig = Figure()
+        ax1 = Axis(fig[1,1:3], title = "Axis 1")
+        ax2 = Axis(fig[2,1], title = "Axis 2")
+        ax3 = Axis(fig[2,2], title = "Axis 3")
+        ax4 = Axis(fig[2,3], title = "Axis 4")
+        fig
+      </code>
+    </program>
 
     <figure xml:id="fig-layout-nested">
       <caption>A grid layout with one axis on the first row and 3 in the second row.</caption>
-      <image source="plots/makie/layout-nested.png" width="90%">
+      <image source="plots/makie/layout-nested.png" width="75%">
         <shortdescription>
-          A grid layout with one axis on the first row and 3 in the second row. The top row axis is labelled "Axis 1" and the bottom three are labelled "Axis 2", "Axis 3" and "Axis 4" from left to right.
+          A grid layout with one axis on the first row and 3 in the second row.
+          The top row axis is labelled "Axis 1" and the bottom three are labelled "Axis 2", "Axis 3" and "Axis 4" from left to right.
         </shortdescription>
       </image>
     </figure>
-
-    <p>
-      Notice that to nest axes, we add an additional row/column specification.  For example, <c>fig[2,1][1,2]</c> means first place this in the 2nd row and 1st column of the overall layout and then within that cell, place in the first row, second column.
-    </p>
-
-    <p>
-      Alternatively, the following will also create the same result:
-    </p>
-
-    <p>
-      <cd>
-      <cline>fig = Figure()</cline>
-      <cline>ax1 = Axis(fig[1,1:3], title = "Axis 1")</cline>
-      <cline>ax2 = Axis(fig[2,1], title = "Axis 2")</cline>
-      <cline>ax3 = Axis(fig[2,1], title = "Axis 3")</cline>
-      <cline>ax4 = Axis(fig[2,1], title = "Axis 4")</cline>
-      <cline>fig</cline>
-      </cd>
-    </p>
-
-    <p>
-      where the <c>fig[1,1:3]</c> on the first Axis object to place it in the 1st row and stretch it across the first 3 columns.
-    </p>
   </section>
 
   <section xml:id="sec-makie-axis">
     <title>Axis Options</title>
 
     <p>
-      We saw above how to place an <c>Axis</c> object inside a <c>Figure</c>.  Upon creating the <c>Axis</c>, we can give other options.  We will cover some of the important ones here, and then refer to the documentation.  The first option to an <c>Axis</c> is a <c>title</c> that we saw above. Just pass the title in as a string.  Other basic options are the <c>xlabel</c> and <c>ylabel</c>.  The following code
+      We saw above how to place an <c>Axis</c> object inside a <c>Figure</c>.
+      Upon creating the <c>Axis</c>, we can give other options.
+      We will cover some of the important ones here, and then refer to the documentation.
+      The first option to an <c>Axis</c> is a <c>title</c> that we saw above.
+      Just pass the title in as a string.
+      Other basic options are the <c>xlabel</c> and <c>ylabel</c>.
+      The following code
     </p>
 
     <p>
@@ -441,7 +489,7 @@
 
     <figure xml:id="fig-xylabels">
       <caption>An empty plot with values for the title, xlabel and ylabel.</caption>
-      <image source="plots/makie/xylabels.png" width="90%">
+      <image source="plots/makie/xylabels.png" width="75%">
         <shortdescription>
           An empty plot with title "My Plot", xlabel of "x label" and ylabel as "y label".
         </shortdescription>
@@ -449,7 +497,8 @@
     </figure>
 
     <p>
-      Setting the limits on the axes is done with the <c>limits</c> option.  For example:
+      Setting the limits on the axes is done with the <c>limits</c> option.
+      For example:
     </p>
 
     <p>
@@ -461,12 +510,14 @@
     </p>
 
     <p>
-      and notice the last line above or <c>fig</c> will show the figure.  Nothing will be shown if this isn't there. The result is
+      and notice the last line above or <c>fig</c> will show the figure.
+      Nothing will be shown if this isn't there.
+      The result is
     </p>
 
     <figure xml:id="fig-limits">
       <caption>An empty plot with updated limits.</caption>
-      <image source="plots/makie/limits.png" width="90%">
+      <image source="plots/makie/limits.png" width="75%">
         <shortdescription>
           An empty plot with limits in the x-direction from -5 to 5 and in the y-direction from 0 to 20.
         </shortdescription>
@@ -478,7 +529,10 @@
     </p>
 
     <p>
-      There are plenty of other options available for an <c>Axis</c>.  See the <url href="https://docs.makie.org/stable/reference/blocks/axis">documentation on Axis</url> for more information.  One big thing to note is the separation of axis options (anything that isn't a plot) should be done to the <c>Axis</c> object, whereas as we will see below, changes to the plot will go on the individual plotting function.  We will see other examples of this below.
+      There are plenty of other options available for an <c>Axis</c>.
+      See the <url href="https://docs.makie.org/stable/reference/blocks/axis">documentation on Axis</url> for more information.
+      One big thing to note is the separation of axis options (anything that isn't a plot) should be done to the <c>Axis</c> object, whereas as we will see below, changes to the plot will go on the individual plotting function.
+      We will see other examples of this below.
     </p>
   </section>
 
@@ -487,22 +541,30 @@
 
     <introduction>
       <p>
-        Even though we can do some elaborate layout of axes, we haven't done any plotting on them.  In fact, there are two ways to plot via Makie.  First, as we saw above, we can use plotting functions like <c>lines</c> or <c>scatter</c> to make plots.  This is fine for relatively simple plots or just for a quick plot using defaults.  If we desire additional features to a plot, generally we will create <c>Figure</c>s and <c>Axis</c> objects and the add plots to them with commands like <c>lines!</c> or <c>scatter!</c> (note the !).  Recall that convention in Julia is if an argument is being modified that the name should end in a <c>!</c>.
+        Even though we can do some elaborate layout of axes, we haven't done any plotting on them.
+        In fact, there are two ways to plot via Makie.
+        First, as we saw above, we can use plotting functions like <c>lines</c> or <c>scatter</c> to make plots.
+        This is fine for relatively simple plots or just for a quick plot using defaults.
+        If we desire additional features to a plot, generally we will create <c>Figure</c>s and <c>Axis</c> objects and the add plots to them with commands like <c>lines!</c> or <c>scatter!</c> (note the !).
+        Recall that convention in Julia is if an argument is being modified that the name should end in a <c>!</c>.
       </p>
 
       <p>
-        Let's repeat the scatter plot at the top of this chapter.  If we do:
+        Let's repeat the scatter plot at the top of this chapter.
+        If we do:
       </p>
 
-      <p>
-        <cd>
-        <cline>y = [3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9]</cline>
-        <cline>fig = Figure()</cline>
-        <cline>ax = Axis(fig[1,1], limits = (0,11,-10,10))</cline>
-        <cline>scatter!(ax, x, y)</cline>
-        <cline>fig</cline>
-        </cd>
-      </p>
+
+      <program language="julia" line-numbers="yes">
+        <code>
+        x = 1:10
+        y = [3.2,-4.5,7.8,4.2,-2.0,5.4,7.8,-2.4,-3.1,3.9]
+        fig = Figure()
+        ax = Axis(fig[1,1], title = "Simple Scatter Plot", limits = (0,11,-10,10))
+        scatter!(ax, x, y)
+        fig
+        </code>
+      </program>
 
       <p>
         where we have set the limits to make them symmetric above and below the <m>x</m>-axis.
@@ -510,7 +572,7 @@
 
       <figure xml:id="fig-scatter2">
         <caption>A scatter plot with sample data in which the limits have been updated. </caption>
-        <image source="plots/makie/scatter2.png" width="90%">
+        <image source="plots/makie/scatter2.png" width="75%">
           <shortdescription>
             A scatter plot with sample data in which the limits are from 0 to 11 in the x-direction and from -10 to 10 in the y-direction.
           </shortdescription>
@@ -518,16 +580,19 @@
       </figure>
 
       <p>
-        This is the way to include either multiple function plot or a scatter and function plot on the same axes.  Consider the scatter plot from <xref ref="ch-plotting-basics"/> which is the data from CO₂ levels.  We can add an exponential function to them as well in the following way.<fn>The data is available <url href="https://gml.noaa.gov/aftp/products/trends/co2/co2_annmean_mlo.csv">at this NOAA webpage</url> and should be downloaded and saved in the same directory as your Julia notebook. </fn>.
+        This is the way to include either multiple function plot or a scatter and function plot on the same axes.
+        Consider the scatter plot from <xref ref="ch-plotting-basics"/> which is the data from CO₂ levels.
+        We can add an exponential function to them as well in the following way.<fn>The data is available <url href="https://gml.noaa.gov/aftp/products/trends/co2/co2_annmean_mlo.csv">at this NOAA webpage</url> and should be downloaded and saved in the same directory as your Julia notebook.
+        </fn>.
       </p>
 
 
       <program language="julia" line-numbers="yes">
         <code>
-          fig = Figure()xj
-          ax = Axis(fig[1,1])
+          fig = Figure()
+          ax = Axis(fig[1,1], xlabel = "year", ylabel = "ppm CO2")
           scatter!(ax, co2.year, co2.mean)
-          lines!(ax, 1959..2023,t -&gt; exp(5.735 + 0.00454*(t-1959)), color = :green)
+          lines!(ax, 1958..2023, t-&gt;exp(-3.1637+0.00454247t), color = :darkorange)
           fig
         </code>
       </program>
@@ -538,7 +603,7 @@
 
       <figure xml:id="fig-co2-fit">
         <caption>A scatter plot of CO₂ data and an exponential fit. </caption>
-        <image source="plots/makie/co2-scatter-fit.png" width="90%">
+        <image source="plots/makie/co2-scatter-fit.png" width="75%">
           <shortdescription>
             A scatter plot with an exponential increase from 320 ppm in 1960 to 420 in 2023 together with an exponential function that closely follows the points.
           </shortdescription>
@@ -555,7 +620,9 @@
       <title>Placing plots on different axes</title>
 
       <p>
-        Above, we saw adding different axes to a Figure by placing Axis objects in a grid.  We can add plots to these axes using the <c>scatter!</c> or <c>lines!</c> methods where the first argument is the axis number where we wish to place the plot.  As an example:
+        Above, we saw adding different axes to a Figure by placing Axis objects in a grid.
+        We can add plots to these axes using the <c>scatter!</c> or <c>lines!</c> methods where the first argument is the axis number where we wish to place the plot.
+        As an example:
       </p>
 
 
@@ -577,8 +644,8 @@ fig
       </p>
 
       <figure xml:id="fig-multi-plot">
-        <caption></caption>
-        <image source="plots/makie/multi-plots.png" width="90%">
+        <caption>An example of multiple plots on different axes.</caption>
+        <image source="plots/makie/multi-plots.png" width="75%">
           <shortdescription>
             (for accessibility)
           </shortdescription>
@@ -591,7 +658,9 @@ fig
       <title>Adding a Legend</title>
 
       <p>
-        The example above with the sine and cosine curves beg the question of how to add a legend to a plot, which is usually a given when there are multiple plots on a given set of axes.   We can do this with the example above by giving each curve a label and then adding a Legend to the Figure.  The following will do this:
+        The example above with the sine and cosine curves beg the question of how to add a legend to a plot, which is usually a given when there are multiple plots on a given set of axes.
+        We can do this with the example above by giving each curve a label and then adding a Legend to the Figure.
+        The following will do this:
       </p>
 
       <p>
@@ -604,12 +673,13 @@ fig
       </p>
 
       <p>
-        where first notice that we have added a <c>label</c> to each curve as a string and then the 3rd line will create a Figure and place it to the right of the plot (because of the <c>fig[1,2]</c>).  The resulting plot is
+        where first notice that we have added a <c>label</c> to each curve as a string and then the 3rd line will create a Figure and place it to the right of the plot (because of the <c>fig[1,2]</c>).
+        The resulting plot is
       </p>
 
       <figure xml:id="fig-legend01">
-        <caption></caption>
-        <image source="plots/makie/legend01.png" width="90%">
+        <caption>The plots of sine and cosine together with a legend to the right.</caption>
+        <image source="plots/makie/legend01.png" width="75%">
           <shortdescription>
             (for accessibility)
           </shortdescription>
@@ -617,19 +687,21 @@ fig
       </figure>
 
       <p>
-        We can still use the method of creating Figures and Axis objects above to create this as well.  The following will produce the same plot:
+        We can still use the method of creating Figures and Axis objects above to create this as well.
+        The following will produce the same plot:
       </p>
 
-      <p>
-        <cd>
-        <cline>fig = Figure()</cline>
-        <cline>ax = Axis(fig[1,1])</cline>
-        <cline>lines!(ax, 0..2pi, sin, label="sin(x)")</cline>
-        <cline>lines!(ax, 0..2pi, cos, label="cos(x)")</cline>
-        <cline>Legend(fig[1,2],ax)</cline>
-        <cline>fig</cline>
-        </cd>
-      </p>
+
+      <program language="julia" line-numbers="yes">
+        <code>
+        fig = Figure()
+        ax = Axis(fig[1, 1])
+        lines!(ax, 0 .. 2pi, sin, label="sin(x)")
+        lines!(ax, 0 .. 2pi, cos, label="cos(x)")
+        Legend(fig[1, 2], ax)
+        fig
+        </code>
+      </program>
 
       <p>
         If instead you want a legend that sits inside the axis, we can use the <c>axislegend</c> method.
@@ -638,10 +710,10 @@ fig
 
       <program language="julia" line-numbers="yes">
         <code>
-fig, ax = lines(0..2pi,sin,label="sin(x)")
-lines!(ax,0..2pi,cos, label="cos(x)")
-axislegend(ax)
-fig
+          fig, ax = lines(0..2pi,sin,label="sin(x)")
+          lines!(ax,0..2pi,cos, label="cos(x)")
+          axislegend(ax)
+          fig
         </code>
       </program>
 
@@ -650,8 +722,8 @@ fig
       </p>
 
       <figure xml:id="fig-legend02">
-        <caption></caption>
-        <image source="plots/makie/legend02.png" width="90%">
+        <caption>The plot of sine and cosine with the legend inside the axes box.</caption>
+        <image source="plots/makie/legend02.png" width="75%">
           <shortdescription>
             (for accessibility)
           </shortdescription>
@@ -659,16 +731,19 @@ fig
       </figure>
 
       <p>
-        The location of the legend isn't great in this situation.  One can add the <c>location</c> option to the <c>axislegend</c> method which is a symbol of two characters, the first being "l", "r" or "c" for left, right or center for the horizontal placement and the second being "t", "b" or "c" for top, bottom or center for the vertical placement.  Alternatively, it can be set as a tuple that is interpreted as the horizontal and vertical location as fractions from the lower left.  To slide the legend box over just a bit we can use
+        The location of the legend isn't great in this situation.
+        One can add the <c>location</c> option to the <c>axislegend</c> method which is a symbol of two characters, the first being "l", "r" or "c" for left, right or center for the horizontal placement and the second being "t", "b" or "c" for top, bottom or center for the vertical placement.
+        Alternatively, it can be set as a tuple that is interpreted as the horizontal and vertical location as fractions from the lower left.
+        To slide the legend box over just a bit we can use
       </p>
 
 
       <program language="julia" line-numbers="yes">
         <code>
-fig, ax = lines(0..2pi,sin,label="sin(x)")
-lines!(ax,0..2pi,cos, label="cos(x)")
-axislegend(ax, position = (0.8, 1))
-fig
+          fig, ax = lines(0..2pi,sin,label="sin(x)")
+          lines!(ax,0..2pi,cos, label="cos(x)")
+          axislegend(ax, position = (0.8, 1))
+          fig
         </code>
       </program>
 
@@ -678,46 +753,130 @@ fig
 
       <figure xml:id="fig-legend03">
         <caption></caption>
-        <image source="plots/makie/legend03.png" width="90%">
+        <image source="plots/makie/legend03.png" width="75%">
           <shortdescription>
             (for accessibility)
           </shortdescription>
         </image>
       </figure>
     </subsection>
+
+
+    <subsection xml:id="subsec-prettier-labels">
+      <title>Adding Nicer Tick Labels</title>
+
+      <p>
+        We saw above when plotting a trigonometric function that we often would like to use multiples of <m>\pi</m> for the x tick marks.
+        We've seen that if we make multiples of <m>\pi</m>, we get floating point approximations on the axes.
+        We will use a new package <c>LaTeXStrings</c> to use the power of LaTeX to make nicer looking plots.
+      </p>
+
+      <p>
+        First, make sure that you have added <c>LaTeXStrings</c> to your julia installation and include <c>using LaTeXStrings</c> to your notebook.
+        In short, this package just makes it easier to enter latex into strings to be properly rendered.
+        If you want to enter <c>\frac{\pi}{2}</c> into a julia string (and this is true in many languages), because backslash is a special character, to enter a backslash, we'd need to add <c>\\</c>.
+        Therefore the string above would be <c>"\\frac{\\pi}{2}"</c> and although this isn't too hard, LaTeXStrings makes it easier.
+        It provides the string macro <c>L</c> as in
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <code>
+        L"\frac{\pi}{2}"
+        </code>
+      </program>
+
+      <p>
+        and this will produce the latex output <m>\frac{\pi}{2}</m>.We will use this to produce nicer tick labels.
+        But first, let's just use LaTeXStrings to make a nicer title.
+        The code
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <code>
+        lines(-2..2,x -&gt; x^2, axis = (title = L"A plot of $x^2$",))
+        </code>
+      </program>
+
+      <p>
+        In this case, we have used the <c>axis</c> option of the <c>lines</c> function, recalling that the <c>axis</c> needs to take a named tuple and if there is only one value, a trailing comma is necessary.
+        The result of this is
+      </p>
+
+      <figure xml:id="fig-sine-with-title">
+        <caption></caption>
+        <image source="plots/makie/xsq-with-title.png" width="75%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>
+        The following will produce a sine curve with nicer x-labels.
+      </p>
+
+
+      <program language="julia" line-numbers="yes">
+        <code>
+        tick_pos = 0:pi/4:2pi
+        xlabels = [L"0", L"\frac{\pi}{4}", L"\frac{\pi}{2}", L"\frac{3\pi}{4}",
+          L"\pi", L"\frac{5\pi}{4}", L"\frac{3\pi}{2}", L"\frac{7\pi}{4}", L"2\pi"]
+        fig = Figure()
+        ax = Axis(fig[1, 1],
+          xticks=(tick_pos, xlabels),
+          title=L"Sine Wave with $\pi$ Multiples"
+        )
+        lines!(ax, 0 .. 2pi, sin)
+        fig
+        </code>
+      </program>
+
+      <figure xml:id="fig-sine-with-xticks">
+        <caption></caption>
+        <image source="plots/makie/sine-with-xticks.png" width="75%">
+          <shortdescription>
+            (for accessibility)
+          </shortdescription>
+        </image>
+      </figure>
+
+      <p>
+        Notice that the <c>tick_pos</c> variable on line 1, defines where the ticks will be located on the <m>x</m>-axis.
+        The <c>xlabels</c> is an array of latex strings.
+        If there is a way to simplify this, then you can use a comprehension, a <c>map</c> or a loops to do this, but for simplicity, we just type these out.
+        And then lastly, notice that these two variables are fed to the <c>Axis</c> using the <c>xticks</c> option as a tuple.
+      </p>
+    </subsection>
   </section>
 
-  <section>
-    <title>Contour Plots</title>
+  <section xml:id="sec-implicit-plots-makie">
+    <title>Implicit Plots</title>
 
     <p>
-      As mentioned in <xref ref="ch-plotting-basics"/>, a contour plot is generally used for functions of two variable, like <m>f(x,y)</m> and the plot is curves of constant function value or <m>f(x,y)=C</m> for various values of <m>C</m>.  As in the previous chapter, we will plot
+      Recall that in <xref ref="sec-implicit-plots"/>, an implicit plot is the set of points <m>(x,y)</m> in which <m>f(x,y) = c</m> for some function <m>f</m> and constant <m>c</m>.
+      As shown in that section, the classic example of this is that of a circle in the form <m>x^2+y^2=1</m>.
+      Using makie, we use the <c>contour</c> function (more on this function below) as in
     </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        xs = ys =  LinRange(-1.25, 1.25, 100)
+        contour(xs, ys, (x, y) -&gt; x^2 + y^2 - 1, levels=[0], 
+          axis=(limits = (-1.2, 1.2, -1.2, 1.2),))
+      </code>
+    </program>
 
     <p>
-      <me>
-        f(x,y) = \sin\left(\frac{1}{2}x^2-\frac{1}{4}y^2+2\right)\cos(x+y)
-      </me>
+      where there are <m>x</m> and <m>y</m> points defined to create a grid, a function (in this case we use an anonymous one) and the option <c>levels=[0]</c> to create the correct plot.
+      The result of that above is:
     </p>
 
-    <p>
-      and can do this with the following code:
-    </p>
-
-    <p>
-      <cd>
-      <cline>x = y = LinRange(0,pi,101)</cline>
-      <cline>fig = contour(x, y, (x, y) -&gt; sin(0.5x^2-0.25y^2+2)*cos(x+y))</cline>
-      </cd>
-    </p>
-
-    <p>
-      which results in the plot:
-    </p>
-
-    <figure xml:id="fig-contour-1">
+    <figure xml:id="fig-implicit-circle01">
       <caption></caption>
-      <image source="plots/makie/contour1.png" width="90%">
+      <image source="plots/makie/implicit-circle01.png" width="75%">
         <shortdescription>
           (for accessibility)
         </shortdescription>
@@ -725,15 +884,183 @@ fig
     </figure>
 
     <p>
-      And recall that a contour plot is basically like a topographical map if you have ever used one of those.  The concentric circles are either a hill (maximum) or a depression (minimum) and unless we know what function values, we're not sure which is why.  To help with this we will add labels to the contours and increase the number of contours used with the <c>levels</c> attribute.
+      Wait.
+      You said we're plotting a circle, but this clearly is not a circle.
+      Looks like an ellipse.
+      The reason this occurred is that the aspect ratio of the plot is not one, therefore an object that we would expect to have a certain form may not.<fn>Another classic example is that if there are normal lines either to a curve or two each other, if the aspect ratio is not one, they will not look to be normal/perpendicular.</fn> We add the <c>apsect = 1</c> as an option to an Axis as in
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        xs = ys =  LinRange(-1.25, 1.25, 100)
+        fig = contour(xs, ys, (x, y) -&gt; x^2 + y^2 - 1, 
+          levels=[0], axis=(limits = (-1.2, 1.2, -1.2, 1.2), aspect = 1))
+      </code>
+    </program>
+
+    <p>
+      and this produces the expected plot:
+    </p>
+
+    <figure xml:id="fig-implicit-circle02">
+      <caption></caption>
+      <image source="plots/makie/implicit-circle02.png" width="75%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <exercise>
+      <statement>
+        <p>
+          An <term>elliptic curve</term> is the implicit graph of
+          <me>
+            y^2 = x^3 + ax + b
+          </me>
+          for constants <m>a</m> and <m>b</m>.
+          Produce a few graphs for different values of <m>a</m> and <m>b</m>.
+        </p>
+      </statement>
+    </exercise>
+  </section>
+
+  <section xml:id="sect-surface-plots-makie">
+    <title>Surface Plots</title>
+
+    <p>
+      If we have a function of two variables, a nice plot that shows the function is that of a surface plot, in which the height of the surface is the value of the function.
+      A function of two variables is <m>f(x,y) = x^2+y^2</m> and we can plot this using Makie with the <c>surface</c> function.
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        xs = ys = LinRange(-3,3,100)
+        zs = [x^2 + y^2 for x in xs, y in ys]
+        surface(xs, ys, zs, axis=(type=Axis3,))
+      </code>
+    </program>
+
+    <p>
+      and the result in
+    </p>
+
+    <figure xml:id="fig-surface-paraboloid">
+      <caption></caption>
+      <image source="plots/makie/paraboloid.png" width="75%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      Notice that the option <c>axis=(type=Axis3,)</c> is used.
+      This gives a proper perspective for the plot.
+      Try removing it to see the result.
     </p>
 
     <p>
-      <cd>
-      <cline>x = y = LinRange(0,pi,101)</cline>
-      <cline>contour( x, y, (x, y) -&gt; sin(0.5x^2-0.25y^2+2)*cos(x+y), labels = true, levels = 11)</cline>
-      </cd>
+      For a more interesting plot, we examine
+      <men xml:id="eq-surf-contour">
+        f(x,y) = \sin\left(\frac{1}{2}x^2-\frac{1}{4}y^2+2\right)\cos(x+y)
+      </men>
+      although the above code will also produce a plot, here's some different options.
     </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        f(x, y) = sin(0.5x^2 - 0.25y^2 + 2) * cos(x + y)
+        xs = ys = LinRange(0, pi, 101)
+        zs = [f(x, y) for x in xs, y in ys]
+        fig = Figure()
+        ax = Axis3(fig[1,1],
+          azimuth = 0.25pi,
+          elevation = 0.1pi,)
+        surface!(ax, xs, ys, zs, colormap = :plasma)
+        fig
+      </code>
+    </program>
+
+    <p>
+      which results in
+    </p>
+
+    <figure xml:id="fig-surface03">
+      <caption></caption>
+      <image source="plots/makie/surface03.png" width="75%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      Overall, the structure is the same in which there is a grid created (line 2) that both <m>x</m> and <m>y</m> take on values in <m>[0,\pi]</m> and then use the function to create the <m>z</m> values.
+      This time, we create a Figure and Axis object, however, in this case, we need an Axis3 object.
+    </p>
+
+    <p>
+      We also change the perspective of the plot with the azimuth (the angle of rotation around the <m>z</m>-axis) which can take on values between 0 and <m>2pi</m>.
+      The <c>elevation</c> option is the angle that the viewpoint is above or below the <m>xy</m>-plane.
+      Values can be between <m>-\pi/2</m> and <m>\pi/2</m>.
+      Try changing these to see the view point change.
+    </p>
+
+    <p>
+      Notice also that we have added a new option <m>colormap</m> which changes the colors of the height of the surface plot.
+      Above is <c>:plasma</c> and all of the colors are Symbols (start with a colon).
+      There are hundreds of options, but the easiest way to see what is available <url href="https://docs.makie.org/stable/explanations/colors#Named-colors">at Makie's color documentation page</url>.
+      Try changing these.
+      There are also ways of creating custom colormaps.
+    </p>
+  </section>
+
+  <section xml:id="sect-contour-plots-makie">
+    <title>Contour Plots</title>
+
+    <p>
+      As mentioned in <xref ref="ch-plotting-basics"/>, a contour plot is generally used for functions of two variable, like <m>f(x,y)</m> and the plot is curves of constant function value or <m>f(x,y)=C</m> for various values of <m>C</m>.
+      Using the function in <xref ref="eq-surf-contour"/>, the following code will produce a contour plot of the function:
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        x = y = LinRange(0,pi,101)
+        fig = contour(x, y, f)
+      </code>
+    </program>
+
+    <p>
+      which results in the plot:
+    </p>
+
+    <figure xml:id="fig-contour-1">
+      <caption></caption>
+      <image source="plots/makie/contour1.png" width="75%">
+        <shortdescription>
+          (for accessibility)
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      And recall that a contour plot is basically like a topographical map if you have ever used one of those.
+      The concentric circles are either a hill (maximum) or a depression (minimum) and unless we know what function values, we're not sure which is why.
+      To help with this we will add labels to the contours and increase the number of contours used with the <c>levels</c> attribute.
+    </p>
+
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        x = y = LinRange(0,pi,101)
+        fig = contour(x, y, f, labels = true, levels = 11)
+      </code>
+    </program>
 
     <p>
       and this results in
@@ -741,7 +1068,7 @@ fig
 
     <figure xml:id="fig-contour-2">
       <caption></caption>
-      <image source="plots/makie/contour2.png" width="90%">
+      <image source="plots/makie/contour2.png" width="75%">
         <shortdescription>
           (for accessibility)
         </shortdescription>
@@ -753,15 +1080,18 @@ fig
     </p>
 
     <p>
-      Another related plot is that of a filled contour plot in which the regions between contours are filled with colors.  This is more of a visually nice feature rather than an important distinction over the previous contour plot.  A filled contour plot can be created with the <c>contourf</c> plotting command as in this example:
+      Another related plot is that of a filled contour plot in which the regions between contours are filled with colors.
+      This is more of a visually nice feature rather than an important distinction over the previous contour plot.
+      A filled contour plot can be created with the <c>contourf</c> plotting command as in this example:
     </p>
 
-    <p>
-      <cd>
-      <cline>x = y = LinRange(0,pi,101)</cline>
-      <cline>contourf( x, y, (x, y) -&gt; sin(0.5x^2-0.25y^2+2)*cos(x+y), labels = true, levels = 11)</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        x = y = LinRange(0,pi,101)
+        fig = contourf( x, y, f, levels = 11)
+      </code>
+    </program>
 
     <p>
       resulting in
@@ -769,7 +1099,7 @@ fig
 
     <figure xml:id="fig-contourf-1">
       <caption></caption>
-      <image source="plots/makie/contourf.png" width="90%">
+      <image source="plots/makie/contourf.png" width="75%">
         <shortdescription>
           (for accessibility)
         </shortdescription>
@@ -777,61 +1107,75 @@ fig
     </figure>
 
     <p>
-      And since the colors play an important role in a filled contour plot, it is helpful to know the function values for a give color and using a colorbar is a way to do this.  We can add a colorbar with the following code:
+      And since the colors play an important role in a filled contour plot, it is helpful to know the function values for a give color and using a colorbar is a way to do this.
+      We can add a colorbar with the following code:
     </p>
 
-    <p>
-      <cd>
-      <cline>x = y = LinRange(0,pi,101)</cline>
-      <cline>fig = Figure()</cline>
-      <cline>ax = Axis(fig[1,1])</cline>
-      <cline>contourf!(ax, x, y, (x, y) -&gt; sin(0.5x^2-0.25y^2+2)*cos(x+y), levels = 11)</cline>
-      <cline>Colorbar(fig[1,2])</cline>
-      <cline>fig</cline>
-      </cd>
-    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        x = y = LinRange(0,pi,101)
+        fig = Figure()
+        ax = Axis(fig[1,1])
+        contourf!(ax, x, y, f, levels = 11)
+        Colorbar(fig[1,2])
+        fig
+      </code>
+    </program>
 
     <p>
-      where we have used the layout methods described in <xref ref="sect-layout-makie"/> because we need to specify where the colorbar goes. The result of this is
+      where we have used the layout methods described in <xref ref="sect-layout-makie"/> because we need to specify where the colorbar goes.
+      The result of this is
     </p>
 
     <figure xml:id="fig-contourf-2">
       <caption></caption>
-      <image source="plots/makie/contourf1.png" width="90%">
+      <image source="plots/makie/contourf1.png" width="75%">
         <shortdescription>
           (for accessibility)
         </shortdescription>
       </image>
     </figure>
+
+    <exercise>
+      <statement>
+        <p>
+          Note that the plotting range is <m>[0,\pi]</m> in both <m>x</m> and <m>y</m> for all of these plots.  Use the methods from above to 1) make the aspect ratio 1 and 2) change the tick marks to multiples of <m>\pi</m>.
+        </p>
+      </statement>
+    </exercise>
   </section>
 
   <section>
     <title>Vector Field and Stream plots</title>
 
     <p>
-      There are a number of types of plots that display the direction of flow of a function.  This section goes over a few of these.
+      There are a number of types of plots that display the direction of flow of a function.
+      This section goes over a few of these.
     </p>
 
     <p>
-      First, consider a vector field which is is a pair of functions of <m>x</m> and <m>y</m> often written as <m>\vec{v} = \langle F(x,y), G(x,y) \rangle</m>.  For any point in the plane <m>(x,y)</m>, the vector <m>\vec{v}</m>  is a vector. For example, consider <m>v=\langle y, -x \rangle</m>. We first start with the <c>arrows</c> method:
+      First, consider a vector field which is is a pair of functions of <m>x</m> and <m>y</m> often written as <m>\vec{v} = \langle F(x,y), G(x,y) \rangle</m>.
+      For any point in the plane <m>(x,y)</m>, the vector <m>\vec{v}</m>  is a vector.
+      For example, consider <m>v=\langle y, -x \rangle</m>.
+      We first start with the <c>arrows2d</c> method:
     </p>
 
-    <p>
-      <cd>
-      <cline>xpts = ypts = LinRange(-3,3,11)</cline>
-      <cline>u = [y for x in xpts, y in ypts]</cline>
-      <cline>v = [-x for x in xpts, y in ypts]</cline>
-      <cline>arrows(xpts,ypts,u,v)</cline>
-      </cd>
-    </p>
-
+    <program language="julia" line-numbers="yes">
+      <code>
+        xs = ys = LinRange(-3, 3, 11)
+        u = [y for x in xs, y in ys]
+        v = [-x for x in xs, y in ys]
+        arrows2d(xs, ys, u, v)
+      </code>
+    </program>
     <p>
       results in the following plot:
     </p>
 
     <figure xml:id="fig-arrows01">
       <caption></caption>
-      <image source="plots/makie/arrows01.png" width="90%">
+      <image source="plots/makie/arrows01.png" width="75%">
         <shortdescription>
           (for accessibility)
         </shortdescription>
@@ -839,14 +1183,17 @@ fig
     </figure>
 
     <p>
-      This is a bit hard to read because the arrows overlap.  This is mainly because the arrow length are exactly the size of the vector field at the point.  For example at <m>(1,2)</m>, the vector is <m>\vec{v} = \langle 2, -1 \rangle</m> and the length of this is <m>\sqrt{5}\approx 2.23.</m>, which overlaps nearby arrows.  One inital way to address this is to set the <c>lengthscale</c> attribute.  Consider the following:
+      This is a bit hard to read because the arrows overlap.
+      This is mainly because the arrow length are exactly the size of the vector field at the point.
+      For example at <m>(1,2)</m>, the vector is <m>\vec{v} = \langle 2, -1 \rangle</m> and the length of this is <m>\sqrt{5}\approx 2.23.</m>, which overlaps nearby arrows.
+      One inital way to address this is to set the <c>lengthscale</c> attribute. Also, in my opinion the arrows seem a bit heavy and we can change this with the <c>shaftwidth</c> and <c>tipwidth</c> options as follows: 
     </p>
 
-    <p>
-      <cd>
-      <cline>fig = arrows(xpts,ypts,u,v, lengthscale = 0.25)</cline>
-      </cd>
-    </p>
+    <program language="julia" line-numbers="yes">
+      <code>
+        arrows2d(xs, ys, u, v, lengthscale = 0.25, shaftwidth = 2, tipwidth = 8)
+      </code>
+    </program>
 
     <p>
       which creates the following plot:
@@ -854,7 +1201,7 @@ fig
 
     <figure xml:id="fig-arrows02">
       <caption></caption>
-      <image source="plots/makie/arrows02.png" width="90%">
+      <image source="plots/makie/arrows02.png" width="75%">
         <shortdescription>
           (for accessibility)
         </shortdescription>
@@ -862,14 +1209,14 @@ fig
     </figure>
 
     <p>
-      Another way to handle this is to produce a <em>direction field</em> which normalizes all of the arrows to make them the same length to do this, we add the <c>str = sqrt.(u .^ 2 .+ v .^ 2)</c> and then divide both <c>u</c> and <c>v</c> by this variable as in
+      Another way to handle this is to produce a <em>direction field</em> which normalizes all of the arrows to make them the same length to do this.  There is a option called <c>normalize</c> that does this as in the following: 
     </p>
 
-    <p>
-      <cd>
-      <cline>arrows(xpts,ypts,u./str,v./str, lengthscale = 0.4)</cline>
-      </cd>
-    </p>
+<program language="julia" line-numbers="yes">
+      <code>
+        arrows2d(xs, ys, u, v, normalize = true, lengthscale = 0.5, shaftwidth = 2, tipwidth = 8)
+      </code>
+    </program>
 
     <p>
       which produces the plot:
@@ -877,7 +1224,7 @@ fig
 
     <figure xml:id="fig-poly-arrow03">
       <caption></caption>
-      <image source="plots/makie/arrow03.png" width="90%">
+      <image source="plots/makie/arrow03.png" width="75%">
         <shortdescription>
           (for accessibility)
         </shortdescription>
@@ -885,14 +1232,17 @@ fig
     </figure>
 
     <p>
-      Since Makie is very good with color, there are some options to make this a bit more colorful.  The <c>arrowcolor</c> and <c>linecolor</c> can be used with the <c>str</c> variable to give each arrow a color.  The following:
+      Since Makie is very good with color, there are some options to make this a bit more colorful.
+      The <c>arrowcolor</c> and <c>linecolor</c> can be used with the <c>str</c> variable to give each arrow a color.
+      The following:
     </p>
 
-    <p>
-      <cd>
-      <cline>arrows(xpts,ypts,u./str,v./str, lengthscale = 0.4, arrowcolor = vec(str), linecolor = vec(str))</cline>
-      </cd>
-    </p>
+    <program language="julia" line-numbers="yes">
+      <code>
+        strength = vec(sqrt.(u .^ 2 .+ v .^ 2))
+        arrows2d(xs, ys, u, v, normalize = true, lengthscale = 0.4, shaftwidth = 2, tipwidth = 8, color = strength)
+      </code>
+    </program>
 
     <p>
       will produce the following plot:
@@ -900,7 +1250,7 @@ fig
 
     <figure xml:id="fig-arrow04">
       <caption></caption>
-      <image source="plots/makie/arrow04.png" width="90%">
+      <image source="plots/makie/arrow04.png" width="75%">
         <shortdescription>
           (for accessibility)
         </shortdescription>
@@ -908,11 +1258,14 @@ fig
     </figure>
 
     <p>
-      Note that the <c>str</c> variable is a Matrix and both <c>arrowcolor</c> and <c>linecolor</c> can take a color, but also a vector of values.  This is why the <c>str</c> variable is wrapped in the <c>vec</c> method.
+      Note that the <c>strength</c> variable is a Matrix and both <c>arrowcolor</c> and <c>linecolor</c> can take a color, but also a vector of values.
+      This is why the <c>str</c> variable is wrapped in the <c>vec</c> method.
     </p>
 
     <p>
-      A <term>streamplot</term> is related to a vector field plot (arrow plot) in that the arrows follow along continuous curves that are also plotted.  A difference for plotting these in Makie is that instead of building the vector field, that the function is given and then plotted on the given plotting domain.  We will plot the same field above with:
+      A <term>streamplot</term> is related to a vector field plot (arrow plot) in that the arrows follow along continuous curves that are also plotted.
+      A difference for plotting these in Makie is that instead of building the vector field, that the function is given and then plotted on the given plotting domain.
+      We will plot the same field above with:
     </p>
 
     <p>
@@ -927,7 +1280,7 @@ fig
 
     <figure xml:id="fig-stream01">
       <caption></caption>
-      <image source="plots/makie/stream01.png" width="90%">
+      <image source="plots/makie/stream01.png" width="75%">
         <shortdescription>
           (for accessibility)
         </shortdescription>
@@ -935,7 +1288,7 @@ fig
     </figure>
 
     <p>
-      Note that the first argument of the <c>streamplot</c> is a function of <c>x</c> a vector to a <c>Point2f</c> object.
+      Note that the first argument of the <c>streamplot</c> is a function of <c>x</c> a vector to a <c>Point2f</c> object.  For the vector field plots above using the <c>arrows2d</c> function, we created a grid of points and notice that <c>streamplot</c> does not.  This looks more like a function plot with the <c>a..b</c> notation.  This is due to the fact that the streams are continuous functions<mdash/>the plot above are circles.  
     </p>
   </section>
 
@@ -943,11 +1296,15 @@ fig
     <title>Updating axis elements in a shorthand manner</title>
 
     <p>
-      As we have seen above, updating information from an axis requires setting options on the axis object.  We have accomplished this by first making a Figure and then an Axis object and finally adding plots to the axis.  This is sometimes overkill.  In this section, we will see an alternative if the options are short.
+      As we have seen above, updating information from an axis requires setting options on the axis object.
+      We have accomplished this by first making a Figure and then an Axis object and finally adding plots to the axis.
+      This is sometimes overkill.
+      In this section, we will see an alternative if the options are short.
     </p>
 
     <p>
-      For example, let's produce a function plot and put a title on it. For example,
+      For example, let's produce a function plot and put a title on it.
+      For example,
     </p>
 
 
@@ -966,7 +1323,7 @@ fig
 
     <figure xml:id="fig-makie-xsq01">
       <caption></caption>
-      <image source="plots/makie/xsq01.png" width="90%">
+      <image source="plots/makie/xsq01.png" width="75%">
         <shortdescription>
           (for accessibility)
         </shortdescription>
@@ -989,11 +1346,15 @@ fig
 
     <note>
       <p>
-        An astute eye notices the comma after the string that is the <c>title</c> option.  This is not a typo.  Try removing it and you'll see an error.  Why is that needed then?
+        An astute eye notices the comma after the string that is the <c>title</c> option.
+        This is not a typo.
+        Try removing it and you'll see an error.
+        Why is that needed then?
       </p>
 
       <p>
-        The <c>axis</c> keyword option to the <c>lines</c> function needs to be a named tuple.  Without the comma, try to create a named tuple with one element with
+        The <c>axis</c> keyword option to the <c>lines</c> function needs to be a named tuple.
+        Without the comma, try to create a named tuple with one element with
       </p>
 
       <p>
@@ -1003,7 +1364,9 @@ fig
       </p>
 
       <p>
-        the output is <c>"string"</c>, it doesn't appear to be a tuple.  What the above has done is just assign the string "string" to the variable <c>a</c>.  To create this as a tuple a comma is needed as in <c>(a = "string",)</c> and the result is the desired output.
+        the output is <c>"string"</c>, it doesn't appear to be a tuple.
+        What the above has done is just assign the string "string" to the variable <c>a</c>.
+        To create this as a tuple a comma is needed as in <c>(a = "string",)</c> and the result is the desired output.
       </p>
     </note>
   </section>
@@ -1012,7 +1375,9 @@ fig
     <title>Backends for Makie</title>
 
     <p>
-      As described in <xref ref="sect-plotting-backends"/>, Makie is a set of high level plotting commands.  The hard work of drawing lines, circles and regions on the screen is done with a backend and the idea is to be able to switch backends easily without changing the high-level code to produce a plot.  Makie has four such options currently: <c>CairoMakie</c>, <c>GLMakie</c>, <c>WGLMakie</c> and <c>RPRMakie</c> and you should have seen the first two appear above in the plotting code.
+      As described in <xref ref="sect-plotting-backends"/>, Makie is a set of high level plotting commands.
+      The hard work of drawing lines, circles and regions on the screen is done with a backend and the idea is to be able to switch backends easily without changing the high-level code to produce a plot.
+      Makie has four such options currently: <c>CairoMakie</c>, <c>GLMakie</c>, <c>WGLMakie</c> and <c>RPRMakie</c> and you should have seen the first two appear above in the plotting code.
     </p>
 
     <p>
@@ -1034,7 +1399,8 @@ fig
 
         <blockquote>
           <p>
-            GLMakie is the native, desktop-based backend, and is the most feature-complete. It requires an OpenGL enabled graphics card with OpenGL version 3.3 or higher.
+            GLMakie is the native, desktop-based backend, and is the most feature-complete.
+            It requires an OpenGL enabled graphics card with OpenGL version 3.3 or higher.
           </p>
         </blockquote>
 
@@ -1052,7 +1418,9 @@ fig
 
         <blockquote>
           <p>
-            Experimental ray tracing backend using AMDs RadeonProRender. While it's created by AMD and tailored to Radeon GPUs, it still works just as well for NVidia and Intel GPUs using OpenCL. It also works on the CPU and even has a hybrid modus to use GPUs and CPUs in tandem to render images.
+            Experimental ray tracing backend using AMDs RadeonProRender.
+            While it's created by AMD and tailored to Radeon GPUs, it still works just as well for NVidia and Intel GPUs using OpenCL.
+            It also works on the CPU and even has a hybrid modus to use GPUs and CPUs in tandem to render images.
           </p>
         </blockquote>
       </li>
@@ -1066,7 +1434,10 @@ fig
 
         <blockquote>
           <p>
-            WGLMakie is the web-based backend, which is mostly implemented in Julia right now. WGLMakie uses Bonito to generate the HTML and JavaScript for displaying the plots. On the JavaScript side, we use ThreeJS and WebGL to render the plots. Moving more of the implementation to JavaScript is currently the goal and will give us a better JavaScript API, and more interaction without a running Julia server.
+            WGLMakie is the web-based backend, which is mostly implemented in Julia right now.
+            WGLMakie uses Bonito to generate the HTML and JavaScript for displaying the plots.
+            On the JavaScript side, we use ThreeJS and WebGL to render the plots.
+            Moving more of the implementation to JavaScript is currently the goal and will give us a better JavaScript API, and more interaction without a running Julia server.
           </p>
         </blockquote>
       </li>

@@ -102,7 +102,7 @@
       <title>Accessor and Query Functions</title>
 
       <p>
-        Once we have a date, like from <c>d = Date("2010-02-12")</c>, then we can access the individual compoents using the <c>year</c>, <c>month</c> and <c>day</c>.   The output <c>year(d)</c>, <c>month(d)</c> and <c>day(d)</c> returns <c>2010</c>, <c>2</c> and <c>10</c>.
+        Once we have a date, like from <c>d = Date("2010-02-12")</c>, then we can access the individual components using the <c>year</c>, <c>month</c> and <c>day</c>.   The output <c>year(d)</c>, <c>month(d)</c> and <c>day(d)</c> returns <c>2010</c>, <c>2</c> and <c>10</c>.
       </p>
 
       <p>
@@ -110,7 +110,7 @@
       </p>
 
       <p>
-        The other important things we'd like to know about dates falls into what may be called calendar functions.  What day of the week is a day, how many daysare in a given month. Is it a leap year? These are collectively query functions of dates and here are some examples:
+        The other important things we'd like to know about dates falls into what may be called calendar functions.  What day of the week is a day, how many days are in a given month. Is it a leap year? These are collectively query functions of dates and here are some examples:
       </p>
 
       <p>
@@ -303,7 +303,7 @@
       </p>
 
       <p>
-        If you don't have seconds or minutes you can still make a DateTime, such as <c>DateTime(2024,11,20,8,25)</c> or <c>DateTime(2024,11,20,8)</c>. In fact, if you need more precise time, then a 7th argument is the number of miliseconds such as <c>d2 = DateTime(2024,11,20,8,25,37,150)</c> which returns <c>2024-11-20T08:25:37.150</c>
+        If you don't have seconds or minutes you can still make a DateTime, such as <c>DateTime(2024,11,20,8,25)</c> or <c>DateTime(2024,11,20,8)</c>. In fact, if you need more precise time, then a 7th argument is the number of milliseconds such as <c>d2 = DateTime(2024,11,20,8,25,37,150)</c> which returns <c>2024-11-20T08:25:37.150</c>
       </p>
 
       <p>
@@ -321,7 +321,7 @@
       </p>
 
       <p>
-        There are many features for parsing formats.  See <url href="https://docs.julialang.org/en/v1/stdlib/Dates/#Dates.DateFormat">the Julia documentaion on DateTime formatting</url> for more information.
+        There are many features for parsing formats.  See <url href="https://docs.julialang.org/en/v1/stdlib/Dates/#Dates.DateFormat">the Julia documentation on DateTime formatting</url> for more information.
       </p>
     </introduction>
 
@@ -339,7 +339,7 @@
       <title>Details of a DateTime</title>
 
       <p>
-        Similar to that of a Date, a DateTime object is a wrapper (struct) on an integer that represents the number of milliseconds since midnight on the first day of the common era in UTC (Universal Time Coordinates). See <xref ref="sect-time-zone"/> for more information.   To see details about the internals of a DateTime object, use <c>dump</c>.  The epxression <c>dump(d2)</c> returns
+        Similar to that of a Date, a DateTime object is a wrapper (struct) on an integer that represents the number of milliseconds since midnight on the first day of the common era in UTC (Universal Time Coordinates). See <xref ref="sect-time-zone"/> for more information.   To see details about the internals of a DateTime object, use <c>dump</c>.  The expression <c>dump(d2)</c> returns
       </p>
 
       <p>
@@ -406,7 +406,7 @@
       </p>
 
       <p>
-        And we can use this method to convert the time difference in the previous section by entering <c>canonicalize(time_diff)</c> and resulting in <c>4 weeks, 4 days, 3 hours</c>.  Note that since months are not a fixed length of time, weeks are not converted to months, however if more than 11 months are in a compound period, then they can be converted to years.  As mentioned above, Dates are difficult and we will see even moreso they get more complicated with time zones.
+        And we can use this method to convert the time difference in the previous section by entering <c>canonicalize(time_diff)</c> and resulting in <c>4 weeks, 4 days, 3 hours</c>.  Note that since months are not a fixed length of time, weeks are not converted to months, however if more than 11 months are in a compound period, then they can be converted to years.  As mentioned above, Dates are difficult and we will see even more so they get more complicated with time zones.
       </p>
     </subsection>
   </section>

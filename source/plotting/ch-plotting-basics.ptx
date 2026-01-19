@@ -26,7 +26,7 @@
 
 		<figure xml:id="fig-makie-example">
 			<caption>Example of a Makie Plot </caption>
-			<image source="plots/plots/makie-example.png">
+			<image source="plots/plotting-basics/makie-example.png">
 				<shortdescription>
 					(for accessibility)
 				</shortdescription>
@@ -97,7 +97,7 @@
 
 		<figure xml:id="fig-plots-example">
 			<caption>Example Animated plot using the Plots package</caption>
-			<image source="plots/plots/plots-example.gif">
+			<image source="plots/plotting-basics/plots-example.gif">
 				<shortdescription>
 					An animated plot of the Lorenz attractor, which shows points being added in time.
 				</shortdescription>
@@ -136,7 +136,7 @@
 
 			<figure xml:id="fig-co2-scatter">
 				<caption>A scatter plot of <m>CO_2</m> concentration in Hawaii between 1959 and 2023.</caption>
-				<image source="plots/intro-plots/co2-scatter.png" width="90%">
+				<image source="plots/plotting-basics/co2-scatter.png" width="75%">
 					<shortdescription>
 						A scatter plot with an exponential increase from 320 ppm in 1960 to 420 in 2023.
 					</shortdescription>
@@ -153,10 +153,10 @@
 			</p>
 
 			<figure xml:id="fig-sine-curve">
-				<caption>An example of a function plot: sine curve on <m>[-2\pi,2\pi]</m></caption>
-				<image source="plots/plots/sine-curve.png" width="90%">
+				<caption>An example of a function plot: sine curve on <m>[0,2\pi]</m></caption>
+				<image source="plots/plotting-basics/sine-with-xticks.png" width="75%">
 					<shortdescription>
-						A sine curve depicting two full cycles.
+						A sine curve depicting one full cycle.
 					</shortdescription>
 				</image>
 			</figure>
@@ -167,14 +167,14 @@
 			<title>Parametric Plots</title>
 
 			<p>
-				Additionally, a function plot can be created for a parametric curve defined as <m>\langle x(t), y(t) \rangle </m> for functions <m>x</m> and <m>y</m>. For example the spiral:
+				Additionally, a function plot can be created for a parametric curve defined as <m>\langle x(t), y(t) \rangle </m> for functions <m>x</m> and <m>y</m>. A very nice example is that of the butterfly curve: 
 			</p>
 
 			<figure xml:id="fig-spiral-curve">
 				<caption>A plot of a spiral, an example of a parametric curve.</caption>
-				<image source="plots/plots/makie-spiral.png" width="90%">
+				<image source="plots/plotting-basics/butterfly.png" width="75%">
 					<shortdescription>
-						A plot of a spiral, an example of a parametric curve.
+						The butterfly curve, an example of a parametric curve.
 					</shortdescription>
 				</image>
 			</figure>
@@ -194,7 +194,7 @@
 
 			<figure xml:id="fig-parametric-3d">
 				<caption>An example of a 3D parametric plot that is a curve that is connected. </caption>
-				<image source="plots/plots/parametric3d.png" width="90%">
+				<image source="plots/plotting-basics/parametric3d.png" width="75%">
 					<shortdescription>
 						A 3D parametric curve that looks like a stranded of connected spaghetti.
 					</shortdescription>
@@ -212,14 +212,14 @@
 
 			<figure xml:id="fig-surface">
 				<caption>An example surface plot.</caption>
-				<image source="plots/plots/surface.png" width="90%">
+				<image source="plots/plotting-basics/surface.png" width="75%">
 					<shortdescription>A surface plot that looks like an egg carton with many max and mins.</shortdescription>
 				</image>
 			</figure>
 		</subsection>
 
 
-		<subsection>
+		<subsection xml:id="sec-implicit-plots">
 			<title>Implicit Curves</title>
 
 			<p>
@@ -232,7 +232,7 @@
 
 			<figure xml:id="fig-implicit-circle">
 				<caption>A plot of the circle, an implicit curve. </caption>
-				<image source="plots/plots/implicit-circle.png" width="90%">
+				<image source="plots/plotting-basics/implicit-circle.png" width="75%">
 					<shortdescription>
 						A plot of a circle of radius 1.
 					</shortdescription>
@@ -260,7 +260,7 @@
 
 			<figure xml:id="fig-contour-ex">
 				<caption>An example of a contour plot of the function <m>f(x,y)</m>.</caption>
-				<image source="plots/plots/contour.png" width="90%">
+				<image source="plots/plotting-basics/contour.png" width="75%">
 					<shortdescription>
 						A contour plot that looks like concentric curves (warped circles) centered about (1.1, 2) and (2.3,0.4)
 					</shortdescription>

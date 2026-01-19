@@ -549,7 +549,7 @@ end
 			</p>
 
 			<p>
-				And note that we have used <c>x0 -= dx</c> which is a shortcut for <c>x0 = x0 - dx</c>. One note from a programming point of view is that we have repeated code (lines 2 and 3 are the same as lines 5 and 6). Unfortunately this is needed becuase we need to know <c>dx</c> before entering the loop and then also need to update it within the loop.  We will shorten this a bit later.
+				And note that we have used <c>x0 -= dx</c> which is a shortcut for <c>x0 = x0 - dx</c>. One note from a programming point of view is that we have repeated code (lines 2 and 3 are the same as lines 5 and 6). Unfortunately this is needed because we need to know <c>dx</c> before entering the loop and then also need to update it within the loop.  We will shorten this a bit later.
 			</p>
 		</subsection>
 
@@ -678,7 +678,7 @@ end
 
 
 			<listing xml:id="list-newton">
-				<caption>Newton's method with a stopping condition if it doesn't converge</caption>
+				<title>Newton's method with a stopping condition if it doesn't converge</title>
 				<program language="Julia" line-numbers="yes">
 					<code>
 function newton(f::Function, x0::Number)
@@ -730,7 +730,7 @@ end
 
 
 			<listing xml:id="list-newton-alt">
-				<caption>Alternative formulation of Newton's method using a for loop. </caption>
+				<title>Alternative formulation of Newton's method using a for loop. </title>
 				<program language="julia" line-numbers="yes">
 					<code>
 function newton(f::Function, x0::Number)
