@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<part xml:id="part-symbolic" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <title>Symbolic Calculations</title>
+
+  <xi:include href="symbolic/ch-intro-symbolic.ptx" />
+
+</part>

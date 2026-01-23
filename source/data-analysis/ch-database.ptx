@@ -14,7 +14,7 @@
 
     <p>
       This section goes over how to create a SQLite database and let's go ahead and do it with an example.
-      If we have the forecast for some location over the next week with the table: data:
+      If we have the forecast for some location over the next week with the following table:
     </p>
 
     <table xml:id="table-weather-forecast">
@@ -104,7 +104,7 @@
     </table>
 
     <p>
-      For convenience, we can represent this data in Julia as:
+      For convenience, we can represent this data in Julia as a vector of named tuples. 
     </p>
 
 
@@ -172,12 +172,12 @@ forecast = [
       <code>
       DBInterface.execute(db, 
         """CREATE TABLE IF NOT EXISTS FORECAST
-        (DATE_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-        DATE TEXT NOT NULL,
-        HI_TEMP INTEGER NOT NULL,
-        LO_TEMP INTEGER NOT NULL,
-        PRECIP INTEGER NOT NULL,
-        COND TEXT NOT NULL
+        (DATE_ID  INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+         DATE     TEXT      NOT NULL,
+         HI_TEMP  INTEGER   NOT NULL,
+         LO_TEMP  INTEGER   NOT NULL,
+         PRECIP   INTEGER   NOT NULL,
+         COND     TEXT      NOT NULL
         );""")
       </code>
     </program>
@@ -204,7 +204,7 @@ forecast = [
 
         <p>
           The date will be stored as a string (TEXT).
-          Although other databases have a native Date type, SQLite does not and strings are generally sufficient.
+          Although other databases have a native Date type, SQLite does not and type TEXT is the best.
         </p>
       </li>
 
@@ -292,10 +292,11 @@ forecast = [
 
     <program language="julia" line-numbers="yes">
       <code>
-      for fc in forecast 
-        DBInterface.execute(db, """INSERT INTO FORECAST 
-          (DATE, HI_TEMP, LO_TEMP, PRECIP, COND) VALUES
-          ('$(fc.date)', $(fc.high), $(fc.low), $(fc.precip), '$(fc.cond)');""" )
+      for fc in forecast
+        DBInterface.execute(
+          db,
+          """INSERT INTO FORECAST 
+            (DATE, HI_TEMP, LO_TEMP, PRECIP, COND) VALUES (?, ?, ?, ?, ?)""", values(fc))
       end
       </code>
     </program>

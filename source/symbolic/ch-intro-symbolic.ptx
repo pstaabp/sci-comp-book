@@ -1,0 +1,7 @@
+<chapter xml:id="ch-intro-symbolic">
+  <title>Introduction to Symbolic Calculations</title>
+  
+  <p>
+    Symbolic computation is a branch of computer science and mathematics that focuses on manipulating mathematical expressions in a symbolic form, rather than performing numerical calculations. This allows for exact solutions to problems, as well as the ability to manipulate and simplify expressions algebraically.
+  </p>
+</chapter>
