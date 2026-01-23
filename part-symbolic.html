@@ -14,7 +14,7 @@
 <!--******************************************-->
 <head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Using Random Numbers and Probability Models</title>
+<title>Symbolic Calculations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
@@ -130,7 +130,7 @@ eBookConfig.enable_chatcodes =  false;
 <ol id="searchresults" class="searchresults"></ol>
 </div>
 </div>
-<span class="nav-other-controls"><button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe51c;</span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="ch-probability-random.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="part-simulation.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="ch-poker.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span>
+<span class="nav-other-controls"><button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe51c;</span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="ch-parallel.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="my-great-book.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="ch-intro-symbolic.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span>
 </div></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\newcommand{\N}{\mathbb N} \newcommand{\Z}{\mathbb Z} \newcommand{\Q}{\mathbb Q} \newcommand{\R}{\mathbb R}
 \newcommand{\lt}{&lt;}
 \newcommand{\gt}{&gt;}
@@ -542,9 +542,9 @@ eBookConfig.enable_chatcodes =  false;
 </li>
 </ul>
 </li>
-<li class="toc-item toc-part contains-active">
+<li class="toc-item toc-part">
 <div class="toc-title-box"><a href="part-simulation.html" class="internal"><span class="codenumber">IV</span> <span class="title">Simulation</span></a></div>
-<ul class="structural toc-item-list contains-active">
+<ul class="structural toc-item-list">
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-probability-random.html" class="internal"><span class="codenumber">18</span> <span class="title">Probability Distributions and Pseudorandom Numbers</span></a></div>
 <ul class="structural toc-item-list">
@@ -582,9 +582,9 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-probability-random.html#ch-probability-random-10" class="internal"><span class="codenumber">18.8</span> <span class="title">Other Distributions</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-chapter contains-active">
+<li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-prob-models.html" class="internal"><span class="codenumber">19</span> <span class="title">Using Random Numbers and Probability Models</span></a></div>
-<ul class="structural toc-item-list active">
+<ul class="structural toc-item-list">
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-3" class="internal"><span class="codenumber">19.1</span> <span class="title">Flipping Coins</span></a></div>
 <ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-prob-models.html#ch-prob-models-3-3" class="internal"><span class="codenumber">19.1.1</span> <span class="title">Flipping multiple coins</span></a></div></li></ul>
@@ -824,9 +824,9 @@ eBookConfig.enable_chatcodes =  false;
 </li>
 </ul>
 </li>
-<li class="toc-item toc-part">
+<li class="toc-item toc-part contains-active">
 <div class="toc-title-box"><a href="part-symbolic.html" class="internal"><span class="codenumber">VI</span> <span class="title">Symbolic Calculations</span></a></div>
-<ul class="structural toc-item-list"><li class="toc-item toc-chapter"><div class="toc-title-box"><a href="ch-intro-symbolic.html" class="internal"><span class="codenumber">30</span> <span class="title">Introduction to Symbolic Calculations</span></a></div></li></ul>
+<ul class="structural toc-item-list active"><li class="toc-item toc-chapter"><div class="toc-title-box"><a href="ch-intro-symbolic.html" class="internal"><span class="codenumber">30</span> <span class="title">Introduction to Symbolic Calculations</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-part">
 <div class="toc-title-box"><a href="part-data-analysis.html" class="internal"><span class="codenumber">VII</span> <span class="title">Data Analysis</span></a></div>
@@ -1238,438 +1238,12 @@ eBookConfig.enable_chatcodes =  false;
 </ul>
 </li>
 </ul></nav></div>
-<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="chapter" id="ch-prob-models"><h2 class="heading">
-<span class="type">Chapter</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Using Random Numbers and Probability Models</span>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="part" id="part-symbolic"><h2 class="heading hide-type">
+<span class="type">Part</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">VI</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Symbolic Calculations</span>
 </h2>
-<section class="introduction" id="ch-prob-models-2"><div class="para" id="ch-prob-models-2-1">To understand basic probability, often problems are examined that use combinatorics or counting techniques to solve them.  Consider<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<blockquote class="blockquote" id="ch-prob-models-2-2">
-<div class="para" id="ch-prob-models-2-2-1">“A round table has 7 chairs around it.  Mary and her friend Alisha and 5 other people are given seats at the table in a random manner.  What is the probability that Mary and Alisha sit next to each other?”<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Quotation"><a href="#ch-prob-models-2-2" title="Copy heading and permalink for Quotation" aria-label="Copy heading and permalink for Quotation">🔗</a></div>
-</blockquote>
-<div class="para" id="ch-prob-models-2-3">Although it is an good skill to solve problems like these using counting techniques, we examine some ways to use simulation to find the solution in this chapter.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-2-4">
-<div class="para">Before getting started, we will set the seed so the random numbers that appear here will match those if you, the reader, run these same commands</div>
-<pre class="code-display tex2jax_ignore clipboardable">using Random
-Random.seed!(1234)
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div></section><section class="section" id="ch-prob-models-3"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Flipping Coins</span>
-</h3>
-<section class="introduction" id="ch-prob-models-3-2"><div class="para" id="ch-prob-models-3-2-1">Recall as we showed in <a href="ch-probability-random.html" class="internal" title="Chapter 18: Probability Distributions and Pseudorandom Numbers">Chapter 18</a>, we can generate 100 coin flips by<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-3-2-2">
-<pre class="code-display tex2jax_ignore clipboardable">coins = rand(Bool,100)
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-3-2-3">(Note: the result looks like an array of 0s and 1s, but look at the type, <code class="code-inline tex2jax_ignore">Vector{Bool}</code>, which says it is a vector or 1-dimensional boolean array.)<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-3-2-4">We can determine the number of heads (when the result is 1), by <code class="code-inline tex2jax_ignore">sum(coins)</code> which is <code class="code-inline tex2jax_ignore">58</code>.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div></section><section class="subsection" id="ch-prob-models-3-3"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.1.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Flipping multiple coins</span>
-</h4>
-<div class="para" id="ch-prob-models-3-3-2">Another simple example is to flip multiple coins and generally count the number of heads or tails seen.  Consider flipping 3-coins--perhaps a penny, nickel and dime--and counting the number of heads.  We then do that 3-coin flip a larger number of times.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-3-3-3">
-<div class="para">We can do this with</div>
-<pre class="code-display tex2jax_ignore clipboardable">coins3 = rand(Bool,100,3)
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-3-3-4">and the top  10 lines of this is:<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-3-3-5">
-<pre class="code-display tex2jax_ignore clipboardable">100×3 Matrix{Bool}:
-  1  1  0
-  0  0  1
-  1  0  0
-  0  1  1
-  0  1  1
-  0  1  0
-  1  0  1
-  0  0  1
-  1  0  0
-  0  0  0
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-3-3-6">Each row contains the coin flips.  Each 1 represents a head and 0 is a tail. If we are interested in the sum of the number of heads, we can do this with the <code class="code-inline tex2jax_ignore">mapslices</code> functions seen in <a href="ch-arrays.html" class="internal" title="Chapter 6: Vectors and other Collections">Chapter 6</a>.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-3-3-7">
-<pre class="code-display tex2jax_ignore clipboardable">num_heads = mapslices(sum,coins3;dims=[2])
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-3-3-8">The first few elements of the array is <code class="code-inline tex2jax_ignore">[2; 1; 1; 2; 2; 1; 1; 0 ...]</code>. We would like a plot of this, however need to do a bit of work first.  The hope is that for each number of heads 0, 1, 2 and 3, we create a bar plot with the number of heads for each or the fraction of heads.  Although we have the tools to do this, since this is a common thing to do in statistics, there is a function in the <code class="code-inline tex2jax_ignore">StatsBase</code> package.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-3-3-9">
-<pre class="code-display tex2jax_ignore clipboardable">using StatsBase
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-3-3-10">and then the <code class="code-inline tex2jax_ignore">counts</code> function ( <a class="external" href="https://juliastats.org/StatsBase.jl/latest/counts/#StatsBase.counts" target="_blank">Read the online documentation</a>) can be used:<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-3-3-11">
-<pre class="code-display tex2jax_ignore clipboardable">head_count = counts(num_heads,0:3)
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-3-3-12">returns a vector of how many of number of heads fall into each number. The result is the vector <code class="code-inline tex2jax_ignore">[8 39 43 10]</code>.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-3-3-13">
-<div class="para">and a nicer way to plot the histogram is</div>
-<pre class="code-display tex2jax_ignore clipboardable">barplot(0:3,head_count/sum(head_count), strokewidth = 1)
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-3-3-14">where the <code class="code-inline tex2jax_ignore">strokecolor</code> attribute puts a thin border around each bar. The result is<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<figure class="figure figure-like" id="fig-coins3-sim-improved"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/coins3-improved.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><div class="autopermalink" data-description="Figure 19.1"><a href="#fig-coins3-sim-improved" title="Copy heading and permalink for Figure 19.1" aria-label="Copy heading and permalink for Figure 19.1">🔗</a></div></figcaption></figure><div class="para" id="ch-prob-models-3-3-16">which generates an approximate probability distribution for flipping 3 coins and s umming the number of heads. And to compare the simulation with the probability density function that we found in <a href="ch-probability-random.html" class="internal" title="Chapter 18: Probability Distributions and Pseudorandom Numbers">Chapter 18</a>, we will plot a side-by-side comparison of the two with the following.  Note that the function <code class="code-inline tex2jax_ignore">groupedbar</code> is part of the <code class="code-inline tex2jax_ignore">StatsPlots</code> package:<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-16" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-3-3-17">
-<pre class="code-display tex2jax_ignore clipboardable">barplot(repeat(0:3,2),vcat(head_count/sum(head_count),[1/8, 3/8, 3/8, 1/8]),
-dodge = repeat(0:3,inner = 2), color=repeat(1:2, inner = 4))
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-17" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-3-3-18">resulting in<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-18" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<figure class="figure figure-like" id="fig-coins3-compare"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/coins3-compare.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><div class="autopermalink" data-description="Figure 19.2"><a href="#fig-coins3-compare" title="Copy heading and permalink for Figure 19.2" aria-label="Copy heading and permalink for Figure 19.2">🔗</a></div></figcaption></figure><div class="para" id="ch-prob-models-3-3-20">This is not the best looking plot and would like to include a legend.  Here’s a little cleaned up version of this and then will explain all of the arguements and attributes.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-20" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">values = 0:3
-heights1 = head_count/sum(head_count)
-heights2 = [1/8, 3/8, 3/8, 1/8]
-colors = Makie.wong_colors()  # use more attractive colors
-fig = Figure()
-ax = Axis(fig[1,1], title = "Comparison of simulation and known PDF of Flipping 3 coins")
-xvals = repeat(values,2)
-heights = vcat(heights1, heights2)
-barplot!(ax, xvals, heights, dodge = repeat(values,inner = 2),
-  color=colors[repeat(1:2, inner = length(values))], strokewidth = 1
-  )
-labels = ["simulation", "PDF"]
-elements = [PolyElement(polycolor = colors[i]) for i in 1:length(labels)]
-axislegend(ax, elements, labels)
-fig
-</code></pre></div>
-<div class="para" id="ch-prob-models-3-3-22">and the resulting plot is<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-22" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<figure class="figure figure-like" id="fig-coins3-compare02"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/coins3-compare02.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><div class="autopermalink" data-description="Figure 19.3"><a href="#fig-coins3-compare02" title="Copy heading and permalink for Figure 19.3" aria-label="Copy heading and permalink for Figure 19.3">🔗</a></div></figcaption></figure><div class="para" id="ch-prob-models-3-3-24">This is reasonably complicated and for a grouped bar plot and there are many ways to do this using the <code class="code-inline tex2jax_ignore">barplot</code> method and we go into a lot of details in <a href="ch-plotting-data.html" class="internal" title="Chapter 32: Plotting Data using Makie">Chapter 32</a>.  To use this with other data, you should be able to update the first 3 lines of this code.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-3-3-24" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Subsection 19.1.1: Flipping multiple coins"><a href="#ch-prob-models-3-3" title="Copy heading and permalink for Subsection 19.1.1: Flipping multiple coins" aria-label="Copy heading and permalink for Subsection 19.1.1: Flipping multiple coins">🔗</a></div></section><div class="autopermalink" data-description="Section 19.1: Flipping Coins"><a href="#ch-prob-models-3" title="Copy heading and permalink for Section 19.1: Flipping Coins" aria-label="Copy heading and permalink for Section 19.1: Flipping Coins">🔗</a></div></section><section class="section" id="ch-prob-models-4"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Rolling Dice</span>
-</h3>
-<div class="para" id="ch-prob-models-4-2">A relatively-simple example is that of rolling dice.  As we saw in <a href="ch-probability-random.html" class="internal" title="Chapter 18: Probability Distributions and Pseudorandom Numbers">Chapter 18</a>, if we have a fair, six-sided die, the the probability of any of the numbers coming up is 1/6. We can simulate that using random numbers in the following way:<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-4-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-4-3">
-<pre class="code-display tex2jax_ignore clipboardable">S100 = rand(1:6,100)
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-4-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-4-4">generated 100 numbers taken from the set <span class="process-math">\(\{1,2,3,4,5,6\}\text{.}\)</span>  Running this command<details class="ptx-footnote" aria-live="polite" id="ch-prob-models-4-4-2"><summary class="ptx-footnote__number" title="Footnote 19.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents" id="ch-prob-models-4-4-2">Don’t forget that when running code with random numbers, you won’t get the exact same results, but the spirit should be the same.</div></details> results in a vector of length 100 with random numbers between 1 and 6.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-4-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-4-5">
-<div class="para">The principal of the <em class="emphasis">Law of Large Numbers</em> is that as a experiment is repeated, as the number of times increases, the distribution of results tends toward the underlying distribution.  If we determine if this is true, as the number of time we roll a die increases, the probability of any one number appearing gets closer to 1/6.  For example, to test this, try</div>
-<pre class="code-display tex2jax_ignore clipboardable">p = count(a-&gt;a==3,rand(1:6,1_000))
-</pre>
-<div class="para">and then evaluating <code class="code-inline tex2jax_ignore">p/1_000</code> results in <code class="code-inline tex2jax_ignore">0.190</code>, which is reasonably close to 1/6.</div>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-4-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<details id="ch-prob-models-4-6" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
-<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
-</h4></summary><article class="exercise exercise-like knowl__content"><article class="task exercise-like" id="ch-prob-models-4-6-1"><h5 class="heading"><span class="codenumber">(a)</span></h5>
-<div class="para" id="ch-prob-models-4-6-1-1-1">Trying increasing the number of random numbers used in the above example. You should notice that as that number gets larger, the resulting probability gets closer to 1/6.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-4-6-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Task 19.4.a"><a href="#ch-prob-models-4-6-1" title="Copy heading and permalink for Task 19.4.a" aria-label="Copy heading and permalink for Task 19.4.a">🔗</a></div></article><article class="task exercise-like" id="ch-prob-models-4-6-2"><h5 class="heading"><span class="codenumber">(b)</span></h5>
-<div class="para logical" id="ch-prob-models-4-6-2-1-1">
-<div class="para">What does</div>
-<pre class="code-display tex2jax_ignore clipboardable">p = count(a -&gt; a % 2 == 0, rand(1:6,1000))
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-4-6-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div> <div class="para" id="ch-prob-models-4-6-2-1-2">measure in the sense of a rolling a fair 6-sided die?  Does the result make sense?<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-4-6-2-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Task 19.4.b"><a href="#ch-prob-models-4-6-2" title="Copy heading and permalink for Task 19.4.b" aria-label="Copy heading and permalink for Task 19.4.b">🔗</a></div></article><div class="autopermalink" data-description="Check Your Understanding 19.4"><a href="#ch-prob-models-4-6" title="Copy heading and permalink for Check Your Understanding 19.4" aria-label="Copy heading and permalink for Check Your Understanding 19.4">🔗</a></div></article></details><div class="autopermalink" data-description="Section 19.2: Rolling Dice"><a href="#ch-prob-models-4" title="Copy heading and permalink for Section 19.2: Rolling Dice" aria-label="Copy heading and permalink for Section 19.2: Rolling Dice">🔗</a></div></section><section class="section" id="ch-prob-models-5"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Rolling 2 dice</span>
-</h3>
-<div class="para" id="ch-prob-models-5-2">How do we handle the rolling of two dice? We will do this in a similar manner to flipping 3 coins above.  First, we’ll start with an array with each row having 2 dice.  This would be a simulation of rolling 10,000 pairs of dice.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-5-3">
-<pre class="code-display tex2jax_ignore clipboardable"> dice2=rand(1:6,10_000,2) </pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-5-4">which creates a matrix of size of 10,000 by 2 of random numbers between 1 and 6.  Each row represents a pair of dice and the sum of the dice is just the sum of each row which we can get from<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-5-5">
-<pre class="code-display tex2jax_ignore clipboardable"> dsum = mapslices(sum,dice2;dims=[2]) </pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-5-6">which sums along the rows. This is 10,000 rolls of 2 dice with the sum recorded. First, to get an idea of the distribution of the dice sums, let’s plot the distribution of the values:<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-5-7">
-<pre class="code-display tex2jax_ignore clipboardable">fig = Figure()
-ax = Axis(fig[1,1], xticks=2:12)
-barplot!(ax, 2:12, counts(dsum,2:12)/sum(dsum), strokewidth = 1)
-fig
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-5-8">The plot generated is<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<figure class="figure figure-like" id="fig-dice2"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/dice2.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><div class="autopermalink" data-description="Figure 19.5"><a href="#fig-dice2" title="Copy heading and permalink for Figure 19.5" aria-label="Copy heading and permalink for Figure 19.5">🔗</a></div></figcaption></figure><details id="ch-prob-models-5-10" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
-<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
-</h4></summary><article class="exercise exercise-like knowl__content"><article class="task exercise-like" id="ch-prob-models-5-10-1"><h5 class="heading"><span class="codenumber">(a)</span></h5>
-<div class="para" id="ch-prob-models-5-10-1-1-1">Use the <code class="code-inline tex2jax_ignore">dsum</code> variable above, to estimate the probability that you<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-10-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div> <div class="para logical" id="ch-prob-models-5-10-1-1-2">
-<ol class="decimal" id="ch-prob-models-5-10-1-1-2-1">
-<li id="ch-prob-models-5-10-1-1-2-1-1">
-<div class="para" id="ch-prob-models-5-10-1-1-2-1-1-1">roll a 7.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-10-1-1-2-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Item 19.6.1"><a href="#ch-prob-models-5-10-1-1-2-1-1" title="Copy heading and permalink for Item 19.6.1" aria-label="Copy heading and permalink for Item 19.6.1">🔗</a></div>
-</li>
-<li id="ch-prob-models-5-10-1-1-2-1-2">
-<div class="para" id="ch-prob-models-5-10-1-1-2-1-2-1">roll a 10 or greater.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-10-1-1-2-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Item 19.6.2"><a href="#ch-prob-models-5-10-1-1-2-1-2" title="Copy heading and permalink for Item 19.6.2" aria-label="Copy heading and permalink for Item 19.6.2">🔗</a></div>
-</li>
-<li id="ch-prob-models-5-10-1-1-2-1-3">
-<div class="para" id="ch-prob-models-5-10-1-1-2-1-3-1">roll an even number.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-10-1-1-2-1-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Item 19.6.3"><a href="#ch-prob-models-5-10-1-1-2-1-3" title="Copy heading and permalink for Item 19.6.3" aria-label="Copy heading and permalink for Item 19.6.3">🔗</a></div>
-</li>
-</ol>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-10-1-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Task 19.6.a"><a href="#ch-prob-models-5-10-1" title="Copy heading and permalink for Task 19.6.a" aria-label="Copy heading and permalink for Task 19.6.a">🔗</a></div></article><article class="task exercise-like" id="ch-prob-models-5-10-2"><h5 class="heading"><span class="codenumber">(b)</span></h5>
-<div class="para" id="ch-prob-models-5-10-2-1-1">Plot the simulated dice rolls with the pdf from <a href="ch-probability-random.html" class="internal" title="Chapter 18: Probability Distributions and Pseudorandom Numbers">Chapter 18</a>.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-5-10-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Task 19.6.b"><a href="#ch-prob-models-5-10-2" title="Copy heading and permalink for Task 19.6.b" aria-label="Copy heading and permalink for Task 19.6.b">🔗</a></div></article><div class="autopermalink" data-description="Check Your Understanding 19.6"><a href="#ch-prob-models-5-10" title="Copy heading and permalink for Check Your Understanding 19.6" aria-label="Copy heading and permalink for Check Your Understanding 19.6">🔗</a></div></article></details><div class="autopermalink" data-description="Section 19.3: Rolling 2 dice"><a href="#ch-prob-models-5" title="Copy heading and permalink for Section 19.3: Rolling 2 dice" aria-label="Copy heading and permalink for Section 19.3: Rolling 2 dice">🔗</a></div></section><section class="section" id="ch-prob-models-6"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Other Probability Models</span>
-</h3>
-<section class="introduction" id="ch-prob-models-6-2"><div class="para" id="ch-prob-models-6-2-1">Let’s return to the problem that problem at the beginning of this section. We will solve this problem using the random modeling in this chapter.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-6-2-2">First let’s first store the names of the people at the take as an array<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-6-2-3">
-<pre class="code-display tex2jax_ignore clipboardable">table_names = ["Alisha", "Mary", "p1", "p2", "p3", "p4", "p5"]
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-6-2-4">where we use generic names for the other 5 people.<details class="ptx-footnote" aria-live="polite" id="ch-prob-models-6-2-4-1"><summary class="ptx-footnote__number" title="Footnote 19.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="ch-prob-models-6-2-4-1">Although variable name usually don’t matter what they are called, <code class="code-inline tex2jax_ignore">names</code> cannot be used.  There are many function and variable names that cannot be used. This is one example.</div></details>  We will take random permutations of this array below and the determine if Alisha and Mary are next to each other.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-6-2-5">Before we find a random permutation, let’s write a function that takes an array of names and returns <code class="code-inline tex2jax_ignore">true</code> if they are next to each other and <code class="code-inline tex2jax_ignore">false</code> if not.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">function nextToEachOther(names::Vector{String})
-  # return true or false
-end
-</code></pre></div>
-<div class="para" id="ch-prob-models-6-2-7">Here’s a way to think about this:<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-6-2-8">
-<ol class="decimal" id="ch-prob-models-6-2-8-1">
-<li id="ch-prob-models-6-2-8-1-1">
-<div class="para" id="ch-prob-models-6-2-8-1-1-1">Find the position in the array where Alisha is sitting.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-8-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Item 1"><a href="#ch-prob-models-6-2-8-1-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
-</li>
-<li id="ch-prob-models-6-2-8-1-2">
-<div class="para" id="ch-prob-models-6-2-8-1-2-1">Find the position in the array where Mary is sitting.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-8-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Item 2"><a href="#ch-prob-models-6-2-8-1-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
-</li>
-<li id="ch-prob-models-6-2-8-1-3">
-<div class="para" id="ch-prob-models-6-2-8-1-3-1">Determine if the two numbers are next to each other.  Don’t forget that this could include positions 1 and 7.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-8-1-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Item 3"><a href="#ch-prob-models-6-2-8-1-3" title="Copy heading and permalink for Item 3" aria-label="Copy heading and permalink for Item 3">🔗</a></div>
-</li>
-</ol>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-6-2-9">The following is a relatively simple function is<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">function nextToEachOther(names::Vector{String})
-  a = findfirst(name -&gt; name=="Alisha",names)
-  m = findfirst(name -&gt; name=="Mary",names)
-  abs(a-m) == 1 || abs(a-m) == length(names)-1
-end
-</code></pre></div>
-<div class="para" id="ch-prob-models-6-2-11">where the <code class="code-inline tex2jax_ignore">findfirst</code> function returns the index of the array where the function is true (that is where the two friends are sitting).  To test this:<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-6-2-12">
-<pre class="code-display tex2jax_ignore clipboardable">nextToEachOther(["Alisha", "Mary", "p1", "p2", "p3", "p4", "p5"])
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-6-2-13">returns <code class="code-inline tex2jax_ignore">true</code>.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-6-2-14">
-<pre class="code-display tex2jax_ignore clipboardable">nextToEachOther(["Alisha", "p1", "Mary", "p2", "p3", "p4", "p5"])
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-6-2-15">returns <code class="code-inline tex2jax_ignore">false</code>.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-15" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-6-2-16">
-<pre class="code-display tex2jax_ignore clipboardable">nextToEachOther(["Alisha","p1", "p2", "p3", "p4", "p5", "Mary"])
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-16" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-6-2-17">returns <code class="code-inline tex2jax_ignore">true</code>.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-2-17" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div></section><section class="subsection" id="ch-prob-models-6-3"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.4.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Random Permutations</span>
-</h4>
-<div class="para" id="ch-prob-models-6-3-2">We now return to the problem to study the probability.  The <code class="code-inline tex2jax_ignore">shuffle</code> command in the <code class="code-inline tex2jax_ignore">Random</code> package<details class="ptx-footnote" aria-live="polite" id="ch-prob-models-6-3-2-3"><summary class="ptx-footnote__number" title="Footnote 19.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents" id="ch-prob-models-6-3-2-3">The Random package is a built-in package and doesn’t need to be added, but just enter <code class="code-inline tex2jax_ignore">using Random</code>
-</div></details> takes any array and shuffles (permutes) the contents in a random manner.  For example:<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-prob-models-6-3-3">
-<pre class="code-display tex2jax_ignore clipboardable">shuffle(table_names)
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-3-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-6-3-4">returns <code class="code-inline tex2jax_ignore">["p3" "Alisha" "Mary" "p5" "p2" "p4" "p1"]</code>, then we can test if they are sitting next to each other.  The follow repeats this a large number of times:<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-3-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">function numTimes(trials::Integer)
-  s = 0  # keeps track of how many times they sit next to each other
-  for i=1:trials
-    if nextToEachOther(shuffle(table_names))
-      s += 1
-    end
-  end
-  s/trials
-end
-</code></pre></div>
-<div class="para" id="ch-prob-models-6-3-6">and then the fraction of times is found with <code class="code-inline tex2jax_ignore">numTimes(10_000)</code> resulting in <code class="code-inline tex2jax_ignore">0.3303</code>.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-3-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-prob-models-6-3-7">The true value of the probability can be found in the following way. Mary sits in one of the seven chairs.  Alisha has a equal chance of sitting in one of the remaining 6 chairs.  Two of the chairs are next two Mary, so the probability is 2/6 or 1/3.  The result we see above is close to this value.<div class="autopermalink" data-description="Paragraph"><a href="#ch-prob-models-6-3-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Subsection 19.4.1: Random Permutations"><a href="#ch-prob-models-6-3" title="Copy heading and permalink for Subsection 19.4.1: Random Permutations" aria-label="Copy heading and permalink for Subsection 19.4.1: Random Permutations">🔗</a></div></section><div class="autopermalink" data-description="Section 19.4: Other Probability Models"><a href="#ch-prob-models-6" title="Copy heading and permalink for Section 19.4: Other Probability Models" aria-label="Copy heading and permalink for Section 19.4: Other Probability Models">🔗</a></div></section><section class="section" id="sect-calc-pi-prob"><h3 class="heading hide-type">
-<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Calculating <span class="process-math">\(\pi\)</span> using pseudo random numbers</span>
-</h3>
-<section class="introduction" id="sect-calc-pi-prob-2"><div class="para" id="sect-calc-pi-prob-2-1">You probably know the first handful of digits of <span class="process-math">\(\pi\)</span> and recall that probably the first place that you saw this was with circles.  But how do we know what the digits of <span class="process-math">\(\pi\)</span> actually are.  There are a number of ways to find the digits of <span class="process-math">\(\pi\)</span> and in fact, <a href="ch-calc-pi.html" class="internal" title="Chapter 48: Calculating the digits of \pi">Chapter 48</a> presents some interesting ways of calculating it.<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-2-2">Here we will present two ways to calculate <span class="process-math">\(\pi\)</span> using random numbers.<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div></section><section class="subsection" id="sect-calc-pi-prob-3"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.5.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Buffon’s Needle Experiment</span>
-</h4>
-<div class="para" id="sect-calc-pi-prob-3-2">In the 18th Century, Georges-Louis Leclerc, Comte de Buffon considered the following problem.  On a floor (or table), draw lines that are parallel and <span class="process-math">\(t\)</span> units apart. Toss needles of length <span class="process-math">\(\ell\)</span> onto the floor and count the number that cross one of the lines.  The following diagram is helpful:<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<figure class="figure figure-like" id="fig-buffon"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="generated/latex-image/fig-buffon-2.svg" role="img" class="contained" alt=""></div>
-<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><div class="autopermalink" data-description="Figure 19.7"><a href="#fig-buffon" title="Copy heading and permalink for Figure 19.7" aria-label="Copy heading and permalink for Figure 19.7">🔗</a></div></figcaption></figure><div class="para" id="sect-calc-pi-prob-3-4">A probability analysis shows that the probability that any needle crosses a line is:<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-3-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-calc-pi-prob-3-5">
-<div class="displaymath process-math" id="sect-calc-pi-prob-3-5-1">
-\begin{equation*}
-p = \frac{2}{\pi}\frac{\ell}{t}
-\end{equation*}
-</div>
-<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-3-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-3-6">if <span class="process-math">\(\ell &lt; t\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-3-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-3-7">So theoretically, one could sit and toss needles onto a floor to determine the value of <span class="process-math">\(\pi\)</span> by counting the number that cross the lines and those that don’t. This would be tedious and possibly prone to error as the number of needles rises.<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-3-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-3-8">More details on this experiment is given on the <a class="external" href="https://en.wikipedia.org/wiki/Buffon\%27s_needle" target="_blank">wikipedia page</a><div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-3-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Subsection 19.5.1: Buffon’s Needle Experiment"><a href="#sect-calc-pi-prob-3" title="Copy heading and permalink for Subsection 19.5.1: Buffon’s Needle Experiment" aria-label="Copy heading and permalink for Subsection 19.5.1: Buffon’s Needle Experiment">🔗</a></div></section><section class="subsection" id="sect-calc-pi-prob-4"><h4 class="heading hide-type">
-<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.5.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Circle in the Square</span>
-</h4>
-<div class="para" id="sect-calc-pi-prob-4-2">The Buffon Needle experiment is fascinating in many ways but there is a much easier way to generate results in a computer simulation.  This is called the <em class="emphasis">Circle in the Square</em> approach.<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-4-3">Consider a square given by <span class="process-math">\(\{ (x,y)\; | \; 0\leq x\leq 1, 0 \leq y \leq 1\}\text{,}\)</span> which is just the first unit in both <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> in the first quadrant. We generate a number of random points (technically they are uniformly distributed).  Consider<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-calc-pi-prob-4-4">
-<pre class="code-display tex2jax_ignore clipboardable">pts=rand(100,2)
-fig = Figure()
-ax = Axis(fig[1,1], aspect = 1)
-scatter!(ax, pts[:,1],pts[:,2])
-fig
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<figure class="figure figure-like" id="fig-circle100"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/circle100.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><div class="autopermalink" data-description="Figure 19.8"><a href="#fig-circle100" title="Copy heading and permalink for Figure 19.8" aria-label="Copy heading and permalink for Figure 19.8">🔗</a></div></figcaption></figure><div class="para" id="sect-calc-pi-prob-4-6">If we draw a circular arc and then count the number of points within the arc:<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-calc-pi-prob-4-7">
-<pre class="code-display tex2jax_ignore clipboardable">fig = Figure()
-ax = Axis(fig[1,1], aspect = 1)
-scatter!(ax, pts[:,1],pts[:,2])
-t = LinRange(0,pi/2,100)
-lines!(ax,cos.(t),sin.(t), color = :red)
-fig
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-4-8">where the circle has been plotted parametrically and in the first quadrant we use <span class="process-math">\(0 \leq t \leq \pi/2\text{.}\)</span> The result is<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<figure class="figure figure-like" id="fig-circle100a"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/prob-models/circle100a.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><div class="autopermalink" data-description="Figure 19.9"><a href="#fig-circle100a" title="Copy heading and permalink for Figure 19.9" aria-label="Copy heading and permalink for Figure 19.9">🔗</a></div></figcaption></figure><div class="para" id="sect-calc-pi-prob-4-10">The fraction of points should be about the fraction of the area within the arc or <span class="process-math">\(\pi/4\text{.}\)</span> (Note: the <code class="code-inline tex2jax_ignore">plot!</code> function plots on top of the current plot instead of making a new one. It also performs a parametric plot--see <a href="ch-plots-package.html" class="internal" title="Chapter 15: The Plots Package">Chapter 15</a>--of the circle.)<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-calc-pi-prob-4-11">
-<div class="para">We can calculate this value by first using the <code class="code-inline tex2jax_ignore">mapslices</code> function on each row to calculate the distance</div>
-<pre class="code-display tex2jax_ignore clipboardable">dist=mapslices(pt-&gt;sqrt(pt[1]^2+pt[2]^2),pts;dims=[2])
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-4-12">and then count the number of the points within the circle or the distance is less than 1.<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-calc-pi-prob-4-13">
-<pre class="code-display tex2jax_ignore clipboardable">numpts = count(d -&gt; d &lt; 1, dist)
-</pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-4-14">and the results is <code class="code-inline tex2jax_ignore">77</code>.  Since the fraction of the points is an estimate for <span class="process-math">\(\pi/4\text{,}\)</span> then we can say that<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-calc-pi-prob-4-15">
-<div class="displaymath process-math" id="sect-calc-pi-prob-4-15-1">
-\begin{equation*}
-\pi \approx 4 \cdot numpts \cdot total\_points
-\end{equation*}
-</div>
-<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-15" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-4-16">so in this case the estimate is <code class="code-inline tex2jax_ignore">3.08</code>. Clearly this is a terrible estimate of <span class="process-math">\(\pi\text{,}\)</span> but increasing the number of points should improve it.<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-16" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-4-17">Instead of just repeating the same code with a different number of points, we will create a function that estimates <span class="process-math">\(\pi\)</span> based on the number of points originally.<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-17" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">function calcPi(total_points::Integer)
-  pts=rand(total_points,2)
-  dist=mapslices(pt -&gt; pt[1]^2+pt[2]^2, pts; dims=[2])
-  4*count(d -&gt; d &lt; 1,dist)/total_points
-end
-</code></pre></div>
-<div class="para" id="sect-calc-pi-prob-4-19">and we haven’t included the square root in the distance calculation because all we are trying to determine is which points are within the unit circle.  This uses the square distance, so the result is the same.<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-19" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-4-20">Let’s run it with 10,000 points using the command:<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-20" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-calc-pi-prob-4-21">
-<pre class="code-display tex2jax_ignore clipboardable"> approx_pi = calcPi(10_000) </pre>
-<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-21" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-calc-pi-prob-4-22">and we get the result <code class="code-inline tex2jax_ignore">3.1632</code><div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-22" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<details id="sect-calc-pi-prob-4-23" class="exercise exercise-like born-hidden-knowl"><summary class="knowl__link"><h5 class="heading">
-<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">19.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
-</h5></summary><article class="exercise exercise-like knowl__content"><article class="task exercise-like" id="sect-calc-pi-prob-4-23-1"><h6 class="heading"><span class="codenumber">(a)</span></h6>
-<div class="para" id="sect-calc-pi-prob-4-23-1-1-1">for <span class="process-math">\(N=10^5\text{,}\)</span> <span class="process-math">\(N=10^6\)</span> and <span class="process-math">\(N=10^7\)</span> find the relative error of the estimate using your function and using the built-in value <code class="code-inline tex2jax_ignore">pi</code>.<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-23-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Task 19.10.a"><a href="#sect-calc-pi-prob-4-23-1" title="Copy heading and permalink for Task 19.10.a" aria-label="Copy heading and permalink for Task 19.10.a">🔗</a></div></article><article class="task exercise-like" id="sect-calc-pi-prob-4-23-2"><h6 class="heading"><span class="codenumber">(b)</span></h6>
-<div class="para" id="sect-calc-pi-prob-4-23-2-1-1">Recall that earlier in the book, we determine that creating an array is one of the slower parts of code. In this case, it is not needed.  Rewrite the <code class="code-inline tex2jax_ignore">calcPi</code> function to not generate a matrix of <code class="code-inline tex2jax_ignore">total_points</code> rows.<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-23-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="solutions"><details id="sect-calc-pi-prob-4-23-2-2" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="hint solution-like knowl__content">
-<div class="para" id="sect-calc-pi-prob-4-23-2-2-1">Write a for loop and inside the loop generate a single point and determine whether or not it is in the circle.  Time this version and compare to the <code class="code-inline tex2jax_ignore">calcPi</code> above.<div class="autopermalink" data-description="Paragraph"><a href="#sect-calc-pi-prob-4-23-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" data-description="Hint 19.10.b.1"><a href="#sect-calc-pi-prob-4-23-2-2" title="Copy heading and permalink for Hint 19.10.b.1" aria-label="Copy heading and permalink for Hint 19.10.b.1">🔗</a></div>
-</div></details></div>
-<div class="autopermalink" data-description="Task 19.10.b"><a href="#sect-calc-pi-prob-4-23-2" title="Copy heading and permalink for Task 19.10.b" aria-label="Copy heading and permalink for Task 19.10.b">🔗</a></div></article><div class="autopermalink" data-description="Check Your Understanding 19.10"><a href="#sect-calc-pi-prob-4-23" title="Copy heading and permalink for Check Your Understanding 19.10" aria-label="Copy heading and permalink for Check Your Understanding 19.10">🔗</a></div></article></details><div class="autopermalink" data-description="Subsection 19.5.2: Circle in the Square"><a href="#sect-calc-pi-prob-4" title="Copy heading and permalink for Subsection 19.5.2: Circle in the Square" aria-label="Copy heading and permalink for Subsection 19.5.2: Circle in the Square">🔗</a></div></section><div class="autopermalink" data-description="Section 19.5: Calculating \pi using pseudo random numbers"><a href="#sect-calc-pi-prob" title="Copy heading and permalink for Section 19.5: Calculating \pi using pseudo random numbers" aria-label="Copy heading and permalink for Section 19.5: Calculating \pi using pseudo random numbers">🔗</a></div></section><div class="autopermalink" data-description="Chapter 19: Using Random Numbers and Probability Models"><a href="#ch-prob-models" title="Copy heading and permalink for Chapter 19: Using Random Numbers and Probability Models" aria-label="Copy heading and permalink for Chapter 19: Using Random Numbers and Probability Models">🔗</a></div></section></div>
+<nav class="summary-links"><ul><li><a href="ch-intro-symbolic.html" class="internal"><span class="codenumber">30</span> <span class="title">Introduction to Symbolic Calculations</span></a></li></ul></nav><div class="autopermalink" data-description="Part VI: Symbolic Calculations"><a href="#part-symbolic" title="Copy heading and permalink for Part VI: Symbolic Calculations" aria-label="Copy heading and permalink for Part VI: Symbolic Calculations">🔗</a></div></section></div>
 <div id="ptx-content-footer" class="ptx-content-footer">
-<a class="previous-button button" href="ch-probability-random.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-poker.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
+<a class="previous-button button" href="ch-parallel.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="ch-intro-symbolic.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
 </div></main>
 </div>
 <div id="ptx-page-footer" class="ptx-page-footer">
