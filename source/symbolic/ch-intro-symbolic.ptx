@@ -1,7 +1,319 @@
 <chapter xml:id="ch-intro-symbolic">
   <title>Introduction to Symbolic Calculations</title>
-  
-  <p>
-    Symbolic computation is a branch of computer science and mathematics that focuses on manipulating mathematical expressions in a symbolic form, rather than performing numerical calculations. This allows for exact solutions to problems, as well as the ability to manipulate and simplify expressions algebraically.
-  </p>
+
+  <introduction>
+    <p>
+      Symbolic computation is a branch of computer science and mathematics that focuses on manipulating mathematical
+      expressions in a symbolic form, rather than performing numerical calculations.
+      This allows for exact solutions to problems, as well as the ability to manipulate and simplify expressions
+      algebraically.
+    </p>
+
+    <p>
+      To get started with this chapter, we will need to load the <c>Symbolics</c> package, so ensure that you have it
+      installed and ready to use.
+      There are related packages that we will see later as well.
+      Although the <url href="https://docs.sciml.ai/Symbolics/stable/">Symbolics.jl documentation</url> is a great
+      resource, this chapter aims to provide a more hands-on introduction to symbolic calculations.
+    </p>
+
+    <p>
+      Of course, we need to load the <c>Symbolics</c> package and we will also using the <c>Latexify</c> package as
+      well, which will help us display symbolic expressions in a more readable format.
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        using Symbolics, Latexify
+      </code>
+    </program>
+  </introduction>
+
+  <section xml:id="sec-symbolic-variables">
+    <title>Symbolic Variables and Expressions</title>
+
+    <p>
+      To do any symbolic calculations, we first need to define symbolic variables.
+      In Symbolics.jl, this is done using the <c>@variables</c> macro.
+      For example, to define two symbolic variables <c>x</c> and <c>y</c>, we would write:
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        @variables x y t
+      </code>
+    </program>
+
+    <p>
+      This creates symbolic variables which differ from regular Julia variables in that they can be used in symbolic
+      expressions and manipulated algebraically, instead of julia variables, which store Julia numbers and objects.
+    </p>
+
+    <p>
+      With these symbolic variables, we can create symbolic expressions.
+      For example, we can define a symbolic expression for a polynomial:
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        p = 3x^3 - x
+      </code>
+    </program>
+
+    <p>
+      The output of this is <m>3x^3-x</m> and will be formatting as mathematics if you have loaded the <c>Latexify</c>
+      package.
+    </p>
+
+    <p>
+      The julia variable <c>p</c> is an expression in that if you evaluate <c>typeof(p)</c> the result is <c>Num</c>,
+      which is the type of all Symbolic expressions using the <c>Symbolics</c> package.
+      Also, this isn't a function (either a julia or mathematical), but we can create those and will see that below.
+    </p>
+
+    <p>
+      Additionally, you may want an exact value of a number.
+      If we enter <c>sqrt(2)</c> then the floating point approximation to <m>\sqrt{2}</m> appears.
+      If we want a number to not be automatically applied to a function, you can wrap the <c>Num</c> function around it
+      which will give you a symbolic number.
+      For example,
+    </p>
+
+    <program language="julia">
+      <code>
+        sqrt(Num(2))
+      </code>
+    </program>
+
+    <p>
+      will return <m>\sqrt{2}</m> in a symbolic sense.
+    </p>
+  </section>
+
+  <section xml:id="sec-symbolic-substitution">
+    <title>Substitution</title>
+
+    <p>
+      Substitution, simplifying and expanding all standard operations that people do with expression when manipulating
+      mathematical expressions and this can be done with symbolic expressions.
+    </p>
+
+    <p>
+      We'll first examine substitution, which replaces an expression with another expression.
+      If we enter:
+    </p>
+
+    <program language="julia">
+      <code>
+        substitute(p, x =&gt; -2)
+      </code>
+    </program>
+
+    <p>
+      and this returns <c>-22</c> and if you check, this is a <c>Num</c>, not an <c>Int</c>.
+      We will learn below how to convert this to a julia <c>Int</c>.
+    </p>
+
+    <p>
+      The <c>substitute</c> command is more powerful when substituting expressions for other expressions.
+    </p>
+
+    <program language="julia">
+      <code>
+        substitute(p, x=&gt; y^2-t)
+      </code>
+    </program>
+
+    <p>
+      then the result is <m>t-y^2+3(-t+y^2)^3</m>.
+      Simply, everywhere in <c>p</c> with an <c>x</c>, it is replaced with <m>y^2-t</m>.
+      Nothing else is done.
+    </p>
+
+    <p>
+      The left side of the replacement in <c>expr1 =&gt; expr2</c> does not need to be a simple variable.
+      For example,
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        substitute(sin(x)+ y^2, sin(x) =&gt; exp(t))
+      </code>
+    </program>
+
+    <p>
+      returns <m>e^t+y^2</m>.
+    </p>
+
+    <p>
+      If we want to evaluate the expression <c>p</c> when <c>x=1/2</c>, then
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        p1 = substitute(p, x=&gt; 1//2)
+      </code>
+    </program>
+
+    <p>
+      returns <m>-1/8</m>.
+      Note that I used the rational number <c>1//2</c> to get an exact result.
+      If I had used <c>1/2</c>, then using floating-point division would result in a floating point number.
+    </p>
+  </section>
+
+  <section xml:id="sec-symbolic-expanding-simplifying">
+    <title>Expanding and Simplifying Symbolic Expression</title>
+
+    <p>
+      One of the nice features of a computer algebra system is to feed a complicated expression and the result is
+      simplified to a much nicer one.
+      This without the tedium of doing it by hand.
+      This section examines how to both expand expressions and simplify as well.
+    </p>
+
+    <p>
+      Some expressions are automatically simplified.
+      If you enter
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        4x - 3x^2 + (7x-2x^2)
+      </code>
+    </program>
+
+    <p>
+      julia returns <m>11x-5x^2</m>, therefore similar terms are collected as is <m>(x^2)^3</m> rewritten as <m>x^6</m>.
+      Some expressions are not automatically simplified.
+      For example, if we have <c>sin(x)^2+cos(x)^2</c>, it would be nice for this to be simplified to 1, but if we
+      enter:
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        sin(x)^2+cos(x)^2
+      </code>
+    </program>
+
+    <p>
+      then it is returns as such.
+      We can replace this with 1 by performing:
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        simplify(sin(x)^2+cos(x)^2)
+      </code>
+    </program>
+
+    <p>
+      then the result is <m>1</m>.
+    </p>
+
+    <p>
+      Simplifying is often used in conjunction with the <c>expand</c> function, which is used mainly for applying the
+      distributive law over polynomials.
+      For example:
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        expand((x+y)^3)
+      </code>
+    </program>
+
+    <p>
+      which returns <m>x^{3} + 3 x^{2} y + 3 y^{2}x + y^{3}</m>.
+      We can restore the factored form
+    </p>
+  </section>
+
+  <section xml:id="sec-adv-symbolic-variables">
+    <title>A Deeper Dive into Symbolic Variables</title>
+
+    <p>
+      Above, we did some basics of symbolic variables.
+      However, there is a lot more that we didn't discuss above.
+    </p>
+
+    <p>
+      Here, <c>p</c> is a symbolic expression representing the polynomial <c>3x^3 - x</c>.
+      We can check the type of our symbolic variable and expression using the <c>typeof</c> function:
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        typeof(x)
+      </code>
+    </program>
+
+    <p>
+      This will return <c>Num</c>, indicating that <c>x</c> is a symbolic variable.
+      Similarly, we can check the type of our symbolic expression:
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        typeof(p)
+      </code>
+    </program>
+
+    <p>
+      This will also return <c>Num</c>, indicating that <c>p</c> is a symbolic expression.
+      With symbolic variables and expressions defined, we are now ready to perform various symbolic calculations, such
+      as simplification, differentiation, and integration, which we will explore in the following sections.
+    </p>
+
+    <p>
+      As in mathematics, we often wish to write a variable with a subscript indicating a group of variables should be
+      considered as a set of variables.
+      If we define
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        @variables a[1:4]
+      </code>
+    </program>
+
+    <p>
+      then we have made the variables <c>a[1], a[2], a[3]</c> and <c>a[4]</c>.
+      Entering <c>typeof(a)</c> returns <c>Symbolics.Arr{Num, 1}</c>, which takes a little unpacking.
+      Notice that it is not a Vector of variables (of type <c>Num</c> ), which might be expected.
+      The Symbolics package has a array-like structure called <c>Arr</c> to mimic the array, however it is used to hold
+      symbolic variables and expressions.
+    </p>
+
+    <p>
+      Throughout this chapter, we have seen the <c>Num</c> datatype.
+      Again, this indicates that the variables or expression is symbolic, which distinguishes it from the <c>Number</c>
+      abstract data type.
+      In many cases, defining the variable with no additional information, but if we want to ensure that a variable is a
+      Real or a Complex variable, the we can add the extra typing information like:
+    </p>
+
+    <program language="julia">
+      <code>
+        @variables z::Complex q::Real
+      </code>
+    </program>
+    <paragraphs>
+      <title>Handling <m>\pi</m> and <m>e</m> Symbolically</title>
+
+      <p>
+        When working with mathematics, we run into <m>\pi</m> and <m>e</m> all over the place and if we want to do things symbolically, we will want to do the same in Julia.  If we just add <m>\pi</m> to an expression like<c>π * x</c> or <c>pi * x</c>, then the ouptut is as expected as <m>\pi x</m>. 
+      </p>
+      <p>
+        However, if we enter <c>pi/2 *x</c>, then floating point division is performed on <c>π</c> and this is returned as <c>1.5708 x</c>.   
+      </p>
+      <p>
+        To keep everything symbolic, we can do as we did for <m>\sqrt{2}</m> and wrap the <m>\pi</m> in a <c>Num</c> and enter this as <c>Num(pi)/2*x</c> which returns it as 
+        <md>
+          \frac{1}{2} \pi x
+        </md>
+        which is more like we expect.<fn>Personally, I would like this written as <m>\frac{\pi}{2} x</m> but I'll work on my own personal issue and expectations.</fn> If you enter <c>Num(pi)</c> often, you can always assign it a variable, like <c>PI = Num(pi)</c> and then use <c>PI</c> in your expressions.
+      </p>
+    </paragraphs>
+  </section>
 </chapter>

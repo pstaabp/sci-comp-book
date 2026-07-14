@@ -186,9 +186,9 @@
 
 			<p>
 				Vector Functions in 3D are often represented as parametric functions of the form:
-				<me>
+				<md>
 					\langle x(t), y(t), z(t) \rangle
-				</me>
+				</md>
 				where each function gives the <m>x</m>, <m>y</m> or <m>z</m> coordinate at a time <m>t</m>.  An example of this is the parametric function <m>\langle \cos 2t \cos t, \cos 5t \cos t, \sin 3t \rangle</m>.
 			</p>
 
@@ -224,9 +224,9 @@
 
 			<p>
 				An implicit curve is the set of points <m>(x,y)</m> in which <m>f(x,y)=C</m> for some constant <m>C</m>.  The classic example is the circle
-				<me>
+				<md>
 					x^2 + y^2 = 1
-				</me>
+				</md>
 				The following is the circle above plotted implicitly:
 			</p>
 
@@ -249,9 +249,9 @@
 			</p>
 
 			<p>
-				<me>
+				<md>
 					f(x,y) = \sin\left(\frac{1}{2}x^2-\frac{1}{4}y^2+2\right)\cos(x+y)
-				</me>
+				</md>
 			</p>
 
 			<p>

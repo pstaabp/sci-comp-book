@@ -38,9 +38,9 @@
 			<statement>
 				<p>
 					Consider two functions <m>f</m> and <m>g</m>, We say that <m>f(n)</m> is <m>O(g(n))</m> or ``big-O'' of <m>g(n)</m> if
-					<me>
+					<md>
 						\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = C
-					</me>
+					</md>
 					for some <m>0 &gt; C &gt; \infty</m>.
 				</p>
 			</statement>
@@ -51,9 +51,9 @@
 		</p>
 
 		<p>
-			<me>
+			<md>
 				\lim_{n\rightarrow \infty} \frac{3n^2-2n+6}{n^2} = 3
-			</me>
+			</md>
 		</p>
 
 		<p>
@@ -111,9 +111,9 @@
 			</p>
 
 			<p>
-				<men xml:id="eq-poly">
+				<md number="yes" xml:id="eq-poly">
 					p(x) = a_0 + a_1 x + a_2 x^2 + \cdots + a_n x^n
-				</men>
+				</md>
 			</p>
 
 			<p>
@@ -121,9 +121,9 @@
 			</p>
 
 			<p>
-				<me>
+				<md>
 					M(n) = 1 + 2 + 3 + \cdots + n = \frac{n(n+1)}{2}
-				</me>
+				</md>
 			</p>
 
 			<p>
@@ -140,9 +140,9 @@
 			</p>
 
 			<p>
-				<men xml:id="eq-horner">
+				<md number="yes" xml:id="eq-horner">
 					p(x) = a_0 + x(a_1 + x(a_2 + x(a_3 \cdots + a_n x)))
-				</men>
+				</md>
 			</p>
 
 			<p>

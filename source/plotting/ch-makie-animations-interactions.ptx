@@ -1,0 +1,467 @@
+<chapter xml:id="ch-makie-animations">
+  <title>Makie Animations, Observables and Interactions</title>
+
+  <introduction>
+    <p>
+      This chapter shows you how to use Makie to produce animations and interactive elements in which changes are made to inputs and slides and the results show a plot or other computations.
+    </p>
+  </introduction>
+
+  <section xml:id="sect-animations">
+    <title>Simple Animations in Makie</title>
+
+    <p>
+      If an animation is relatively simple, it is easy to follow some basic structure to produce it.
+      In this section, we will show a function plot and a parametric plot that changes with a parameter.
+    </p>
+
+    <p>
+      Consider a piecewise plot that makes a triangle and it shifts linearly in time.
+      The initial plot can be made with
+    </p>
+
+
+    <program language="julia">
+      <code>
+        g(x) = abs(x) &gt; 1 ? 0 : 1-abs(x)
+        fig = lines(-5..5, g)
+      </code>
+    </program>
+
+    <p>
+      and the result is
+    </p>
+
+    <figure xml:id="fig-triangle">
+      <caption></caption>
+      <image source="plots/animations/triangle.png" width="80%">
+        <shortdescription>
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      To make this a function of <c>t</c>, it is a simple linear shift that can be found by replacing <c>x</c> with <c>x-t</c>.
+      For example, a plot of shifting the triangle left 2 units can be found with
+    </p>
+
+
+    <program language="julia">
+      <code>
+        fig = lines(-5..5, x -&gt; g(x-2))
+      </code>
+    </program>
+
+    <p>
+      The result is the expected shift of the above graph right 2 units or
+    </p>
+
+    <figure xml:id="fig-triangle2">
+      <caption></caption>
+      <image source="plots/animations/triangle2.png" width="80%">
+        <shortdescription>
+        </shortdescription>
+      </image>
+    </figure>
+
+    <p>
+      The following code:
+    </p>
+
+
+
+    <listing xml:id="lst-animated-plot">
+      <title>Animated Plot code</title>
+
+      <program language="julia" line-numbers="yes">
+        <code>
+        xs = range(-5, 5, length=500)
+        time = Observable(0.0)
+        gfun = @lift g.(xs .- $time);
+        fig = Figure()
+        ax = Axis(fig[1, 1],
+          limits=(-5, 5, 0, 1),
+          title=@lift("t = $(round($time, digits = 1))")
+        )
+        lines!(ax, xs, gfun)
+        timestamps = range(0, 5, step = 1 / 30)
+        record(fig, "triangle.mp4", timestamps; framerate=30) do t
+          time[] = t
+        end
+        </code>
+      </program>
+    </listing>
+
+    <p>
+      creates the the video stored in <em>triangle.mp4</em> and is shown below.
+    </p>
+    
+    <figure xml:id="video-animation-example">
+      <caption>A movie of the function <m>g(x-t)</m> showing the function shifting right.</caption>
+      <video source="plots/animations/triangle.mp4" />
+    </figure>
+    
+    <p>
+      If you are simply changing the function then line 3 using the function <c>g</c> as well as the shift.
+      Note that the parameter is the variable <c>$time</c> and must be preceded with a dollar sign.
+      The variable <c>time</c> is an Observable (defined on line 2).
+      The next section discusses Observables.
+    </p>
+
+    <p>
+      Note that lines 5-9 are the plotting routines and other that the <c>@lift</c> macro (again discussed below) are the standard way to create a Figure, Axis and plot.
+    </p>
+
+    <p>
+      Line 10 produces a vector of values from 0 to 5 and then lines 11-13 creates the animation and saves it as a movie.
+    </p>
+
+    <p>
+      Look into <c>Makie.update!</c> to do this instead.
+    </p>
+  </section>
+
+  <section xml:id="sect-observables">
+    <title>Observables in Makie</title>
+
+    <introduction>
+      <p>
+        To make animations or interactive applications in julia, then it is important understand Observables, which are container objects that have values that can be updated and then plots or other interactives can react to the changes.
+      </p>
+
+      <p>
+        Before getting into complex interactives, let's do a simple example.
+        Define
+      </p>
+
+
+      <program language="julia">
+        <code>
+        x = Observable(0)
+        </code>
+      </program>
+
+      <p>
+        and the result is
+        <cd>
+        <cline>x = Observable(0)</cline>
+        </cd>
+      </p>
+
+      <p>
+        And if <c>typeof(x)</c> is run the result is <c>Observable{Int64}</c>, indicating that this is a parametric type (that is an Observable that can take <c>Int64</c> values).
+      </p>
+
+      <p>
+        To change the value of <c>x</c>, we use index notation (like a vector) with an empty index as in
+      </p>
+
+
+      <program language="julia">
+        <code>
+     x[] = 5   
+        </code>
+      </program>
+
+      <note>
+        <p>
+          If you use Observable, it is very important that you update values with the <c>x[]</c> syntax.
+          If instead, you enter <c>x = 5</c>, then the variable <c>x</c> is replaced with a <c>Int64</c>  and not an observable.
+        </p>
+      </note>
+
+      <p>
+        If you evaluate <c>x</c>, then you get <c>Observable(5)</c>.
+        This doesn't seem very interesting.
+      </p>
+    </introduction>
+
+
+    <subsection xml:id="subsect-changing-observables">
+      <title>Observing Changing Observables</title>
+
+      <p>
+        The power of Observables is to react to a changing value.
+        In this section, we see a simple way to do this with the function <c>on</c>.
+      </p>
+
+
+      <program language="julia">
+        <code>
+          trigger1 = on(x) do x
+              println("New value of x is $x")
+          end
+        </code>
+      </program>
+
+      <p>
+        If you evaluate the code above, you will see <c>ObserverFunction defined at...
+        </c> Again, not very interesting.
+        However, any time that the variable <c>x</c> is updated, a line will be printed out.
+        Running
+      </p>
+
+
+      <program language="julia">
+        <code>
+        x[] = 4
+        </code>
+      </program>
+
+      <p>
+        This will result in the output:
+        <cd>
+        <cline>New value of x is 4</cline>
+        </cd>
+      </p>
+
+      <p>
+        And if this is updated many times like in the following for loop:
+      </p>
+
+
+      <program language="julia">
+        <code>
+          for i=1:5
+            x[] = i
+          end
+        </code>
+      </program>
+
+      <p>
+        And the result of this is:
+        <cd>
+        <cline>New value of x is 1</cline>
+        <cline>New value of x is 2</cline>
+        <cline>New value of x is 3</cline>
+        <cline>New value of x is 4</cline>
+        <cline>New value of x is 5</cline>
+        </cd>
+      </p>
+
+      <warning>
+        <p>
+          Careful using the <c>on</c> function with Observables.
+          If it is run more than once, then the code will be run each time.
+          In a code block or script that is only run once, this is fine, but often in a julia notebook, a cell might be run multiple times.
+        </p>
+      </warning>
+
+
+      <paragraphs>
+        <title>Multiple Triggers</title>
+
+        <p>
+          An Observable can have multiple triggers.
+          If we add
+        </p>
+
+
+        <program language="julia">
+          <code>
+            trigger2 = on(x) do x
+              println("Another trigger.  x: $x")
+            end
+          </code>
+        </program>
+
+        <p>
+          And then the observable is updated with <c>x[] = 10</c>, then both of the triggers are fired and the result is
+          <cd>
+          <cline>New value of x is 10</cline>
+          <cline>Another trigger.  x: 10</cline>
+          </cd>
+        </p>
+
+        <p>
+          If you have assigned a trigger with the <c>on</c> function to a variable, like above, we can remove that trigger with the <c>off</c> function.
+          For example,
+        </p>
+
+
+        <program language="julia">
+          <code>
+            off(trigger)
+          </code>
+        </program>
+
+        <p>
+          If then we update the value of <c>x</c>, say we <c>x[] = 6</c>, then we get the output
+          <cd>
+          <cline>New value of x is 6</cline>
+          </cd>
+        </p>
+
+        <p>
+          The second trigger is not fired.
+        </p>
+      </paragraphs>
+    </subsection>
+
+
+    <subsection xml:id="subsec-values-of-observables">
+      <title>Finding Values of Observables</title>
+
+      <p>
+        If we want to use the value of an observable, if we try to do it with <c>2*x</c> as an example, then we get the following:
+        <cd>
+        <cline>MethodError: no method matching *(::Int64, ::Observable{Int64})</cline>
+        </cd>
+        basically indicating that we can't do standard operations with Observables.
+        There are two ways to do this.
+        First, using the syntax <c>2*x[]</c> will multiply the value of <c>x</c> by 2, returning <c>12</c>.
+      </p>
+
+      <p>
+        Alternatively the <c>to_value</c> function will look up the value of the Observable or if the argument is just a number or string, return that string.
+        For example, <c>to_value(x)</c> returns <c>5</c> and <c>to_value("hello")</c> returns <c>"hello"</c>.
+        This implies that <c>value_of</c> can be used if you don't know if a variable is a standard one or an Observable.
+      </p>
+    </subsection>
+
+
+    <subsection xml:id="subsect-chaining-observables">
+      <title>Chaining Observables</title>
+
+      <p>
+        A common need is to create a new observable based on a previous Observable.
+        We can do this with the <c>lift</c> function.
+        For example,
+      </p>
+
+
+      <program language="julia">
+        <code>
+          y = lift(x - &gt; x^2, x)
+        </code>
+      </program>
+
+      <p>
+        Then the output is <c>Observable(36)</c>.
+        That is <c>y</c> is a variable that is an Observable and the second argument, <c>x</c> notes that this updates when <c>x</c> updates.
+        Therefore if we update <c>x</c> then <c>y</c> will be updated as well.
+        Note that this is in lieu of using the <c>on</c> function above.
+        Therefore,
+      </p>
+
+
+      <program language="julia">
+        <code>
+        x[] = 7
+        </code>
+      </program>
+
+      <p>
+        This will trigger the <c>on</c> function that we have to echo: <c>New value of x is 7</c>, but if we evaluate <c>y[]</c>, then the result is <c>Observable(49)</c>.
+      </p>
+
+
+      <paragraphs>
+        <title>The <c>@lift</c> macro</title>
+
+        <p>
+          If we want a new observable that takes three other Observables and makes a function from them, say with
+        </p>
+
+
+        <program language="julia" line-numbers="yes">
+          <code>
+            a = Observable(1.0)
+            b = Observable(6.0)
+            c = Observable(10.0)
+            mean(a,b,c) = (a+b+c)/3
+            m = lift(mean,a,b,c)
+          </code>
+        </program>
+
+        <p>
+          The result is <c>Observable(5.666666666666667)</c>.
+          To make the <c>lift</c> function a bit shorter, lines 4 and 5 can be replaced with
+        </p>
+
+
+        <program language="julia">
+          <code>
+            m = @lift(($a + $b + $c) / 3)
+          </code>
+        </program>
+
+        <p>
+          where each of the observable values are preceded with a <c>$</c>, which is common for variables inside of macros.
+        </p>
+      </paragraphs>
+    </subsection>
+
+
+    <subsection xml:id="subsect-revisit-animations">
+      <title>Revisiting Animations</title>
+
+      <p>
+        Let's now revisit the plot animations from <xref ref="lst-animated-plot"/>.
+        Now that we know about Observables, note that line 2 makes the variable <c>time</c> an Observable and then line 3 makes <c>gfun</c> an Observable.
+        Note that the values inside is a Vector.
+      </p>
+
+      <p>
+        The other important part of the code is lines 11-13.
+        This is similar to a for loop which steps through each of the values in <c>timestamps</c>, assigns the value to <c>t</c> and then the body of <c>record</c> is to update the observable <c>time</c>.
+        Note that the syntax <c>time[] = t</c> is used to update the Observable.
+      </p>
+
+      <p>
+        When <c>time[]</c> is updated, this triggers <c>gfun</c> to be updated (with <c>lift</c>).
+        The first argument of <c>record</c> is a <c>fig</c><fn>Note that since <c>record</c> is called as a do-block, then <c>fig</c> is actually the 2nd argument and the <c>do</c>-block.</fn> and the figure is automatically updated.
+      </p>
+
+      <p>
+        The code in <xref ref="lst-animated-plot"/> can be used as a basic framework for other animations.
+        Here are a few examples:
+      </p>
+
+      <example>
+        <statement>
+          <p>
+            Create an animation of the surface plot <m>z=sin(x^2+y^2-t)</m> for <m>-\pi \leq x,y \leq \pi</m> and <m>0\leq t \leq 10</m>.
+          </p>
+        </statement>
+
+        <solution>
+          <p>
+            The following code will produce this:
+          </p>
+
+
+          <program language="julia">
+            <code>
+              grid = range(-pi, pi, length=100)
+              xs = [x for x in grid, y in grid]
+              ys = [y for x in grid, y in grid]
+              time = Observable(0.0)
+              zs = @lift sin.(xs.^2 .+ ys.^2 .- $time )
+              fig = Figure()
+              ax = Axis3(fig[1, 1],
+                limits=(-pi, pi, -pi, pi, -1, 1),
+                title=@lift("t = $(round($time, digits = 1))")
+              )
+              surface!(ax, xs, ys, zs)
+              timestamps = range(0, 10, step=1 / 10)
+              record(fig, "../../assets/plots/animations/sine-wave.mp4", timestamps; framerate=30) do t
+                time[] = t
+              end
+            </code>
+          </program>
+
+          <p>
+            Running this takes a while (this took more that 2 minutes on my relatively quick laptop).
+            The result is the following video:
+          </p>
+
+          <figure xml:base="fig-sine-animation">
+            <caption>A movie of the function <m>g(x-t)</m> showing the function shifting right.</caption>
+            <video source="plots/animations/sine-wave.mp4" />
+          </figure>
+        </solution>
+      </example>
+    </subsection>
+  </section>
+</chapter>

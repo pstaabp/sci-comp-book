@@ -70,9 +70,9 @@
 
 		<p>
 			Consider an algorithm that tries to find the value of <m>x^{\star}</m>.  In general, an algorithm won't return the value <m>x^{\star}</m> but a value <m>x</m> that is close, therefore there will be some error. The <term>absolute error</term> is <m>|x - x^{\star}|</m> and the <term>relative error</term> is
-			<me>
+			<md>
 				\left|\frac{x-x^{\star}}{x^{\star}}\right|.
-			</me>
+			</md>
 		</p>
 
 		<p>
@@ -87,9 +87,9 @@
 
 				<p>
 					The absolute error is <m>|0.0153-0.015|= 0.0003</m> and the relative error is
-					<me>
+					<md>
 						\left|\frac{0.0153-0.015}{0.015}\right|=0.02
-					</me>
+					</md>
 					or 2%.
 				</p>
 
@@ -147,9 +147,9 @@
 
 			<p>
 				Remember if you solve <m>a{x}^{2}+bx+c=0</m>, the the quadratic formula finds the solution:
-				<me>
+				<md>
 					x=\frac{-b \pm \sqrt{b^{2}-4ac} } {2a}
-				</me>
+				</md>
 			</p>
 
 			<p>
@@ -157,9 +157,9 @@
 			</p>
 
 			<p>
-				<men xml:id="eq-quad">
+				<md number="yes" xml:id="eq-quad">
 					12.242{x}^{2}+42.382x+0.0012=0.
-				</men>
+				</md>
 			</p>
 
 			<p>
@@ -284,9 +284,9 @@
 		</p>
 
 		<p>
-			<me>
+			<md>
 				ax^2+bx+c=0
-			</me>
+			</md>
 		</p>
 
 		<p>
@@ -359,9 +359,9 @@ end
 			</p>
 
 			<p>
-				<me>
+				<md>
 					15x^3-143x^2+226x+280=0
-				</me>
+				</md>
 			</p>
 
 			<p>
@@ -386,9 +386,9 @@ end
 			</p>
 
 			<p>
-				<me>
+				<md>
 					x_1 = x_0 - \frac{f(x_0)}{f'(x_0)}
-				</me>
+				</md>
 			</p>
 
 			<p>

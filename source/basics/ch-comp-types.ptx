@@ -475,9 +475,9 @@ end
 			</p>
 
 			<p>
-				<me>
+				<md>
 					P(x) = a_0 + a_1 x + a_2 x^2 + \cdots + a_n x^n
-				</me>
+				</md>
 			</p>
 
 			<p>

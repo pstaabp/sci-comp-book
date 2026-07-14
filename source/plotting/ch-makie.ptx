@@ -916,9 +916,9 @@ fig
       <statement>
         <p>
           An <term>elliptic curve</term> is the implicit graph of
-          <me>
+          <md>
             y^2 = x^3 + ax + b
-          </me>
+          </md>
           for constants <m>a</m> and <m>b</m>.
           Produce a few graphs for different values of <m>a</m> and <m>b</m>.
         </p>
@@ -964,9 +964,9 @@ fig
 
     <p>
       For a more interesting plot, we examine
-      <men xml:id="eq-surf-contour">
+      <md number="yes" xml:id="eq-surf-contour">
         f(x,y) = \sin\left(\frac{1}{2}x^2-\frac{1}{4}y^2+2\right)\cos(x+y)
-      </men>
+      </md>
       although the above code will also produce a plot, here's some different options.
     </p>
 

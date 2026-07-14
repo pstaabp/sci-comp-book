@@ -48,9 +48,9 @@
       </p>
 
       <p>
-        <me>
+        <md>
           \vec{F}(\vec{x}^{\star}) = \vec{F}(\vec{x}) + J(\vec{x}) (\vec{x}^{\star}-\vec{x}) + O(||\vec{x}^{\star} -\vec{x}||^2)
-        </me>
+        </md>
       </p>
 
       <p>
@@ -58,9 +58,9 @@
       </p>
 
       <p>
-        <men xml:id="eq-jacobian">
+        <md number="yes" xml:id="eq-jacobian">
           J = \begin{bmatrix} \frac{\partial f}{\partial x} \amp \frac{\partial f}{\partial y} \\ \frac{\partial g}{\partial x} \amp \frac{\partial g}{\partial y} \end{bmatrix}
-        </men>
+        </md>
       </p>
 
       <p>
@@ -68,9 +68,9 @@
       </p>
 
       <p>
-        <me>
+        <md>
           \vec{F}(\vec{x}) = - J(\vec{x}^{\star} - \vec{x})
-        </me>
+        </md>
       </p>
 
       <p>

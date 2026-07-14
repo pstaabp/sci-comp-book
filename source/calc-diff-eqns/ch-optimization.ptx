@@ -163,9 +163,9 @@
       </p>
 
       <p>
-        <men xml:id="eq-f">
+        <md number="yes" xml:id="eq-f">
           f(x,y) = \sin\biggl(\frac{1}{2}x^2-\frac{1}{4}y^2+2\biggr)\cos(x+y)
-        </men>
+        </md>
       </p>
 
       <p>
@@ -204,9 +204,9 @@
       </p>
 
       <p>
-        <me>
+        <md>
           \mathbf{x}_{n+1} = \mathbf{x}_n - \gamma_n \nabla f(\mathbf{x}_n)
-        </me>
+        </md>
       </p>
 
       <p>
@@ -292,9 +292,9 @@ end
       </p>
 
       <p>
-        <me>
+        <md>
           \gamma_n = \frac{|(\mathbf{x}_n-\mathbf{x}_{n-1})^T(\nabla f(\mathbf{x}_n) - \nabla f(\mathbf{x}_{n-1}))|} {||\nabla f(\mathbf{x}_n) - \nabla f(\mathbf{x}_{n-1})||^2}
-        </me>
+        </md>
       </p>
 
       <p>
@@ -385,9 +385,9 @@ end
 
       <p>
         Let
-        <me>
+        <md>
           E = \sum_{i=1}^N (mx_i+b -y_i)^2
-        </me>
+        </md>
       </p>
 
       <p>
@@ -837,9 +837,9 @@ end
       %and a plot of this is given with the following: %\begin{jlblock}[expfit] %@df CO2_data scatter(:year,:mean, markersize=2, legend=:topleft, label="data") %</cd>
       %\begin{center} %\pgfplotsset{scale=0.7} %\plot{plots/opt/co2scatter.tex}{expfit} %\end{center} %This plot seems to show that perhaps the function is an exponential.
       We'll first try to fit to the following function: %
-      <men>
+      <md number="yes">
         %f(t) & = C e^{kt} \label{eq:exp1} %
-      </men>
+      </md>
       % %To make the data a bit easier to handle, we'll shift all of the years by 1959, so the variable <m>t</m> will be the number of since since 1959.
       Also, to make things consistent with what we did above, we create an array of tuples (acting like points) %% %\begin{jlblock}[expfit] %co2_pts = map(i->(CO2_data[i,:year]-1959,CO2_data[i,:mean]), 1:nrow(CO2_data)) %</cd>
       %where the first 10 values are \jlc[expfit]{display(co2_pts[1:10])}\printpythontex[verbatim] % %Next, we'll set up and optimize the least squares function as: %\begin{jlblock}[expfit] %model = Model(Ipopt.Optimizer) %set_optimizer_attribute(model,"print_level",5) %@variable(model,C,start=300) %@variable(model,k,start=0.01) % %@NLobjective(model,Min,  sum((C*exp(k*pt[1])-pt[2])^2 for pt in co2_pts)) %optimize!(model) %</cd>
@@ -848,25 +848,25 @@ end
       %
       <cd> %using Printf %display((value(C),value(k))) %</cd>
       %\printpythontex[verbatim] %\jlc[expfit]{print(@sprintf "%7.3f" value(C))} \saveprintpythontex{cval} %\jlc[expfit]{print(@sprintf "%7.5f" value(k))} \saveprintpythontex{kval} %and this means that the function fit is: %
-      <me>
+      <md>
         %f(t) & = \useprintpythontex{cval} e^{\useprintpythontex{kval} t} %
-      </me>
+      </md>
       %\begin{jlblock}[expfit] %plot!(t->value(C)*exp(value(k)*(t-1959)),1959,2020,label="f(t)") %</cd>
       %\begin{center} %\pgfplotsset{scale=0.7} %\plot{plots/opt/exp-overlay.tex}{expfit} %\end{center} % %Note that although the fit isn't bad, it doesn't seem like it is a great fit.
       This is probably due to the function not having enough parameters to get a better fit.
       If instead we try a function of the form: %
-      <men>
+      <md number="yes">
         %g(t) = A + C e^{kt} \label{eq:exp2} %
-      </men>
+      </md>
       %we can try fitting this with the following: %\begin{jlblock}[expfit] %model2 = Model(Ipopt.Optimizer) %set_optimizer_attribute(model2,"print_level",5) %@variable(model2,C,start=1) %@variable(model2,k,start=0.01) %@variable(model2,A,start=200) % %@NLobjective(model2,Min,  sum((A+C*exp(k*pt[1])-pt[2])^2 for pt in co2_pts)) %optimize!(model2) %</cd>
       %where we have added the extra variable <m>A</m> as well as added it to the <c>@NLobjective</c>macro.
       % %\begin{jlblock}[expfit] %value(C),value(k),value(A) %</cd>
       %
       <cd> %display((value(C),value(k),value(A))) %</cd>
       %\printpythontex[verbatim] %\jlc[expfit]{print(@sprintf "%6.3f" value(C))} \saveprintpythontex{cval2} %\jlc[expfit]{print(@sprintf "%7.5f" value(k))} \saveprintpythontex{kval2} %\jlc[expfit]{print(@sprintf "%7.3f" value(A))} \saveprintpythontex{aval2} %and this means that the function fit is: %
-      <me>
+      <md>
         %g(t) & = \useprintpythontex{aval2}+\useprintpythontex{cval2} e^{\useprintpythontex{kval2} t} %
-      </me>
+      </md>
       % %\begin{jlblock}[expfit] %plot!(t->value(A)+value(C)*exp(value(k)*(t-1959)),1959,2020,label="g(t)") %</cd>
       %\begin{center} %\pgfplotsset{scale=0.7} %\plot{plots/opt/exp-overlay2.tex}{expfit} %\end{center} %and this shows that it appears to be a pretty solid fit.
       -->

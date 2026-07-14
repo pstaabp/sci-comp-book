@@ -88,9 +88,9 @@ data = DataFrame(x=[1,3,4,6,7,9, 10], y = [10, 9, 7, 6, 5, 4, 2])
     </p>
 
     <p>
-      <men xml:id="eqn-sum-sq">
+      <md number="yes" xml:id="eqn-sum-sq">
         S(a,b) = \sum_{k=1}^n (y_k - (ax_k+b))^2
-      </men>
+      </md>
     </p>
 
     <p>
@@ -205,9 +205,9 @@ a,b
     </p>
 
     <p>
-      <me>
+      <md>
         \epsilon_i = y_i - (ax_i+b)
-      </me>
+      </md>
     </p>
 
     <p>
@@ -219,9 +219,9 @@ a,b
     </p>
 
     <p>
-      <me>
+      <md>
         \text{SSR} = \sum \epsilon_i^2
-      </me>
+      </md>
     </p>
 
     <p>
@@ -243,9 +243,9 @@ a,b
     </p>
 
     <p>
-      <me>
+      <md>
         \text{SSE} = \sum (y_i - \bar{y})^2
-      </me>
+      </md>
     </p>
 
     <p>
@@ -253,9 +253,9 @@ a,b
     </p>
 
     <p>
-      <me>
+      <md>
         \text{SSE} = S_{yy} - \frac{1}{n} S_y^2
-      </me>
+      </md>
     </p>
 
     <p>
@@ -273,9 +273,9 @@ a,b
     </p>
 
     <p>
-      <me>
+      <md>
         r^2 = 1 - \frac{\text{SSR}}{\text{SSE}}
-      </me>
+      </md>
     </p>
 
     <p>
@@ -315,9 +315,9 @@ a,b
     </p>
 
     <p>
-      <men xml:id="eq-sum-sq-vect1">
+      <md number="yes" xml:id="eq-sum-sq-vect1">
         S(a,b) = (X \vec{c}  - \vec{y})^T (X \vec{c}-\vec{y})
-      </men>
+      </md>
     </p>
 
     <p>
@@ -336,9 +336,9 @@ a,b
     </p>
 
     <p>
-      <me>
+      <md>
         \vec{c} = (X^{\intercal} X)^{-1} X^{\intercal} \vec{y}
-      </me>
+      </md>
     </p>
 
     <p>
@@ -403,9 +403,9 @@ a,b
       </p>
 
       <p>
-        <me>
+        <md>
           S(a,b,c) = \sum_{k=1}^n (y_k - (a_2 x_k^2 + a_1 x_k + a_0))^2
-        </me>
+        </md>
       </p>
 
       <p>
@@ -413,9 +413,9 @@ a,b
       </p>
 
       <p>
-        <men xml:id="eq-sum-sq-vect2">
+        <md number="yes" xml:id="eq-sum-sq-vect2">
           S(a,b,c) = (X \vec{c})^{\intercal} X \vec{c}
-        </men>
+        </md>
       </p>
 
       <p>
@@ -433,9 +433,9 @@ a,b
       </p>
 
       <p>
-        <me>
+        <md>
           \vec{c} = (X^{\intercal} X)^{-1} X \vec{y}
-        </me>
+        </md>
       </p>
 
       <p>
@@ -463,9 +463,9 @@ a,b
       </p>
 
       <p>
-        <me>
+        <md>
           q(x) = 0.978 x^2 -0.0666 x + 0.255
-        </me>
+        </md>
       </p>
 
       <p>

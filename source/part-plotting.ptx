@@ -7,6 +7,7 @@
   <xi:include href="plotting/ch-plotting-basics.ptx" />
   <xi:include href="plotting/ch-makie.ptx" />
   <xi:include href="plotting/ch-plots-package.ptx" />
+  <xi:include href="plotting/ch-makie-animations-interactions.ptx" />
   <xi:include href="plotting/ch-adv-makie.ptx" />
   <xi:include href="plotting/ch-adv-plots.ptx" />
 </part>

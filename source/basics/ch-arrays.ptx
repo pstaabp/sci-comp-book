@@ -252,41 +252,41 @@
 					<ol>
 						<li>
 							<p>
-								<me>
+								<md>
 									\begin{bmatrix} 3 \\ 6 \\ 9 \\ 12 \\ 15 \\ 18 \\ 21 \\ 24 \end{bmatrix}
-								</me>
+								</md>
 							</p>
 						</li>
 
 						<li>
 							<p>
-								<me>
+								<md>
 									\begin{bmatrix} 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ \end{bmatrix}
-								</me>
+								</md>
 							</p>
 						</li>
 
 						<li>
 							<p>
-								<me>
+								<md>
 									\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 1 \\ 1 &amp; 1 \\ 1 &amp; 1 \end{bmatrix}
-								</me>
+								</md>
 							</p>
 						</li>
 
 						<li>
 							<p>
-								<me>
+								<md>
 									\begin{bmatrix} 1 &amp; -3 &amp; 4 &amp; 5 \\ 3 &amp; 2 &amp; 11 &amp; -13 \\ 17 &amp; 0 &amp; 4 &amp; 2 \end{bmatrix}
-								</me>
+								</md>
 							</p>
 						</li>
 
 						<li>
 							<p>
-								<me>
+								<md>
 									\begin{bmatrix} 4 &amp; 3 &amp; 2 &amp; 1 &amp; 0 \\ 3 &amp; 2 &amp; 1 &amp; 0 &amp; 1 \\ 2 &amp; 1 &amp; 0 &amp; 1 &amp; 2 \\ 1 &amp; 0 &amp; 1 &amp; 2 &amp; 3 \\ 0 &amp; 1 &amp; 2 &amp; 3 &amp; 4 \end{bmatrix}
-								</me>
+								</md>
 							</p>
 						</li>
 					</ol>
@@ -956,7 +956,7 @@
 		</p>
 
 		<p>
-			and notice that this is an array elements of type <c>Substring{String}</c>.  This type is used as an efficiency to show where in the original string the substring occurs.  If it is desirable to extract the integer representations of the strings, then use the <c>parse</c> function explained in <xref ref="sect-convert-numbers"/>.  The integers can be extracted with
+			and notice that this is an array elements of type <c>Substring{String}</c>.  This type is used as an efficiency to show where in the original string the substring occurs.  If it is desirable to extract the integer representations of the strings, then use the <c>parse</c> function explained in <xref ref="sect-parsing-strings"/>.  The integers can be extracted with
 		</p>
 
 		<p>

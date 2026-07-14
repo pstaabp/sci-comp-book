@@ -4,5 +4,6 @@
   <title>Symbolic Calculations</title>
 
   <xi:include href="symbolic/ch-intro-symbolic.ptx" />
+  <xi:include href="symbolic/ch-algebra-calculus.ptx" />
 
 </part>

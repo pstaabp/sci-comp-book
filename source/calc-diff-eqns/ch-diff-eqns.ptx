@@ -17,9 +17,9 @@
     </p>
 
     <p>
-      <me>
+      <md>
         y'' + 4 y = 0
-      </me>
+      </md>
     </p>
 
     <p>
@@ -42,9 +42,9 @@
     </p>
 
     <p>
-      <me>
+      <md>
         \begin{bmatrix} y_1 \\ y_2 \end{bmatrix}' = \begin{bmatrix} y_2 \\ -4y_1 \end{bmatrix}
-      </me>
+      </md>
     </p>
 
     <p>
@@ -52,9 +52,9 @@
     </p>
 
     <p>
-      <me>
+      <md>
         \mathbf{y}' = F(\mathbf{y})
-      </me>
+      </md>
     </p>
   </introduction>
 
@@ -70,9 +70,9 @@
       </p>
 
       <p>
-        <men xml:id="eq-diff-eqn-simple">
+        <md number="yes" xml:id="eq-diff-eqn-simple">
           y' = f(y,t), \qquad y(0) = y_0
-        </men>
+        </md>
       </p>
 
       <p>
@@ -80,9 +80,9 @@
       </p>
 
       <p>
-        <me>
+        <md>
           y' \approx \frac{y_{n+1}-y_n}{t_{n_1}-t_n}
-        </me>
+        </md>
       </p>
 
       <p>
@@ -90,9 +90,9 @@
       </p>
 
       <p>
-        <me>
+        <md>
           \frac{y_{n+1}-y_n}{t_{n_1}-t_n} = \frac{y_{n+1}-y_n}{\Delta t} = f(y_n,t_n)
-        </me>
+        </md>
       </p>
 
       <p>
@@ -100,9 +100,9 @@
       </p>
 
       <p>
-        <me>
+        <md>
           y_{n+1} = y_n + \Delta t f(y_n,t_n)
-        </me>
+        </md>
       </p>
 
       <p>
@@ -223,9 +223,9 @@ end
       </p>
 
       <p>
-        <me>
+        <md>
           y_{n+1} = y_n + \frac{h}{6} \bigl(k_1+2k_2+2k_3+k_4 \bigr)
-        </me>
+        </md>
       </p>
 
       <p>
@@ -321,9 +321,9 @@ end
       </p>
 
       <p>
-        <me>
+        <md>
           \frac{dy}{dt} = y \qquad y(0)=1
-        </me>
+        </md>
       </p>
 
       <p>
@@ -335,9 +335,9 @@ end
       </p>
 
       <p>
-        <me>
+        <md>
           \frac{du}{dt} = f(u,p,t)
-        </me>
+        </md>
       </p>
 
       <p>
@@ -520,9 +520,9 @@ end
             </p>
 
             <p>
-              <me>
+              <md>
                 y' = \frac{t}{1+y^2}, \qquad y(0) = 1
-              </me>
+              </md>
             </p>
 
             <p>
@@ -552,9 +552,9 @@ end
       </p>
 
       <p>
-        <me>
+        <md>
           y'' + y = 0
-        </me>
+        </md>
       </p>
 
       <p>

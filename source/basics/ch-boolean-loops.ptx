@@ -7,7 +7,8 @@
     <ul>
       <li>
         <p>
-          Understanding the operators  equal, less than, less than or equal, greater than, and greater than or equal applied to variables, numbers and strings.
+          Understanding the operators equal, less than, less than or equal, greater than, and greater than or equal
+          applied to variables and values of number and string types.
         </p>
       </li>
 
@@ -51,7 +52,8 @@
     </p>
 
     <p>
-      Lastly, because of the syntax of a <c>for</c> loop, we show details about ranges in Julia, which is a compact way to write a set of numbers that are either sequential or sequential with skips in it.
+      Lastly, because of the syntax of a <c>for</c> loop, we show details about ranges in Julia, which is a compact way
+      to write a set of numbers that are either sequential or linear sequences.
     </p>
   </introduction>
 
@@ -62,31 +64,36 @@
       <p>
         A boolean value is something that is either <c>true</c> or <c>false</c>.
         These are built-in constants in Julia.
-        Sometimes we will want to know if a statement is true or false, but generally, we will use them in other structures.
+        Sometimes we will want to know if a statement is true or false, but generally, we will use them in other
+        structures.
       </p>
 
       <p>
         We often use boolean to test various conditions.
-        For each, testing equality using <c>==</c>, or comparison of numbers we use <c>&lt;,  &lt;=, &gt;, &gt;=</c> for less than, less than or equal, greater than and greater than or equal respectively.
+        For each, testing equality using <c>==</c>, or comparison of numbers we use <c>&lt;,  &lt;=, &gt;, &gt;=</c> for
+        less than, less than or equal, greater than and greater than or equal respectively.
       </p>
 
       <p>
-        If we set <c>x=3</c> and then can just type <c>x==3</c>, <c>x &lt; 3 </c>, <c>x &gt; 3</c> to test a variety of comparisons.
+        If we set <c>x=3</c> and then can just type <c>x==3</c>, <c>x &lt; 3 </c>, <c>x &gt; 3</c> to test a variety of
+        comparisons.
       </p>
 
       <p>
         In addition, we can test if a boolean value does not have some value using the <c>!=</c> and <c>!</c> operators.
-        For example using the same example <c>x=3</c> as above, then we can test that <c>x</c> is not 4 with <c>x != 4</c>.
-        If a variable is a boolean, like <c>b = true</c>, the operator that changes <c>true</c> to <c>false</c> or vice versa with <c>!b</c>.
+        For example using the same example <c>x=3</c> as above, then we can test that <c>x</c> is not 4 with
+        <c>x != 4</c>.
+        If a variable is a boolean, like <c>b = true</c>, the operator that changes <c>true</c> to <c>false</c> or vice
+        versa with <c>!b</c>.
       </p>
     </introduction>
-
 
     <subsection>
       <title>Compound boolean statements</title>
 
       <p>
-        We often want to test multiple boolean statements and can build up compound ones with either the <em>and</em> (using the code <c>&amp;&amp;</c>) or <em>or</em> (using the code <c>||</c>) operators.
+        We often want to test multiple boolean statements and can build up compound ones with either the <em>and</em>
+        (using the code <c>&amp;&amp;</c> ) or <em>or</em> (using the code <c>||</c> ) operators.
         Recall the following table for <c>&amp;&amp;</c> and <c>||</c>
       </p>
 
@@ -98,7 +105,7 @@
             <cell>AND</cell>
             <cell>T</cell>
             <cell>F</cell>
-            <cell></cell>
+            <cell/>
             <cell>OR</cell>
             <cell>T</cell>
             <cell>F</cell>
@@ -108,7 +115,7 @@
             <cell>T</cell>
             <cell>T</cell>
             <cell>F</cell>
-            <cell></cell>
+            <cell/>
             <cell>T</cell>
             <cell>T</cell>
             <cell>T</cell>
@@ -118,7 +125,7 @@
             <cell>F</cell>
             <cell>F</cell>
             <cell>F</cell>
-            <cell></cell>
+            <cell/>
             <cell>F</cell>
             <cell>T</cell>
             <cell>F</cell>
@@ -132,18 +139,19 @@
 
       <p>
         <cd>
-        <cline>x &gt;= 0 &amp;&amp; y==5</cline>
+          <cline>x &gt;= 0 &amp;&amp; y==5</cline>
         </cd>
       </p>
 
       <p>
-        which will return <c>false</c>, since only the first is true and both must be true for this compound statement to be true.
+        which will return <c>false</c>, since only the first is true and both must be true for this compound statement
+        to be true.
         However,
       </p>
 
       <p>
         <cd>
-        <cline>x &gt;= 0 || y==5</cline>
+          <cline>x &gt;= 0 || y==5</cline>
         </cd>
       </p>
 
@@ -153,7 +161,8 @@
 
       <p>
         In both of these examples, it is important to note the order of operations or operator precedence.
-        This was mentioned in <xref ref="sect-operator-precedence"/>, however as the number of operators grows, it's important to know the precedence.
+        This was mentioned in <xref ref="sect-operator-precedence"/>, however as the number of operators grows, it's
+        important to know the precedence.
         In these cases the tests <c>==,&lt;=,&lt;,&gt;=,&gt;</c> have precedence over <c>&amp;&amp;</c> and <c>||</c>.
       </p>
 
@@ -163,13 +172,14 @@
 
       <p>
         <cd>
-        <cline>x &gt;=0 &amp;&amp; y &gt; 7 || y == 5</cline>
+          <cline>x &gt;=0 &amp;&amp; y &gt; 7 || y == 5</cline>
         </cd>
       </p>
 
       <p>
         results in <c>true</c>.
-        You can think of this resulting in <c> true &amp;&amp; true || false</c> and because of precedence the first pair is tested (to be <c>true</c>) then the result <c>true || false</c> results in <c>true</c>.
+        You can think of this resulting in <c> true &amp;&amp; true || false</c> and because of precedence the first
+        pair is tested (to be <c>true</c> ) then the result <c>true || false</c> results in <c>true</c>.
       </p>
 
       <p>
@@ -179,18 +189,19 @@
 
       <p>
         <cd>
-        <cline>(x &gt;=0 &amp;&amp; y &gt; 7) || y == 5</cline>
+          <cline>(x &gt;=0 &amp;&amp; y &gt; 7) || y == 5</cline>
         </cd>
       </p>
     </subsection>
-
 
     <subsection>
       <title>Range Boolean Operator</title>
 
       <p>
         There are often situations in mathematics where we write a range of values like <m>1 \leq x \leq 8.5</m>.
-        We could write in using a compound operator like <c>1 &lt;= x &amp;&amp; x &lt;= 8.5</c>, but Julia has a nice operator that handles this as one like <c>1 &lt;= x &lt;= 8.5</c>.
+        We could write this using a compound operator like <c>1 &lt;= x &amp;&amp; x &lt;= 8.5</c>, but Julia has a nice
+        operator that looks like the mathematical one.
+        The one above can be written <c>1 &lt;= x &lt;= 8.5</c>.
       </p>
 
       <p>
@@ -232,24 +243,23 @@
       </p>
 
       <p>
-        <me>
+        <md>
           |x|=\begin{cases} x &amp; x \geq 0 \\ -x &amp; x &lt; 0 \end{cases}
-        </me>
+        </md>
       </p>
 
       <p>
         We could write this as a function as
       </p>
 
-
       <program language="Julia" line-numbers="yes">
         <code>
-function absValue(x::Real)
-  if x &gt;= 0
-     return x
-  end
-  return -1*x
-end
+          function absValue(x::Real)
+            if x &gt;= 0
+              return x
+            end
+            return -1*x
+          end
         </code>
       </program>
 
@@ -262,16 +272,15 @@ end
         We can rewrite this use an <c>if-else</c> statement.
       </p>
 
-
       <program language="Julia" line-numbers="yes">
         <code>
-function absValue(x::Real)
-  if x &gt;= 0
-    return x
-  else
-    return -1*x
-  end
-end
+          function absValue(x::Real)
+            if x &gt;= 0
+              return x
+            else
+              return -1*x
+            end
+          end
         </code>
       </program>
 
@@ -284,16 +293,16 @@ end
       </p>
     </introduction>
 
-
     <subsection>
       <title>Further choices with if statements</title>
 
       <p>
         You may need more than 2 choices on an if statement.
-        Recall the <url href="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)" visual="wikipedia">quadrants</url> of the <m>xy</m>-plane start at I for the upper right and increase as you traverse counterclockwise.
+        Recall the
+        <url href="https://en.wikipedia.org/wiki/Quadrant_(plane_geometry)" visual="wikipedia">quadrants</url> of the
+        <m>xy</m>-plane start at I for the upper right and increase as you traverse counterclockwise.
         A function could be written:
       </p>
-
 
       <program language="Julia" line-numbers="yes">
         <code>
@@ -314,7 +323,8 @@ end
       </program>
 
       <p>
-        and technically if you are on an axis, then you are not in a quadrant, so that is the reason for the last option.
+        and technically if you are on an axis, then you are not in a quadrant, so that is the reason for the last
+        option.
       </p>
 
       <exercise>
@@ -324,7 +334,6 @@ end
           </p>
         </introduction>
 
-
         <task>
           <statement>
             <p>
@@ -333,7 +342,6 @@ end
           </statement>
         </task>
 
-
         <task>
           <statement>
             <p>
@@ -341,7 +349,6 @@ end
             </p>
           </statement>
         </task>
-
 
         <task>
           <statement>
@@ -353,18 +360,19 @@ end
       </exercise>
     </subsection>
 
-
     <subsection>
       <title>Indentation in if statements</title>
 
       <p>
-        We mentioned in <xref ref="ch-intro-functions" /> that spacing in functions doesn't matter and also doesn't in if statement either.
+        We mentioned in <xref ref="ch-intro-functions"/> that spacing in functions doesn't matter and also doesn't in if
+        statement either.
         Note this is different in other languages such as Python.
-        Throughout this text, statement within other blocks (like functions or if statements or we will see loops below) are indented 2 spaces.
-        The number of spaces doesn't matter and many others prefer 4 spaces, but it is helpful to understand which statements are within the if block or the else block.
+        Throughout this text, statement within other blocks (like functions or if statements or we will see loops below)
+        are indented 2 spaces.
+        The number of spaces doesn't matter and many others prefer 4 spaces, but it is helpful to understand which
+        statements are within the if block or the else block.
       </p>
     </subsection>
-
 
     <subsection>
       <title>Using Short-Circuiting for simple branches</title>
@@ -375,22 +383,44 @@ end
         Here's a for loop (that we will see that below)
       </p>
 
-
       <program language="julia" line-numbers="yes">
         <code>
 					for n=1:8
-						@show n
-						if n%2 == 0
-							println("$n is even")
-						end
+					  @show n
+					  if n%2 == 0
+					    println("$n is even")
+					  end
 					end
         </code>
       </program>
 
       <p>
-        We are going to replace the <c>if</c> statement with <c>n%2 == 0 &amp;&amp; println("$n is even")</c> to the following:
+        The output for this is:
+        <cd>
+          <cline>n = 1</cline>
+          <cline>n = 2</cline>
+          <cline>2 is even</cline>
+          <cline>n = 3</cline>
+          <cline>n = 4</cline>
+          <cline>4 is even</cline>
+          <cline>n = 5</cline>
+          <cline>n = 6</cline>
+          <cline>6 is even</cline>
+          <cline>n = 7</cline>
+          <cline>n = 8</cline>
+          <cline>8 is even</cline>
+        </cd>
       </p>
 
+      <p>
+        Notice that each time through the loop the value of n is printed and if it is even, then the statement
+        <c>println("$n is even")</c> is executed.
+      </p>
+
+      <p>
+        We are going to replace the <c>if</c> statement with <c>n%2 == 0 &amp;&amp; println("$n is even")</c> to the
+        following:
+      </p>
 
       <program language="julia" line-numbers="yes">
         <code>
@@ -402,24 +432,28 @@ end
       </program>
 
       <p>
-        The reason this works is that the boolean and (<c>&amp;&amp;</c>) evaluates using short-circuiting.
+        This results in the same output as above.
+      </p>
+
+      <p>
+        The reason this works is that the boolean and ( <c>&amp;&amp;</c> ) evaluates using short-circuiting.
         If the left side of <c>&amp;&amp;</c> evaluates to <c>true</c>, then the right side is then evaluated.
         However if the left side is <c>false</c>, then the statement short-circuits and skips the right side evaluation.
       </p>
 
       <p>
-        An alternative using the or (<c>||</c>) short-circuit.
-        Consider the <c>isOdd</c> method we wrote in <xref ref="ch-intro-functions"/> in which we check if an integer is odd.
+        An alternative using the or ( <c>||</c> ) short-circuit.
+        Consider the <c>isOdd</c> method we wrote in <xref ref="ch-intro-functions"/> in which we check if an integer is
+        odd.
         We may want to restrict the input to nonnegative numbers and can with
       </p>
 
-
       <program language="julia" line-numbers="yes">
         <code>
-function isOdd(n::Integer)
-  n &gt;=0 || error("The input $n must be non negative")
-  n%2 == 1
-end
+          function isOdd(n::Integer)
+            n &gt;=0 || error("The input $n must be non negative")
+            n%2 == 1
+          end
         </code>
       </program>
 
@@ -430,23 +464,23 @@ end
         This is similar to
       </p>
 
-
       <program language="julia" line-numbers="yes">
         <code>
-function isOdd(n::Integer)
-  if !(n &gt;=0)
-    error("The input $n must be non negative")
-  end
-  n%2 == 1
-end
+          function isOdd(n::Integer)
+            if !(n &gt;=0)
+              error("The input $n must be non negative")
+            end
+            n%2 == 1
+          end
         </code>
       </program>
 
       <p>
         This example using the <c>||</c> short-circuit to check an argument.
-        We will show this more extensively in <xref ref="ch-adv-functions" />.
+        We will show this more extensively in <xref ref="ch-adv-functions"/>.
         However, it can be used anywhere.
-        In short, if you have a simple if statement and you want to check the condition is true, you can replace it with the <c> cond &amp;&amp; statement </c>.
+        In short, if you have a simple if statement and you want to check the condition is true, you can replace it with
+        the <c> cond &amp;&amp; statement </c>.
         Alternatively, if you want to check that a condition is not true, then <c>cond || statement</c> can be used.
       </p>
 
@@ -454,6 +488,32 @@ end
         One can also replace an <c>if-else</c> statement with a short version of it.
         This is discussed in the next section.
       </p>
+
+      <note>
+        <p>
+          The shortened version of the if statement is great, but will not always work.
+          First, if there are more than one statement to execute, then it easier and cleaner to just use an if
+          statement.
+          Secondly, you can't use a assignment operator.
+        </p>
+
+        <program language="julia" line-numbers="yes">
+          <code>
+            k= 1
+            for n=1:8
+              @show n 
+              n %2 == 0 &amp;&amp; k +=1
+            end
+          </code>
+        </program>
+
+        <p>
+          This returns the syntax error:
+          <cd>
+            <cline>syntax: invalid assignment location "((n % 2) == 0) &amp;&amp; k" around /XXXX/code/sci-comp-book/julia-output/basics/jl_notebook_cell_df34fa98e69747e1a8f8a730347b8e2f_X54sZmlsZQ==.jl:4</cline>
+          </cd>
+        </p>
+      </note>
     </subsection>
   </section>
 
@@ -461,31 +521,34 @@ end
     <title>Ternary <c>if-then-else</c></title>
 
     <p>
-      A common use of an <c>if-then-else</c> statement is to assign a value to a variable (or return from a function) depending on some condition.
+      A common use of an <c>if-then-else</c> statement is to assign a value to a variable (or return from a function)
+      depending on some condition.
       There is a compact way to do this with a ternary <c>if-then-else</c> statement that has the form:
     </p>
 
     <p>
       <cd>
-      <cline>condition ? value_if_condition_is_true : value_if_condition_is_false</cline>
+        <cline>condition ? value_if_condition_is_true : value_if_condition_is_false</cline>
       </cd>
     </p>
 
     <p>
-      which returns <c>value_if_condition_is_true</c> if condition is true otherwise <c>value_if_condition_is_false</c> is returned.
+      which returns <c>value_if_condition_is_true</c> if condition is true otherwise <c>value_if_condition_is_false</c>
+      is returned.
       The absolute value example above can be written as a single line:
     </p>
 
     <p>
       <cd>
-      <cline>absVal2(x::Real) = x &gt;= 0 ? x : -1*x</cline>
+        <cline>absVal2(x::Real) = x &gt;= 0 ? x : -1*x</cline>
       </cd>
     </p>
 
     <p>
       and once you practice with this, it will be easy to read and much shorter (1 line versus 7).
       Be careful with the syntax of this.
-      It is required that the expressions around the ? be padded with spaces to parse correctly.
+      It is required that the expressions around the ?
+      be padded with spaces to parse correctly.
       The error is reasonably clear if you don't write it correctly.
     </p>
 
@@ -495,23 +558,36 @@ end
 
     <p>
       <cd>
-      <cline>absVal3(x::Real)=ifelse(x &gt;=0, x, -1*x)</cline>
+        <cline>absVal3(x::Real)=ifelse(x &gt;=0, x, -1*x)</cline>
       </cd>
     </p>
 
     <p>
-      The <c>ifelse</c> is not used in this book, preference goes to the <c> ? : </c> format instead--which is available in almost all modern languages as well.
+      The <c>ifelse</c> is not used in this book, preference goes to the <c> ? : </c> format instead--which is available
+      in almost all modern languages as well.
     </p>
 
     <p>
-      The ternary <c>if-then-else</c> is useful if you want to store a value that has a branching condition and that branch is relatively simple.
-      If you have more complicated logic or need to call a function, this is where a <c>if-then</c> or <c>if-then-else</c> statement would be used.
+      The ternary <c>if-then-else</c> is useful if you want to store a value that has a branching condition and that
+      branch is relatively simple.
+      If you have more complicated logic or need to call a function, this is where a <c>if-then</c> or
+      <c>if-then-else</c> statement would be used.
     </p>
 
     <exercise>
-      <p>
-        Write the recursive factorial function above using the ternary if-then-else.
-      </p>
+      <statement>
+        <p>
+          Write the recursive factorial function above using the ternary if-then-else.
+        </p>
+      </statement>
+
+      <solution>
+        <program language="julia">
+          <code>
+            fact2(n::Integer) = n==0 ? 1 : fact2(n-1)
+          </code>
+        </program>
+      </solution>
     </exercise>
 
     <p>
@@ -519,22 +595,24 @@ end
       For example, the following will perform the same as the quadrant function above.
     </p>
 
-
     <program language="Julia" line-numbers="yes">
       <code>
-function quadrant2(x::Real, y::Real)
-  x &gt; 0 &amp;&amp; y &gt; 0 ? "I" :
-    x &lt; 0 &amp;&amp; y &gt; 0 ? "II" :
-    x &lt; 0 &amp;&amp; y &lt; 0 ? "III" :
-    x &gt; 0 &amp;&amp; y &lt; 0 ? "IV" : "NONE"
-end
+        function quadrant2(x::Real, y::Real)
+          x &gt; 0 &amp;&amp; y &gt; 0 ? "I" :
+            x &lt; 0 &amp;&amp; y &gt; 0 ? "II" :
+            x &lt; 0 &amp;&amp; y &lt; 0 ? "III" :
+            x &gt; 0 &amp;&amp; y &lt; 0 ? "IV" : "NONE"
+        end
       </code>
     </program>
 
     <p>
-      Note that although this can be written on a single line (it is a single nested statement), it has been split on lines for clarity.
-      Also, the precedence order is that <c>:</c> is higher that <c>?</c> in order for this to evaluate as expected without parentheses.
-      Also, since this is one line, the <c>return</c> statement is not added since the result of this will be the element returned.
+      Note that although this can be written on a single line (it is a single nested statement), it has been split on
+      lines for clarity.
+      Also, the precedence order is that <c>:</c> is higher that <c>?</c> in order for this to evaluate as expected
+      without parentheses.
+      Also, since this is one line, the <c>return</c> statement is not added since the result of this will be the
+      element returned.
     </p>
   </section>
 
@@ -543,11 +621,11 @@ end
 
     <introduction>
       <p>
-        A <em>loop</em> is a series of statements that are repeated either a fixed number of times or until a condition occurs.
+        A <em>loop</em> is a series of statements that are repeated either a fixed number of times or until a condition
+        occurs.
         They can be very helpful if a large number of operations need to be done in a predictable manner.
       </p>
     </introduction>
-
 
     <subsection xml:id="sect-while-loop">
       <title>While Loops</title>
@@ -558,16 +636,15 @@ end
         Here's a simple, but uninteresting example:
       </p>
 
-
       <program language="Julia" line-numbers="yes">
         <code>
-let
-  local n=1
-  while n &lt; 10
-    @show n
-    n+=1
-  end
-end
+          let
+            local n=1
+            while n &lt; 10
+              @show n
+              n+=1
+            end
+          end
         </code>
       </program>
 
@@ -578,28 +655,52 @@ end
       </p>
 
       <p>
-        A more practical example of a for loop will be the <url href="https://en.wikipedia.org/wiki/Bisection_method" visual="wikipedia">Bisection Method</url> for finding a root.
+        Running the code above results in the following output:
+        <cd>
+          <cline>n = 1</cline>
+          <cline>n = 2</cline>
+          <cline>n = 3</cline>
+          <cline>n = 4</cline>
+          <cline>n = 5</cline>
+          <cline>n = 6</cline>
+          <cline>n = 7</cline>
+          <cline>n = 8</cline>
+          <cline>n = 9</cline>
+        </cd>
       </p>
 
+      <p>
+        A more practical example of a for loop will be the
+        <url href="https://en.wikipedia.org/wiki/Bisection_method" visual="wikipedia">Bisection Method</url> for finding
+        a root.
+      </p>
 
       <program language="Julia" line-numbers="yes">
         <code>
-function bisection(f::Function, a::Real, b::Real)
-	local c
-	while (b-a) &gt; 1e-6
-		c = 0.5*(a+b)  # find the midpoint
-		# test if f(a) and f(c) have opposite signs to determine the new interval
-		(a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
-	end
-	c
-end
+          function bisection(f::Function, a::Real, b::Real)
+            local c
+            while (b-a) &gt; 1e-6
+              c = 0.5*(a+b)  # find the midpoint
+              # test if f(a) and f(c) have opposite signs to determine the new interval
+              (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
+            end
+            c
+          end
         </code>
       </program>
 
       <p>
-        In short, this method takes a function <m>f</m> and an interval <m>[a,b]</m> and continually bisects it ensuring there is a root in the resulting interval.
+        In short, this method takes a function <m>f</m> and an interval <m>[a,b]</m> and continually bisects it ensuring
+        there is a root in the resulting interval.
         It continues while the length of the interval is greater than <c>1e-6</c> or <m>10^{-6}</m>.
-        We use a tuple to handle the interval and on line 6, we have used a ternary <c>if-then-else</c> to first test which interval to use and then return either the left or right hand subintervals.
+        We use a tuple to handle the interval and on line 6, we have used a ternary <c>if-then-else</c> to first test
+        which interval to use and then return either the left or right hand subintervals.
+      </p>
+
+      <p>
+        This is used more as a practical example of where you would use a while loop instead of having a firm
+        understanding of this, so if you are a little confused about it, hold on.
+        We will will explore this and other rootfinding techniques in <xref ref="ch-rootfinding"/>.
       </p>
 
       <p>
@@ -608,7 +709,7 @@ end
 
       <p>
         <cd>
-        <cline>f(x) = x^2-2</cline>
+          <cline>f(x) = x^2-2</cline>
         </cd>
       </p>
 
@@ -619,7 +720,7 @@ end
 
       <p>
         <cd>
-        <cline>bisection(f,1,2)</cline>
+          <cline>bisection(f,1,2)</cline>
         </cd>
       </p>
 
@@ -628,16 +729,12 @@ end
       </p>
 
       <p>
-        Note that we used a ternary if-then-else in the <c>bisection</c> function in conjunction with a tuple to update both points in the interval.
+        Note that we used a ternary if-then-else in the <c>bisection</c> function in conjunction with a tuple to update
+        both points in the interval.
         This makes the function reasonably simple.
         A standard <c>if-then-else</c> statement can be used instead if desired.
       </p>
-
-      <p>
-        This was used as a practical example and we will explore this and other rootfinding techniques in <xref ref="ch-rootfinding"/>.
-      </p>
     </subsection>
-
 
     <subsection>
       <title>Bailing out of a While loop</title>
@@ -648,19 +745,18 @@ end
         Consider the following.
       </p>
 
-
       <program language="julia" line-numbers="yes">
         <code>
-				let
-					n = 1
-					while n &lt; 10
-						@show n
-						if n &gt; 5
-							break
-						end
-						n += 1
-					end
-				end
+        let
+          n = 1
+          while n &lt; 10
+            @show n
+            if n &gt; 5
+              break
+            end
+            n += 1
+          end
+        end
         </code>
       </program>
 
@@ -672,49 +768,40 @@ end
       </p>
 
       <p>
-        We can often shorten this using the shortcut if statement shown above, replacing the <c>if n &gt; 5</c> block with <c>n &gt; 5 &amp;&amp; break</c> as in
+        We can often shorten this using the shortcut if statement shown above, replacing the <c>if n &gt; 5</c> block
+        with <c>n &gt; 5 &amp;&amp; break</c> as in
       </p>
-
 
       <program language="julia" line-numbers="yes">
         <code>
-let
-  n = 1
-  while n &lt; 10
-    @show n
-    n &gt; 5 &amp;&amp; break
-    n += 1
-  end
-end
+          let
+            n = 1
+            while n &lt; 10
+              @show n
+              n &gt; 5 &amp;&amp; break
+              n += 1
+            end
+          end
         </code>
       </program>
 
       <p>
-        and recall that if <c>n &gt; 5</c>on line 5 is executed and when <c>false</c> then the statement is short-circuited and the second part (<c>break</c>) is not executed, however when <c>n &gt; 5</c> is <c>true</c>, then the second part is executed and the while loop is broken out of.
+        and recall that if <c>n &lt; 5</c>, then when line 5 is executed the statement <c>n &gt; 5</c> is evaluated to
+        <c>false</c>.
+        Since not true, the statement is short-circuited and the second part ( <c>break</c> ) is not executed, however
+        when <c>n &gt; 5</c> is <c>true</c>, then the second part is executed and the while loop is broken out of.
         Consider
       </p>
-
-
-      <program language="julia" line-numbers="yes">
-        let
-        n = 1
-        while true
-        @show n
-        n &gt; 5 &amp;&amp; break
-        n += 1
-        end
-        end
-      </program>
     </subsection>
-
 
     <subsection>
       <title>A <c>while true</c> loop</title>
 
       <p>
-        Notice that with this <c>while</c>loop that the condition of the loop <c>n &lt; 10</c> is never false and therefore we don't need that condition, however we do need something and that is often to replace the condition with <c>true</c>, which seems like a bad idea, but consider:
+        Notice that with this <c>while</c> loop that the condition of the loop <c>n &lt; 10</c> is never false and
+        therefore we don't need that condition, however we do need something and that is often to replace the condition
+        with <c>true</c>, which seems like a bad idea, but consider:
       </p>
-
 
       <program language="julia" line-numbers="yes">
         <code>
@@ -734,40 +821,48 @@ end
         To ensure that the loop stops, make sure that there is something like line 5 that breaks out of the loop.
       </p>
 
-      <exercise>
+      <exercise xml:id="ex-bisection-using-break">
         <statement>
           <p>
-            Rewrite the bisection method above using a <c>while true</c> and use the short-circuit with the <c>break</c> statement to ensure there is an exit from the loop.
+            Rewrite the bisection method above using a <c>while true</c> and use the short-circuit with the <c>break</c>
+            statement to ensure there is an exit from the loop.
           </p>
         </statement>
 
-        <answer>
+        <solution>
           <program language="julia" line-numbers="yes">
             <code>
-function bisection(f::Function, a::Real, b::Real)
-  local c
-  while true
-    c = 0.5*(a+b)  # find the midpoint
-    # test if f(a) and f(c) have opposite signs to determine the new interval
-    (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
-    b-a &amp;&amp; break
-    n += 1
-  end
-  c
-end
+              function bisection(f::Function, a::Real, b::Real)
+                local c
+                while true
+                  c = 0.5*(a+b)  # find the midpoint
+                  # test if f(a) and f(c) have opposite signs to determine the new interval
+                  (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
+                  b-a &lt; 1e-6 &amp;&amp; break
+                  n += 1
+                end
+                c
+              end
             </code>
           </program>
-        </answer>
+
+          <p>
+            This differs from the previous one in which we have line 3 as <c>while true</c>, which means that this will
+            always run.
+            Additionally, line 7 has the condition that <c>b-a</c> is less than <m>10^{-6}</m>, or the interval is
+            sufficiently small, that the while loops is broken out of.
+          </p>
+        </solution>
       </exercise>
     </subsection>
-
 
     <subsection>
       <title>Skipping statements in a loop</title>
 
       <p>
         In the previous section, we used the <c>break</c> statement to break out of a loop.
-        An alternative is if there is some lines of code that we wish to skip in the loop we could put them in an if statement, however another nice way to handle this is to use the <c>continue</c> statement.
+        An alternative is if there is some lines of code that we wish to skip in the loop we could put them in an if
+        statement, however another nice way to handle this is to use the <c>continue</c> statement.
         We'll show this with an example
       </p>
 
@@ -775,51 +870,50 @@ end
         The following will produce the numbers 1 to 6:
       </p>
 
-
       <program language="julia" line-numbers="yes">
         <code>
-let
-  n = 1
-  while true
-    n &gt; 6 &amp;&amp; break
-    @show n
-    n += 1
-  end
-end
+          let
+            n = 0
+            while true
+              n &gt; 6 &amp;&amp; break
+              n += 1
+              @show n
+            end
+          end
         </code>
       </program>
 
       <p>
-        Let's say we want to not print the odd numbers.
-        Although there are many ways to do this, we will skip line 6 in the following way.
+        Let's say we want to print only the odd numbers.
+        Although there are many ways to do this, we will skip the <c>@show</c> on line 6 in the following way.
       </p>
 
-
       <program language="julia" line-numbers="yes">
         <code>
-let
-  n = 0
-  while true
-    n &gt; 6 &amp;&amp; break
-    n += 1
-    n % 2 == 1 &amp;&amp; continue
-    @show n
-  end
-end
+          let
+            n = 0
+            while true
+              n &gt; 6 &amp;&amp; break
+              n += 1
+              n % 2 == 1 &amp;&amp; continue
+              @show n
+            end
+          end
         </code>
       </program>
 
       <p>
-        When line 6 is reached and <c>n % 2 == 1</c> then the right side of the <c>&amp;&amp;</c> is evaluated, then <c>continue</c> means we go to the top of the loop.
+        When line 6 is reached and <c>n % 2 == 1</c> then the right side of the <c>&amp;&amp;</c> is evaluated, then
+        <c>continue</c> means we go to the top of the loop.
       </p>
 
       <p>
         As with doing anything with a loop, careful about using <c>continue</c>.
         It will skip all lines below this.
-        If you wrote this loop with the <c>n += 1</c> below the <c>continue</c> line then it will not be evaluated and will thus be an infinite loop, which we discuss more so below.
+        If you wrote this loop with the <c>n += 1</c> below the <c>continue</c> line then it will not be evaluated and
+        will thus be an infinite loop, which we discuss more so below.
       </p>
     </subsection>
-
 
     <subsection>
       <title>Infinite Loops</title>
@@ -827,7 +921,8 @@ end
       <p>
         It is common in a <c>while</c> loop to keep running it forever.
         This occurs if there is some bug or you haven't considered all cases.
-        For example, in the bisection method above, if the function doesn't have a root (like <m>f(x)=x^2+2</m>), then this will never stop.
+        For example, in the bisection method above, if the function doesn't have a root (like <m>f(x)=x^2+2</m> ), then
+        this will never stop.
       </p>
 
       <p>
@@ -846,14 +941,15 @@ end
           <li>
             <p>
               Look at your code and see if you have something that you think will stop the loop.
-              What ever is in the boolean statement needs to eventually switch.
+              What ever is in the boolean statement needs to eventually change.
             </p>
           </li>
 
           <li>
             <p>
               Consider an additional stopping condition.
-              You may need to add a variable to count the number of times you've gone through the loop and stop if it hits some maximum, which is greater than what you would expect.
+              You may need to add a variable to count the number of times you've gone through the loop and stop if it
+              hits some maximum, which is greater than what you would expect.
             </p>
           </li>
 
@@ -861,7 +957,8 @@ end
             <p>
               Stop the code if you need to.
               You may need to interrupt the kernel.
-              In the REPL, CTRL-C will stop and in a notebook, selecting the <em>Kernel</em> menu then <em>Interrupt</em> or there is often a stop button which should stop it.
+              In the REPL, CTRL-C will stop and in a notebook, selecting the <em>Kernel</em> menu then
+              <em>Interrupt</em> or there is often a stop button which should stop it.
               The square in the toolbar should work too.
               See <xref ref="sect-kernel"/> for more information.
             </p>
@@ -876,12 +973,12 @@ end
       </p>
     </subsection>
 
-
     <subsection>
       <title>Debugging While Loops</title>
 
       <p>
-        As we mentioned above, if we use a function that does not have a root, like <m>f(x)=x^2+2</m>, the <c>bisection</c> function will not stop.
+        As we mentioned above, if we use a function that does not have a root, like <m>f(x)=x^2+2</m>, the
+        <c>bisection</c> function will not stop.
         Go ahead and try it.
         Here we will add some code to that method that will prevent it from running forever.
       </p>
@@ -890,7 +987,7 @@ end
         <ol>
           <li>
             <p>
-              we will introduce a variable <c>n</c> which will keep track of the number of steps we have done.
+              Introduce a variable <c>n</c> which will keep track of the number of steps we have done.
               We will start this variable with the value <c>0</c>.
             </p>
           </li>
@@ -903,7 +1000,8 @@ end
 
           <li>
             <p>
-              Lastly, add another condition to the while statement that will only continue if <c>n</c> is less than some value, say <c>10</c>.
+              Lastly, add another condition to the while statement that will only continue if <c>n</c> is less than some
+              value, say <c>10</c>.
             </p>
           </li>
         </ol>
@@ -913,24 +1011,23 @@ end
         The following update to the <c>bisection</c> method will now stop if we go too many times:
       </p>
 
-
-
       <listing xml:id="prog-bisection-no-inf">
         <title>Bisection Method</title>
 
         <program language="Julia" line-numbers="yes">
           <code>
-						function bisection(f::Function, a::Real, b::Real)
-						  local c
-						  local n = 0
-						  while (b-a) &gt; 1e-6 &amp;&amp; n &lt; 10
-						    c = 0.5*(a+b)  # find the midpoint
-						    # test if f(a) and f(c) have opposite signs to determine the new interval
-						    (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
-						    n += 1
-						  end
-						  c
-						end
+            function bisection(f::Function, a::Real, b::Real)
+              local c
+              local n = 0
+              while true
+                c = 0.5*(a+b)  # find the midpoint
+                # test if f(a) and f(c) have opposite signs to determine the new interval
+                (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
+                (b-a &lt; 1e-6 || n &gt; 10)  &amp;&amp; break
+                n += 1
+              end
+              c
+            end
           </code>
         </program>
       </listing>
@@ -947,81 +1044,81 @@ end
         The following is a simple for loop that prints out the numbers 1 to 10
       </p>
 
-      <p>
-        <cd>
-        <cline>for i=1:10</cline>
-        <cline>  @show i</cline>
-        <cline>end</cline>
-        </cd>
-      </p>
+      <program language="julia">
+        <code>
+        for i=1:10
+          @show i
+        end
+        </code>
+      </program>
 
       <p>
-        If you want to skip numbers or count backwards, a range in the form <em>start</em>:<em>skip</em>:<em>stop</em> is used.
+        If you want to skip numbers or count backwards, a range in the form <em>start</em>: <em>skip</em>: <em>stop</em>
+        is used.
         The following starts at 1 and skips by 2 up to 21:
       </p>
 
-      <p>
-        <cd>
-        <cline>for i=1:2:21</cline>
-        <cline>  @show i</cline>
-        <cline>end</cline>
-        </cd>
-      </p>
+      <program language="julia">
+        <code>
+        for i=1:2:21
+          @show i
+        end
+        </code>
+      </program>
 
       <p>
         and the following starts at 10, counting down to 1:
       </p>
 
-      <p>
-        <cd>
-        <cline>for i=10:-1:0</cline>
-        <cline>  @show i</cline>
-        <cline>end</cline>
-        </cd>
-      </p>
+      <program language="julia">
+        <code>
+        for i=10:-1:0
+          @show i
+        end
+        </code>
+      </program>
 
       <p>
         We can use the <c>for var in list</c> form to go through elements in a list or array (or tuple).
         The following adds all numbers in the list (array) <c>[1,5,7,11,20]</c>:
       </p>
 
-      <p>
-        <cd>
-        <cline>let</cline>
-        <cline>  local sum=0</cline>
-        <cline>  for i in [1,5,7,11,20]</cline>
-        <cline>    sum += i</cline>
-        <cline>  end</cline>
-        <cline>  sum</cline>
-        <cline>end</cline>
-        </cd>
-      </p>
+      <program language="julia">
+        <code>
+          let
+            local sum=0
+            for i in [1,5,7,11,20]
+              sum += i
+            end
+            sum
+          end
+        </code>
+      </program>
 
       <p>
         Recall that in <xref ref="sect-varargs"/> we used this in the formation to find the mean:
       </p>
 
-
       <program language="Julia" line-numbers="yes">
         <code>
-function theMean(x::Number...)
-  local s = 0
-  for val in x
-    s += val
-  end
-  s/length(x)
-end
+          function theMean(x::Number...)
+            local s = 0
+            for val in x
+              s += val
+            end
+            s/length(x)
+          end
         </code>
       </program>
     </introduction>
-
 
     <subsection>
       <title>While Loops Versus For Loops</title>
 
       <p>
         No this, isn't a smackdown between while and for loops.
-        A big question often is when I have a problem that I want to solve and I know a loop is needed, when should I use a <c>while</c> loop and when should I use a <c>for</c> loop.
+        A big question often is when I have a problem that I want to solve and I know a loop is needed, when should I
+        use a <c>while</c> loop and when should I use a <c>for</c> loop.
         The general rule of thumb is:
       </p>
 
@@ -1043,26 +1140,27 @@ end
       </p>
 
       <p>
-        Notice in the examples above, the bisection method used a <c>while</c> loop because it is unclear when you start how many times you want to go through the loop.
+        Notice in the examples above, the bisection method used a <c>while</c> loop because it is unclear when you start
+        how many times you want to go through the loop.
         Instead we stopped in while the interval was small enough.
       </p>
 
       <p>
-        In the summing of the terms for the mean, a for loop was used because of the fixed number of values in the tuple <c>x</c>.
+        In the summing of the terms for the mean, a for loop was used because of the fixed number of values in the tuple
+        <c>x</c>.
       </p>
     </subsection>
-
 
     <subsection>
       <title>Adapting While loops as For Loops</title>
 
       <p>
-        As just mentioned above, generally if we don't know how many times we go through a loop that a while loop should be used.
+        As just mentioned above, generally if we don't know how many times we go through a loop that a while loop should
+        be used.
         Let's say we have a game that we roll a die.
         If we roll the die 10 times without rolling a 1, we win and if a 1 appears fewer than 10 times, we lose.
         Here's a function that we can use to play this game.
       </p>
-
 
       <program language="julia" line-numbers="yes">
         <code>
@@ -1084,48 +1182,53 @@ end
 
       <p>
         This starts with a roll of the die with <c>rand(1:6)</c>.
-        We also have the variable <c>n</c> that will store the number of rolls and <c>win</c> is whether or not we win the game.
+        We also have the variable <c>n</c> that will store the number of rolls and <c>win</c> is whether or not we win
+        the game.
         At this point <c>win</c> is assumed <c>true</c> unless <c>roll == 1</c>.
-        The condition on the while loop is that the roll is not 1 and that the number of rolls is less than or equal to 10.
+        The condition on the while loop is that the roll is not 1 and that the number of rolls is less than or equal to
+        10.
         A possible output is
       </p>
 
       <p>
         <cd>
-        <cline>roll = 6</cline>
-        <cline>roll = 5</cline>
-        <cline>roll = 1</cline>
-        <cline>false</cline>
+          <cline>roll = 6</cline>
+          <cline>roll = 5</cline>
+          <cline>roll = 1</cline>
+          <cline>false</cline>
         </cd>
       </p>
 
       <p>
-        We will discuss random numbers in detail in <xref ref="ch-probability-random"/> and if you run this function, you will get different results, but should see rolls until a 1 is reached.
+        We will discuss random numbers in detail in <xref ref="ch-probability-random"/> and if you run this function,
+        you will get different results, but should see rolls until a 1 is reached.
         If it 1, the result is <c>false</c> that you win and <c>true</c> if not.
         Try running this function a number of times.
       </p>
 
       <p>
         If this seems complicated, it is more complicated than it needs to be.
-        If we take the premise that since we don't know how many times this is run, we need to use a <c>while</c> then that complicates things then we need to have conditions on both the roll and the number of rolls (this is how the game is determined) and these both need to be set before the while loop.
+        If we take the premise that since we don't know how many times this is run, we need to use a <c>while</c> then
+        that complicates things then we need to have conditions on both the roll and the number of rolls (this is how
+        the game is determined) and these both need to be set before the while loop.
       </p>
 
       <p>
-        Instead, we will use a <c>for</c> loop and break out (or actually just <c>return</c>) during the winning and losing conditions.
+        Instead, we will use a <c>for</c> loop and break out (or actually just <c>return</c> ) during the
+        losing case.
         Here's an update of the code:
       </p>
 
-
       <program language="julia" line-numbers="yes">
         <code>
-function playDieGame()
-  for n=1:10
-    local roll = rand(1:6)
-    @show roll
-    roll == 1 &amp;&amp; return false
-    n == 10 &amp;&amp; return true
-  end
-end
+          function playDieGame()
+            for n=1:10
+              local roll = rand(1:6)
+              @show roll
+              roll == 1 &amp;&amp; return false
+            end
+            true  # if we are done with the for loop, we win!
+          end
         </code>
       </program>
 
@@ -1134,24 +1237,25 @@ end
       </p>
 
       <p>
-        Notice that first we didn't need to define <c>roll</c> before the loop and <c>n</c> is now the index of the for loop.
+        Notice that first we didn't need to define <c>roll</c> before the loop and <c>n</c> is now the index of the for
+        loop.
         Also, we didn't define a <c>win</c> variable.
-        Instead, notice that if <c>roll == 1</c> we just <c>return false</c> and if <c>n == 10</c> we <c>return true</c>.
+        Instead, notice that if <c>roll == 1</c> we just <c>return false</c> and if <c>n == 10</c> we
+        <c>return true</c>.
       </p>
 
       <p>
         If also, we don't care about seeing the rolls, we can simplify this further with
       </p>
 
-
       <program language="julia" line-numbers="yes">
         <code>
-function playDieGame()
-  for n = 1:10
-    rand(1:6) == 1 &amp;&amp; return false
-    n == 10 &amp;&amp; return true
-  end
-end
+          function playDieGame()
+            for _=1:10
+              rand(1:6) == 1 &amp;&amp; return false
+            end
+            true
+          end
         </code>
       </program>
 
@@ -1160,7 +1264,6 @@ end
         If we make it through the loop, then we have gone 10 times and thus we win.
         Here's an even shorter version of the game:
       </p>
-
 
       <program language="julia" line-numbers="yes">
         <code>
@@ -1177,9 +1280,9 @@ end
         And if you compare this to the original function above, it's much shorter.
         There is only one other feature to note.
         The variable <c>n</c> is never used, it is simply there as the index of the for loop.
-        If this is true, in Julia style, we replace the variable with the _ character (which is technically a variable name) so our final version is
+        If this is true, in Julia style, we replace the variable with the _ character (which is technically a variable
+        name) so our final version is
       </p>
-
 
       <program language="julia" line-numbers="yes">
         <code>
@@ -1193,19 +1296,18 @@ end
       </program>
     </subsection>
 
-
     <subsection>
       <title>Using <c>break</c> and <c>continue</c> with for loops</title>
 
       <p>
-        Although we introduced both <c>break</c> and <c>continue</c> statements in while loops above, they can also be used in for loops.
+        Although we introduced both <c>break</c> and <c>continue</c> statements in while loops above, they can also be
+        used in for loops.
         Although these are not very practical examples, nevertheless this shows how they are used.
       </p>
 
       <p>
         In this example, we will defined a loop from 1 to 10 and then break out of it after going through 5 times.
       </p>
-
 
       <program language="julia" line-numbers="yes">
         <code>
@@ -1220,7 +1322,6 @@ end
         And in this example, we will print out only odd numbers
       </p>
 
-
       <program language="julia" line-numbers="yes">
         <code>
 for n=1:10
@@ -1232,7 +1333,8 @@ end
 
       <note>
         <p>
-          Although most of the examples we have used with <c>break</c> and <c>continue</c> involve the short-circuit if statements, they can be used anywhere, however are typically using this or inside a standard if statement.
+          Although most of the examples we have used with <c>break</c> and <c>continue</c> involve the short-circuit if
+          statements, they can be used anywhere, however are typically using this or inside a standard if statement.
         </p>
       </note>
     </subsection>
@@ -1248,9 +1350,9 @@ end
 
       <p>
         <cd>
-        <cline>for i=1:4</cline>
-        <cline>  @show i</cline>
-        <cline>end</cline>
+          <cline>for i=1:4</cline>
+          <cline>  @show i</cline>
+          <cline>end</cline>
         </cd>
       </p>
 
@@ -1260,21 +1362,24 @@ end
       </p>
 
       <p>
-        If you type <c>typeof(1:4)</c>, it will return <c>UnitRange{Int64}</c>, a composite type which is a <c>UnitRange</c> with integers.
+        If you type <c>typeof(1:4)</c>, it will return <c>UnitRange{Int64}</c>, a composite type which is a
+        <c>UnitRange</c> with integers.
         Note the difference using <c>1.0:4.0</c>.
-        This is of type <c>StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}</c>, and the details of this are skipped for now.
+        This is of type <c>StepRangeLen{Float64, Base.TwicePrecision{Float64}, Base.TwicePrecision{Float64}, Int64}</c>,
+        and the details of this are skipped for now.
         In short, it is Floating Point version of a <c>UnitRange</c>.
       </p>
 
       <p>
-        The other ranges we say included <c>1:2:11</c> and entering <c>typeof(1:2:11)</c> results in <c>StepRange{Int64, Int64}</c>.
+        The other ranges we say included <c>1:2:11</c> and entering <c>typeof(1:2:11)</c> results in
+        <c>StepRange{Int64, Int64}</c>.
       </p>
 
       <p>
-        We will see in <xref ref="ch-arrays"/> that there is a handy way of expanding this shorthand way of writing these sets of numbers to that of an entire list (or technically array) of numbers.
+        We will see in <xref ref="ch-arrays"/> that there is a handy way of expanding this shorthand way of writing
+        these sets of numbers to that of an entire list (or technically array) of numbers.
       </p>
     </introduction>
-
 
     <subsection xml:id="sect-lin-range">
       <title>Linear Ranges</title>
@@ -1282,18 +1387,20 @@ end
       <p>
         As we see above, it easy to make ranges if we know the step between each pair.
         Another use would be to know the starting and ending value and the number of values.
-        For example, if we want to start at 3 and end at 11 with 5 values, it's not too hard to compute this, but Julia has a built-in way to do it with the <c>range</c> command.
+        For example, if we want to start at 3 and end at 11 with 5 values, it's not too hard to compute this, but Julia
+        has a built-in way to do it with the <c>range</c> command.
         For example,
       </p>
 
       <p>
         <cd>
-        <cline>range(3,11,length=5)</cline>
+          <cline>range(3,11,length=5)</cline>
         </cd>
       </p>
 
       <p>
-        returns <c>3.0:2.0:11.0</c> and note that even though all of the arguments were integers that the result is a floating point range.
+        returns <c>3.0:2.0:11.0</c> and note that even though all of the arguments were integers that the result is a
+        floating point range.
       </p>
 
       <p>
@@ -1302,7 +1409,7 @@ end
 
       <p>
         <cd>
-        <cline>LinRange(3,11,5)</cline>
+          <cline>LinRange(3,11,5)</cline>
         </cd>
       </p>
 

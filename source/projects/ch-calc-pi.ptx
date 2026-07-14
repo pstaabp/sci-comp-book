@@ -13,9 +13,9 @@
     </p>
 
     <p>
-      <me>
+      <md>
         a_0+a_1 x + a_2 x^2 + \cdots = \sum_{n=0}^{\infty} a_n x^n
-      </me>
+      </md>
     </p>
 
     <p>
@@ -23,9 +23,9 @@
     </p>
 
     <p>
-      <men xml:id="eq-geom-series">
+      <md number="yes" xml:id="eq-geom-series">
         \frac{1}{1-x} = 1+x+x^2+x^3 + \cdots
-      </men>
+      </md>
     </p>
 
     <p>
@@ -53,12 +53,9 @@
 
     <p>
       Since the variable name doesn't matter, we can also write this in <m>x</m> as:
-    </p>
-
-    <p>
-      <me>
+      <md>
         \frac{1}{1+x^2}  = 1-x^2+x^4-x^6 + \cdots
-      </me>
+      </md>
     </p>
 
     <p>
@@ -78,9 +75,9 @@
     </p>
 
     <p>
-      <me>
+      <md>
         \frac{\pi}{4} = 1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots
-      </me>
+      </md>
     </p>
 
     <p>
@@ -88,9 +85,9 @@
     </p>
 
     <p>
-      <me>
-        \pi = 4\biggl(1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots \biggr)
-      </me>
+      <md>
+        \pi = 4\left(1 - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots \right)
+      </md>
     </p>
 
     <p>
@@ -110,14 +107,14 @@
 
     <program language="julia" line-numbers="yes">
       <code>
-function calcPi(n::Integer)
-  n &gt; 0 || throw(ArgumentError("The input n must be positive."))
-  local sum = 1.0
-  for k=1:n
-    sum += (-1)^k/(2k+1)
-  end
-  4*sum
-end
+      function calcPi(n::Integer)
+        n &gt; 0 || throw(ArgumentError("The input n must be positive."))
+        local sum = 1.0
+        for k=1:n
+          sum += (-1)^k/(2k+1)
+        end
+        4*sum
+      end
       </code>
     </program>
 
@@ -229,9 +226,9 @@ end
     </p>
 
     <p>
-      <me>
+      <md>
         \tan(a+b) = \frac{\tan a + \tan b}{1-\tan a \tan b}
-      </me>
+      </md>
     </p>
 
     <p>
@@ -240,7 +237,7 @@ end
 
     <p>
       <md>
-        <mrow>a = \tan^{-1} \frac{1}{2} \amp b \amp = \tan^{-1} \frac{1}{3}</mrow>
+        <mrow>a \amp = \tan^{-1} \frac{1}{2} \amp b \amp = \tan^{-1} \frac{1}{3}</mrow>
       </md>
     </p>
 
@@ -249,9 +246,9 @@ end
     </p>
 
     <p>
-      <me>
+      <md>
         \tan(a+b) = \frac{\frac{1}{2} + \frac{1}{3}}{1-\frac{1}{2}\frac{1}{3}} = \frac{\frac{5}{6}}{\frac{5}{6}} = 1
-      </me>
+      </md>
     </p>
 
     <p>
@@ -500,9 +497,9 @@ end
     </p>
 
     <p>
-      <me>
+      <md>
         \tan^{-1} = x \biggl(1-x^2\biggl(\frac{1}{3}-x^2 \biggl(\frac{1}{5} -x^2 \biggl(\frac{1}{7} -x^2\biggl(\cdots \biggr)\biggr)\biggr)\biggr)\biggr)
-      </me>
+      </md>
     </p>
 
     <p>
@@ -600,9 +597,9 @@ end
       </p>
 
       <p>
-        <men xml:id="eq-machin">
+        <md number="yes" xml:id="eq-machin">
           \frac{\pi}{4} = 4 \tan^{-1} \frac{1}{5} - \tan^{-1} \frac{1}{239}
-        </men>
+        </md>
       </p>
 
       <p>
@@ -724,9 +721,9 @@ end
       </p>
 
       <p>
-        <men xml:id="eq-chud">
+        <md number="yes" xml:id="eq-chud">
           \frac{1}{\pi} = 12 \sum_{k=0}^{\infty} \frac{ (-1)^k (6k)! (545140134 k + 13591409)}{(3k)! (k!)^3 (640320^3)^{k+1/2}}
-        </men>
+        </md>
       </p>
 
       <p>
@@ -751,9 +748,9 @@ end
       </p>
 
       <p>
-        <me>
+        <md>
           S = \biggl( 545140134 \sum_{k=0}^{\infty} k a_k + 13591409 \sum_{k=0}^{\infty} a_k \biggr)
-        </me>
+        </md>
       </p>
 
       <p>
@@ -761,9 +758,9 @@ end
       </p>
 
       <p>
-        <men xml:id="eq-chud-pi">
+        <md number="yes" xml:id="eq-chud-pi">
           \pi = \frac{\sqrt{640320^3}}{12S}
-        </men>
+        </md>
       </p>
 
       <p>

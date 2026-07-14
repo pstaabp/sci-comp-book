@@ -9,9 +9,9 @@
     </p>
 
     <p>
-      <me>
+      <md>
         \int_0^{2} e^{-x^2} \, dx
-      </me>
+      </md>
     </p>
 
     <p>
@@ -19,9 +19,9 @@
     </p>
 
     <p>
-      <me>
+      <md>
         \text{erf}(x) = \frac{2}{\sqrt{\pi}} \int_0^x e^{-t^2} \, dt
-      </me>
+      </md>
     </p>
 
     <p>
@@ -89,9 +89,9 @@
     </p>
 
     <p>
-      <me>
+      <md>
         A  = h y_2 + \frac{1}{2}h (y_1-y_2) = \frac{h}{2}(y_1+y_2)
-      </me>
+      </md>
     </p>
 
     <p>
@@ -110,9 +110,9 @@
     </p>
 
     <p>
-      <me>
+      <md>
         A_i = \frac{h}{2}(f(x_i)+f(x_{i+1}))
-      </me>
+      </md>
     </p>
 
     <p>

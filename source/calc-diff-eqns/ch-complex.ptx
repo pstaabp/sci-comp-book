@@ -138,16 +138,16 @@
       </p>
 
       <p>
-        <me>
+        <md>
           z  = \sqrt{a^2+b^2}
-        </me>
+        </md>
       </p>
 
       <p>
         Also, the complex conjugate, generally denoted <m>\bar{z}</m>, is
-        <me>
+        <md>
           \bar{z} = a-bi
-        </me>
+        </md>
       </p>
 
       <p>
@@ -251,9 +251,9 @@
       </p>
 
       <p>
-        <men xml:id="eq-dft">
+        <md number="yes" xml:id="eq-dft">
           \hat{x}_k = \sum_{j=1}^N x_j e^{(-2\pi i kj)/N}
-        </men>
+        </md>
       </p>
 
       <p>
@@ -269,9 +269,9 @@
       </p>
 
       <p>
-        <me>
+        <md>
           \hat{\mathbf{x}} = F \mathbf{x}
-        </me>
+        </md>
       </p>
 
       <p>
@@ -279,9 +279,9 @@
       </p>
 
       <p>
-        <me>
+        <md>
           F = \begin{bmatrix} \omega^{0\cdot 0} \amp \omega^{0 \cdot 1} \amp \cdots \amp \omega^{0 \cdot (N-1)} \\ \omega^{1\cdot 0} \amp \omega^{1 \cdot 1} \amp \cdots \amp \omega^{1 \cdot (N-1)} \\ \vdots \amp \amp \amp \vdots \\ \omega^{(N-1)\cdot 0} \amp \omega^{(N-1)\cdot 1} \amp \cdots \amp \omega^{(N-1)(N-1)}\\ \end{bmatrix}
-        </me>
+        </md>
       </p>
 
       <p>
@@ -289,9 +289,9 @@
       </p>
 
       <p>
-        <me>
+        <md>
           \omega = e^{-2\pi i/N}
-        </me>
+        </md>
       </p>
 
       <p>

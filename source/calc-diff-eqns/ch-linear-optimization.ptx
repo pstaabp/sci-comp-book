@@ -295,9 +295,9 @@ HiGHS run time      :          0.00
         </p>
 
         <p>
-          <me>
+          <md>
             x_{1,1} + x_{1,2} + x_{2,1} \geq 1
-          </me>
+          </md>
         </p>
 
         <p>

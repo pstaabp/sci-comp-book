@@ -545,9 +545,9 @@ end
 			</p>
 
 			<p>
-				<me>
+				<md>
 					p = \frac{2}{\pi}\frac{\ell}{t}
-				</me>
+				</md>
 			</p>
 
 			<p>
@@ -648,9 +648,9 @@ end
 			</p>
 
 			<p>
-				<me>
+				<md>
 					\pi \approx 4 \cdot numpts \cdot total\_points
-				</me>
+				</md>
 			</p>
 
 			<p>
