@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: salem                          *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="robots" content="noindex, nofollow">
+</head>
+<body class="ignore-math">
+<article class="exercise exercise-like"><h2 class="heading">
+<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h2>
+<div class="para">Rewrite the bisection method above using a <code class="code-inline tex2jax_ignore">while true</code> and use the short-circuit with the <code class="code-inline tex2jax_ignore">break</code> statement to ensure there is an exit from the loop.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ex-bisection-using-break-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">function bisection(f::Function, a::Real, b::Real)
+  local c
+  local n = 0
+  while true
+    c = 0.5*(a+b)  # find the midpoint
+    # test if f(a) and f(c) have opposite signs to determine the new interval
+    (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
+    ((b-a) &lt; 1e-6 || n &gt; 10) &amp;&amp; break
+    n += 1
+  end
+  c
+end
+</code></pre></div>
+<div class="para">Note that there was an extra condition added. This is basically to make sure that eventually (after 10 steps), the while loop will end. If you don’t have a function with a root or the initial interval does not have a root, then this function may not end.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ex-bisection-using-break-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 5.5.1"><a tabindex="-1" href="#ex-bisection-using-break-2" title="Copy heading and permalink for Solution 5.5.1" aria-label="Copy heading and permalink for Solution 5.5.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 5.5"><a tabindex="-1" href="#ex-bisection-using-break" title="Copy heading and permalink for Check Your Understanding 5.5" aria-label="Copy heading and permalink for Check Your Understanding 5.5">🔗</a></div>
+</article><span class="incontext"><a class="internal" href="ch-boolean-loops.html#ex-bisection-using-break">In Context</a></span>
+</body>
+</html>
