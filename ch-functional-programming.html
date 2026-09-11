@@ -25,6 +25,7 @@ hasWebworkReps: false,
 hasSage: false,
 isReact: false,
 htmlPresentation: false,
+lang: "en-US",
 });
 </script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +36,7 @@ htmlPresentation: false,
 <meta name="twitter:description" content="Coding mathematics using Julia">
 <meta property="og:description" content="Coding mathematics using Julia">
 <meta name="twitter:card" content="summary">
-<script src="_static/pretext/js/jquery.min.js"></script><script src="_static/pretext/js/dist/pretext-core.js?v=2.44"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<script src="_static/pretext/js/jquery.min.js"></script><script src="_static/pretext/js/dist/pretext-core.js?v=2.52"></script><script src="_static/pretext/js/dist/pretext-read-aloud.js?v=2.52"></script><!--** eBookCongig is necessary to configure interactive       **-->
 <!--** Runestone components to run locally in reader's browser **-->
 <!--** No external communication:                              **-->
 <!--**     log level is 0, Runestone Services are disabled     **-->
@@ -57,15 +58,15 @@ eBookConfig.allow_pairs = false;
 eBookConfig.enableScratchAC = false;
 eBookConfig.build_info = "";
 eBookConfig.python3 = null;
-eBookConfig.runestone_version = '8.1.11';
+eBookConfig.runestone_version = '8.2.10';
 eBookConfig.jobehost = '';
 eBookConfig.proxyuri_runs = '';
 eBookConfig.proxyuri_files = '';
 eBookConfig.enable_chatcodes =  false;
 </script>
 <!--*** Runestone Services ***-->
-<script src="_static/prefix-runtime.8b6d53d5a91823a0.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.2901d6466316ff22.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
-<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.66fa8a682a32c0ac.css">
+<script src="_static/prefix-runtime.e3f9706509fcf6f7.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.c5ba0ffa5f963084.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
+<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.efe427683fc41f98.css">
 <script src="_static/pretext/js/dist/lti_iframe_resizer.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-dubtf8xMHSQlExGRQ5R7toxHLgSDZ0K7AunqPWHXmJQ8XyVIG19S1T95gBxlAeGOK02P4Da2RTnQz0Za0H0ebQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.js" integrity="sha512-93uCmm0q+qO5Lb1huDqr7tywS8A2TFA+1/WHvyiWaK6/pvsFl6USnILagntBx8JnVbQH5s3n0vQZY6xNthNfKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/dist/pretext_search.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
 </script>
 </head>
@@ -84,7 +85,17 @@ eBookConfig.enable_chatcodes =  false;
 <div id="ptx-search-empty" class="ptx-search-empty"><span>No results.</span></div>
 <ol id="ptx-search-results" class="ptx-search-results"></ol></dialog>
 </div>
-<span class="nav-other-controls"><button id="ptx-readability-options-button" class="ptx-readability-options-button button" title="Readability settings"><span class="icon material-symbols-outlined" aria-hidden="true">&#xf6f1;</span><span class="name">Readability settings</span></button><dialog class="ptx-dialog ptx-readability-options-popup" id="ptx-readability-options-popup"><div class="ptx-readability-options-popup-controls">
+<span class="nav-other-controls"><button id="ptx-read-aloud-button" class="ptx-read-aloud-button button" title="Read aloud" aria-expanded="false"><span class="icon material-symbols-outlined" aria-hidden="true">&#xf1bc;</span><span class="name">Read aloud</span></button><div id="ptx-read-aloud-player" class="ptx-read-aloud-player" hidden="hidden" role="group" aria-label="Read aloud">
+<button id="ptx-read-aloud-prev" class="button" title="Previous sentence"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe045;</span></button><button id="ptx-read-aloud-toggle" class="ptx-read-aloud-toggle button" title="Play"><span class="ptx-read-aloud-icon-play"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe037;</span></span><span class="ptx-read-aloud-icon-pause"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe034;</span></span></button><button id="ptx-read-aloud-next" class="button" title="Next sentence"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe044;</span></button><a id="ptx-read-aloud-continue" class="ptx-read-aloud-continue button" hidden="hidden">Continue<span class="icon material-symbols-outlined" aria-hidden="true">&#xe037;</span></a><button id="ptx-read-aloud-settings-button" class="ptx-read-aloud-settings-button button" title="Reading settings"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe429;</span></button>
+</div>
+<dialog class="ptx-dialog ptx-read-aloud-settings-popup" id="ptx-read-aloud-settings-popup"><div class="ptx-readability-options-popup-controls">
+<h2 class="heading">Read aloud settings</h2>
+<button class="ptx-read-aloud-settings-close-button button" id="ptx-read-aloud-settings-close-button" title="Close"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cd;</span></button>
+</div>
+<div class="ptx-readability-options-group">
+<label for="ptx-read-aloud-voice"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe91f;</span><span>Voice</span></label><select id="ptx-read-aloud-voice"></select><label class="ptx-readability-slider-label" for="ptx-read-aloud-rate"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe9e4;</span><span>Reading speed</span><output id="ptx-read-aloud-rate-value" for="ptx-read-aloud-rate">1×</output></label><input type="range" id="ptx-read-aloud-rate" min="0.5" max="2" step="0.1" value="1"><label for="ptx-read-aloud-asides"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5d7;</span><span>Collapsed content</span></label><select id="ptx-read-aloud-asides"><option value="skip">Announce, do not read</option>
+<option value="read">Read automatically</option></select><label for="ptx-read-aloud-autoscroll"><input type="checkbox" id="ptx-read-aloud-autoscroll" checked><span>Follow along (auto-scroll)</span></label><label for="ptx-read-aloud-autocontinue"><input type="checkbox" id="ptx-read-aloud-autocontinue"><span>Continue to the next page automatically</span></label>
+</div></dialog><button id="ptx-readability-options-button" class="ptx-readability-options-button button" title="Readability settings"><span class="icon material-symbols-outlined" aria-hidden="true">&#xf6f1;</span><span class="name">Readability settings</span></button><dialog class="ptx-dialog ptx-readability-options-popup" id="ptx-readability-options-popup"><div class="ptx-readability-options-popup-controls">
 <h2 class="heading">Readability settings</h2>
 <button class="ptx-readability-options-close-button button" id="ptx-readability-options-close-button" title="Close"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cd;</span></button>
 </div>
@@ -243,7 +254,7 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-arrays.html" class="internal"><span class="codenumber">6</span> <span class="title">Vectors and other Collections</span></a></div>
 <ul id="ptx-toc-group-ch-arrays" class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-contructing-arrays" class="internal"><span class="codenumber">6.1</span> <span class="title">Constructing arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-constructing-arrays" class="internal"><span class="codenumber">6.1</span> <span class="title">Constructing Vectors, Matrices and other Arrays</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-comprehensions" class="internal"><span class="codenumber">6.2</span> <span class="title">Comprehensions</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-accessing-arrays" class="internal"><span class="codenumber">6.3</span> <span class="title">Accessing elements of an array</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-7" class="internal"><span class="codenumber">6.4</span> <span class="title">Common Operations on Arrays</span></a></div></li>
@@ -257,12 +268,12 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-3" class="internal"><span class="codenumber">6.9.1</span> <span class="title">Append</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-4" class="internal"><span class="codenumber">6.9.2</span> <span class="title">Adding and Removing Elements in the Middle of an Array</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-5" class="internal"><span class="codenumber">6.9.3</span> <span class="title">It Splices, It Dices!! --- okay, it doesn’t dice</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-6" class="internal"><span class="codenumber">6.9.4</span> <span class="title">Filtering Arrays</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-6" class="internal"><span class="codenumber">6.9.4</span> <span class="title">Filtering Vectors</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-7" class="internal"><span class="codenumber">6.9.5</span> <span class="title">Removing Duplicate Elements</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Splitting Strings</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-array-concat" class="internal"><span class="codenumber">6.11</span> <span class="title">Concatenating Arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-array-concat" class="internal"><span class="codenumber">6.11</span> <span class="title">Concatenating Vectors and Matrices</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-array-repeat" class="internal"><span class="codenumber">6.12</span> <span class="title">Creating patterned arrays with repeat</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-16" class="internal"><span class="codenumber">6.13</span> <span class="title">Arrays as a Collection</span></a></div></li>
 <li class="toc-item toc-section">
@@ -281,10 +292,10 @@ eBookConfig.enable_chatcodes =  false;
 <div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4" class="internal"><span class="codenumber">7.1</span> <span class="title">Functional vs. Non-functional forms</span></a></div>
 <ul id="ptx-toc-group-ch-functional-programming-4" class="structural toc-item-list">
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4-3" class="internal"><span class="codenumber">7.1.1</span> <span class="title">Anonymous Functions</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4-4" class="internal"><span class="codenumber">7.1.2</span> <span class="title">Mapping over two arrays</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4-4" class="internal"><span class="codenumber">7.1.2</span> <span class="title">Mapping over two Vectors</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-reduce-array" class="internal"><span class="codenumber">7.2</span> <span class="title">Reducing an array</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-reduce-vector" class="internal"><span class="codenumber">7.2</span> <span class="title">Reducing an vector</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#section-mapreduce" class="internal"><span class="codenumber">7.3</span> <span class="title">The <code class="code-inline tex2jax_ignore">mapreduce</code> function</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7" class="internal"><span class="codenumber">7.4</span> <span class="title">Mapping a Function over an 2D array</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-do-begin-end-blocks" class="internal"><span class="codenumber">7.5</span> <span class="title">Do-Begin-End blocks</span></a></div></li>
@@ -294,15 +305,20 @@ eBookConfig.enable_chatcodes =  false;
 <div class="toc-title-box"><a href="ch-fast-code.html" class="internal"><span class="codenumber">8</span> <span class="title">Timing Code and Writing for Speed</span></a></div>
 <ul id="ptx-toc-group-ch-fast-code" class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-4" class="internal"><span class="codenumber">8.1</span> <span class="title">Timing Code</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-5" class="internal"><span class="codenumber">8.2</span> <span class="title">Attempt #1</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-6" class="internal"><span class="codenumber">8.3</span> <span class="title">Attempt #2</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-7" class="internal"><span class="codenumber">8.4</span> <span class="title">Attempt #3</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-8" class="internal"><span class="codenumber">8.5</span> <span class="title">Attempt #4</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-9" class="internal"><span class="codenumber">8.6</span> <span class="title">Attempt #5</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-10" class="internal"><span class="codenumber">8.7</span> <span class="title">Summary of Results</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-fast-code.html#sect-faster-fibonacci" class="internal"><span class="codenumber">8.8</span> <span class="title">Computing Fibonacci Numbers</span></a></div>
-<ul id="ptx-toc-group-sect-faster-fibonacci" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sect-fast-fibonacci" class="internal"><span class="codenumber">8.8.1</span> <span class="title">Speeding Up Fibonacci</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers" class="internal"><span class="codenumber">8.2</span> <span class="title">Summing Integers</span></a></div>
+<ul id="ptx-toc-group-sec-summing-integers" class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-3" class="internal"><span class="codenumber">8.2.1</span> <span class="title">Attempt #1</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-4" class="internal"><span class="codenumber">8.2.2</span> <span class="title">Attempt #2</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-5" class="internal"><span class="codenumber">8.2.3</span> <span class="title">Attempt #3</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-6" class="internal"><span class="codenumber">8.2.4</span> <span class="title">Attempt #4</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-7" class="internal"><span class="codenumber">8.2.5</span> <span class="title">Attempt #5</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-6" class="internal"><span class="codenumber">8.3</span> <span class="title">Summary of Results</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-fast-code.html#sect-faster-fibonacci" class="internal"><span class="codenumber">8.4</span> <span class="title">Computing Fibonacci Numbers</span></a></div>
+<ul id="ptx-toc-group-sect-faster-fibonacci" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sect-fast-fibonacci" class="internal"><span class="codenumber">8.4.1</span> <span class="title">Speeding Up Fibonacci</span></a></div></li></ul>
 </li>
 </ul>
 </li>
@@ -350,7 +366,7 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-4" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Be skeptical of numerical answers</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-6" class="internal"><span class="codenumber">10.3</span> <span class="title">Are We Sunk?  Reexamining the Quadratic Formula</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-6" class="internal"><span class="codenumber">10.3</span> <span class="title">Are We Sunk? Reexamining the Quadratic Formula</span></a></div></li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton" class="internal"><span class="codenumber">10.4</span> <span class="title">Newton’s Method</span></a></div>
 <ul id="ptx-toc-group-sect-newton" class="structural toc-item-list">
@@ -372,7 +388,7 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-6" class="internal"><span class="codenumber">11.3</span> <span class="title">Handling Special Cases</span></a></div></li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-7" class="internal"><span class="codenumber">11.4</span> <span class="title">Keyword Arguments</span></a></div>
-<ul id="ptx-toc-group-ch-adv-functions-7" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-7-3" class="internal"><span class="codenumber">11.4.1</span> <span class="title">Keyword Arguments for complex functions</span></a></div></li></ul>
+<ul id="ptx-toc-group-ch-adv-functions-7" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-7-3" class="internal"><span class="codenumber">11.4.1</span> <span class="title">Keyword Arguments for complex commands</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#sect-parametric-methods" class="internal"><span class="codenumber">11.5</span> <span class="title">Parametric Methods</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#sect-variable-scope" class="internal"><span class="codenumber">11.6</span> <span class="title">Variable Scope</span></a></div></li>
@@ -1142,7 +1158,7 @@ eBookConfig.enable_chatcodes =  false;
 <div class="toc-title-box"><a href="backmatter.html" class="internal"><span class="title">Backmatter</span></a></div>
 <ul id="ptx-toc-group-backmatter" class="structural toc-item-list">
 <li class="toc-item toc-appendix">
-<div class="toc-title-box"><a href="ch-getting-started.html" class="internal"><span class="codenumber">A</span> <span class="title">Getting Started with Julia</span></a></div>
+<div class="toc-title-box"><a href="ch-getting-started.html" class="internal"><span class="codenumber">A.</span> <span class="title">Getting Started with Julia</span></a></div>
 <ul id="ptx-toc-group-ch-getting-started" class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-getting-started.html#sect-installing-julia" class="internal"><span class="codenumber">A.1</span> <span class="title">Downloading and Installing Julia</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-getting-started.html#sect-installing-vscode" class="internal"><span class="codenumber">A.2</span> <span class="title">Installing Visual Studio Code</span></a></div></li>
@@ -1181,7 +1197,7 @@ eBookConfig.enable_chatcodes =  false;
 </ul>
 </li>
 <li class="toc-item toc-appendix">
-<div class="toc-title-box"><a href="ch-packages.html" class="internal"><span class="codenumber">B</span> <span class="title">Managing Packages</span></a></div>
+<div class="toc-title-box"><a href="ch-packages.html" class="internal"><span class="codenumber">B.</span> <span class="title">Managing Packages</span></a></div>
 <ul id="ptx-toc-group-ch-packages" class="structural toc-item-list"><li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-packages.html#ch-packages-3" class="internal"><span class="codenumber">B.1</span> <span class="title">Managing Packages in Julia</span></a></div>
 <ul id="ptx-toc-group-ch-packages-3" class="structural toc-item-list">
@@ -1196,7 +1212,7 @@ eBookConfig.enable_chatcodes =  false;
 </li></ul>
 </li>
 <li class="toc-item toc-appendix">
-<div class="toc-title-box"><a href="ch-num-rep.html" class="internal"><span class="codenumber">C</span> <span class="title">Binary Represenation of Numbers</span></a></div>
+<div class="toc-title-box"><a href="ch-num-rep.html" class="internal"><span class="codenumber">C.</span> <span class="title">Binary Represenation of Numbers</span></a></div>
 <ul id="ptx-toc-group-ch-num-rep" class="structural toc-item-list">
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3" class="internal"><span class="codenumber">C.1</span> <span class="title">Integer Representation</span></a></div>
@@ -1259,45 +1275,41 @@ eBookConfig.enable_chatcodes =  false;
 <span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Functional vs. Non-functional forms</span>
 </h2>
 <section class="introduction" id="ch-functional-programming-4-2">
-<div class="para" id="ch-functional-programming-4-2-1">A common operation is to start with some array and create a new array based on the first one where there is some relation between the two. This is often called a mapping. If we start with the following array:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-functional-programming-4-2-1">A common operation is to start with some vector and create a new vector based on the first one where there is some relation between the two. The relationship between the two vectors is often called a mapping. If we start with the following vector:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="ch-functional-programming-4-2-2">
-<pre class="code-display tex2jax_ignore clipboardable">arr=collect(1:5)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">v = collect(1:5)
+</code></pre></div>
+<div class="para" id="ch-functional-programming-4-2-3">and we want a new vector that is the square of each element. Using a statement-based method, the following will create this using a for loop:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-functional-programming-4-2-3">and we want a new array that is the square of each element. Using a statement-based method, the following will create this using a for loop:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-functional-programming-4-2-4">
-<pre class="code-display tex2jax_ignore clipboardable">newarr=zeros(Int,5)  # this an array of zeros of length 5
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">V = zeros(Int,5)  # this an array of zeros of length 5
 for i=1:5
-  newarr[i]=arr[i]^2
+  V[i] = v[i]^2
 end
-newarr
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+V
+</code></pre></div>
+<div class="para" id="ch-functional-programming-4-2-5">which returns the vector <code class="code-inline tex2jax_ignore">[1,4,9,16,25]</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-functional-programming-4-2-5">which returns the array <code class="code-inline tex2jax_ignore">[1,4,9,16,25]</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-functional-programming-4-2-6">There is a much simpler way to do this using a method called <code class="code-inline tex2jax_ignore">map</code> which takes in a function and a vector and produces another vector in which a function acts on each element of the vector. In this case, the function is the square.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-functional-programming-4-2-6">There is a much simpler way to do this using a method called <code class="code-inline tex2jax_ignore">map</code> which takes in a function and an array and produces another array in which a function acts on each element of the array. In this case, the function is the square.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-functional-programming-4-2-7">
-<pre class="code-display tex2jax_ignore clipboardable">f(x)=x^2
-arr=[1,2,3,4,5]
-map(f,arr)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">f(x) = x^2
+v = [1, 2, 3, 4, 5]
+map(f, v)
+</code></pre></div>
 <div class="para" id="ch-functional-programming-4-2-8">This can be written even more simply, by using an <dfn class="terminology">anonymous function</dfn> for the first element or:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="ch-functional-programming-4-2-9">
-<pre class="code-display tex2jax_ignore clipboardable">map(x-&gt;x^2,arr)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-functional-programming-4-2-10">The key to this example is the ability to pass the function as an argument to the <code class="code-inline tex2jax_ignore">map</code> command. Once you get a feeling for functional programming, it is often an easier way to write code.<details class="ptx-footnote" aria-live="polite" id="ch-functional-programming-4-2-10-2"><summary class="ptx-footnote__number" title="Footnote 7.1"><sup> 1 </sup></summary>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">map(x-&gt;x^2, v)
+</code></pre></div>
+<div class="para" id="ch-functional-programming-4-2-10">The key to this example is the ability to pass the function as an argument to the <code class="code-inline tex2jax_ignore">map</code> command. Once you get a feeling for functional programming, it is often an easier way to write code. <details class="ptx-footnote" aria-live="polite" id="ch-functional-programming-4-2-10-2"><summary class="ptx-footnote__number" title="Footnote 7.1"><sup> 1 </sup></summary>
 <div class="ptx-footnote__contents" id="ch-functional-programming-4-2-10-2">An extreme example of this is to avoid using any for loops after understanding maps and other related functions. Although, often this can happen, it doesn’t 1) make the underlying code any faster or 2) any easier to understand, so I don’t generally prescribe to this philosophy.
 </div></details><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="ch-functional-programming-4-2-11">You, the astute reader, recalls that that broadcasting is another way of accomplishing this. In fact for the vector <code class="code-inline tex2jax_ignore">v</code> defined above,<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">v.^2
+</code></pre></div>
+<div class="para" id="ch-functional-programming-4-2-13">will return the vector of squares like above.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="ch-functional-programming-4-2-14">In many cases, broadcasting is simpler way to do this, however, when a function gets complicated, a map may be the better option.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-2-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div></section>
 <section class="subsection" id="ch-functional-programming-4-3">
 <h3 class="heading hide-type">
@@ -1305,181 +1317,270 @@ map(f,arr)
 </h3>
 <div class="para" id="ch-functional-programming-4-3-2">The example above included in the first argument <code class="code-inline tex2jax_ignore">x-&gt;x^2</code>, which is an example of a <em class="emphasis">anonymous function</em>. In short, it is anonymous because we didn’t assign it to a name and instead just included the function as an argument to the <code class="code-inline tex2jax_ignore">map</code> command and this is precisely when anonymous functions are used.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-functional-programming-4-3-3">Recall that we saw a couple of examples of this in <a href="ch-arrays.html" class="internal" title="Chapter 6: Vectors and other Collections">Chapter 6</a>. One example was <code class="code-inline tex2jax_ignore">filter(n -&gt; n%2 == 0, A)</code> which returns all elements of <code class="code-inline tex2jax_ignore">A</code> where the element is an even number. The first argument of <code class="code-inline tex2jax_ignore">filter</code> is a function and if the function is simple, passing in as an anonymous function is typical. The other example we used was in the <code class="code-inline tex2jax_ignore">sort</code> command and can pass a function which is applied before sorting using the <code class="code-inline tex2jax_ignore">by</code> command.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-functional-programming-4-3-3">To create a anonymous function, the form is <code class="code-inline tex2jax_ignore">x -&gt; f(x)</code>, where the left side is any variable (or as we will see below a tuple of variables) and the right side is a function of that variable.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-functional-programming-4-3-4">Any time that a function is used in the form <code class="code-inline tex2jax_ignore">-&gt;</code>, it is anonymous. For example, if we want to sum the contents of the array <code class="code-inline tex2jax_ignore">A=[1,2,3,4,5]</code>, one way is to<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-functional-programming-4-3-4">Recall that we saw a couple of examples of this in <a href="ch-arrays.html" class="internal" title="Chapter 6: Vectors and other Collections">Chapter 6</a>. One example was <code class="code-inline tex2jax_ignore">filter(n -&gt; n%2 == 0, A)</code> which returns all elements of <code class="code-inline tex2jax_ignore">A</code> where the element is an even number. The first argument of <code class="code-inline tex2jax_ignore">filter</code> is a function and if the function is simple, passing in as an anonymous function is typical. The other example we used was in the <code class="code-inline tex2jax_ignore">sort</code> command and can pass a function which is applied before sorting using the <code class="code-inline tex2jax_ignore">by</code> command.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="ch-functional-programming-4-3-5">
+<div class="para" id="ch-functional-programming-4-3-5">Any time that a function is used in the form <code class="code-inline tex2jax_ignore">-&gt;</code>, it is anonymous. For example, if we want to sum the contents of the array <code class="code-inline tex2jax_ignore">A=[1,2,3,4,5]</code>, one way is to<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="ch-functional-programming-4-3-6">
 <pre class="code-display tex2jax_ignore clipboardable">reduce((x,y)-&gt; x+y, A)
 </pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-functional-programming-4-3-6">which results in <code class="code-inline tex2jax_ignore">15</code>, the sum of the elements of the array. We’ll see the <code class="code-inline tex2jax_ignore">reduce</code> function in the next section. Concentrate right now on the <code class="code-inline tex2jax_ignore">(x,y)-&gt;x+y</code>, an anonymous functions can take on more than one variable.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-functional-programming-4-3-7">which results in <code class="code-inline tex2jax_ignore">15</code>, the sum of the elements of the array. We’ll see the <code class="code-inline tex2jax_ignore">reduce</code> function in the next section. Concentrate right now on the <code class="code-inline tex2jax_ignore">(x,y)-&gt;x+y</code>, an anonymous functions can take on more than one variable.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<article class="exercise exercise-like" id="ch-functional-programming-4-3-7"><h4 class="heading">
+<article class="exercise exercise-like" id="ch-functional-programming-4-3-8"><h4 class="heading">
 <span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
 </h4>
-<div class="para logical" id="ch-functional-programming-4-3-7-1">
-<ol class="decimal" id="ch-functional-programming-4-3-7-1-1">
-<li id="ch-functional-programming-4-3-7-1-1-1">
-<div class="para" id="ch-functional-programming-4-3-7-1-1-1-1">Write a statement-based loop to take the array <code class="code-inline tex2jax_ignore">[1,2,3,4,5]</code> and output an array that is the reciprocal of each number.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-7-1-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="introduction" id="ch-functional-programming-4-3-8-1">
+<div class="para" id="ch-functional-programming-4-3-8-1-1">Let <code class="code-inline tex2jax_ignore">v = collect(1:10)</code> which will be the vector of numbers from 1 to 10.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-8-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item 7.1.1"><a tabindex="-1" href="#ch-functional-programming-4-3-7-1-1-1" title="Copy heading and permalink for Item 7.1.1" aria-label="Copy heading and permalink for Item 7.1.1">🔗</a></div>
-</li>
-<li id="ch-functional-programming-4-3-7-1-1-2">
-<div class="para" id="ch-functional-programming-4-3-7-1-1-2-1">Write a functional-based code using the <code class="code-inline tex2jax_ignore">map</code> command to do the same.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-7-1-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item 7.1.2"><a tabindex="-1" href="#ch-functional-programming-4-3-7-1-1-2" title="Copy heading and permalink for Item 7.1.2" aria-label="Copy heading and permalink for Item 7.1.2">🔗</a></div>
-</li>
-</ol>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-7-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<article class="task exercise-like" id="ch-functional-programming-4-3-8-2"><h5 class="heading"><span class="codenumber">(a)</span></h5>
+<div class="para" id="ch-functional-programming-4-3-8-2-1-1">Create another vector <code class="code-inline tex2jax_ignore">V = zeros(Float64,10)</code> that will be a vector of 0 as floats. Write a loop that fills the elements of <code class="code-inline tex2jax_ignore">V</code> with the reciprocal of the elements of <code class="code-inline tex2jax_ignore">v</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-8-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 7.1"><a tabindex="-1" href="#ch-functional-programming-4-3-7" title="Copy heading and permalink for Check Your Understanding 7.1" aria-label="Copy heading and permalink for Check Your Understanding 7.1">🔗</a></div>
+<div class="solutions">
+<details id="ch-functional-programming-4-3-8-2-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">for i=1:10
+  V[i] = 1/v[i]
+end
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.1.a.1"><a tabindex="-1" href="#ch-functional-programming-4-3-8-2-2" title="Copy heading and permalink for Solution 7.1.a.1" aria-label="Copy heading and permalink for Solution 7.1.a.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.1.a"><a tabindex="-1" href="#ch-functional-programming-4-3-8-2" title="Copy heading and permalink for Task 7.1.a" aria-label="Copy heading and permalink for Task 7.1.a">🔗</a></div>
+</article>
+<article class="task exercise-like" id="ch-functional-programming-4-3-8-3"><h5 class="heading"><span class="codenumber">(b)</span></h5>
+<div class="para" id="ch-functional-programming-4-3-8-3-1-1">Use an anonymous function and the <code class="code-inline tex2jax_ignore">map</code> command to find the reciprocals of the elements of <code class="code-inline tex2jax_ignore">v</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-8-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="ch-functional-programming-4-3-8-3-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">map(x-&gt; 1/x, v)
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.1.b.1"><a tabindex="-1" href="#ch-functional-programming-4-3-8-3-2" title="Copy heading and permalink for Solution 7.1.b.1" aria-label="Copy heading and permalink for Solution 7.1.b.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.1.b"><a tabindex="-1" href="#ch-functional-programming-4-3-8-3" title="Copy heading and permalink for Task 7.1.b" aria-label="Copy heading and permalink for Task 7.1.b">🔗</a></div>
+</article>
+<article class="task exercise-like" id="ch-functional-programming-4-3-8-4"><h5 class="heading"><span class="codenumber">(c)</span></h5>
+<div class="para" id="ch-functional-programming-4-3-8-4-1-1">(Optional) Find the reciprocals of <code class="code-inline tex2jax_ignore">v</code> using broadcasting.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-8-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="ch-functional-programming-4-3-8-4-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">1 ./ v
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.1.c.1"><a tabindex="-1" href="#ch-functional-programming-4-3-8-4-2" title="Copy heading and permalink for Solution 7.1.c.1" aria-label="Copy heading and permalink for Solution 7.1.c.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.1.c"><a tabindex="-1" href="#ch-functional-programming-4-3-8-4" title="Copy heading and permalink for Task 7.1.c" aria-label="Copy heading and permalink for Task 7.1.c">🔗</a></div>
+</article>
+<article class="task exercise-like" id="ch-functional-programming-4-3-8-5"><h5 class="heading"><span class="codenumber">(d)</span></h5>
+<div class="para" id="ch-functional-programming-4-3-8-5-1-1">(Optional) Find the reciprocals of <code class="code-inline tex2jax_ignore">v</code> using a comprehension.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-3-8-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="ch-functional-programming-4-3-8-5-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">[1/x for x in v]
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.1.d.1"><a tabindex="-1" href="#ch-functional-programming-4-3-8-5-2" title="Copy heading and permalink for Solution 7.1.d.1" aria-label="Copy heading and permalink for Solution 7.1.d.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.1.d"><a tabindex="-1" href="#ch-functional-programming-4-3-8-5" title="Copy heading and permalink for Task 7.1.d" aria-label="Copy heading and permalink for Task 7.1.d">🔗</a></div>
+</article><div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 7.1"><a tabindex="-1" href="#ch-functional-programming-4-3-8" title="Copy heading and permalink for Check Your Understanding 7.1" aria-label="Copy heading and permalink for Check Your Understanding 7.1">🔗</a></div>
 </article><div class="autopermalink" aria-hidden="true" data-description="Subsection 7.1.1: Anonymous Functions"><a tabindex="-1" href="#ch-functional-programming-4-3" title="Copy heading and permalink for Subsection 7.1.1: Anonymous Functions" aria-label="Copy heading and permalink for Subsection 7.1.1: Anonymous Functions">🔗</a></div>
 </section>
 <section class="subsection" id="ch-functional-programming-4-4">
 <h3 class="heading hide-type">
-<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.1.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Mapping over two arrays</span>
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.1.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Mapping over two Vectors</span>
 </h3>
-<div class="para" id="ch-functional-programming-4-4-2">The <code class="code-inline tex2jax_ignore">map</code> function can work over multiple arrays as long at the first argument, which is the function can take as inputs multiple values. A simple example is to multiply element by element over vectors like<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-functional-programming-4-4-2">The <code class="code-inline tex2jax_ignore">map</code> function can work over more than one vector as long at the first argument, which is the function can take as inputs multiple values. A simple example is to multiply element by element over vectors like<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="ch-functional-programming-4-4-3">
-<pre class="code-display tex2jax_ignore clipboardable">map(*,[1,2,3],[10,20,30])
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">map(*,[1,2,3],[10,20,30])
+</code></pre></div>
 <div class="para" id="ch-functional-programming-4-4-4">and the result is <code class="code-inline tex2jax_ignore">[10, 40, 90]</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-functional-programming-4-4-5">An astute reader will remember that we could have also done this with broadcasting as in <code class="code-inline tex2jax_ignore">[1,2,3] .* [10, 20, 30]</code>, but the point of this is show an example with mapping over two arrays. Another example of this using an anonymous functions is<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-functional-programming-4-4-5">An astute reader will remember that we could have also done this with broadcasting as in <code class="code-inline tex2jax_ignore">[1,2,3] .* [10, 20, 30]</code>, but the point of this is show an example with mapping over two vectors. Another example of this using an anonymous functions is<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="ch-functional-programming-4-4-6">
-<pre class="code-display tex2jax_ignore clipboardable">map((x,y)-&gt;x^2+y,[1,2,3],[10,20,30])
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">map((x,y)-&gt;x^2+y,[1,2,3],[10,20,30])
+</code></pre></div>
 <div class="para" id="ch-functional-programming-4-4-7">which squares each element in the first array, then adds to a second array resulting in <code class="code-inline tex2jax_ignore">[11, 24, 39]</code> and again this could have been done with broadcasting.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Subsection 7.1.2: Mapping over two arrays"><a tabindex="-1" href="#ch-functional-programming-4-4" title="Copy heading and permalink for Subsection 7.1.2: Mapping over two arrays" aria-label="Copy heading and permalink for Subsection 7.1.2: Mapping over two arrays">🔗</a></div>
+<article class="exercise exercise-like" id="ch-functional-programming-4-4-8"><h4 class="heading">
+<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="introduction" id="ch-functional-programming-4-4-8-1">
+<div class="para" id="ch-functional-programming-4-4-8-1-1">Let<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-8-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">v1 = collect(2:2:20)
+v2 = repeat(1:5,2)
+</code></pre></div>
+</div>
+<article class="task exercise-like" id="ch-functional-programming-4-4-8-2"><h5 class="heading"><span class="codenumber">(a)</span></h5>
+<div class="para" id="ch-functional-programming-4-4-8-2-1-1">Use the <code class="code-inline tex2jax_ignore">map</code> function to find a vector of elements from <code class="code-inline tex2jax_ignore">v1</code> divided by <code class="code-inline tex2jax_ignore">v2</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-8-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="ch-functional-programming-4-4-8-2-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">map((x,y) -&gt; x/y,v1,v2)
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.2.a.1"><a tabindex="-1" href="#ch-functional-programming-4-4-8-2-2" title="Copy heading and permalink for Solution 7.2.a.1" aria-label="Copy heading and permalink for Solution 7.2.a.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.2.a"><a tabindex="-1" href="#ch-functional-programming-4-4-8-2" title="Copy heading and permalink for Task 7.2.a" aria-label="Copy heading and permalink for Task 7.2.a">🔗</a></div>
+</article>
+<article class="task exercise-like" id="ch-functional-programming-4-4-8-3"><h5 class="heading"><span class="codenumber">(b)</span></h5>
+<div class="para" id="ch-functional-programming-4-4-8-3-1-1">Repeat the previous task with broadcasting.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-8-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="ch-functional-programming-4-4-8-3-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">v1 ./ v2
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.2.b.1"><a tabindex="-1" href="#ch-functional-programming-4-4-8-3-2" title="Copy heading and permalink for Solution 7.2.b.1" aria-label="Copy heading and permalink for Solution 7.2.b.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.2.b"><a tabindex="-1" href="#ch-functional-programming-4-4-8-3" title="Copy heading and permalink for Task 7.2.b" aria-label="Copy heading and permalink for Task 7.2.b">🔗</a></div>
+</article>
+<article class="task exercise-like" id="ch-functional-programming-4-4-8-4"><h5 class="heading"><span class="codenumber">(c)</span></h5>
+<div class="para" id="ch-functional-programming-4-4-8-4-1-1">Use <code class="code-inline tex2jax_ignore">map</code> to find <code class="code-inline tex2jax_ignore">x mod y</code>, where <code class="code-inline tex2jax_ignore">x</code> comes from <code class="code-inline tex2jax_ignore">v1</code> and <code class="code-inline tex2jax_ignore">y</code> from <code class="code-inline tex2jax_ignore">v2</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-4-4-8-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="ch-functional-programming-4-4-8-4-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">map(mod, v1, v2)
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.2.c.1"><a tabindex="-1" href="#ch-functional-programming-4-4-8-4-2" title="Copy heading and permalink for Solution 7.2.c.1" aria-label="Copy heading and permalink for Solution 7.2.c.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.2.c"><a tabindex="-1" href="#ch-functional-programming-4-4-8-4" title="Copy heading and permalink for Task 7.2.c" aria-label="Copy heading and permalink for Task 7.2.c">🔗</a></div>
+</article><div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 7.2"><a tabindex="-1" href="#ch-functional-programming-4-4-8" title="Copy heading and permalink for Check Your Understanding 7.2" aria-label="Copy heading and permalink for Check Your Understanding 7.2">🔗</a></div>
+</article><div class="autopermalink" aria-hidden="true" data-description="Subsection 7.1.2: Mapping over two Vectors"><a tabindex="-1" href="#ch-functional-programming-4-4" title="Copy heading and permalink for Subsection 7.1.2: Mapping over two Vectors" aria-label="Copy heading and permalink for Subsection 7.1.2: Mapping over two Vectors">🔗</a></div>
 </section><div class="autopermalink" aria-hidden="true" data-description="Section 7.1: Functional vs. Non-functional forms"><a tabindex="-1" href="#ch-functional-programming-4" title="Copy heading and permalink for Section 7.1: Functional vs. Non-functional forms" aria-label="Copy heading and permalink for Section 7.1: Functional vs. Non-functional forms">🔗</a></div>
 </section>
-<section class="section" id="sect-reduce-array">
+<section class="section" id="sect-reduce-vector">
 <h2 class="heading hide-type">
-<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Reducing an array</span>
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Reducing an vector</span>
 </h2>
-<div class="para" id="sect-reduce-array-2">The <code class="code-inline tex2jax_ignore">map</code> command in general takes in an array and returns an array. Another common task with arrays is to  reduce the entire array to a single value. If <code class="code-inline tex2jax_ignore">arr=[1,2,3,4,5]</code>, then we can sum the values with the <code class="code-inline tex2jax_ignore">reduce</code> command as in:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-reduce-vector-2">The <code class="code-inline tex2jax_ignore">map</code> command in general takes in one or more vectors and returns an vector. Another common task with vector is to reduce the entire vector to a single value. If <code class="code-inline tex2jax_ignore">v = [1,2,3,4,5]</code>, then we can sum the values with the <code class="code-inline tex2jax_ignore">reduce</code> command as in:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="sect-reduce-array-3">
-<pre class="code-display tex2jax_ignore clipboardable">reduce((x,y)-&gt;x+y,arr)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">reduce((x,y)-&gt;x+y,v)
+</code></pre></div>
+<div class="para" id="sect-reduce-vector-4">which returns <code class="code-inline tex2jax_ignore">15</code>. This could be written simpler with <code class="code-inline tex2jax_ignore">reduce(+, v)</code>. <details class="ptx-footnote" aria-live="polite" id="sect-reduce-vector-4-3"><summary class="ptx-footnote__number" title="Footnote 7.2"><sup> 2 </sup></summary>
+<div class="ptx-footnote__contents" id="sect-reduce-vector-4-3">And yes, there is a <code class="code-inline tex2jax_ignore">sum</code> command that will do this with <code class="code-inline tex2jax_ignore">sum(v)</code>.
+</div></details><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-reduce-array-4">which returns <code class="code-inline tex2jax_ignore">15</code>. This could be written simpler with <code class="code-inline tex2jax_ignore">reduce(+, arr)</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-reduce-vector-5">To multiply all numbers, we can type:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-reduce-array-5">To multiply all numbers, we can type:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">reduce((x,y)-&gt;x*y, v)
+</code></pre></div>
+<div class="para" id="sect-reduce-vector-7">and the result is <code class="code-inline tex2jax_ignore">120</code>. This could be written simpler with <code class="code-inline tex2jax_ignore">reduce(*, v)</code>. In both of these cases, there is a little bit hidden, so let’s look at these in more detail.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="sect-reduce-array-6">
-<pre class="code-display tex2jax_ignore clipboardable">reduce((x,y)-&gt;x*y,arr)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para logical" id="sect-reduce-vector-8">
+<ol class="decimal" id="sect-reduce-vector-8-1">
+<li id="sect-reduce-vector-8-1-1">
+<div class="para" id="sect-reduce-vector-8-1-1-1">First, the first argument of the <code class="code-inline tex2jax_ignore">reduce</code> command is a 2-argument (or binary) function.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-8-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-reduce-array-7">and the result is <code class="code-inline tex2jax_ignore">120</code>. This could be written simpler with <code class="code-inline tex2jax_ignore">reduce(*, arr)</code>. In both of these cases, there is a little bit hidden, so let’s look at these in more detail.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-reduce-array-8">
-<ol class="decimal" id="sect-reduce-array-8-1">
-<li id="sect-reduce-array-8-1-1">
-<div class="para" id="sect-reduce-array-8-1-1-1">First, the first argument of the <code class="code-inline tex2jax_ignore">reduce</code> command is a 2-argument (or binary) function.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-8-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" aria-hidden="true" data-description="Item 1"><a tabindex="-1" href="#sect-reduce-array-8-1-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Item 1"><a tabindex="-1" href="#sect-reduce-vector-8-1-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
 </li>
-<li id="sect-reduce-array-8-1-2">
-<div class="para" id="sect-reduce-array-8-1-2-1">Secondly, the operation is done on all numbers on the array, but needs to start with some value (because it is a binary function). In the sum case, the initial value is 0 (by default) and in the multiply case it is 1.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-8-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<li id="sect-reduce-vector-8-1-2">
+<div class="para" id="sect-reduce-vector-8-1-2-1">Secondly, the operation is done on all numbers on the array, but needs to start with some value (because it is a binary function). In the sum case, the initial value is 0 (by default) and in the multiply case it is 1.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-8-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item 2"><a tabindex="-1" href="#sect-reduce-array-8-1-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Item 2"><a tabindex="-1" href="#sect-reduce-vector-8-1-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
 </li>
 </ol>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-reduce-array-9">These are perhaps obvious examples and each of these have the built-in functions <code class="code-inline tex2jax_ignore">sum</code> and <code class="code-inline tex2jax_ignore">prod</code> that find the sum and product of an array.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-reduce-vector-9">These are perhaps obvious examples and each of these have the built-in functions <code class="code-inline tex2jax_ignore">sum</code> and <code class="code-inline tex2jax_ignore">prod</code> that find the sum and product of an array.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-reduce-array-10">Let’s look at an example that returns the number of array elements that are greater than zero:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-reduce-vector-10">Let’s look at an example that returns the number of array elements that are greater than zero:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="sect-reduce-array-11">
-<pre class="code-display tex2jax_ignore clipboardable">numPos(arr) = reduce((n,val) -&gt; val &gt; 0 ? n+1 : n, arr, init=0)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">numPos(arr) = reduce((n,val) -&gt; val &gt; 0 ? n+1 : n, arr, init=0)
+</code></pre></div>
+<div class="para" id="sect-reduce-vector-12">and then if it is tested on an array of both positive and negative numbers:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-reduce-array-12">and then if it is tested on an array of both positive and negative numbers:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">numPos([-3,5,8,-2,11])
+</code></pre></div>
+<div class="para" id="sect-reduce-vector-14">this returns <code class="code-inline tex2jax_ignore">3</code>. How this works is as follows. There are two values associated within reduce from the function. The first is <code class="code-inline tex2jax_ignore">n</code> and the second is <code class="code-inline tex2jax_ignore">val</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="sect-reduce-array-13">
-<pre class="code-display tex2jax_ignore clipboardable">numPos([-3,5,8,-2,11])
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para logical" id="sect-reduce-vector-15">
+<ol class="decimal" id="sect-reduce-vector-15-1">
+<li id="sect-reduce-vector-15-1-1">
+<div class="para" id="sect-reduce-vector-15-1-1-1">The variable <code class="code-inline tex2jax_ignore">n</code> is initially 0 (this is the <code class="code-inline tex2jax_ignore">init=0</code> part of the function call)<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-15-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-reduce-array-14">this returns <code class="code-inline tex2jax_ignore">3</code>. How this works is as follows. There are two values associated within reduce from the function. The first is <code class="code-inline tex2jax_ignore">n</code> and the second is <code class="code-inline tex2jax_ignore">val</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-reduce-array-15">
-<ol class="decimal" id="sect-reduce-array-15-1">
-<li id="sect-reduce-array-15-1-1">
-<div class="para" id="sect-reduce-array-15-1-1-1">The variable <code class="code-inline tex2jax_ignore">n</code> is initially 0 (this is the <code class="code-inline tex2jax_ignore">init=0</code> part of the function call)<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-15-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="autopermalink" aria-hidden="true" data-description="Item 1"><a tabindex="-1" href="#sect-reduce-array-15-1-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Item 1"><a tabindex="-1" href="#sect-reduce-vector-15-1-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
 </li>
-<li id="sect-reduce-array-15-1-2">
-<div class="para" id="sect-reduce-array-15-1-2-1">On the first step, <code class="code-inline tex2jax_ignore">val</code> takes on the first value in the array (or <code class="code-inline tex2jax_ignore">-3</code>). It is checked if it is positive and if so, return <code class="code-inline tex2jax_ignore">n+1</code> or <code class="code-inline tex2jax_ignore">n</code>. Since n=0 and <code class="code-inline tex2jax_ignore">-3</code> is not positive, then the function returns 0.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-15-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<li id="sect-reduce-vector-15-1-2">
+<div class="para" id="sect-reduce-vector-15-1-2-1">On the first step, <code class="code-inline tex2jax_ignore">val</code> takes on the first value in the array (or <code class="code-inline tex2jax_ignore">-3</code> ). It is checked if it is positive and if so, return <code class="code-inline tex2jax_ignore">n+1</code> or <code class="code-inline tex2jax_ignore">n</code>. Since n=0 and <code class="code-inline tex2jax_ignore">-3</code> is not positive, then the function returns 0.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-15-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item 2"><a tabindex="-1" href="#sect-reduce-array-15-1-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Item 2"><a tabindex="-1" href="#sect-reduce-vector-15-1-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
 </li>
-<li id="sect-reduce-array-15-1-3">
-<div class="para" id="sect-reduce-array-15-1-3-1">On the second step, <code class="code-inline tex2jax_ignore">val</code> is 5 and this time the function returns <code class="code-inline tex2jax_ignore">n+1</code> or 1<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-15-1-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<li id="sect-reduce-vector-15-1-3">
+<div class="para" id="sect-reduce-vector-15-1-3-1">On the second step, <code class="code-inline tex2jax_ignore">val</code> is 5 and this time the function returns <code class="code-inline tex2jax_ignore">n+1</code> or 1<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-15-1-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item 3"><a tabindex="-1" href="#sect-reduce-array-15-1-3" title="Copy heading and permalink for Item 3" aria-label="Copy heading and permalink for Item 3">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Item 3"><a tabindex="-1" href="#sect-reduce-vector-15-1-3" title="Copy heading and permalink for Item 3" aria-label="Copy heading and permalink for Item 3">🔗</a></div>
 </li>
-<li id="sect-reduce-array-15-1-4">
-<div class="para" id="sect-reduce-array-15-1-4-1">
-<code class="code-inline tex2jax_ignore">val</code> is 8 and the function returns <code class="code-inline tex2jax_ignore">n+1</code> or 2<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-15-1-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<li id="sect-reduce-vector-15-1-4">
+<div class="para" id="sect-reduce-vector-15-1-4-1">
+<code class="code-inline tex2jax_ignore">val</code> is 8 and the function returns <code class="code-inline tex2jax_ignore">n+1</code> or 2<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-15-1-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item 4"><a tabindex="-1" href="#sect-reduce-array-15-1-4" title="Copy heading and permalink for Item 4" aria-label="Copy heading and permalink for Item 4">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Item 4"><a tabindex="-1" href="#sect-reduce-vector-15-1-4" title="Copy heading and permalink for Item 4" aria-label="Copy heading and permalink for Item 4">🔗</a></div>
 </li>
-<li id="sect-reduce-array-15-1-5">
-<div class="para" id="sect-reduce-array-15-1-5-1">
-<code class="code-inline tex2jax_ignore">val</code> is -2 and the function returns <code class="code-inline tex2jax_ignore">n</code> or 2<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-15-1-5-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<li id="sect-reduce-vector-15-1-5">
+<div class="para" id="sect-reduce-vector-15-1-5-1">
+<code class="code-inline tex2jax_ignore">val</code> is -2 and the function returns <code class="code-inline tex2jax_ignore">n</code> or 2<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-15-1-5-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item 5"><a tabindex="-1" href="#sect-reduce-array-15-1-5" title="Copy heading and permalink for Item 5" aria-label="Copy heading and permalink for Item 5">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Item 5"><a tabindex="-1" href="#sect-reduce-vector-15-1-5" title="Copy heading and permalink for Item 5" aria-label="Copy heading and permalink for Item 5">🔗</a></div>
 </li>
-<li id="sect-reduce-array-15-1-6">
-<div class="para" id="sect-reduce-array-15-1-6-1">
-<code class="code-inline tex2jax_ignore">val</code> is 11 and the function returns <code class="code-inline tex2jax_ignore">n+1</code> or 3.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-15-1-6-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<li id="sect-reduce-vector-15-1-6">
+<div class="para" id="sect-reduce-vector-15-1-6-1">
+<code class="code-inline tex2jax_ignore">val</code> is 11 and the function returns <code class="code-inline tex2jax_ignore">n+1</code> or 3.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-15-1-6-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item 6"><a tabindex="-1" href="#sect-reduce-array-15-1-6" title="Copy heading and permalink for Item 6" aria-label="Copy heading and permalink for Item 6">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Item 6"><a tabindex="-1" href="#sect-reduce-vector-15-1-6" title="Copy heading and permalink for Item 6" aria-label="Copy heading and permalink for Item 6">🔗</a></div>
 </li>
-<li id="sect-reduce-array-15-1-7">
-<div class="para" id="sect-reduce-array-15-1-7-1">Since the array has been passed through, the result is the last value or 3.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-15-1-7-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<li id="sect-reduce-vector-15-1-7">
+<div class="para" id="sect-reduce-vector-15-1-7-1">Since the array has been passed through, the result is the last value or 3.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-15-1-7-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item 7"><a tabindex="-1" href="#sect-reduce-array-15-1-7" title="Copy heading and permalink for Item 7" aria-label="Copy heading and permalink for Item 7">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Item 7"><a tabindex="-1" href="#sect-reduce-vector-15-1-7" title="Copy heading and permalink for Item 7" aria-label="Copy heading and permalink for Item 7">🔗</a></div>
 </li>
 </ol>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-15" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-15" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<article class="exercise exercise-like" id="sect-reduce-array-16"><h3 class="heading">
-<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+<article class="exercise exercise-like" id="sect-reduce-vector-16"><h3 class="heading">
+<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
 </h3>
-<div class="para logical" id="sect-reduce-array-16-1">
-<ul class="disc" id="sect-reduce-array-16-1-1">
-<li id="sect-reduce-array-16-1-1-1">
-<div class="para" id="sect-reduce-array-16-1-1-1-1">Write a reduce function that will count the number of times the string <code class="code-inline tex2jax_ignore">"hi"</code> appears in an array. Test it on <code class="code-inline tex2jax_ignore">["hi","bye","hi","hello"]</code> and other arrays of strings.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-16-1-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<article class="task exercise-like" id="sect-reduce-vector-16-1"><h4 class="heading"><span class="codenumber">(a)</span></h4>
+<div class="para" id="sect-reduce-vector-16-1-1-1">Write a reduce function that will count the number of times the string <code class="code-inline tex2jax_ignore">"hi"</code> appears in an array. Test it on <code class="code-inline tex2jax_ignore">["hi","bye","hi","hello"]</code> and other arrays of strings.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-16-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item"><a tabindex="-1" href="#sect-reduce-array-16-1-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
-</li>
-<li id="sect-reduce-array-16-1-1-2">
-<div class="para" id="sect-reduce-array-16-1-1-2-1">What does <code class="code-inline tex2jax_ignore">reduce(*, ["J","u","l","i","a"],init="")</code> do?<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-16-1-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="solutions">
+<details id="sect-reduce-vector-16-1-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="para" id="sect-reduce-vector-16-1-2-1">This is similar to the <code class="code-inline tex2jax_ignore">numPos</code> function above.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-16-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item"><a tabindex="-1" href="#sect-reduce-array-16-1-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
-</li>
-</ul>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-array-16-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">numHi(v) = reduce((n,val) -&gt; val == "hi" ? n+1 : n, v, init = 0)
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.3.a.1"><a tabindex="-1" href="#sect-reduce-vector-16-1-2" title="Copy heading and permalink for Solution 7.3.a.1" aria-label="Copy heading and permalink for Solution 7.3.a.1">🔗</a></div>
+</div></details>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 7.2"><a tabindex="-1" href="#sect-reduce-array-16" title="Copy heading and permalink for Check Your Understanding 7.2" aria-label="Copy heading and permalink for Check Your Understanding 7.2">🔗</a></div>
-</article><div class="autopermalink" aria-hidden="true" data-description="Section 7.2: Reducing an array"><a tabindex="-1" href="#sect-reduce-array" title="Copy heading and permalink for Section 7.2: Reducing an array" aria-label="Copy heading and permalink for Section 7.2: Reducing an array">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.3.a"><a tabindex="-1" href="#sect-reduce-vector-16-1" title="Copy heading and permalink for Task 7.3.a" aria-label="Copy heading and permalink for Task 7.3.a">🔗</a></div>
+</article>
+<article class="task exercise-like" id="sect-reduce-vector-16-2"><h4 class="heading"><span class="codenumber">(b)</span></h4>
+<div class="para" id="sect-reduce-vector-16-2-1-1">What does <code class="code-inline tex2jax_ignore">reduce(*, ["J","u","l","i","a"],init="")</code> do? Is there another function we have seen that does this without using <code class="code-inline tex2jax_ignore">reduce</code>?<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-16-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="sect-reduce-vector-16-2-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="para" id="sect-reduce-vector-16-2-2-1">This just concatenates the strings together. The other function is <code class="code-inline tex2jax_ignore">join</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-reduce-vector-16-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.3.b.1"><a tabindex="-1" href="#sect-reduce-vector-16-2-2" title="Copy heading and permalink for Solution 7.3.b.1" aria-label="Copy heading and permalink for Solution 7.3.b.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.3.b"><a tabindex="-1" href="#sect-reduce-vector-16-2" title="Copy heading and permalink for Task 7.3.b" aria-label="Copy heading and permalink for Task 7.3.b">🔗</a></div>
+</article><div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 7.3"><a tabindex="-1" href="#sect-reduce-vector-16" title="Copy heading and permalink for Check Your Understanding 7.3" aria-label="Copy heading and permalink for Check Your Understanding 7.3">🔗</a></div>
+</article><div class="autopermalink" aria-hidden="true" data-description="Section 7.2: Reducing an vector"><a tabindex="-1" href="#sect-reduce-vector" title="Copy heading and permalink for Section 7.2: Reducing an vector" aria-label="Copy heading and permalink for Section 7.2: Reducing an vector">🔗</a></div>
 </section>
 <section class="section" id="section-mapreduce">
 <h2 class="heading hide-type">
@@ -1487,29 +1588,20 @@ map(f,arr)
 </h2>
 <div class="para" id="section-mapreduce-2">The <a class="external" href="http://docs.Julialang.org/en/release-0.5/stdlib/collections/#Base.mapreduce" target="_blank"><code class="code-inline tex2jax_ignore">mapreduce</code></a> function is perhaps more helpful than <code class="code-inline tex2jax_ignore">reduce</code>. For example, if we want to sum the squares of each number in an array, then <code class="code-inline tex2jax_ignore">mapreduce</code> can do this easily.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="section-mapreduce-3">
-<pre class="code-display tex2jax_ignore clipboardable">mapreduce(x-&gt;x^2,+,[1,2,3],init=0)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">mapreduce(x-&gt;x^2,+,[1,2,3],init=0)
+</code></pre></div>
 <div class="para" id="section-mapreduce-4">is a short-hand way to do <span class="process-math">\(1^2+2^2+3^2=14\text{.}\)</span> For <code class="code-inline tex2jax_ignore">mapreduce</code>, the first argument is a function of one variable (unary) that is applied to every element of array. The second argument is a binary element that is used for the reduce part. Note: Julia also has a version of the <code class="code-inline tex2jax_ignore">sum</code> function that can apply a function. For example, <code class="code-inline tex2jax_ignore">sum(x-&gt;x^2,[1,2,3])</code> returns the sum of <code class="code-inline tex2jax_ignore">14</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="section-mapreduce-5">Another example that we will see later is how to write a polynomial using its coefficients. For example, if <code class="code-inline tex2jax_ignore">coeffs = [-2,4,5,7]</code>, then we want to create a way to produce the polynomial <code class="code-inline tex2jax_ignore">"-2 x^0 + 4 x^1  + 5 x^2  + 7 x^3"</code>. This is a clear candidate for either a reduce or mapreduce because we have an array and reduce a single thing (in this case a string). We will use <code class="code-inline tex2jax_ignore">mapreduce</code> in this case because there is a transformation of each element which produces the polynomial term and then the reduce is a concatenation.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="section-mapreduce-6">Although it seems like we should use the array itself, we are going to use the array (technically the range), <code class="code-inline tex2jax_ignore">1:length(coeffs)</code>, so we can produce the powers in each of the term. Therefore the mapping function will be<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="section-mapreduce-7">
-<pre class="code-display tex2jax_ignore clipboardable">i -&gt; "$(coeffs[i])x^($i-1)"
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">i -&gt; "$(coeffs[i])x^($i-1)"
+</code></pre></div>
 <div class="para" id="section-mapreduce-8">which take a number <code class="code-inline tex2jax_ignore">i</code> and looks up the right coeffs and raise to the <code class="code-inline tex2jax_ignore">i-1</code> power, since we need to shift the power by one. Next, we need a function that will concatenate the terms. This will be<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="section-mapreduce-9">
-<pre class="code-display tex2jax_ignore clipboardable">(str, term) -&gt; str * " + $term "
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">(str, term) -&gt; str * " + $term "
+</code></pre></div>
 <div class="para" id="section-mapreduce-10">where <code class="code-inline tex2jax_ignore">str</code> is the current version of the polynomial string and <code class="code-inline tex2jax_ignore">term</code> will be the current term (which is created with the mapping function). Putting this altogether<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para logical" id="section-mapreduce-11">
@@ -1520,7 +1612,7 @@ map(f,arr)
 <div class="para" id="section-mapreduce-12">and this will return the string <code class="code-inline tex2jax_ignore">"-2 x^0 + 4 x^1  + 5 x^2  + 7 x^3 "</code>. We will use this in <a href="ch-comp-types.html#sect-poly-parametric" class="internal" title="Section 12.3: Polynomials: A parametric data type">Section 12.3</a> when we crate a Polynomial type and this function will show the results in a more natural way.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <article class="exercise exercise-like" id="section-mapreduce-13"><h3 class="heading">
-<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
 </h3>
 <div class="para" id="section-mapreduce-13-1-1">In calculus, an important infinite series is<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-13-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div> 
@@ -1541,17 +1633,23 @@ map(f,arr)
 <div class="hint solution-like knowl__content">
 <div class="para" id="section-mapreduce-13-2-1">Use <code class="code-inline tex2jax_ignore">arr=1:20</code> for the array and the mapping function is the reciprocal.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#section-mapreduce-13-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Hint 7.3.1"><a tabindex="-1" href="#section-mapreduce-13-2" title="Copy heading and permalink for Hint 7.3.1" aria-label="Copy heading and permalink for Hint 7.3.1">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Hint 7.4.1"><a tabindex="-1" href="#section-mapreduce-13-2" title="Copy heading and permalink for Hint 7.4.1" aria-label="Copy heading and permalink for Hint 7.4.1">🔗</a></div>
+</div></details>
+<details id="section-mapreduce-13-3" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">mapreduce(i -&gt; 1/i^2, +, 1:20)
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.4.1"><a tabindex="-1" href="#section-mapreduce-13-3" title="Copy heading and permalink for Solution 7.4.1" aria-label="Copy heading and permalink for Solution 7.4.1">🔗</a></div>
 </div></details>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 7.3"><a tabindex="-1" href="#section-mapreduce-13" title="Copy heading and permalink for Check Your Understanding 7.3" aria-label="Copy heading and permalink for Check Your Understanding 7.3">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 7.4"><a tabindex="-1" href="#section-mapreduce-13" title="Copy heading and permalink for Check Your Understanding 7.4" aria-label="Copy heading and permalink for Check Your Understanding 7.4">🔗</a></div>
 </article><div class="autopermalink" aria-hidden="true" data-description="Section 7.3: The mapreduce function"><a tabindex="-1" href="#section-mapreduce" title="Copy heading and permalink for Section 7.3: The mapreduce function" aria-label="Copy heading and permalink for Section 7.3: The mapreduce function">🔗</a></div>
 </section>
 <section class="section" id="ch-functional-programming-7">
 <h2 class="heading hide-type">
 <span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Mapping a Function over an 2D array</span>
 </h2>
-<div class="para" id="ch-functional-programming-7-2">Above, we saw the <code class="code-inline tex2jax_ignore">map</code> function which applies a function over each element of the array. We will see in <a href="ch-prob-models.html" class="internal" title="Chapter 20: Using Random Numbers and Probability Models">Chapter 20</a>  that the <code class="code-inline tex2jax_ignore">mapslices</code> functions is quite helpful.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-functional-programming-7-2">Above, we saw the <code class="code-inline tex2jax_ignore">map</code> function which applies a function over each element of the array. We will see in <a href="ch-prob-models.html" class="internal" title="Chapter 20: Using Random Numbers and Probability Models">Chapter 20</a> that the <code class="code-inline tex2jax_ignore">mapslices</code> functions is quite helpful.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para logical" id="ch-functional-programming-7-3">
 <div class="para">Consider the array <code class="code-inline tex2jax_ignore">A=[i+j for i=1:10,j=1:3]</code> which returns the array</div>
@@ -1571,20 +1669,14 @@ map(f,arr)
 </div>
 <div class="para" id="ch-functional-programming-7-4">If we want to sum down the columns of the array, we can enter<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="ch-functional-programming-7-5">
-<pre class="code-display tex2jax_ignore clipboardable">mapslices(sum,A,dims=[1])
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="ch-functional-programming-7-6">which returns the array<code class="code-inline tex2jax_ignore">[65  75  85]</code>, which is a 1D array with the column sums. The <code class="code-inline tex2jax_ignore">mapslices</code> function needs three arguments, a function that can take an array, a 2D array and the keyword <code class="code-inline tex2jax_ignore">dims</code> which says how to apply the sum. Note: we can also replace the command <code class="code-inline tex2jax_ignore">sum</code> with <code class="code-inline tex2jax_ignore">+</code> as well.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">mapslices(sum,A,dims=[1])
+</code></pre></div>
+<div class="para" id="ch-functional-programming-7-6">which returns the array <code class="code-inline tex2jax_ignore">[65  75  85]</code>, which is a 1D array with the column sums. The <code class="code-inline tex2jax_ignore">mapslices</code> function needs three arguments, a function that can take an array, a 2D array and the keyword <code class="code-inline tex2jax_ignore">dims</code> which says how to apply the sum. Note: we can also replace the command <code class="code-inline tex2jax_ignore">sum</code> with <code class="code-inline tex2jax_ignore">+</code> as well.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="ch-functional-programming-7-7">If instead we wanted to sum along rows, then<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="ch-functional-programming-7-8">
-<pre class="code-display tex2jax_ignore clipboardable">mapslices(sum,A,dims=[2])
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">mapslices(sum,A,dims=[2])
+</code></pre></div>
 <div class="para" id="ch-functional-programming-7-9">which returns<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para logical" id="ch-functional-programming-7-10">
@@ -1605,36 +1697,64 @@ map(f,arr)
 <div class="para" id="ch-functional-programming-7-11">Although note that this is a 2D array. The function <code class="code-inline tex2jax_ignore">mapslices</code> returns an array of one fewer dimensions as the original.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <article class="exercise exercise-like" id="ch-functional-programming-7-12"><h3 class="heading">
-<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
 </h3>
-<div class="para" id="ch-functional-programming-7-12-1">Using the matrix <code class="code-inline tex2jax_ignore">A=[i+j for i=1:10,j=1:3]</code>,<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="introduction" id="ch-functional-programming-7-12-1">
+<div class="para" id="ch-functional-programming-7-12-1-1">Let <code class="code-inline tex2jax_ignore">A=[i+j for i=1:10,j=1:3]</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="ch-functional-programming-7-12-2">
-<ul class="disc" id="ch-functional-programming-7-12-2-1">
-<li id="ch-functional-programming-7-12-2-1-1">
-<div class="para" id="ch-functional-programming-7-12-2-1-1-1">evaluate <code class="code-inline tex2jax_ignore">mapslices(prod,A,dims=[1])</code>. What does that function do?<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-2-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item"><a tabindex="-1" href="#ch-functional-programming-7-12-2-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
-</li>
-<li id="ch-functional-programming-7-12-2-1-2">
-<div class="para" id="ch-functional-programming-7-12-2-1-2-1">evaluate <code class="code-inline tex2jax_ignore">mapslices(prod,A,dims=[2])</code>. What does that function do?<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-2-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<article class="task exercise-like" id="ch-functional-programming-7-12-2"><h4 class="heading"><span class="codenumber">(a)</span></h4>
+<div class="para" id="ch-functional-programming-7-12-2-1-1">evaluate <code class="code-inline tex2jax_ignore">mapslices(prod,A,dims=[1])</code>. What does that function do?<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item"><a tabindex="-1" href="#ch-functional-programming-7-12-2-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
-</li>
-<li id="ch-functional-programming-7-12-2-1-3">
-<div class="para" id="ch-functional-programming-7-12-2-1-3-1">use the <code class="code-inline tex2jax_ignore">mapslices</code> function to find the maximum element in each row.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-2-1-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="solutions">
+<details id="ch-functional-programming-7-12-2-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="para" id="ch-functional-programming-7-12-2-2-1">This returns the product of each column.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item"><a tabindex="-1" href="#ch-functional-programming-7-12-2-1-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
-</li>
-<li id="ch-functional-programming-7-12-2-1-4">
-<div class="para" id="ch-functional-programming-7-12-2-1-4-1">use the <code class="code-inline tex2jax_ignore">mapslices</code> function to find the maximum element in each column.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-2-1-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.5.a.1"><a tabindex="-1" href="#ch-functional-programming-7-12-2-2" title="Copy heading and permalink for Solution 7.5.a.1" aria-label="Copy heading and permalink for Solution 7.5.a.1">🔗</a></div>
+</div></details>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Item"><a tabindex="-1" href="#ch-functional-programming-7-12-2-1-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
-</li>
-</ul>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.5.a"><a tabindex="-1" href="#ch-functional-programming-7-12-2" title="Copy heading and permalink for Task 7.5.a" aria-label="Copy heading and permalink for Task 7.5.a">🔗</a></div>
+</article>
+<article class="task exercise-like" id="ch-functional-programming-7-12-3"><h4 class="heading"><span class="codenumber">(b)</span></h4>
+<div class="para" id="ch-functional-programming-7-12-3-1-1">evaluate <code class="code-inline tex2jax_ignore">mapslices(prod,A,dims=[2])</code>. What does that function do?<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 7.4"><a tabindex="-1" href="#ch-functional-programming-7-12" title="Copy heading and permalink for Check Your Understanding 7.4" aria-label="Copy heading and permalink for Check Your Understanding 7.4">🔗</a></div>
+<div class="solutions">
+<details id="ch-functional-programming-7-12-3-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="para" id="ch-functional-programming-7-12-3-2-1">This returns the product of each row.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.5.b.1"><a tabindex="-1" href="#ch-functional-programming-7-12-3-2" title="Copy heading and permalink for Solution 7.5.b.1" aria-label="Copy heading and permalink for Solution 7.5.b.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.5.b"><a tabindex="-1" href="#ch-functional-programming-7-12-3" title="Copy heading and permalink for Task 7.5.b" aria-label="Copy heading and permalink for Task 7.5.b">🔗</a></div>
+</article>
+<article class="task exercise-like" id="ch-functional-programming-7-12-4"><h4 class="heading"><span class="codenumber">(c)</span></h4>
+<div class="para" id="ch-functional-programming-7-12-4-1-1">Use the <code class="code-inline tex2jax_ignore">mapslices</code> function to find the maximum element in each row.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="ch-functional-programming-7-12-4-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">mapslices(maximum, A, dims = [2])
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.5.c.1"><a tabindex="-1" href="#ch-functional-programming-7-12-4-2" title="Copy heading and permalink for Solution 7.5.c.1" aria-label="Copy heading and permalink for Solution 7.5.c.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.5.c"><a tabindex="-1" href="#ch-functional-programming-7-12-4" title="Copy heading and permalink for Task 7.5.c" aria-label="Copy heading and permalink for Task 7.5.c">🔗</a></div>
+</article>
+<article class="task exercise-like" id="ch-functional-programming-7-12-5"><h4 class="heading"><span class="codenumber">(d)</span></h4>
+<div class="para" id="ch-functional-programming-7-12-5-1-1">Use the <code class="code-inline tex2jax_ignore">mapslices</code> function to find the maximum element in each column.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-functional-programming-7-12-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="ch-functional-programming-7-12-5-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">mapslices(maximum, A, dims = [1])
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.5.d.1"><a tabindex="-1" href="#ch-functional-programming-7-12-5-2" title="Copy heading and permalink for Solution 7.5.d.1" aria-label="Copy heading and permalink for Solution 7.5.d.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 7.5.d"><a tabindex="-1" href="#ch-functional-programming-7-12-5" title="Copy heading and permalink for Task 7.5.d" aria-label="Copy heading and permalink for Task 7.5.d">🔗</a></div>
+</article><div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 7.5"><a tabindex="-1" href="#ch-functional-programming-7-12" title="Copy heading and permalink for Check Your Understanding 7.5" aria-label="Copy heading and permalink for Check Your Understanding 7.5">🔗</a></div>
 </article><div class="autopermalink" aria-hidden="true" data-description="Section 7.4: Mapping a Function over an 2D array"><a tabindex="-1" href="#ch-functional-programming-7" title="Copy heading and permalink for Section 7.4: Mapping a Function over an 2D array" aria-label="Copy heading and permalink for Section 7.4: Mapping a Function over an 2D array">🔗</a></div>
 </section>
 <section class="section" id="sect-do-begin-end-blocks">
@@ -1684,9 +1804,43 @@ end
 </code></pre></div>
 <div class="para" id="sect-do-begin-end-blocks-10">and then can be run with <code class="code-inline tex2jax_ignore">numPos([4,-8,22, 100, -2, 0, 4])</code> and return 4. This is clearly longer than the previous version of this, but perhaps much more readable.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-do-begin-end-blocks-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-do-begin-end-blocks-11">NOTE: ADD AN EXERCISE HERE<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-do-begin-end-blocks-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<article class="exercise exercise-like" id="sect-do-begin-end-blocks-11"><h3 class="heading">
+<span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">7.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sect-do-begin-end-blocks-11-1-1">Write a function <code class="code-inline tex2jax_ignore">findMax</code> that finds the maximum of the values in a vector and returns the maximum using the <code class="code-inline tex2jax_ignore">reduce</code> function as a <code class="code-inline tex2jax_ignore">do-begin-end</code> block.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-do-begin-end-blocks-11-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Section 7.5: Do-Begin-End blocks"><a tabindex="-1" href="#sect-do-begin-end-blocks" title="Copy heading and permalink for Section 7.5: Do-Begin-End blocks" aria-label="Copy heading and permalink for Section 7.5: Do-Begin-End blocks">🔗</a></div>
+<div class="solutions">
+<details id="sect-do-begin-end-blocks-11-2" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="hint solution-like knowl__content">
+<div class="para" id="sect-do-begin-end-blocks-11-2-1">One of the variables of the reduce should be the running value of the maximum. The <code class="code-inline tex2jax_ignore">init</code> option will be needed and since it should start with the smallest possible value, use <code class="code-inline tex2jax_ignore">init = -Inf</code> and every number will be larger than it.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-do-begin-end-blocks-11-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Hint 7.6.1"><a tabindex="-1" href="#sect-do-begin-end-blocks-11-2" title="Copy heading and permalink for Hint 7.6.1" aria-label="Copy heading and permalink for Hint 7.6.1">🔗</a></div>
+</div></details>
+<details id="sect-do-begin-end-blocks-11-3" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">findMax(v) = reduce(v, init = -Inf) do val, max 
+  begin
+    if val &gt; max 
+      return val 
+    else
+      return max
+    end
+  end
+end
+</code></pre></div>
+<div class="para" id="sect-do-begin-end-blocks-11-3-2">or using the ternary <code class="code-inline tex2jax_ignore">if-then-else</code><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-do-begin-end-blocks-11-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">findMax(v) = reduce(v, init = -Inf) do val, max 
+  begin
+    val &gt; max ? val : max 
+  end
+end
+</code></pre></div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 7.6.1"><a tabindex="-1" href="#sect-do-begin-end-blocks-11-3" title="Copy heading and permalink for Solution 7.6.1" aria-label="Copy heading and permalink for Solution 7.6.1">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 7.6"><a tabindex="-1" href="#sect-do-begin-end-blocks-11" title="Copy heading and permalink for Check Your Understanding 7.6" aria-label="Copy heading and permalink for Check Your Understanding 7.6">🔗</a></div>
+</article><div class="autopermalink" aria-hidden="true" data-description="Section 7.5: Do-Begin-End blocks"><a tabindex="-1" href="#sect-do-begin-end-blocks" title="Copy heading and permalink for Section 7.5: Do-Begin-End blocks" aria-label="Copy heading and permalink for Section 7.5: Do-Begin-End blocks">🔗</a></div>
 </section><div class="autopermalink" aria-hidden="true" data-description="Chapter 7: Functional Programming"><a tabindex="-1" href="#ch-functional-programming" title="Copy heading and permalink for Chapter 7: Functional Programming" aria-label="Copy heading and permalink for Chapter 7: Functional Programming">🔗</a></div>
 </section>
 </div>

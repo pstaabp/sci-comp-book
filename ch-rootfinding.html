@@ -25,6 +25,7 @@ hasWebworkReps: false,
 hasSage: false,
 isReact: false,
 htmlPresentation: false,
+lang: "en-US",
 });
 </script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +36,7 @@ htmlPresentation: false,
 <meta name="twitter:description" content="Coding mathematics using Julia">
 <meta property="og:description" content="Coding mathematics using Julia">
 <meta name="twitter:card" content="summary">
-<script src="_static/pretext/js/jquery.min.js"></script><script src="_static/pretext/js/dist/pretext-core.js?v=2.44"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<script src="_static/pretext/js/jquery.min.js"></script><script src="_static/pretext/js/dist/pretext-core.js?v=2.52"></script><script src="_static/pretext/js/dist/pretext-read-aloud.js?v=2.52"></script><!--** eBookCongig is necessary to configure interactive       **-->
 <!--** Runestone components to run locally in reader's browser **-->
 <!--** No external communication:                              **-->
 <!--**     log level is 0, Runestone Services are disabled     **-->
@@ -57,15 +58,15 @@ eBookConfig.allow_pairs = false;
 eBookConfig.enableScratchAC = false;
 eBookConfig.build_info = "";
 eBookConfig.python3 = null;
-eBookConfig.runestone_version = '8.1.11';
+eBookConfig.runestone_version = '8.2.10';
 eBookConfig.jobehost = '';
 eBookConfig.proxyuri_runs = '';
 eBookConfig.proxyuri_files = '';
 eBookConfig.enable_chatcodes =  false;
 </script>
 <!--*** Runestone Services ***-->
-<script src="_static/prefix-runtime.8b6d53d5a91823a0.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.2901d6466316ff22.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
-<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.66fa8a682a32c0ac.css">
+<script src="_static/prefix-runtime.e3f9706509fcf6f7.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.c5ba0ffa5f963084.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
+<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.efe427683fc41f98.css">
 <script src="_static/pretext/js/dist/lti_iframe_resizer.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-dubtf8xMHSQlExGRQ5R7toxHLgSDZ0K7AunqPWHXmJQ8XyVIG19S1T95gBxlAeGOK02P4Da2RTnQz0Za0H0ebQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.js" integrity="sha512-93uCmm0q+qO5Lb1huDqr7tywS8A2TFA+1/WHvyiWaK6/pvsFl6USnILagntBx8JnVbQH5s3n0vQZY6xNthNfKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/dist/pretext_search.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
 </script>
 </head>
@@ -84,7 +85,17 @@ eBookConfig.enable_chatcodes =  false;
 <div id="ptx-search-empty" class="ptx-search-empty"><span>No results.</span></div>
 <ol id="ptx-search-results" class="ptx-search-results"></ol></dialog>
 </div>
-<span class="nav-other-controls"><button id="ptx-readability-options-button" class="ptx-readability-options-button button" title="Readability settings"><span class="icon material-symbols-outlined" aria-hidden="true">&#xf6f1;</span><span class="name">Readability settings</span></button><dialog class="ptx-dialog ptx-readability-options-popup" id="ptx-readability-options-popup"><div class="ptx-readability-options-popup-controls">
+<span class="nav-other-controls"><button id="ptx-read-aloud-button" class="ptx-read-aloud-button button" title="Read aloud" aria-expanded="false"><span class="icon material-symbols-outlined" aria-hidden="true">&#xf1bc;</span><span class="name">Read aloud</span></button><div id="ptx-read-aloud-player" class="ptx-read-aloud-player" hidden="hidden" role="group" aria-label="Read aloud">
+<button id="ptx-read-aloud-prev" class="button" title="Previous sentence"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe045;</span></button><button id="ptx-read-aloud-toggle" class="ptx-read-aloud-toggle button" title="Play"><span class="ptx-read-aloud-icon-play"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe037;</span></span><span class="ptx-read-aloud-icon-pause"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe034;</span></span></button><button id="ptx-read-aloud-next" class="button" title="Next sentence"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe044;</span></button><a id="ptx-read-aloud-continue" class="ptx-read-aloud-continue button" hidden="hidden">Continue<span class="icon material-symbols-outlined" aria-hidden="true">&#xe037;</span></a><button id="ptx-read-aloud-settings-button" class="ptx-read-aloud-settings-button button" title="Reading settings"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe429;</span></button>
+</div>
+<dialog class="ptx-dialog ptx-read-aloud-settings-popup" id="ptx-read-aloud-settings-popup"><div class="ptx-readability-options-popup-controls">
+<h2 class="heading">Read aloud settings</h2>
+<button class="ptx-read-aloud-settings-close-button button" id="ptx-read-aloud-settings-close-button" title="Close"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cd;</span></button>
+</div>
+<div class="ptx-readability-options-group">
+<label for="ptx-read-aloud-voice"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe91f;</span><span>Voice</span></label><select id="ptx-read-aloud-voice"></select><label class="ptx-readability-slider-label" for="ptx-read-aloud-rate"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe9e4;</span><span>Reading speed</span><output id="ptx-read-aloud-rate-value" for="ptx-read-aloud-rate">1×</output></label><input type="range" id="ptx-read-aloud-rate" min="0.5" max="2" step="0.1" value="1"><label for="ptx-read-aloud-asides"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5d7;</span><span>Collapsed content</span></label><select id="ptx-read-aloud-asides"><option value="skip">Announce, do not read</option>
+<option value="read">Read automatically</option></select><label for="ptx-read-aloud-autoscroll"><input type="checkbox" id="ptx-read-aloud-autoscroll" checked><span>Follow along (auto-scroll)</span></label><label for="ptx-read-aloud-autocontinue"><input type="checkbox" id="ptx-read-aloud-autocontinue"><span>Continue to the next page automatically</span></label>
+</div></dialog><button id="ptx-readability-options-button" class="ptx-readability-options-button button" title="Readability settings"><span class="icon material-symbols-outlined" aria-hidden="true">&#xf6f1;</span><span class="name">Readability settings</span></button><dialog class="ptx-dialog ptx-readability-options-popup" id="ptx-readability-options-popup"><div class="ptx-readability-options-popup-controls">
 <h2 class="heading">Readability settings</h2>
 <button class="ptx-readability-options-close-button button" id="ptx-readability-options-close-button" title="Close"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cd;</span></button>
 </div>
@@ -243,7 +254,7 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-arrays.html" class="internal"><span class="codenumber">6</span> <span class="title">Vectors and other Collections</span></a></div>
 <ul id="ptx-toc-group-ch-arrays" class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-contructing-arrays" class="internal"><span class="codenumber">6.1</span> <span class="title">Constructing arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-constructing-arrays" class="internal"><span class="codenumber">6.1</span> <span class="title">Constructing Vectors, Matrices and other Arrays</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-comprehensions" class="internal"><span class="codenumber">6.2</span> <span class="title">Comprehensions</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-accessing-arrays" class="internal"><span class="codenumber">6.3</span> <span class="title">Accessing elements of an array</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-7" class="internal"><span class="codenumber">6.4</span> <span class="title">Common Operations on Arrays</span></a></div></li>
@@ -257,12 +268,12 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-3" class="internal"><span class="codenumber">6.9.1</span> <span class="title">Append</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-4" class="internal"><span class="codenumber">6.9.2</span> <span class="title">Adding and Removing Elements in the Middle of an Array</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-5" class="internal"><span class="codenumber">6.9.3</span> <span class="title">It Splices, It Dices!! --- okay, it doesn’t dice</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-6" class="internal"><span class="codenumber">6.9.4</span> <span class="title">Filtering Arrays</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-6" class="internal"><span class="codenumber">6.9.4</span> <span class="title">Filtering Vectors</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-7" class="internal"><span class="codenumber">6.9.5</span> <span class="title">Removing Duplicate Elements</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Splitting Strings</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-array-concat" class="internal"><span class="codenumber">6.11</span> <span class="title">Concatenating Arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-array-concat" class="internal"><span class="codenumber">6.11</span> <span class="title">Concatenating Vectors and Matrices</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-array-repeat" class="internal"><span class="codenumber">6.12</span> <span class="title">Creating patterned arrays with repeat</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-16" class="internal"><span class="codenumber">6.13</span> <span class="title">Arrays as a Collection</span></a></div></li>
 <li class="toc-item toc-section">
@@ -281,10 +292,10 @@ eBookConfig.enable_chatcodes =  false;
 <div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4" class="internal"><span class="codenumber">7.1</span> <span class="title">Functional vs. Non-functional forms</span></a></div>
 <ul id="ptx-toc-group-ch-functional-programming-4" class="structural toc-item-list">
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4-3" class="internal"><span class="codenumber">7.1.1</span> <span class="title">Anonymous Functions</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4-4" class="internal"><span class="codenumber">7.1.2</span> <span class="title">Mapping over two arrays</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4-4" class="internal"><span class="codenumber">7.1.2</span> <span class="title">Mapping over two Vectors</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-reduce-array" class="internal"><span class="codenumber">7.2</span> <span class="title">Reducing an array</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-reduce-vector" class="internal"><span class="codenumber">7.2</span> <span class="title">Reducing an vector</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#section-mapreduce" class="internal"><span class="codenumber">7.3</span> <span class="title">The <code class="code-inline tex2jax_ignore">mapreduce</code> function</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7" class="internal"><span class="codenumber">7.4</span> <span class="title">Mapping a Function over an 2D array</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-do-begin-end-blocks" class="internal"><span class="codenumber">7.5</span> <span class="title">Do-Begin-End blocks</span></a></div></li>
@@ -294,15 +305,20 @@ eBookConfig.enable_chatcodes =  false;
 <div class="toc-title-box"><a href="ch-fast-code.html" class="internal"><span class="codenumber">8</span> <span class="title">Timing Code and Writing for Speed</span></a></div>
 <ul id="ptx-toc-group-ch-fast-code" class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-4" class="internal"><span class="codenumber">8.1</span> <span class="title">Timing Code</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-5" class="internal"><span class="codenumber">8.2</span> <span class="title">Attempt #1</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-6" class="internal"><span class="codenumber">8.3</span> <span class="title">Attempt #2</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-7" class="internal"><span class="codenumber">8.4</span> <span class="title">Attempt #3</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-8" class="internal"><span class="codenumber">8.5</span> <span class="title">Attempt #4</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-9" class="internal"><span class="codenumber">8.6</span> <span class="title">Attempt #5</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-10" class="internal"><span class="codenumber">8.7</span> <span class="title">Summary of Results</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-fast-code.html#sect-faster-fibonacci" class="internal"><span class="codenumber">8.8</span> <span class="title">Computing Fibonacci Numbers</span></a></div>
-<ul id="ptx-toc-group-sect-faster-fibonacci" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sect-fast-fibonacci" class="internal"><span class="codenumber">8.8.1</span> <span class="title">Speeding Up Fibonacci</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers" class="internal"><span class="codenumber">8.2</span> <span class="title">Summing Integers</span></a></div>
+<ul id="ptx-toc-group-sec-summing-integers" class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-3" class="internal"><span class="codenumber">8.2.1</span> <span class="title">Attempt #1</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-4" class="internal"><span class="codenumber">8.2.2</span> <span class="title">Attempt #2</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-5" class="internal"><span class="codenumber">8.2.3</span> <span class="title">Attempt #3</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-6" class="internal"><span class="codenumber">8.2.4</span> <span class="title">Attempt #4</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-7" class="internal"><span class="codenumber">8.2.5</span> <span class="title">Attempt #5</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-6" class="internal"><span class="codenumber">8.3</span> <span class="title">Summary of Results</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-fast-code.html#sect-faster-fibonacci" class="internal"><span class="codenumber">8.4</span> <span class="title">Computing Fibonacci Numbers</span></a></div>
+<ul id="ptx-toc-group-sect-faster-fibonacci" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sect-fast-fibonacci" class="internal"><span class="codenumber">8.4.1</span> <span class="title">Speeding Up Fibonacci</span></a></div></li></ul>
 </li>
 </ul>
 </li>
@@ -350,7 +366,7 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-4" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Be skeptical of numerical answers</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-6" class="internal"><span class="codenumber">10.3</span> <span class="title">Are We Sunk?  Reexamining the Quadratic Formula</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-6" class="internal"><span class="codenumber">10.3</span> <span class="title">Are We Sunk? Reexamining the Quadratic Formula</span></a></div></li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton" class="internal"><span class="codenumber">10.4</span> <span class="title">Newton’s Method</span></a></div>
 <ul id="ptx-toc-group-sect-newton" class="structural toc-item-list">
@@ -372,7 +388,7 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-6" class="internal"><span class="codenumber">11.3</span> <span class="title">Handling Special Cases</span></a></div></li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-7" class="internal"><span class="codenumber">11.4</span> <span class="title">Keyword Arguments</span></a></div>
-<ul id="ptx-toc-group-ch-adv-functions-7" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-7-3" class="internal"><span class="codenumber">11.4.1</span> <span class="title">Keyword Arguments for complex functions</span></a></div></li></ul>
+<ul id="ptx-toc-group-ch-adv-functions-7" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-7-3" class="internal"><span class="codenumber">11.4.1</span> <span class="title">Keyword Arguments for complex commands</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#sect-parametric-methods" class="internal"><span class="codenumber">11.5</span> <span class="title">Parametric Methods</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#sect-variable-scope" class="internal"><span class="codenumber">11.6</span> <span class="title">Variable Scope</span></a></div></li>
@@ -1142,7 +1158,7 @@ eBookConfig.enable_chatcodes =  false;
 <div class="toc-title-box"><a href="backmatter.html" class="internal"><span class="title">Backmatter</span></a></div>
 <ul id="ptx-toc-group-backmatter" class="structural toc-item-list">
 <li class="toc-item toc-appendix">
-<div class="toc-title-box"><a href="ch-getting-started.html" class="internal"><span class="codenumber">A</span> <span class="title">Getting Started with Julia</span></a></div>
+<div class="toc-title-box"><a href="ch-getting-started.html" class="internal"><span class="codenumber">A.</span> <span class="title">Getting Started with Julia</span></a></div>
 <ul id="ptx-toc-group-ch-getting-started" class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-getting-started.html#sect-installing-julia" class="internal"><span class="codenumber">A.1</span> <span class="title">Downloading and Installing Julia</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-getting-started.html#sect-installing-vscode" class="internal"><span class="codenumber">A.2</span> <span class="title">Installing Visual Studio Code</span></a></div></li>
@@ -1181,7 +1197,7 @@ eBookConfig.enable_chatcodes =  false;
 </ul>
 </li>
 <li class="toc-item toc-appendix">
-<div class="toc-title-box"><a href="ch-packages.html" class="internal"><span class="codenumber">B</span> <span class="title">Managing Packages</span></a></div>
+<div class="toc-title-box"><a href="ch-packages.html" class="internal"><span class="codenumber">B.</span> <span class="title">Managing Packages</span></a></div>
 <ul id="ptx-toc-group-ch-packages" class="structural toc-item-list"><li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-packages.html#ch-packages-3" class="internal"><span class="codenumber">B.1</span> <span class="title">Managing Packages in Julia</span></a></div>
 <ul id="ptx-toc-group-ch-packages-3" class="structural toc-item-list">
@@ -1196,7 +1212,7 @@ eBookConfig.enable_chatcodes =  false;
 </li></ul>
 </li>
 <li class="toc-item toc-appendix">
-<div class="toc-title-box"><a href="ch-num-rep.html" class="internal"><span class="codenumber">C</span> <span class="title">Binary Represenation of Numbers</span></a></div>
+<div class="toc-title-box"><a href="ch-num-rep.html" class="internal"><span class="codenumber">C.</span> <span class="title">Binary Represenation of Numbers</span></a></div>
 <ul id="ptx-toc-group-ch-num-rep" class="structural toc-item-list">
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3" class="internal"><span class="codenumber">C.1</span> <span class="title">Integer Representation</span></a></div>
@@ -1262,7 +1278,7 @@ eBookConfig.enable_chatcodes =  false;
 <div class="autopermalink" aria-hidden="true" data-description="Objectives 10"><a tabindex="-1" href="#ch-rootfinding-2" title="Copy heading and permalink for Objectives 10" aria-label="Copy heading and permalink for Objectives 10">🔗</a></div>
 </article>
 <section class="introduction" id="ch-rootfinding-3">
-<div class="para" id="ch-rootfinding-3-1">Solving an equation is something that is needed throughout scientific computing and is difficult to do in general.  For example, if we have an equation like <span class="process-math">\(x^2-1=0\text{,}\)</span> this can be solved exactly using the quadratic formula, however the relatively simple equation <span class="process-math">\(x=\sin(x)\)</span> has no analytic solution.  In this chapter, we discuss how to find roots of both quadratic functions and general functions, but also use this to discuss both errors in a algorithm as well as round off error, which occurs often when solving problems.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-3-1">Solving an equation is something that is needed throughout scientific computing and is difficult to do in general. For example, if we have an equation like <span class="process-math">\(x^2-1=0\text{,}\)</span> this can be solved exactly using the quadratic formula, however the relatively simple equation <span class="process-math">\(x=\sin(x)\)</span> has no analytic solution. In this chapter, we discuss how to find roots of both quadratic functions and general functions, but also use this to discuss both errors in a algorithm as well as round off error, which occurs often when solving problems.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <article class="definition definition-like" id="def-root"><h2 class="heading">
 <span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
@@ -1280,7 +1296,7 @@ eBookConfig.enable_chatcodes =  false;
 <span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Absolute and Relative Errors</span>
 </h2>
 <div class="para logical" id="ch-rootfinding-4-2">
-<div class="para">Consider an algorithm that tries to find the value of <span class="process-math">\(x^{\star}\text{.}\)</span>  In general, an algorithm won’t return the value <span class="process-math">\(x^{\star}\)</span> but a value <span class="process-math">\(x\)</span> that is close, therefore there will be some error. The <dfn class="terminology">absolute error</dfn> is <span class="process-math">\(|x - x^{\star}|\)</span> and the <dfn class="terminology">relative error</dfn> is</div>
+<div class="para">Consider an algorithm that tries to find the value of <span class="process-math">\(x^{\star}\text{.}\)</span> In general, an algorithm won’t return the value <span class="process-math">\(x^{\star}\)</span> but a value <span class="process-math">\(x\)</span> that is close, therefore there will be some error. The <dfn class="terminology">absolute error</dfn> is <span class="process-math">\(|x - x^{\star}|\)</span> and the <dfn class="terminology">relative error</dfn> is</div>
 <div class="displaymath process-math" id="ch-rootfinding-4-2-7">
 \begin{equation*}
 \left|\frac{x-x^{\star}}{x^{\star}}\right|.
@@ -1327,12 +1343,9 @@ abs(x-xstar)
 </article>
 <div class="para" id="ch-rootfinding-4-5">To make thing easier in this chapter, we’ll create functions for these:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-4-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="ch-rootfinding-4-6">
-<pre class="code-display tex2jax_ignore clipboardable">absErr(x::Real, xstar::Real) = abs(x-xstar)
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">absErr(x::Real, xstar::Real) = abs(x-xstar)
 relErr(x::Real, xstar::Real) = abs((x-xstar)/xstar)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-4-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
+</code></pre></div>
 <div class="para" id="ch-rootfinding-4-7">which now allows us to use <code class="code-inline tex2jax_ignore">absErr(0.153,0.150)</code> and <code class="code-inline tex2jax_ignore">relErr(0.153,0.150)</code> and we get the same results as above.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-4-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Section 10.1: Absolute and Relative Errors"><a tabindex="-1" href="#ch-rootfinding-4" title="Copy heading and permalink for Section 10.1: Absolute and Relative Errors" aria-label="Copy heading and permalink for Section 10.1: Absolute and Relative Errors">🔗</a></div>
@@ -1363,7 +1376,7 @@ x=\frac{-b \pm \sqrt{b^{2}-4ac} } {2a}
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-rootfinding-5-2-5">We are going to solve this using the quadratic formula in Julia.  To study rounding effects we’re going to solve these using both 16-bit and 64-bit floating point numbers.  We’ll assume that the 64-numbers are the actual answers in determining errors.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-5-2-5">We are going to solve this using the quadratic formula in Julia. To study rounding effects we’re going to solve these using both 16-bit and 64-bit floating point numbers. We’ll assume that the 64-numbers are the actual answers in determining errors.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div></section>
 <section class="subsection" id="ch-rootfinding-5-3">
 <h3 class="heading hide-type">
@@ -1371,30 +1384,21 @@ x=\frac{-b \pm \sqrt{b^{2}-4ac} } {2a}
 </h3>
 <div class="para" id="ch-rootfinding-5-3-2">First, consider the quadratic formula as a Julia function:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="ch-rootfinding-5-3-3">
-<pre class="code-display tex2jax_ignore clipboardable">function qSol(a::Real, b::Real, c::Real)
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">function qSol(a::Real, b::Real, c::Real)
   d=sqrt(b^2-4*a*c)
   (-b+d)/(2*a), (-b-d)/(2*a)
 end
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</code></pre></div>
+<div class="para" id="ch-rootfinding-5-3-4">where we have two values returned as a tuple (note the comma between the values). We can solve the quadratic in <a href="ch-rootfinding.html#eq-quad" class="xref" data-knowl="./knowl/xref/eq-quad.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 10.1">(10.1)</a> with<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-rootfinding-5-3-4">where we have two values returned as a tuple (note the comma between the values).  We can solve the quadratic in <a href="ch-rootfinding.html#eq-quad" class="xref" data-knowl="./knowl/xref/eq-quad.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 10.1">(10.1)</a> with<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="ch-rootfinding-5-3-5">
-<pre class="code-display tex2jax_ignore clipboardable">x64a,x64b = qSol(12.242,42.382,0.0012)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">x64a,x64b = qSol(12.242,42.382,0.0012)
+</code></pre></div>
 <div class="para" id="ch-rootfinding-5-3-6">leads to <code class="code-inline tex2jax_ignore">(-2.831413841486606e-5, -3.461987696317393)</code>. Note that since the default floating-point type is <code class="code-inline tex2jax_ignore">Float64</code>, these are 64-bit results.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="ch-rootfinding-5-3-7">To solve this using 16-bit floating-point numbers,<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="ch-rootfinding-5-3-8">
-<pre class="code-display tex2jax_ignore clipboardable">x16a,x16b = qSol(Float16(12.242),Float16(42.382),Float16(0.0012))
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">x16a,x16b = qSol(Float16(12.242),Float16(42.382),Float16(0.0012))
+</code></pre></div>
 <div class="para" id="ch-rootfinding-5-3-9">leads to <code class="code-inline tex2jax_ignore">(Float16(0.0), Float16(-3.46))</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="ch-rootfinding-5-3-10">Let’s assume that the 64-bit answers are correct. Find the absolute and relative errors for the two solutions.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
@@ -1437,7 +1441,7 @@ end
 <article class="exercise exercise-like" id="ch-rootfinding-5-3-13"><h4 class="heading">
 <span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
 </h4>
-<div class="para" id="ch-rootfinding-5-3-13-1">Use the quadratic formula to solve <span class="process-math">\(2.56632x^{2}+ 17.34x+ 0.01734=0\)</span> using both <code class="code-inline tex2jax_ignore">BigFloat</code>s and 64-bit floats. Assume that the <code class="code-inline tex2jax_ignore">BigFloat</code> versions are exact and find the absolute and relative errors in the 64-bit numbers.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-13-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-5-3-13-1">Use the quadratic formula to solve <span class="process-math">\(2.56632x^{2}+ 17.34x+ 0.01734=0\)</span> using both <code class="code-inline tex2jax_ignore">BigFloat</code> s and 64-bit floats. Assume that the <code class="code-inline tex2jax_ignore">BigFloat</code> versions are exact and find the absolute and relative errors in the 64-bit numbers.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-3-13-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 10.3"><a tabindex="-1" href="#ch-rootfinding-5-3-13" title="Copy heading and permalink for Check Your Understanding 10.3" aria-label="Copy heading and permalink for Check Your Understanding 10.3">🔗</a></div>
 </article><div class="autopermalink" aria-hidden="true" data-description="Subsection 10.2.1: Investigating Errors with Code"><a tabindex="-1" href="#ch-rootfinding-5-3" title="Copy heading and permalink for Subsection 10.2.1: Investigating Errors with Code" aria-label="Copy heading and permalink for Subsection 10.2.1: Investigating Errors with Code">🔗</a></div>
@@ -1446,7 +1450,7 @@ end
 <h3 class="heading hide-type">
 <span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Be skeptical of numerical answers</span>
 </h3>
-<div class="para" id="ch-rootfinding-5-4-2">Even though the example above was manufactured to produce bad results, you never know if a numerical solution is accurate or not. One way to look at the above example is to not use 16-bit floating point numbers.  This is a good idea, but assume (like we did above) that 64-bit is the actual answer.  There are cases where you will get the wrong answer with 64-bit.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-4-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-5-4-2">Even though the example above was manufactured to produce bad results, you never know if a numerical solution is accurate or not. One way to look at the above example is to not use 16-bit floating point numbers. This is a good idea, but assume (like we did above) that 64-bit is the actual answer. There are cases where you will get the wrong answer with 64-bit.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-4-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="ch-rootfinding-5-4-3">It’s crucial to have a good sense of the problem (whether it be mathematical or a scientific question). Additionally, testing is an important part of the solution process. In <a href="ch-modules.html" class="internal" title="Chapter 24: Creating Modules and using Unit Tests">Chapter 24</a>, we will spend some time discussing testing of code.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-5-4-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
@@ -1455,11 +1459,11 @@ end
 </section>
 <section class="section" id="ch-rootfinding-6">
 <h2 class="heading hide-type">
-<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Are We Sunk?  Reexamining the Quadratic Formula</span>
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Are We Sunk? Reexamining the Quadratic Formula</span>
 </h2>
-<div class="para" id="ch-rootfinding-6-2">The above example shows that even with a well-known formula, there is the potential of generating a large error.  From what we’ve seen so far, we could try to use other data types, like <code class="code-inline tex2jax_ignore">BigFloat</code> to solve this problem, but as we’ve seen they are slow and we should only use that type when needed.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-6-2">The above example shows that even with a well-known formula, there is the potential of generating a large error. From what we’ve seen so far, we could try to use other data types, like <code class="code-inline tex2jax_ignore">BigFloat</code> to solve this problem, but as we’ve seen they are slow and we should only use that type when needed.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-rootfinding-6-3">If we’re careful about things, we can rewrite algorithms in certain situations to minimize roundoff.  The problem that occurred for the general quadratic equation<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-6-3">If we’re careful about things, we can rewrite algorithms in certain situations to minimize roundoff. The problem that occurred for the general quadratic equation<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para logical" id="ch-rootfinding-6-4">
 <div class="displaymath process-math" id="ch-rootfinding-6-4-1">
@@ -1469,7 +1473,7 @@ ax^2+bx+c=0
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-rootfinding-6-5">is if <span class="process-math">\(d=\sqrt{b^{2}-4ac}\)</span> and when <span class="process-math">\(b&gt; 0\text{,}\)</span> the formula has <span class="process-math">\(-b+d\text{,}\)</span> which is basically subtraction.  In the case above, <span class="process-math">\(b=42.382\)</span> and <span class="process-math">\(d=\sqrt{b^{2}-4ac}=42.38130675663505\text{.}\)</span> The difference in these is quite small and that is where the round-off error is introduced.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-6-5">is if <span class="process-math">\(d=\sqrt{b^{2}-4ac}\)</span> and when <span class="process-math">\(b&gt; 0\text{,}\)</span> the formula has <span class="process-math">\(-b+d\text{,}\)</span> which is basically subtraction. In the case above, <span class="process-math">\(b=42.382\)</span> and <span class="process-math">\(d=\sqrt{b^{2}-4ac}=42.38130675663505\text{.}\)</span> The difference in these is quite small and that is where the round-off error is introduced.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="ch-rootfinding-6-6">Let’s assume that <span class="process-math">\(b &gt; 0\)</span> and let <span class="process-math">\(d=\sqrt{b^{2}-4ac}\text{.}\)</span> The roundoff occurs when the value of <span class="process-math">\(b\)</span> and <span class="process-math">\(d\)</span> are close to each other. (Note: if <span class="process-math">\(b\)</span> is negative, you can multiply the entire equation through by <span class="process-math">\(-1\)</span> to get <span class="process-math">\(b &gt; 0\)</span> without changing the answer.) To change the quadratic formula we are going to exchange the addition with a subtraction (however we will not have the catastrophic subtraction error we saw above). "How can you do that?" you ask? Here we go...<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
@@ -1488,7 +1492,7 @@ x&amp; =\frac{-b + d} {2a} \qquad \text{Multiply by a convenient form of 1} \\
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-rootfinding-6-9">and there is a similar solution if the <span class="process-math">\(-\)</span> root is taken above. Note that we have changed the sign of the <span class="process-math">\(b\)</span> term in the top of the standard formula.  Basically, this has switched a subtraction (which is prone to roundoff errors) to an addition (which is not prone to roundoff). In Julia, the alternative quadratic formula is:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-6-9">and there is a similar solution if the <span class="process-math">\(-\)</span> root is taken above. Note that we have changed the sign of the <span class="process-math">\(b\)</span> term in the top of the standard formula. Basically, this has switched a subtraction (which is prone to roundoff errors) to an addition (which is not prone to roundoff). In Julia, the alternative quadratic formula is:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">function qSol2(a::Real,b::Real,c::Real)
   d=sqrt(b^2-4*a*c)
@@ -1499,16 +1503,16 @@ end
 <span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
 </h3>
 <article class="task exercise-like" id="ch-rootfinding-6-11-1"><h4 class="heading"><span class="codenumber">(a)</span></h4>
-<div class="para" id="ch-rootfinding-6-11-1-1-1">Use the new quadratic formula (<code class="code-inline tex2jax_ignore">qSol2</code>) to find the roots of <span class="process-math">\(x^{2}-x-110=0\text{.}\)</span> Do you get the same results as above?<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-11-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-6-11-1-1-1">Use the new quadratic formula ( <code class="code-inline tex2jax_ignore">qSol2</code> ) to find the roots of <span class="process-math">\(x^{2}-x-110=0\text{.}\)</span> Do you get the same results as above?<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-11-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Task 10.4.a"><a tabindex="-1" href="#ch-rootfinding-6-11-1" title="Copy heading and permalink for Task 10.4.a" aria-label="Copy heading and permalink for Task 10.4.a">🔗</a></div>
 </article>
 <article class="task exercise-like" id="ch-rootfinding-6-11-2"><h4 class="heading"><span class="codenumber">(b)</span></h4>
-<div class="para" id="ch-rootfinding-6-11-2-1-1">Use the new quadratic formula to solve <span class="process-math">\(12.242{x}^{2}+42.382x+0.0012=0\text{.}\)</span> Find the absolute and relative errors if we assume that the 64-bit answers are exact and the 16-bit answers are approximate.  Compare your results with that of the standard quadratic formula.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-11-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-6-11-2-1-1">Use the new quadratic formula to solve <span class="process-math">\(12.242{x}^{2}+42.382x+0.0012=0\text{.}\)</span> Find the absolute and relative errors if we assume that the 64-bit answers are exact and the 16-bit answers are approximate. Compare your results with that of the standard quadratic formula.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-6-11-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Task 10.4.b"><a tabindex="-1" href="#ch-rootfinding-6-11-2" title="Copy heading and permalink for Task 10.4.b" aria-label="Copy heading and permalink for Task 10.4.b">🔗</a></div>
 </article><div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 10.4"><a tabindex="-1" href="#ch-rootfinding-6-11" title="Copy heading and permalink for Check Your Understanding 10.4" aria-label="Copy heading and permalink for Check Your Understanding 10.4">🔗</a></div>
-</article><div class="autopermalink" aria-hidden="true" data-description="Section 10.3: Are We Sunk?  Reexamining the Quadratic Formula"><a tabindex="-1" href="#ch-rootfinding-6" title="Copy heading and permalink for Section 10.3: Are We Sunk?  Reexamining the Quadratic Formula" aria-label="Copy heading and permalink for Section 10.3: Are We Sunk?  Reexamining the Quadratic Formula">🔗</a></div>
+</article><div class="autopermalink" aria-hidden="true" data-description="Section 10.3: Are We Sunk? Reexamining the Quadratic Formula"><a tabindex="-1" href="#ch-rootfinding-6" title="Copy heading and permalink for Section 10.3: Are We Sunk? Reexamining the Quadratic Formula" aria-label="Copy heading and permalink for Section 10.3: Are We Sunk? Reexamining the Quadratic Formula">🔗</a></div>
 </section>
 <section class="section" id="sect-newton">
 <h2 class="heading hide-type">
@@ -1530,9 +1534,9 @@ end
 <div class="para" id="sect-newton-2-4">This cubic actually factors, but finding those factors is quite difficult to do in general. We then look at using <a class="external" href="https://en.wikipedia.org/wiki/Newton%27s_method" target="_blank">Newton’s method</a> to solve this. Note the plot below:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <figure class="figure figure-like" id="fig-rootfinding-cubic"><div class="image-box" style="width: 90%; margin-left: 5%; margin-right: 5%;"><img src="external/plots/rootfinding/plot01.png" class="contained" alt="(for accessibility)"></div>
-<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><div class="autopermalink" aria-hidden="true" data-description="Figure 10.5"><a tabindex="-1" href="#fig-rootfinding-cubic" title="Copy heading and permalink for Figure 10.5" aria-label="Copy heading and permalink for Figure 10.5">🔗</a></div></figcaption>
+<figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>The plot of the function <span class="process-math">\(f(x)=15x^3-143x^2+226x+280\)</span> in blue and the <span class="process-math">\(x\)</span>-axis in red. The intersection of these are the roots of <span class="process-math">\(f\text{.}\)</span><div class="autopermalink" aria-hidden="true" data-description="Figure 10.5"><a tabindex="-1" href="#fig-rootfinding-cubic" title="Copy heading and permalink for Figure 10.5" aria-label="Copy heading and permalink for Figure 10.5">🔗</a></div></figcaption>
 </figure>
-<div class="para" id="sect-newton-2-6">and the three intersection points between the red curve (<span class="process-math">\(x\)</span>-axis) and the blue line (the function, <span class="process-math">\(y=f(x)\)</span>) are the three roots.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-2-6">and the three intersection points between the red curve ( <span class="process-math">\(x\)</span>-axis) and the blue line (the function, <span class="process-math">\(y=f(x)\)</span> ) are the three roots.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="sect-newton-2-7">Newton’s method starts with a "guess" at the root and then refines it. Let <span class="process-math">\(x_0\)</span> be the guess, then<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
@@ -1544,49 +1548,32 @@ x_1 = x_0 - \frac{f(x_0)}{f'(x_0)}
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="sect-newton-2-9">
-<div class="para">Let’s look at this in Julia for the function above.</div>
-<pre class="code-display tex2jax_ignore clipboardable">f(x)=15x^3-143x^2+226x+280
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-2-9">Let’s look at this in Julia for the function above. Define the function and its derivative:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-newton-2-10">and we need the derivative so<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">f(x)=15x^3-143x^2+226x+280
+df(x)=45x^2-286x+226
+</code></pre></div>
+<div class="para" id="sect-newton-2-11">Let’s say that <code class="code-inline tex2jax_ignore">x0=0</code> and find <code class="code-inline tex2jax_ignore">x1</code> using Newton’s method:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="sect-newton-2-11">
-<pre class="code-display tex2jax_ignore clipboardable">df(x)=45x^2-286x+226
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-newton-2-12">Let’s say that <code class="code-inline tex2jax_ignore">x0=0</code> and find <code class="code-inline tex2jax_ignore">x1</code> using Newton’s method:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-newton-2-13">
-<pre class="code-display tex2jax_ignore clipboardable">x0 = 0
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">x0 = 0
 x1 = x0-f(x0)/df(x0)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</code></pre></div>
+<div class="para" id="sect-newton-2-13">returns <code class="code-inline tex2jax_ignore">-1.238938053097345</code>. We then use the result and perform another step of Newton’s method or<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-newton-2-14">returns <code class="code-inline tex2jax_ignore">-1.238938053097345</code>. We then use the result and perform another step of Newton’s method or<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-newton-2-15">
-<pre class="code-display tex2jax_ignore clipboardable">x2 = x1-f(x1)/df(x1)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-15" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-newton-2-16">this time we get <code class="code-inline tex2jax_ignore">-0.8570123580970569</code>, seems to be closer looking at the plot above. A few more iterations of this, you should get quite close to<code class="code-inline tex2jax_ignore">-0.8</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-16" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">x2 = x1-f(x1)/df(x1)
+</code></pre></div>
+<div class="para" id="sect-newton-2-15">this time we get <code class="code-inline tex2jax_ignore">-0.8570123580970569</code>, seems to be closer looking at the plot above. A few more iterations of this, you should get quite close to <code class="code-inline tex2jax_ignore">-0.8</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-2-15" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div></section>
 <section class="subsection" id="sect-newton-3">
 <h3 class="heading hide-type">
 <span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.4.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Code for Newton’s Method</span>
 </h3>
-<div class="para" id="sect-newton-3-2">We are going to go through building a function to do this.  First, let’s consider the template of the function, which will have an arguments <code class="code-inline tex2jax_ignore">f, df</code> and <code class="code-inline tex2jax_ignore">x0</code>. Thus a good template is<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-3-2">We are going to go through building a function to do this. First, let’s consider the template of the function, which will have an arguments <code class="code-inline tex2jax_ignore">f, df</code> and <code class="code-inline tex2jax_ignore">x0</code>. Thus a good template is<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="sect-newton-3-3">
-<pre class="code-display tex2jax_ignore clipboardable">function newton(f::Function, df::Function, x0::Number)
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">function newton(f::Function, df::Function, x0::Number)
 
 end
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
+</code></pre></div>
 <div class="para" id="sect-newton-3-4">Here are considerations while building the function:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para logical" id="sect-newton-3-5">
@@ -1597,7 +1584,7 @@ end
 <div class="autopermalink" aria-hidden="true" data-description="Item"><a tabindex="-1" href="#sect-newton-3-5-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
 </li>
 <li id="sect-newton-3-5-1-2">
-<div class="para" id="sect-newton-3-5-1-2-1">Checking if two floating-point numbers are equal are generally not a good idea, because they have to be equal to all bits, so instead we will run the while loop while the difference in the numbers <code class="code-inline tex2jax_ignore">x0</code> and <code class="code-inline tex2jax_ignore">x1</code> are larger than some default (like <span class="process-math">\(10^{-6}\)</span>).<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-5-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-3-5-1-2-1">Checking if two floating-point numbers are equal are generally not a good idea, because they have to be equal to all bits, so instead we will run the while loop while the difference in the numbers <code class="code-inline tex2jax_ignore">x0</code> and <code class="code-inline tex2jax_ignore">x1</code> are larger than some default (like <span class="process-math">\(10^{-6}\)</span> ).<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-5-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Item"><a tabindex="-1" href="#sect-newton-3-5-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
 </li>
@@ -1636,23 +1623,38 @@ end
   x1
 end
 </code></pre></div>
-<div class="para" id="sect-newton-3-13">First, we need to define <code class="code-inline tex2jax_ignore">dx</code> first to determine if we need to go into the loop.  We just set it to some value to get it started. We have also used the operator <code class="code-inline tex2jax_ignore">-=</code>. Line 6 above or  <code class="code-inline tex2jax_ignore">x1 -= dx</code> is shorthand for <code class="code-inline tex2jax_ignore">x1 = x1 - dx</code><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-3-13">First, we need to define <code class="code-inline tex2jax_ignore">dx</code> first to determine if we need to go into the loop. We just set it to some value to get it started. We have also used the operator <code class="code-inline tex2jax_ignore">-=</code>. Line 6 above or <code class="code-inline tex2jax_ignore">x1 -= dx</code> is shorthand for <code class="code-inline tex2jax_ignore">x1 = x1 - dx</code><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="sect-newton-3-14">Although the basics are here, the following is a bit simpler:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">function newton(f::Function, df::Function, x0::Number)
-  local dx = f(x0)/df(x0)
-  x0 -= dx
-  while abs(dx) &gt; 1e-6
+  while true
     dx = f(x0)/df(x0)
     x0 -= dx
+    abs(dx) &lt; 1e-6 &amp;&amp; return x0
   end
-  x0
 end
 </code></pre></div>
-<div class="para" id="sect-newton-3-16">We have changed a few things.  First, note that we decided to reuse the variable <code class="code-inline tex2jax_ignore">x0</code> to keep track of the current root instead of introduce a new variable.  In some languages, this would not be a good idea in that using arguments will change those outside the scope of the function.  However, in Julia is not the case and in <a href="ch-adv-functions.html#sect-function-arguments" class="internal" title="Section 11.7: Function Arguments">Section 11.7</a>, we go into details about how function arguments are passed.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-16" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para logical" id="sect-newton-3-16">
+<div class="para">This version has changed a bit.</div>
+<ul class="disc" id="sect-newton-3-16-1">
+<li id="sect-newton-3-16-1-1">
+<div class="para" id="sect-newton-3-16-1-1-1">The variable <code class="code-inline tex2jax_ignore">x0</code> has been reused in this version. In some languages, this would not be a good idea in that using arguments will change those outside the scope of the function. However, in Julia is not the case and in <a href="ch-adv-functions.html#sect-function-arguments" class="internal" title="Section 11.7: Function Arguments">Section 11.7</a>, we go into details about how function arguments are passed.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-16-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-newton-3-17">And note that we have used <code class="code-inline tex2jax_ignore">x0 -= dx</code> which is a shortcut for <code class="code-inline tex2jax_ignore">x0 = x0 - dx</code>. One note from a programming point of view is that we have repeated code (lines 2 and 3 are the same as lines 5 and 6). Unfortunately this is needed because we need to know <code class="code-inline tex2jax_ignore">dx</code> before entering the loop and then also need to update it within the loop.  We will shorten this a bit later.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-17" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Item"><a tabindex="-1" href="#sect-newton-3-16-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sect-newton-3-16-1-2">
+<div class="para" id="sect-newton-3-16-1-2-1">We have used <code class="code-inline tex2jax_ignore">x0 -= dx</code> which is a shortcut for <code class="code-inline tex2jax_ignore">x0 = x0 - dx</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-16-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Item"><a tabindex="-1" href="#sect-newton-3-16-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sect-newton-3-16-1-3">
+<div class="para" id="sect-newton-3-16-1-3-1">We used a <code class="code-inline tex2jax_ignore">while true</code> loop which can be a problem. The breakout from the loop is on line 5. There is no guarantee of this loop ending and this can be a problem that we will fix below.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-16-1-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Item"><a tabindex="-1" href="#sect-newton-3-16-1-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-3-16" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Subsection 10.4.1: Code for Newton’s Method"><a tabindex="-1" href="#sect-newton-3" title="Copy heading and permalink for Subsection 10.4.1: Code for Newton’s Method" aria-label="Copy heading and permalink for Subsection 10.4.1: Code for Newton’s Method">🔗</a></div>
 </section>
@@ -1660,35 +1662,21 @@ end
 <h3 class="heading hide-type">
 <span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.4.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Using Automatic Differentiation</span>
 </h3>
-<div class="para" id="sect-newton-4-2">If you have used Computational Algebra Systems like Maple or Mathematica, you know that computers have the ability to differentiate. Julia does not have this capability built-in, although it has some capability of doing some of the feature set of these programs. There is a system called <dfn class="terminology">automatic differentiation</dfn> that will compute the exact derivative to a function at a given point. That is, if you have a function <span class="process-math">\(f(x)\)</span> and a number <span class="process-math">\(a\text{,}\)</span> it will give you <span class="process-math">\(f'(a)\text{.}\)</span> The package is called <code class="code-inline tex2jax_ignore">ForwardDiff</code> and you may need to add it and then<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-4-2">If you have used Computational Algebra Systems like Maple or Mathematica, you know that computers have the ability to differentiate. Julia has some packages to do this and we will explore this in <a href="ch-intro-symbolic.html" class="internal" title="Chapter 31: Introduction to Symbolic Calculations">Chapter 31</a>, but since we want the derivative of a function at some value, a better way to do this programmatically, is to use <dfn class="terminology">automatic differentiation</dfn>. That is, if you have a function <span class="process-math">\(f(x)\)</span> and a number <span class="process-math">\(a\text{,}\)</span> it will give you <span class="process-math">\(f'(a)\text{.}\)</span> In Julia a package is called <code class="code-inline tex2jax_ignore">ForwardDiff</code> will have the functions that we want.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="sect-newton-4-3">
-<pre class="code-display tex2jax_ignore clipboardable">using ForwardDiff
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-4-3">For example, Let<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-newton-4-4">For example, if you define:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">g(x::Real) = x^2
+</code></pre></div>
+<div class="para" id="sect-newton-4-5">to find <span class="process-math">\(g'(3)\text{,}\)</span> type<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="sect-newton-4-5">
-<pre class="code-display tex2jax_ignore clipboardable">g(x) =x^2
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">ForwardDiff.derivative(g,3)
+</code></pre></div>
+<div class="para" id="sect-newton-4-7">which will return <code class="code-inline tex2jax_ignore">6</code>. The following is much more complicated:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-newton-4-6">to find <span class="process-math">\(g'(3)\text{,}\)</span> type<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-newton-4-7">
-<pre class="code-display tex2jax_ignore clipboardable">ForwardDiff.derivative(g,3)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-newton-4-8">which will return <code class="code-inline tex2jax_ignore">6</code>.	Try something much more complicated:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para logical" id="sect-newton-4-9">
-<pre class="code-display tex2jax_ignore clipboardable">ForwardDiff.derivative(x-&gt;exp(sin(x^2+pi/x)),1.0)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-newton-4-10">which returns <code class="code-inline tex2jax_ignore">0.2658898634234979</code> and if you are careful with the derivative (or have access to a Computer Algebra System), see if your answer is correct.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">ForwardDiff.derivative(x-&gt;exp(sin(x^2+pi/x)),1.0)
+</code></pre></div>
+<div class="para" id="sect-newton-4-9">which returns <code class="code-inline tex2jax_ignore">0.2658898634234979</code> and if you are careful with the derivative (or have access to a Computer Algebra System), see if your answer is correct. Note that in this example, an anonymous function has been used instead.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-4-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Subsection 10.4.2: Using Automatic Differentiation"><a tabindex="-1" href="#sect-newton-4" title="Copy heading and permalink for Subsection 10.4.2: Using Automatic Differentiation" aria-label="Copy heading and permalink for Subsection 10.4.2: Using Automatic Differentiation">🔗</a></div>
 </section>
@@ -1699,13 +1687,11 @@ end
 <div class="para" id="sect-newton-5-2">With this nice package, let’s rewrite Newton’s method<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-5-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">function newton(f::Function, x0::Number)
-  local dx = f(x0)/ForwardDiff.derivative(f, x0)
-  x0 -= dx
-  while abs(dx) &lt; 1e-6
+  while true
     dx = f(x0)/ForwardDiff.derivative(f, x0)
     x0 -= dx
+    abs(dx) &lt; 1e-6 &amp;&amp; return x0
   end
-  x0
 end
 </code></pre></div>
 <div class="para" id="sect-newton-5-4">Notice that we no longer need the derivative for this function, since the ForwardDiff package will compute it for us, thus the function signature has changed.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-5-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
@@ -1716,12 +1702,40 @@ end
 <span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
 </h4>
 <article class="task exercise-like" id="sect-newton-5-6-1"><h5 class="heading"><span class="codenumber">(a)</span></h5>
-<div class="para" id="sect-newton-5-6-1-1-1">Find the intersection point of the functions <span class="process-math">\(y=x\)</span> and <span class="process-math">\(y=\sin x\text{.}\)</span> Hint set the two equations equal and use algebra to write it as a function <span class="process-math">\(g(x)\)</span> which is equal to 0.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-5-6-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-5-6-1-1-1">Find the intersection point of the functions <span class="process-math">\(y=1-x^2\)</span> and <span class="process-math">\(y=\sin x\text{.}\)</span> Hint set the two equations equal and use algebra to write it as a function <span class="process-math">\(g(x)\)</span> which is equal to 0.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-5-6-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="sect-newton-5-6-1-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="para" id="sect-newton-5-6-1-2-1">In this example, we use the function <span class="process-math">\(g(x)=1-x^2-\sin x\)</span> and then use the following statement:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-5-6-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">newton(x-&gt;1-x^2-sin(x),0.5)
+</code></pre></div>
+<div class="para" id="sect-newton-5-6-1-2-3">which returns <code class="code-inline tex2jax_ignore">0.6367326508052821</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-5-6-1-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 10.6.a.1"><a tabindex="-1" href="#sect-newton-5-6-1-2" title="Copy heading and permalink for Solution 10.6.a.1" aria-label="Copy heading and permalink for Solution 10.6.a.1">🔗</a></div>
+</div></details>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Task 10.6.a"><a tabindex="-1" href="#sect-newton-5-6-1" title="Copy heading and permalink for Task 10.6.a" aria-label="Copy heading and permalink for Task 10.6.a">🔗</a></div>
 </article>
 <article class="task exercise-like" id="sect-newton-5-6-2"><h5 class="heading"><span class="codenumber">(b)</span></h5>
 <div class="para" id="sect-newton-5-6-2-1-1">Use your function above to find all three of the roots of the cubic function, <span class="process-math">\(f(x)=15{x}^{3}-143{x}^2+226x+280\text{.}\)</span><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-5-6-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="sect-newton-5-6-2-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary>
+<div class="solution solution-like knowl__content">
+<div class="para" id="sect-newton-5-6-2-2-1">Looking at the plot in <a href="ch-rootfinding.html#fig-rootfinding-cubic" class="xref" data-knowl="./knowl/xref/fig-rootfinding-cubic.html" data-reveal-label="Reveal" data-close-label="Close" title="Figure 10.5">Figure 10.5</a>, we use this to estimate the roots of <span class="process-math">\(f\)</span> as <span class="process-math">\(x=-1, 3, 7\)</span><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-5-6-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">newton(f,0), newton(f,3), newton(f, 7)
+</code></pre></div>
+<div class="para logical" id="sect-newton-5-6-2-2-3">
+<div class="para">and this returns</div>
+<pre class="code-display tex2jax_ignore clipboardable">(-0.8000000000000933, 3.333333333333334, 7.0)
+</pre>
+<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-5-6-2-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" aria-hidden="true" data-description="Solution 10.6.b.1"><a tabindex="-1" href="#sect-newton-5-6-2-2" title="Copy heading and permalink for Solution 10.6.b.1" aria-label="Copy heading and permalink for Solution 10.6.b.1">🔗</a></div>
+</div></details>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Task 10.6.b"><a tabindex="-1" href="#sect-newton-5-6-2" title="Copy heading and permalink for Task 10.6.b" aria-label="Copy heading and permalink for Task 10.6.b">🔗</a></div>
 </article><div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 10.6"><a tabindex="-1" href="#sect-newton-5-6" title="Copy heading and permalink for Check Your Understanding 10.6" aria-label="Copy heading and permalink for Check Your Understanding 10.6">🔗</a></div>
@@ -1731,27 +1745,22 @@ end
 <h3 class="heading hide-type">
 <span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.4.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Adding an extra stopping condition</span>
 </h3>
-<div class="para" id="sect-newton-6-2">One problem that can arise is if you call <code class="code-inline tex2jax_ignore">newton</code> on a function that does not have a root. For example, consider <span class="process-math">\(f(x)=x^2+1\text{,}\)</span> which is always positive.  If you run<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-6-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-6-2">One problem that can arise is if you call <code class="code-inline tex2jax_ignore">newton</code> on a function that does not have a root. For example, consider <span class="process-math">\(f(x)=x^2+1\text{,}\)</span> which is always positive. If you run<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-6-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para logical" id="sect-newton-6-3">
-<pre class="code-display tex2jax_ignore clipboardable">newton(x-&gt;x^2+1,2)
-</pre>
-<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-6-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="code-box"><pre class="program clipboardable"><code class="language-none">newton(x-&gt;x^2+1,2)
+</code></pre></div>
+<div class="para" id="sect-newton-6-4">then you reach an infinite loop. If you ran this, you’ll need to interrupt the process.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-6-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-newton-6-4">then you reach an infinite loop.  You’ll need to interrupt the process.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-6-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
-</div>
-<div class="para" id="sect-newton-6-5">To prevent this, we need to add a stopping condition if this occurs. One way to do this is to add a  counter include in the <code class="code-inline tex2jax_ignore">while</code> loop that the number of steps is small. Here’s a possible update to Newton’s method:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-6-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-6-5">To prevent this, we need to add a stopping condition if this occurs. One way to do this is to add a counter include in the <code class="code-inline tex2jax_ignore">while</code> loop that the number of steps is small. Here’s a possible update to Newton’s method:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-6-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <figure class="listing figure-like" id="list-newton"><figcaption><span class="type">Listing</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Newton’s method with a stopping condition if it doesn’t converge<div class="autopermalink" aria-hidden="true" data-description="Listing 10.7: Newton’s method with a stopping condition if it doesn’t converge"><a tabindex="-1" href="#list-newton" title="Copy heading and permalink for Listing 10.7: Newton’s method with a stopping condition if it doesn’t converge" aria-label="Copy heading and permalink for Listing 10.7: Newton’s method with a stopping condition if it doesn’t converge">🔗</a></div></figcaption><div class="listing__contents"><div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">function newton(f::Function, x0::Number)
-  local dx = f(x0)/ForwardDiff.derivative(f, x0)
   local steps = 0
-  x0 -= dx
-  while abs(dx) &gt; 1e-6 &amp;&amp; steps &lt; 10
+  while true
     dx = f(x0)/ForwardDiff.derivative(f, x0)
     x0 -= dx
-    steps += 1
+    steps +=1
+    (abs(dx) &lt; 1e-6 || steps &gt;= 10) &amp;&amp; return x0
   end
-  x0
 end
 </code></pre></div></div>
 </figure>
@@ -1764,7 +1773,7 @@ end
 </div>
 <div class="para" id="sect-newton-6-9">we get <code class="code-inline tex2jax_ignore">0.001953125</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-6-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="sect-newton-6-10">Now, this still isn’t perfect because when we run it, we only get a single number out. In this case, the value is not a root, but how do you know?  We will see in <a href="ch-comp-types.html" class="internal" title="Chapter 12: Creating New Data Types in Julia">Chapter 12</a> how to develop a new type which stores information about the root and if a solution was reached.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-6-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-6-10">Now, this still isn’t perfect because when we run it, we only get a single number out. In this case, the value is not a root, but how do you know? We will see in <a href="ch-comp-types.html" class="internal" title="Chapter 12: Creating New Data Types in Julia">Chapter 12</a> how to develop a new type which stores information about the root and if a solution was reached.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-6-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Subsection 10.4.4: Adding an extra stopping condition"><a tabindex="-1" href="#sect-newton-6" title="Copy heading and permalink for Subsection 10.4.4: Adding an extra stopping condition" aria-label="Copy heading and permalink for Subsection 10.4.4: Adding an extra stopping condition">🔗</a></div>
 </section>
@@ -1772,7 +1781,7 @@ end
 <h3 class="heading hide-type">
 <span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.4.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Newton’s method: Alternative Formulation</span>
 </h3>
-<div class="para" id="sect-newton-7-2">Looking at the code in <a href="ch-rootfinding.html#list-newton" class="xref" data-knowl="./knowl/xref/list-newton.html" data-reveal-label="Reveal" data-close-label="Close" title="Listing 10.7: Newton’s method with a stopping condition if it doesn’t converge">Listing 10.7</a>, recall that we used a while loop to perform this because we don’t know the number of steps it takes.  However, we do have a maximum number of steps and in a case like this a for loop might be nicer.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-7-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-7-2">Looking at the code in <a href="ch-rootfinding.html#list-newton" class="xref" data-knowl="./knowl/xref/list-newton.html" data-reveal-label="Reveal" data-close-label="Close" title="Listing 10.7: Newton’s method with a stopping condition if it doesn’t converge">Listing 10.7</a>, recall that we used a while loop to perform this because we don’t know the number of steps it takes. However, we do have a maximum number of steps and in a case like this a for loop might be nicer.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-7-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="sect-newton-7-3">Consider the following code:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-7-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
@@ -1786,21 +1795,25 @@ end
 end
 </code></pre></div></div>
 </figure>
-<div class="para" id="sect-newton-7-5">There are a number of things to notice here.  First, we have started with a for loop.  In <a href="ch-rootfinding.html#list-newton" class="xref" data-knowl="./knowl/xref/list-newton.html" data-reveal-label="Reveal" data-close-label="Close" title="Listing 10.7: Newton’s method with a stopping condition if it doesn’t converge">Listing 10.7</a> we needed to define some variables before entering the while loop, so the above code is shorter.  Also notice that since we don’t really need the index of the loop we have used the convention of the <code class="code-inline tex2jax_ignore">_</code> variable.  Lines 3 and 4 are identical to above to compute <code class="code-inline tex2jax_ignore">dx</code>, which is the step of newton’s method and updating <code class="code-inline tex2jax_ignore">x0</code>.  Lastly, we want to break out of the loop (and the function) and return the current value of <code class="code-inline tex2jax_ignore">x0</code> if the step size is small enough.  We use the shorthand if for this on line 5.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-7-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-newton-7-5">The big difference between this and the previous version of <code class="code-inline tex2jax_ignore">newton</code> is the use of a for loop. Recall that we will first saw loops we generally used a while loop if we don’t know how many times we need to go through the loop. We use a for loop if there is a fixed number of times.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-7-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<article class="exercise exercise-like" id="sect-newton-7-6"><h4 class="heading">
+<div class="para" id="sect-newton-7-6">In this case, we don’t know that this will take 10 times through the loop, but since we do know that is the maximum number of times through the loop, so we will use a for loop.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-7-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sect-newton-7-7">Lastly, since the index/variable of the for loop isn’t used in the loop, we have used the convention of the <code class="code-inline tex2jax_ignore">_</code> variable.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-7-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="exercise exercise-like" id="sect-newton-7-8"><h4 class="heading">
 <span class="type">Check Your Understanding</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
 </h4>
-<article class="task exercise-like" id="sect-newton-7-6-1"><h5 class="heading"><span class="codenumber">(a)</span></h5>
-<div class="para" id="sect-newton-7-6-1-1-1">After redefining newton’s method with that in <a href="ch-rootfinding.html#list-newton-alt" class="xref" data-knowl="./knowl/xref/list-newton-alt.html" data-reveal-label="Reveal" data-close-label="Close" title="Listing 10.8: Alternative formulation of Newton’s method using a for loop.">Listing 10.8</a>, ensure that it is still working by finding all three roots of <span class="process-math">\(f(x) = 15x^3 - 143x^2+266x+280\text{.}\)</span><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-7-6-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<article class="task exercise-like" id="sect-newton-7-8-1"><h5 class="heading"><span class="codenumber">(a)</span></h5>
+<div class="para" id="sect-newton-7-8-1-1-1">After redefining newton’s method with that in <a href="ch-rootfinding.html#list-newton-alt" class="xref" data-knowl="./knowl/xref/list-newton-alt.html" data-reveal-label="Reveal" data-close-label="Close" title="Listing 10.8: Alternative formulation of Newton’s method using a for loop.">Listing 10.8</a>, ensure that it is still working by finding all three roots of <span class="process-math">\(f(x) = 15x^3 - 143x^2+266x+280\text{.}\)</span><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-7-8-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Task 10.9.a"><a tabindex="-1" href="#sect-newton-7-6-1" title="Copy heading and permalink for Task 10.9.a" aria-label="Copy heading and permalink for Task 10.9.a">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 10.9.a"><a tabindex="-1" href="#sect-newton-7-8-1" title="Copy heading and permalink for Task 10.9.a" aria-label="Copy heading and permalink for Task 10.9.a">🔗</a></div>
 </article>
-<article class="task exercise-like" id="sect-newton-7-6-2"><h5 class="heading"><span class="codenumber">(b)</span></h5>
-<div class="para" id="sect-newton-7-6-2-1-1">What happens when you try to find the roots of a function without a root, like <span class="process-math">\(g(x)=\cos(x^2)+2\text{?}\)</span><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-7-6-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<article class="task exercise-like" id="sect-newton-7-8-2"><h5 class="heading"><span class="codenumber">(b)</span></h5>
+<div class="para" id="sect-newton-7-8-2-1-1">What happens when you try to find the roots of a function without a root, like <span class="process-math">\(g(x)=\cos(x^2)+2\text{?}\)</span><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-newton-7-8-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="autopermalink" aria-hidden="true" data-description="Task 10.9.b"><a tabindex="-1" href="#sect-newton-7-6-2" title="Copy heading and permalink for Task 10.9.b" aria-label="Copy heading and permalink for Task 10.9.b">🔗</a></div>
-</article><div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 10.9"><a tabindex="-1" href="#sect-newton-7-6" title="Copy heading and permalink for Check Your Understanding 10.9" aria-label="Copy heading and permalink for Check Your Understanding 10.9">🔗</a></div>
+<div class="autopermalink" aria-hidden="true" data-description="Task 10.9.b"><a tabindex="-1" href="#sect-newton-7-8-2" title="Copy heading and permalink for Task 10.9.b" aria-label="Copy heading and permalink for Task 10.9.b">🔗</a></div>
+</article><div class="autopermalink" aria-hidden="true" data-description="Check Your Understanding 10.9"><a tabindex="-1" href="#sect-newton-7-8" title="Copy heading and permalink for Check Your Understanding 10.9" aria-label="Copy heading and permalink for Check Your Understanding 10.9">🔗</a></div>
 </article><div class="autopermalink" aria-hidden="true" data-description="Subsection 10.4.5: Newton’s method: Alternative Formulation"><a tabindex="-1" href="#sect-newton-7" title="Copy heading and permalink for Subsection 10.4.5: Newton’s method: Alternative Formulation" aria-label="Copy heading and permalink for Subsection 10.4.5: Newton’s method: Alternative Formulation">🔗</a></div>
 </section><div class="autopermalink" aria-hidden="true" data-description="Section 10.4: Newton’s Method"><a tabindex="-1" href="#sect-newton" title="Copy heading and permalink for Section 10.4: Newton’s Method" aria-label="Copy heading and permalink for Section 10.4: Newton’s Method">🔗</a></div>
 </section>
@@ -1808,19 +1821,19 @@ end
 <h2 class="heading hide-type">
 <span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The Bisection Method</span>
 </h2>
-<div class="para" id="ch-rootfinding-8-2">In <a href="ch-boolean-loops.html#sect-while-loop" class="internal" title="Subsection 5.4.1: While Loops">Subsection 5.4.1</a>, we saw the bisection method and just presented it as an example of using a while loop. We return to this to further explain the method.  If we have a function like <span class="process-math">\(f(x) = x^2-2\)</span> and seek to find a root of this<details class="ptx-footnote" aria-live="polite" id="ch-rootfinding-8-2-3"><summary class="ptx-footnote__number" title="Footnote 10.1"><sup> 1 </sup></summary>
+<div class="para" id="ch-rootfinding-8-2">In <a href="ch-boolean-loops.html#sect-while-loop" class="internal" title="Subsection 5.4.1: While Loops">Subsection 5.4.1</a>, we saw the bisection method and just presented it as an example of using a while loop. We return to this to further explain the method. If we have a function like <span class="process-math">\(f(x) = x^2-2\)</span> and seek to find a root of this <details class="ptx-footnote" aria-live="polite" id="ch-rootfinding-8-2-3"><summary class="ptx-footnote__number" title="Footnote 10.1"><sup> 1 </sup></summary>
 <div class="ptx-footnote__contents" id="ch-rootfinding-8-2-3">Yes, I realize this is an example where we know the answer using algebra, but go with it.
 </div></details>. The graph of this on <span class="process-math">\([0,2]\)</span> is<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-8-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <figure class="figure figure-like" id="fig-root-xsq"><div class="image-box" style="width: 100%; margin-left: 0%; margin-right: 0%;"><img src="external/plots/rootfinding/xsq.png" class="contained" alt="(for accessibility)"></div>
 <figcaption><span class="type">Figure</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><div class="autopermalink" aria-hidden="true" data-description="Figure 10.10"><a tabindex="-1" href="#fig-root-xsq" title="Copy heading and permalink for Figure 10.10" aria-label="Copy heading and permalink for Figure 10.10">🔗</a></div></figcaption>
 </figure>
-<div class="para" id="ch-rootfinding-8-4">and note that we are seeking where the curve crosses the <span class="process-math">\(x\)</span>-axis.  The bisection method requires that we start with an interval that contains the root.  In this case, we will use <span class="process-math">\([a_0,b_0]=[1,2]\text{.}\)</span> We know that there is a root of this from the intermediate value theorem which states that a continuous function takes on all values between <span class="process-math">\(f(a)\)</span> and <span class="process-math">\(f(b)\text{,}\)</span> where <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> are the endpoints of the interval.  Since we are seeking a value <span class="process-math">\(x^{\star}\)</span> where <span class="process-math">\(f(x^{\star})=0\text{,}\)</span> the endpoints must have opposite signs which can be tested by multiplying the values and testing for a negative number or <span class="process-math">\(f(a)f(b) &lt; 0\text{.}\)</span><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-8-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-8-4">and note that we are seeking where the curve crosses the <span class="process-math">\(x\)</span>-axis. The bisection method requires that we start with an interval that contains the root. In this case, we will use <span class="process-math">\([a_0,b_0]=[1,2]\text{.}\)</span> We know that there is a root of this from the intermediate value theorem which states that a continuous function takes on all values between <span class="process-math">\(f(a)\)</span> and <span class="process-math">\(f(b)\text{,}\)</span> where <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> are the endpoints of the interval. Since we are seeking a value <span class="process-math">\(x^{\star}\)</span> where <span class="process-math">\(f(x^{\star})=0\text{,}\)</span> the endpoints must have opposite signs which can be tested by multiplying the values and testing for a negative number or <span class="process-math">\(f(a)f(b) &lt; 0\text{.}\)</span><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-8-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <article class="algorithm theorem-like" id="alg-bisect"><h3 class="heading">
 <span class="type">Algorithm</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
 </h3>
-<div class="para" id="alg-bisect-1-1">Let <code class="code-inline tex2jax_ignore">a</code> and <code class="code-inline tex2jax_ignore">b</code> be an interval <span class="process-math">\([a,b]\)</span> such that <code class="code-inline tex2jax_ignore">f(a)*f(b) &lt; 0 </code>.  The following uses the bisection method to find a root to within <code class="code-inline tex2jax_ignore">ϵ</code> of the true value <span class="process-math">\(x^{\star}\text{.}\)</span><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#alg-bisect-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="alg-bisect-1-1">Let <code class="code-inline tex2jax_ignore">a</code> and <code class="code-inline tex2jax_ignore">b</code> be an interval <span class="process-math">\([a,b]\)</span> such that <code class="code-inline tex2jax_ignore">f(a)*f(b) &lt; 0 </code>. The following uses the bisection method to find a root to within <code class="code-inline tex2jax_ignore">ϵ</code> of the true value <span class="process-math">\(x^{\star}\text{.}\)</span><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#alg-bisect-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div> 
 <div class="para logical" id="alg-bisect-1-2">
 <ol class="decimal" id="alg-bisect-1-2-1">
@@ -1835,7 +1848,7 @@ end
 <div class="autopermalink" aria-hidden="true" data-description="Item 2"><a tabindex="-1" href="#alg-bisect-1-2-1-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
 </li>
 <li id="alg-bisect-1-2-1-3">
-<div class="para" id="alg-bisect-1-2-1-3-1">If <code class="code-inline tex2jax_ignore">f(a)*f(m) &lt; 0</code>, then the new interval should be <span class="process-math">\([a,m]\)</span> or let <code class="code-inline tex2jax_ignore">b=m</code>.  Otherwise, the new interval should be <span class="process-math">\([m,b]\)</span> so let <code class="code-inline tex2jax_ignore">a=m</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#alg-bisect-1-2-1-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="alg-bisect-1-2-1-3-1">If <code class="code-inline tex2jax_ignore">f(a)*f(m) &lt; 0</code>, then the new interval should be <span class="process-math">\([a,m]\)</span> or let <code class="code-inline tex2jax_ignore">b=m</code>. Otherwise, the new interval should be <span class="process-math">\([m,b]\)</span> so let <code class="code-inline tex2jax_ignore">a=m</code>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#alg-bisect-1-2-1-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Item 3"><a tabindex="-1" href="#alg-bisect-1-2-1-3" title="Copy heading and permalink for Item 3" aria-label="Copy heading and permalink for Item 3">🔗</a></div>
 </li>
@@ -1861,22 +1874,23 @@ end
   c
 end
 </code></pre></div>
-<div class="para" id="ch-rootfinding-8-8">where we have hard coded <code class="code-inline tex2jax_ignore">ϵ</code> to be <code class="code-inline tex2jax_ignore">1e-6</code>.  Note also that we have used a tuple to store the interval and have updated the entire interval instead of just one endpoint as the algorithm above states.  This is mainly for code clarity. Also, we will update this code to handle other values of <code class="code-inline tex2jax_ignore">ϵ</code> in <a href="ch-adv-functions.html" class="internal" title="Chapter 11: Advanced Function Features of Julia">Chapter 11</a>.  Also in that chapter we will test to ensure that the original interval contains the root.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-8-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-8-8">where we have hard coded <code class="code-inline tex2jax_ignore">ϵ</code> to be <code class="code-inline tex2jax_ignore">1e-6</code>. Note also that we have used a tuple to store the interval and have updated the entire interval instead of just one endpoint as the algorithm above states. This is mainly for code clarity. Also, we will update this code to handle other values of <code class="code-inline tex2jax_ignore">ϵ</code> in <a href="ch-adv-functions.html" class="internal" title="Chapter 11: Advanced Function Features of Julia">Chapter 11</a>. Also in that chapter we will test to ensure that the original interval contains the root.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-8-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="para" id="ch-rootfinding-8-9">You may also question why we have line 2, which doesn’t see to do anything.  This is crucial (try commenting out the code and rerunning--you will get an error). This is due to the scope of the variable c, which will be explained in more detail in <a href="ch-adv-functions.html#sect-variable-scope" class="internal" title="Section 11.6: Variable Scope">Section 11.6</a>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-8-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="ch-rootfinding-8-9">You may also question why we have line 2, which doesn’t see to do anything. This is crucial (try commenting out the code and rerunning--you will get an error). This is due to the scope of the variable c, which will be explained in more detail in <a href="ch-adv-functions.html#sect-variable-scope" class="internal" title="Section 11.6: Variable Scope">Section 11.6</a>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-8-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="ch-rootfinding-8-10">Running the code with <code class="code-inline tex2jax_ignore">x0 = bisect(x -&gt; x^2-2, 1, 2)</code> returns <code class="code-inline tex2jax_ignore">1.4142141342163086</code> and <code class="code-inline tex2jax_ignore">absErr(x0, sqrt(2))</code> returns <code class="code-inline tex2jax_ignore">5.718432134482754e-7</code> showing that in fact the error is with <span class="process-math">\(10^{-6}\text{.}\)</span><div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-8-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="ch-rootfinding-8-11">Lastly, we can rewrite this a bit as follows:<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-8-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
-<div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">function bisection(f::Function, a::Real, b::Real)
+<figure class="listing figure-like" id="list-bisection"><figcaption><span class="type">Listing</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">10.12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span>Bisection Method for Rootfinding<div class="autopermalink" aria-hidden="true" data-description="Listing 10.12: Bisection Method for Rootfinding"><a tabindex="-1" href="#list-bisection" title="Copy heading and permalink for Listing 10.12: Bisection Method for Rootfinding" aria-label="Copy heading and permalink for Listing 10.12: Bisection Method for Rootfinding">🔗</a></div></figcaption><div class="listing__contents"><div class="code-box"><pre class="program clipboardable line-numbers"><code class="language-none">function bisection(f::Function, a::Real, b::Real)
   while true
     c = 0.5*(a+b)  # find the midpoint
     (a,b) = f(a)*f(c) &lt; 0 ? (a,c) : (c,b)
-    (b-a) &lt; 1e-6 &amp;&amp; return c
+    b-a &lt; 1e-6 &amp;&amp; return c
   end
 end
-</code></pre></div>
+</code></pre></div></div>
+</figure>
 <div class="para" id="ch-rootfinding-8-13">where we have used the <code class="code-inline tex2jax_ignore">while true</code> loop, which can be dangerous since it may result in an infinite loop, but line 5 is the way to break out of the loop and the function.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#ch-rootfinding-8-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="autopermalink" aria-hidden="true" data-description="Section 10.5: The Bisection Method"><a tabindex="-1" href="#ch-rootfinding-8" title="Copy heading and permalink for Section 10.5: The Bisection Method" aria-label="Copy heading and permalink for Section 10.5: The Bisection Method">🔗</a></div>

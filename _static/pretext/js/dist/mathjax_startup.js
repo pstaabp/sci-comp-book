@@ -60,6 +60,7 @@ function startMathJax(opts) {
   } else {
     mathJaxOpts["startup"] = {
       ready() {
+        window.PTX_MACROS = document.getElementById("latex-macros").textContent;
         const { Configuration } = MathJax._.input.tex.Configuration;
         const configuration = Configuration.create("knowl", {
           handler: {
@@ -108,6 +109,12 @@ function startMathJax(opts) {
         "zscale": "300%"
       }
     };
+  }
+  mathJaxOpts["options"]["enableSpeech"] = true;
+  const sreLocales = ["en", "fr", "es", "de", "it"];
+  const primaryTag = (opts.lang || "").split("-")[0].toLowerCase();
+  if (sreLocales.includes(primaryTag)) {
+    mathJaxOpts["options"]["sre"] = { "locale": primaryTag };
   }
   window.MathJax = mathJaxOpts;
   const runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);

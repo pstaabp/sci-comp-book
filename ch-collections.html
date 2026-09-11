@@ -25,6 +25,7 @@ hasWebworkReps: false,
 hasSage: false,
 isReact: false,
 htmlPresentation: false,
+lang: "en-US",
 });
 </script><script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,7 +36,7 @@ htmlPresentation: false,
 <meta name="twitter:description" content="Coding mathematics using Julia">
 <meta property="og:description" content="Coding mathematics using Julia">
 <meta name="twitter:card" content="summary">
-<script src="_static/pretext/js/jquery.min.js"></script><script src="_static/pretext/js/dist/pretext-core.js?v=2.44"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<script src="_static/pretext/js/jquery.min.js"></script><script src="_static/pretext/js/dist/pretext-core.js?v=2.52"></script><script src="_static/pretext/js/dist/pretext-read-aloud.js?v=2.52"></script><!--** eBookCongig is necessary to configure interactive       **-->
 <!--** Runestone components to run locally in reader's browser **-->
 <!--** No external communication:                              **-->
 <!--**     log level is 0, Runestone Services are disabled     **-->
@@ -57,15 +58,15 @@ eBookConfig.allow_pairs = false;
 eBookConfig.enableScratchAC = false;
 eBookConfig.build_info = "";
 eBookConfig.python3 = null;
-eBookConfig.runestone_version = '8.1.11';
+eBookConfig.runestone_version = '8.2.10';
 eBookConfig.jobehost = '';
 eBookConfig.proxyuri_runs = '';
 eBookConfig.proxyuri_files = '';
 eBookConfig.enable_chatcodes =  false;
 </script>
 <!--*** Runestone Services ***-->
-<script src="_static/prefix-runtime.8b6d53d5a91823a0.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.2901d6466316ff22.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
-<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.66fa8a682a32c0ac.css">
+<script src="_static/prefix-runtime.e3f9706509fcf6f7.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.c5ba0ffa5f963084.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
+<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.efe427683fc41f98.css">
 <script src="_static/pretext/js/dist/lti_iframe_resizer.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/components/prism-core.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/autoloader/prism-autoloader.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-dubtf8xMHSQlExGRQ5R7toxHLgSDZ0K7AunqPWHXmJQ8XyVIG19S1T95gBxlAeGOK02P4Da2RTnQz0Za0H0ebQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.26.0/plugins/line-highlight/prism-line-highlight.min.js" integrity="sha512-93uCmm0q+qO5Lb1huDqr7tywS8A2TFA+1/WHvyiWaK6/pvsFl6USnILagntBx8JnVbQH5s3n0vQZY6xNthNfKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/lunr.js/2.3.9/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/dist/pretext_search.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
 </script>
 </head>
@@ -84,7 +85,17 @@ eBookConfig.enable_chatcodes =  false;
 <div id="ptx-search-empty" class="ptx-search-empty"><span>No results.</span></div>
 <ol id="ptx-search-results" class="ptx-search-results"></ol></dialog>
 </div>
-<span class="nav-other-controls"><button id="ptx-readability-options-button" class="ptx-readability-options-button button" title="Readability settings"><span class="icon material-symbols-outlined" aria-hidden="true">&#xf6f1;</span><span class="name">Readability settings</span></button><dialog class="ptx-dialog ptx-readability-options-popup" id="ptx-readability-options-popup"><div class="ptx-readability-options-popup-controls">
+<span class="nav-other-controls"><button id="ptx-read-aloud-button" class="ptx-read-aloud-button button" title="Read aloud" aria-expanded="false"><span class="icon material-symbols-outlined" aria-hidden="true">&#xf1bc;</span><span class="name">Read aloud</span></button><div id="ptx-read-aloud-player" class="ptx-read-aloud-player" hidden="hidden" role="group" aria-label="Read aloud">
+<button id="ptx-read-aloud-prev" class="button" title="Previous sentence"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe045;</span></button><button id="ptx-read-aloud-toggle" class="ptx-read-aloud-toggle button" title="Play"><span class="ptx-read-aloud-icon-play"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe037;</span></span><span class="ptx-read-aloud-icon-pause"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe034;</span></span></button><button id="ptx-read-aloud-next" class="button" title="Next sentence"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe044;</span></button><a id="ptx-read-aloud-continue" class="ptx-read-aloud-continue button" hidden="hidden">Continue<span class="icon material-symbols-outlined" aria-hidden="true">&#xe037;</span></a><button id="ptx-read-aloud-settings-button" class="ptx-read-aloud-settings-button button" title="Reading settings"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe429;</span></button>
+</div>
+<dialog class="ptx-dialog ptx-read-aloud-settings-popup" id="ptx-read-aloud-settings-popup"><div class="ptx-readability-options-popup-controls">
+<h2 class="heading">Read aloud settings</h2>
+<button class="ptx-read-aloud-settings-close-button button" id="ptx-read-aloud-settings-close-button" title="Close"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cd;</span></button>
+</div>
+<div class="ptx-readability-options-group">
+<label for="ptx-read-aloud-voice"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe91f;</span><span>Voice</span></label><select id="ptx-read-aloud-voice"></select><label class="ptx-readability-slider-label" for="ptx-read-aloud-rate"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe9e4;</span><span>Reading speed</span><output id="ptx-read-aloud-rate-value" for="ptx-read-aloud-rate">1×</output></label><input type="range" id="ptx-read-aloud-rate" min="0.5" max="2" step="0.1" value="1"><label for="ptx-read-aloud-asides"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5d7;</span><span>Collapsed content</span></label><select id="ptx-read-aloud-asides"><option value="skip">Announce, do not read</option>
+<option value="read">Read automatically</option></select><label for="ptx-read-aloud-autoscroll"><input type="checkbox" id="ptx-read-aloud-autoscroll" checked><span>Follow along (auto-scroll)</span></label><label for="ptx-read-aloud-autocontinue"><input type="checkbox" id="ptx-read-aloud-autocontinue"><span>Continue to the next page automatically</span></label>
+</div></dialog><button id="ptx-readability-options-button" class="ptx-readability-options-button button" title="Readability settings"><span class="icon material-symbols-outlined" aria-hidden="true">&#xf6f1;</span><span class="name">Readability settings</span></button><dialog class="ptx-dialog ptx-readability-options-popup" id="ptx-readability-options-popup"><div class="ptx-readability-options-popup-controls">
 <h2 class="heading">Readability settings</h2>
 <button class="ptx-readability-options-close-button button" id="ptx-readability-options-close-button" title="Close"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cd;</span></button>
 </div>
@@ -243,7 +254,7 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-chapter">
 <div class="toc-title-box"><a href="ch-arrays.html" class="internal"><span class="codenumber">6</span> <span class="title">Vectors and other Collections</span></a></div>
 <ul id="ptx-toc-group-ch-arrays" class="structural toc-item-list">
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-contructing-arrays" class="internal"><span class="codenumber">6.1</span> <span class="title">Constructing arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-constructing-arrays" class="internal"><span class="codenumber">6.1</span> <span class="title">Constructing Vectors, Matrices and other Arrays</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-comprehensions" class="internal"><span class="codenumber">6.2</span> <span class="title">Comprehensions</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-accessing-arrays" class="internal"><span class="codenumber">6.3</span> <span class="title">Accessing elements of an array</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-7" class="internal"><span class="codenumber">6.4</span> <span class="title">Common Operations on Arrays</span></a></div></li>
@@ -257,12 +268,12 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-3" class="internal"><span class="codenumber">6.9.1</span> <span class="title">Append</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-4" class="internal"><span class="codenumber">6.9.2</span> <span class="title">Adding and Removing Elements in the Middle of an Array</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-5" class="internal"><span class="codenumber">6.9.3</span> <span class="title">It Splices, It Dices!! --- okay, it doesn’t dice</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-6" class="internal"><span class="codenumber">6.9.4</span> <span class="title">Filtering Arrays</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-6" class="internal"><span class="codenumber">6.9.4</span> <span class="title">Filtering Vectors</span></a></div></li>
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-arrays.html#sect-other-array-functions-7" class="internal"><span class="codenumber">6.9.5</span> <span class="title">Removing Duplicate Elements</span></a></div></li>
 </ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-join-split" class="internal"><span class="codenumber">6.10</span> <span class="title">Joining Arrays and Splitting Strings</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-array-concat" class="internal"><span class="codenumber">6.11</span> <span class="title">Concatenating Arrays</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-array-concat" class="internal"><span class="codenumber">6.11</span> <span class="title">Concatenating Vectors and Matrices</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#sect-array-repeat" class="internal"><span class="codenumber">6.12</span> <span class="title">Creating patterned arrays with repeat</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-arrays.html#ch-arrays-16" class="internal"><span class="codenumber">6.13</span> <span class="title">Arrays as a Collection</span></a></div></li>
 <li class="toc-item toc-section">
@@ -281,10 +292,10 @@ eBookConfig.enable_chatcodes =  false;
 <div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4" class="internal"><span class="codenumber">7.1</span> <span class="title">Functional vs. Non-functional forms</span></a></div>
 <ul id="ptx-toc-group-ch-functional-programming-4" class="structural toc-item-list">
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4-3" class="internal"><span class="codenumber">7.1.1</span> <span class="title">Anonymous Functions</span></a></div></li>
-<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4-4" class="internal"><span class="codenumber">7.1.2</span> <span class="title">Mapping over two arrays</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-4-4" class="internal"><span class="codenumber">7.1.2</span> <span class="title">Mapping over two Vectors</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-reduce-array" class="internal"><span class="codenumber">7.2</span> <span class="title">Reducing an array</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-reduce-vector" class="internal"><span class="codenumber">7.2</span> <span class="title">Reducing an vector</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#section-mapreduce" class="internal"><span class="codenumber">7.3</span> <span class="title">The <code class="code-inline tex2jax_ignore">mapreduce</code> function</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#ch-functional-programming-7" class="internal"><span class="codenumber">7.4</span> <span class="title">Mapping a Function over an 2D array</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-functional-programming.html#sect-do-begin-end-blocks" class="internal"><span class="codenumber">7.5</span> <span class="title">Do-Begin-End blocks</span></a></div></li>
@@ -294,15 +305,20 @@ eBookConfig.enable_chatcodes =  false;
 <div class="toc-title-box"><a href="ch-fast-code.html" class="internal"><span class="codenumber">8</span> <span class="title">Timing Code and Writing for Speed</span></a></div>
 <ul id="ptx-toc-group-ch-fast-code" class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-4" class="internal"><span class="codenumber">8.1</span> <span class="title">Timing Code</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-5" class="internal"><span class="codenumber">8.2</span> <span class="title">Attempt #1</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-6" class="internal"><span class="codenumber">8.3</span> <span class="title">Attempt #2</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-7" class="internal"><span class="codenumber">8.4</span> <span class="title">Attempt #3</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-8" class="internal"><span class="codenumber">8.5</span> <span class="title">Attempt #4</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-9" class="internal"><span class="codenumber">8.6</span> <span class="title">Attempt #5</span></a></div></li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-10" class="internal"><span class="codenumber">8.7</span> <span class="title">Summary of Results</span></a></div></li>
 <li class="toc-item toc-section">
-<div class="toc-title-box"><a href="ch-fast-code.html#sect-faster-fibonacci" class="internal"><span class="codenumber">8.8</span> <span class="title">Computing Fibonacci Numbers</span></a></div>
-<ul id="ptx-toc-group-sect-faster-fibonacci" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sect-fast-fibonacci" class="internal"><span class="codenumber">8.8.1</span> <span class="title">Speeding Up Fibonacci</span></a></div></li></ul>
+<div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers" class="internal"><span class="codenumber">8.2</span> <span class="title">Summing Integers</span></a></div>
+<ul id="ptx-toc-group-sec-summing-integers" class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-3" class="internal"><span class="codenumber">8.2.1</span> <span class="title">Attempt #1</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-4" class="internal"><span class="codenumber">8.2.2</span> <span class="title">Attempt #2</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-5" class="internal"><span class="codenumber">8.2.3</span> <span class="title">Attempt #3</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-6" class="internal"><span class="codenumber">8.2.4</span> <span class="title">Attempt #4</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sec-summing-integers-7" class="internal"><span class="codenumber">8.2.5</span> <span class="title">Attempt #5</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-fast-code.html#ch-fast-code-6" class="internal"><span class="codenumber">8.3</span> <span class="title">Summary of Results</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ch-fast-code.html#sect-faster-fibonacci" class="internal"><span class="codenumber">8.4</span> <span class="title">Computing Fibonacci Numbers</span></a></div>
+<ul id="ptx-toc-group-sect-faster-fibonacci" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-fast-code.html#sect-fast-fibonacci" class="internal"><span class="codenumber">8.4.1</span> <span class="title">Speeding Up Fibonacci</span></a></div></li></ul>
 </li>
 </ul>
 </li>
@@ -350,7 +366,7 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-5-4" class="internal"><span class="codenumber">10.2.2</span> <span class="title">Be skeptical of numerical answers</span></a></div></li>
 </ul>
 </li>
-<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-6" class="internal"><span class="codenumber">10.3</span> <span class="title">Are We Sunk?  Reexamining the Quadratic Formula</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-rootfinding.html#ch-rootfinding-6" class="internal"><span class="codenumber">10.3</span> <span class="title">Are We Sunk? Reexamining the Quadratic Formula</span></a></div></li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-rootfinding.html#sect-newton" class="internal"><span class="codenumber">10.4</span> <span class="title">Newton’s Method</span></a></div>
 <ul id="ptx-toc-group-sect-newton" class="structural toc-item-list">
@@ -372,7 +388,7 @@ eBookConfig.enable_chatcodes =  false;
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-6" class="internal"><span class="codenumber">11.3</span> <span class="title">Handling Special Cases</span></a></div></li>
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-7" class="internal"><span class="codenumber">11.4</span> <span class="title">Keyword Arguments</span></a></div>
-<ul id="ptx-toc-group-ch-adv-functions-7" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-7-3" class="internal"><span class="codenumber">11.4.1</span> <span class="title">Keyword Arguments for complex functions</span></a></div></li></ul>
+<ul id="ptx-toc-group-ch-adv-functions-7" class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ch-adv-functions.html#ch-adv-functions-7-3" class="internal"><span class="codenumber">11.4.1</span> <span class="title">Keyword Arguments for complex commands</span></a></div></li></ul>
 </li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#sect-parametric-methods" class="internal"><span class="codenumber">11.5</span> <span class="title">Parametric Methods</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-adv-functions.html#sect-variable-scope" class="internal"><span class="codenumber">11.6</span> <span class="title">Variable Scope</span></a></div></li>
@@ -1142,7 +1158,7 @@ eBookConfig.enable_chatcodes =  false;
 <div class="toc-title-box"><a href="backmatter.html" class="internal"><span class="title">Backmatter</span></a></div>
 <ul id="ptx-toc-group-backmatter" class="structural toc-item-list">
 <li class="toc-item toc-appendix">
-<div class="toc-title-box"><a href="ch-getting-started.html" class="internal"><span class="codenumber">A</span> <span class="title">Getting Started with Julia</span></a></div>
+<div class="toc-title-box"><a href="ch-getting-started.html" class="internal"><span class="codenumber">A.</span> <span class="title">Getting Started with Julia</span></a></div>
 <ul id="ptx-toc-group-ch-getting-started" class="structural toc-item-list">
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-getting-started.html#sect-installing-julia" class="internal"><span class="codenumber">A.1</span> <span class="title">Downloading and Installing Julia</span></a></div></li>
 <li class="toc-item toc-section"><div class="toc-title-box"><a href="ch-getting-started.html#sect-installing-vscode" class="internal"><span class="codenumber">A.2</span> <span class="title">Installing Visual Studio Code</span></a></div></li>
@@ -1181,7 +1197,7 @@ eBookConfig.enable_chatcodes =  false;
 </ul>
 </li>
 <li class="toc-item toc-appendix">
-<div class="toc-title-box"><a href="ch-packages.html" class="internal"><span class="codenumber">B</span> <span class="title">Managing Packages</span></a></div>
+<div class="toc-title-box"><a href="ch-packages.html" class="internal"><span class="codenumber">B.</span> <span class="title">Managing Packages</span></a></div>
 <ul id="ptx-toc-group-ch-packages" class="structural toc-item-list"><li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-packages.html#ch-packages-3" class="internal"><span class="codenumber">B.1</span> <span class="title">Managing Packages in Julia</span></a></div>
 <ul id="ptx-toc-group-ch-packages-3" class="structural toc-item-list">
@@ -1196,7 +1212,7 @@ eBookConfig.enable_chatcodes =  false;
 </li></ul>
 </li>
 <li class="toc-item toc-appendix">
-<div class="toc-title-box"><a href="ch-num-rep.html" class="internal"><span class="codenumber">C</span> <span class="title">Binary Represenation of Numbers</span></a></div>
+<div class="toc-title-box"><a href="ch-num-rep.html" class="internal"><span class="codenumber">C.</span> <span class="title">Binary Represenation of Numbers</span></a></div>
 <ul id="ptx-toc-group-ch-num-rep" class="structural toc-item-list">
 <li class="toc-item toc-section">
 <div class="toc-title-box"><a href="ch-num-rep.html#ch-num-rep-3" class="internal"><span class="codenumber">C.1</span> <span class="title">Integer Representation</span></a></div>
@@ -1494,7 +1510,7 @@ Base.length(f::Fibonacci) = f.n
    (x, state + 1)
 end
 </code></pre></div>
-<div class="para" id="sect-user-defined-collection-10">where the arguments of the <code class="code-inline tex2jax_ignore">iterate</code> function is a object of the type in question and a variable <code class="code-inline tex2jax_ignore">state</code> which acts like an index.  The function should return <code class="code-inline tex2jax_ignore">nothing</code> if the iteration is done and otherwise, return a tuple with the next value and increment the index/state.  Note in our case above, we have used the faster (non recursive) version of fibonacci in <a href="ch-fast-code.html#sect-fast-fibonacci" class="internal" title="Subsection 8.8.1: Speeding Up Fibonacci">Subsection 8.8.1</a>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-user-defined-collection-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+<div class="para" id="sect-user-defined-collection-10">where the arguments of the <code class="code-inline tex2jax_ignore">iterate</code> function is a object of the type in question and a variable <code class="code-inline tex2jax_ignore">state</code> which acts like an index.  The function should return <code class="code-inline tex2jax_ignore">nothing</code> if the iteration is done and otherwise, return a tuple with the next value and increment the index/state.  Note in our case above, we have used the faster (non recursive) version of fibonacci in <a href="ch-fast-code.html#sect-fast-fibonacci" class="internal" title="Subsection 8.4.1: Speeding Up Fibonacci">Subsection 8.4.1</a>.<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-user-defined-collection-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>
 <div class="para" id="sect-user-defined-collection-11">There are many ways that <code class="code-inline tex2jax_ignore">iterate</code> can be used.  For example in a for loop like<div class="autopermalink" aria-hidden="true" data-description="Paragraph"><a tabindex="-1" href="#sect-user-defined-collection-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
 </div>

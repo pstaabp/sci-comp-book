@@ -68,6 +68,7 @@ export function startMathJax(opts) {
   } else {
     mathJaxOpts['startup'] = {
       ready() {
+        window.PTX_MACROS = document.getElementById('latex-macros').textContent;
         const { Configuration } = MathJax._.input.tex.Configuration;
         const configuration = Configuration.create("knowl", {
           handler: {
@@ -120,6 +121,22 @@ export function startMathJax(opts) {
         "zscale": "300%"
       }
     }
+  }
+
+  // Speech generation.  MathJax's Speech Rule Engine produces the spoken
+  // form of every expression and attaches it as an aria-label; screen
+  // readers use it, and so does the read-aloud feature, which hands off to
+  // it rather than trying to voice the visual output.  This is on by
+  // default in v4's combined components, but assert it explicitly so a
+  // future change of default cannot silently break either consumer.
+  mathJaxOpts['options']['enableSpeech'] = true;
+
+  // Match the speech locale to the document language when SRE supports it,
+  // otherwise leave SRE's own default in place (graceful degradation).
+  const sreLocales = ['en', 'fr', 'es', 'de', 'it'];
+  const primaryTag = (opts.lang || '').split('-')[0].toLowerCase();
+  if(sreLocales.includes(primaryTag)) {
+    mathJaxOpts['options']['sre'] = { "locale": primaryTag };
   }
 
   // Apply the options
