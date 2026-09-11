@@ -308,7 +308,7 @@ end
 		<p>
 			So what is going on with this?  The <c>@distributed</c> macro runs a for
 			loop on all available cores, splitting the range across the cores.  The
-			<c>(+)</c> says to add the results.  Any reducer function (see <xref ref="sect-reduce-array"/>
+			<c>(+)</c> says to add the results.  Any reducer function (see <xref ref="sect-reduce-vector"/>
 			for general <c>reduce</c> function) can be used.
 		</p>
 	</section>

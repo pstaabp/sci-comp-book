@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <chapter xml:id="ch-fast-code">
-  <title>Timing Code and Writing for Speed </title>
+  <title>Timing Code and Writing for Speed</title>
 
   <objectives>
     <ul>
@@ -27,330 +27,433 @@
 
   <introduction>
     <p>
-      This chapter will show one aspect of writing fast code, an important aspect of scientific computing. We will study a number of ways to sum up the first <m>n</m> counting numbers and determine why the timing of things are different. Also, we are going to test the various types of integers as well to determine the speed of things with that. In each case we are going to create a function and then time it.
+      This chapter will show one aspect of writing fast code, an important aspect of scientific computing.
+      We will study a number of ways to sum up the first <m>n</m> counting numbers and determine why the timing of
+      things are different.
+      Also, we are going to test the various types of integers as well determining the speed of things with that.
+      In each case we are going to create a function and then time it.
     </p>
   </introduction>
 
-	<section>
-		<title>Timing Code</title>
+  <section>
+    <title>Timing Code</title>
 
-		<p>
-			Although we all want our code to run fast, it is often the difference between solving a problem or not being able to solve it or perhaps restricting the size of the problem.  Let's look at an example of timing code in which we multiply two matrices of size <c>n</c> by <c>n</c>
-		</p>
+    <p>
+      Although we all want our code to run fast, it is often the difference between solving a problem or not being able
+      to solve it or perhaps restricting the size of the problem.
+      Let's look at an example of timing code in which we multiply two matrices of size <c>n</c> by <c>n</c>
+    </p>
 
     <program language="julia" line-numbers="yes">
       <code>
-function matrixMult(n::Integer)
-  local A = rand(n,n)
-  local B = rand(n,n)
-  A*B
-end
+        function matrixMultiply(n::Integer)
+          local A = rand(n,n)
+          local B = rand(n,n)
+          A*B
+        end
       </code>
     </program>
 
     <p>
-      We can time the command using the <c>@time</c> macro.  An example is <c>@time matrixMult(100)</c> and the first line of the output might be <c>0.000229 seconds (9 allocations: 234.609 KiB)</c>.
-    </p>
-	</section>
-
-  <section>
-    <title>Attempt #1</title>
-
-    <p>
-      Let's start by making an array of all of the numbers, then summing them in a for loop:
-    </p>
-
-
-    <program language="Julia" line-numbers="yes">
-      <code>
-function sum1(n::Int)
-  local arr = collect(1:n)
-  local sum = 0
-  for i in arr
-    sum += i
-  end
-  sum
-end
-      </code>
-    </program>
-
-    <p>
-      On my laptop: <c>@time sum1(1_000_000)</c> returns
+      We can time the command using the <c>@time</c> macro.
+      An example is <c>@time matrixMultiply(100)</c> and the first line of the output might be
+      <c>0.000117 seconds (9 allocations: 240.234 KiB)</c>.
     </p>
 
     <p>
-      <cd>
-      <cline>0.026257 seconds (2 allocations: 7.629 MiB, 91.73% gc time)</cline>
-      <cline></cline>
-      <cline>500000500000</cline>
-      </cd>
+      This seems very fast, but if we try <c>@time matrixMultiply(1_000)</c> we get
+      <c>0.025743 seconds (9 allocations: 22.922 MiB)</c>.
+      This is more than 100 times slower, but the size of the matrices is 10 times larger.
+      Also note that that the allocation size is about 100 times larger (240 kilobytes versus 22 megabytes)
     </p>
 
     <p>
-      The <c>@time</c> is called a macro (note the "@" symbol that starts this), which is similar to a function, however is more flexible. The first line clearly has the time, but also the array allocations and memory allocated. The second line of the macro returns the value of the function.
+      If we try <c>@time matrixMultiply(10_000)</c>, we get
+      <c> 25.901924 seconds (13 allocations: 2.235 GiB, 0.36% gc time)</c>.
+      This is about 100 times slower than the previous one with the allocation of 100 times larger.
     </p>
 
     <p>
-      If we repeat this for the sum of the first billion counting numbers:
-      <cd>
-      <cline>@time sum1(1_000_000_000)</cline>
-      </cd>
+      We might expect that running this with matrix size of 100,000 may run in about 2500 seconds (42 minutes), but the
+      memory allocation may be 223 GiB, which is probably larger than the memory in your machine, so it may not actually
+      complete.
     </p>
 
-    <p>
-      it takes a while to get
-    </p>
-
-    <p>
-      <cd>
-      <cline>  4.286106 seconds (2 allocations: 7.451 GiB, 7.30% gc time)</cline>
-      <cline></cline>
-      <cline>  500000000500000000</cline>
-      </cd>
-    </p>
-
-    <p>
-      The big difference between these is the total memory allocation. There is a 1000-fold increase in memory allocated (note the MiB or megabytes versus GiB or gigabytes).  This also shows about a 160-fold increase in time, surprising that it didn't go up 1000 times as well.
-    </p>
-
-    <p>
-      Allocating memory is a time-expensive endeavor.  Also, even though the machine that I ran this on has 16 gigabytes, perhaps it couldn't get all 7.5 GiB it needed for this operation at once.  This is shown with the 7.30% gc time, which mean garbage collection.  In short, there was some time needed to handling so much memory.  Garbage collection is a way to clean up allocated memory that is no longer needed.  It's complicated, but the percentage of gc can reveal why a calculation may be taking longer than expected.
-    </p>
-
-    <p>
-      If you have some patience, try this will 2 billion or more and see the results. You will probably need more allocation time and should be at least twice as long.
-    </p>
-  </section>
-
-  <section>
-    <title>Attempt #2</title>
-
-    <p>
-      The big difference seemed to be the total memory allocation, so let's try a version where we don't allocate the array.
-    </p>
-
-
-    <program language="Julia" line-numbers="yes">
-      <code>
-function sum2(n::Integer)
-  local sum = 0
-  for i=1:n
-    sum+=i
-  end
-  sum
-end
-      </code>
-    </program>
-
-    <p>
-      and running it as <c>@time sum2(1_000_000_000)</c> we get
-    </p>
-
-    <p>
-      <cd>
-      <cline>0.000000 seconds</cline>
-      <cline></cline>
-      <cline>  500000000500000000</cline>
-      </cd>
-    </p>
-
-    <p>
-      and notice that the time has shrunk to zero--we'll see later why this is true. If we try for larger numbers, such as <c>@time sum2(100_000_000_000)</c>, which still takes almost no time, but notice that that the result is not correct.  Why? Consider the ideas from <xref ref="ch-data-types"/>.
-    </p>
-  </section>
-
-  <section>
-    <title>Attempt #3</title>
-
-    <p>
-      Hopefully you thought about the strange result above.  If you thought overflow, give yourself a gold star.  To avoid this, let's write a <c>BigInt</c> version of this:
-    </p>
-
-
-    <program language="Julia" line-numbers="yes">
-      <code>
-function sum3(n::Int)
-  local sum = big(0)
-  for i=1:n
-    sum+=i
-  end
-  sum
-end
-      </code>
-    </program>
-
-    <p>
-      and, <c>@time sum3(1_000_000)</c> returns
-    </p>
-
-    <p>
-      <cd>
-      <cline>0.146406 seconds (3.00 M allocations: 45.776 MiB)</cline>
-      <cline></cline>
-      <cline>  500000500000</cline>
-      </cd>
-    </p>
-
-    <p>
-      Comparing this with the results at the beginning of Attempt #1, shows that BigInts are much slower as mentioned in <xref ref="ch-data-types"/>.
-    </p>
-
-    <p>
-      <cd>
-      <cline>@time sum3(10_000_000)</cline>
-      </cd>
-    </p>
-
-    <p>
-      returns
-    </p>
-
-    <p>
-      <cd>
-      <cline>2.288845 seconds (30.00 M allocations: 457.764 MiB, 34.08% gc time) </cline>
-      <cline></cline>
-      <cline>  50000005000000</cline>
-      </cd>
-    </p>
-
-    <p>
-      which is more than 10 times slower, so it appears that this is linear as possibly as expected. This isn't practical to find much larger sums though.
-    </p>
-  </section>
-
-  <section>
-    <title>Attempt #4</title>
-
-    <p>
-      Let's trying using the <c>reduce</c> function on BigInts:
-    </p>
-
-
-    <program language="Julia" line-numbers="yes">
-      <code>
-function sum4(n::Int)
-    reduce(+,1:big(n))
-end
-      </code>
-    </program>
-
-    <p>
-      Then <c>@time sum4(1_000_000)</c> returns
-    </p>
-
-    <p>
-      <cd>
-      <cline>  0.335802 seconds (5.00 M allocations: 91.553 MiB, 20.56% gc time)</cline>
-      <cline></cline>
-      <cline>  500000500000</cline>
-      </cd>
-    </p>
-
-    <p>
-      Notice that this allocates about 91 MiB of memory, which isn't a lot, but this is probably due to the <c>BigInt</c> allocations.  Also, this is about twice the amount of time as that in Attempt #3. Notice also a significant amount of gc (garbage collection) time.
-    </p>
-
-    <p>
-      Also, <c>@time sum4(10_000_000)</c> returns
-    </p>
-
-    <p>
-      <cd>
-      <cline>  3.254972 seconds (50.00 M allocations: 915.528 MiB, 16.57% gc time)</cline>
-      <cline></cline>
-      <cline>  50000005000000</cline>
-      </cd>
-    </p>
-
-    <p>
-      which is about 10 times slower that the previous one, and still about twice the speed of <c>sum3</c> for the same number <c>n</c>.
-    </p>
-
-    <p>
-      Also notice that the number and size of the allocations have increased by a factor of 10, which should not be surprising.  However, notice that they are quite large. For the second sum, there was nearly 1 Gb of allocation despite no array.  This is due to the BigInt which allocates quite a bit of memory.  It appears that Julia allocates memory for every BigInt created (and there are 10 million in this example).
-    </p>
-  </section>
-
-  <section>
-    <title>Attempt #5</title>
-
-    <p>
-      Let's use the built-in <c>sum</c> command. Entering <c>@time sum(1:big(10)^6)</c> returns
-    </p>
-
-    <p>
-      <cd>
-      <cline> 0.001495 seconds (41 allocations: 816 bytes)</cline>
-      <cline></cline>
-      <cline>  500000500000</cline>
-      </cd>
-    </p>
-
-    <p>
-      and note that higher powers of 10 do not increase the time much. For example, <c>@time sum(1:big(10)^20)</c> results in
-    </p>
-
-    <p>
-      <cd>
-      <cline>0.000828 seconds (42 allocations: 904 bytes)</cline>
-      <cline></cline>
-      <cline>  5000000000000000000050000000000000000000</cline>
-      </cd>
-    </p>
-
-    <p>
-      What is going on? How is this so fast?  Think about this and we'll answer it below.
-    </p>
-
-    <exercise>
+    <note>
       <p>
-        Repeat Attempts #1--#4 for <c>Int128</c>.  That is, make sure that the calculations are being done using this type.  For the <c>for</c> loops, start with
+        The timing results in this section and this book is a snapshot in time on one computer.
+        You will get different results and often having times above or below is expected.
+        Note that when running <c>@time</c> you also get the memory allocation and that should be very similar.
+        We will discuss this below.
+      </p>
+    </note>
+  </section>
+
+  <section xml:id="sec-summing-integers">
+    <title>Summing Integers</title>
+
+    <introduction>
+      <p>
+        This section discusses the problem of summing up the first <c>n</c> integers and how to improve the results.
+        We start with a basic sum and timing and work to improve upon these attempts.
+      </p>
+    </introduction>
+
+    <subsection>
+      <title>Attempt #1</title>
+
+      <p>
+        Let's start by making an array of all of the numbers, then summing them in a for loop:
+      </p>
+
+      <program language="Julia" line-numbers="yes">
+        <code>
+        function sum1(n::Int)
+          local arr = collect(1:n)
+          local sum = 0
+          for i in arr
+            sum += i
+          end
+          sum
+        end
+        </code>
+      </program>
+
+      <p>
+        On my laptop: <c>@time sum1(1_000_000)</c> returns
       </p>
 
       <p>
         <cd>
-        <cline>local sum = Int128(0)</cline>
+          <cline>0.006434 seconds (2 allocations: 7.641 MiB, 88.39% gc time)</cline>
+          <cline/>
+          <cline>500000500000</cline>
         </cd>
       </p>
 
       <p>
-        and for the <c>reduce</c> function use <c>Int128(n)</c> instead of <c>big(n)</c>.
+        The <c>@time</c> is called a macro (note the "@" symbol that starts this), which is similar to a function,
+        however is more flexible.
+        The first line clearly has the time, but also the array allocations and memory allocated.
+        The second line of the macro returns the value of the function.
       </p>
 
       <p>
-        Compare your results with those above.
+        If we repeat this for the sum of the first billion counting numbers:
+        <cd>
+          <cline>@time sum1(1_000_000_000)</cline>
+        </cd>
       </p>
-    </exercise>
+
+      <p>
+        it takes a while to get
+      </p>
+
+      <p>
+        <cd>
+          <cline>3.099981 seconds (2 allocations: 7.451 GiB, 0.11% gc time)</cline>
+          <cline/>
+          <cline>  500000000500000000</cline>
+        </cd>
+      </p>
+
+      <p>
+        The big difference between these is the total memory allocation.
+        There is a 1000-fold increase in memory allocated (note the MiB or megabytes versus GiB or gigabytes).
+        This also shows about a 500-fold increase in time, surprising that it didn't go up 1000 times as well.
+      </p>
+
+      <p>
+        Allocating memory is a time-expensive endeavor.
+        Also, even though the machine that I ran this on has 16 gigabytes, perhaps it couldn't get all 7.5 GiB it needed
+        for this operation at once.
+        This is shown with the 7.30% gc time, which mean garbage collection.
+        In short, there was some time needed to handling so much memory.
+        Garbage collection is a way to clean up allocated memory that is no longer needed.
+        It's complicated, but the percentage of gc can reveal why a calculation may be taking longer than expected.
+      </p>
+
+      <p>
+        If you have some patience, try this will 2 billion or more and see the results.
+        You will probably need more allocation time and should be at least twice as long.
+      </p>
+    </subsection>
+
+    <subsection>
+      <title>Attempt #2</title>
+
+      <p>
+        The big difference seemed to be the total memory allocation, so let's try a version where we don't allocate the
+        array.
+      </p>
+
+      <program language="Julia" line-numbers="yes">
+        <code>
+          function sum2(n::Integer)
+            local sum = 0
+            for i=1:n
+              sum+=i
+            end
+            sum
+          end
+        </code>
+      </program>
+
+      <p>
+        and running it as <c>@time sum2(1_000_000_000)</c> we get
+      </p>
+
+      <p>
+        <cd>
+          <cline>0.000000 seconds</cline>
+          <cline/>
+          <cline>  500000000500000000</cline>
+        </cd>
+      </p>
+
+      <p>
+        and notice that the time has shrunk to zero--we'll see later why this is true.
+        If we try for larger numbers, such as <c>@time sum2(100_000_000_000)</c>, which still takes almost no time, but
+        notice that that the result is not correct.
+        Why?
+        Consider the ideas from <xref ref="ch-data-types"/>.
+      </p>
+    </subsection>
+
+    <subsection>
+      <title>Attempt #3</title>
+
+      <p>
+        Hopefully you thought about the strange result above.
+        If you thought overflow, give yourself a gold star.
+        To avoid this, let's write a <c>BigInt</c> version of this:
+      </p>
+
+      <program language="Julia" line-numbers="yes">
+        <code>
+          function sum3(n::Int)
+            local sum = big(0)
+            for i=1:n
+              sum+=i
+            end
+            sum
+          end
+        </code>
+      </program>
+
+      <p>
+        and, <c>@time sum3(1_000_000)</c> returns
+      </p>
+
+      <p>
+        <cd>
+          <cline>0.080619 seconds (3.00 M allocations: 53.406 MiB, 34.96% gc time)</cline>
+          <cline/>
+          <cline>  500000500000</cline>
+        </cd>
+      </p>
+
+      <p>
+        Comparing this with the results at the beginning of Attempt #1, shows that BigInts are much slower as mentioned
+        in <xref ref="ch-data-types"/>.
+      </p>
+
+      <p>
+        <cd>
+          <cline>@time sum3(10_000_000)</cline>
+        </cd>
+      </p>
+
+      <p>
+        returns
+      </p>
+
+      <p>
+        <cd>
+          <cline>0.847655 seconds (30.00 M allocations: 534.058 MiB, 30.00% gc time)</cline>
+          <cline/>
+          <cline>  50000005000000</cline>
+        </cd>
+      </p>
+
+      <p>
+        which is about 10 times slower.
+        If we go one more multiple of ten to <c>@time sum3(100_000_000)</c>, the result is
+      </p>
+
+      <p>
+        <cd>
+          <cline>7.629343 seconds (300.00 M allocations: 5.215 GiB, 22.51% gc time)</cline>
+          <cline>5000000050000000</cline>
+        </cd>
+      </p>
+
+      <p>
+        And again, this is about 10 times slower.
+        It appears that this is linear as possibly as expected.
+      </p>
+    </subsection>
+
+    <subsection>
+      <title>Attempt #4</title>
+
+      <p>
+        Let's trying using the <c>reduce</c> function on BigInts:
+      </p>
+
+      <program language="Julia" line-numbers="yes">
+        <code>
+          function sum4(n::Int)
+              reduce(+,1:big(n))
+          end
+        </code>
+      </program>
+
+      <p>
+        Then <c>@time sum4(1_000_000)</c> returns
+      </p>
+
+      <p>
+        <cd>
+          <cline>0.200360 seconds (5.00 M allocations: 99.182 MiB, 32.17% gc time)</cline>
+          <cline/>
+          <cline>  500000500000</cline>
+        </cd>
+      </p>
+
+      <p>
+        Notice that this allocates about 91 MiB of memory, which isn't a lot, but this is probably due to the
+        <c>BigInt</c> allocations.
+        Also, this is about twice the amount of time as that in Attempt #3.
+        Notice also a significant amount of gc (garbage collection) time.
+      </p>
+
+      <p>
+        Also, <c>@time sum4(10_000_000)</c> returns
+      </p>
+
+      <p>
+        <cd>
+          <cline>1.551160 seconds (50.00 M allocations: 991.822 MiB, 30.56% gc time)</cline>
+          <cline/>
+          <cline>  50000005000000</cline>
+        </cd>
+      </p>
+
+      <p>
+        which is about 10 times slower that the previous one, and still about twice the speed of <c>sum3</c> for the
+        same number <c>n</c>.
+      </p>
+
+      <p>
+        Also notice that the number and size of the allocations have increased by a factor of 10, which should not be
+        surprising.
+        However, notice that they are quite large.
+        For the second sum, there was nearly 1 Gb of allocation despite no array.
+        This is due to the BigInt which allocates quite a bit of memory.
+        It appears that Julia allocates memory for every BigInt created (and there are 10 million in this example).
+      </p>
+    </subsection>
+
+    <subsection>
+      <title>Attempt #5</title>
+
+      <p>
+        Let's use the built-in <c>sum</c> command.
+        Entering <c>@time sum(1:big(10)^6)</c> returns
+      </p>
+
+      <p>
+        <cd>
+          <cline> 0.001495 seconds (41 allocations: 816 bytes)</cline>
+          <cline/>
+          <cline>  500000500000</cline>
+        </cd>
+      </p>
+
+      <p>
+        and note that higher powers of 10 do not increase the time much.
+        For example, <c>@time sum(1:big(10)^20)</c> results in
+      </p>
+
+      <p>
+        <cd>
+          <cline>0.000828 seconds (42 allocations: 904 bytes)</cline>
+          <cline/>
+          <cline>  5000000000000000000050000000000000000000</cline>
+        </cd>
+      </p>
+
+      <p>
+        What is going on?
+        How is this so fast?
+        Think about this and we'll answer it below.
+      </p>
+
+      <exercise>
+        <p>
+          Repeat Attempts #1-#4 for <c>Int128</c>.
+          That is, make sure that the calculations are being done using this type.
+          For the <c>for</c> loops, start with
+        </p>
+
+        <p>
+          <cd>
+            <cline>local sum = Int128(0)</cline>
+          </cd>
+        </p>
+
+        <p>
+          and for the <c>reduce</c> function use <c>Int128(n)</c> instead of <c>big(n)</c>.
+        </p>
+
+        <p>
+          Compare your results with those above.
+        </p>
+      </exercise>
+    </subsection>
   </section>
 
   <section>
     <title>Summary of Results</title>
 
     <p>
-      There were a lot of factors going on in the above example.  Here's a summary.
+      There were a lot of factors going on in the above example.
+      Here's a summary.
     </p>
 
     <p>
       <ul>
         <li>
           <p>
-            <em>Allocating an array is expensive (in terms of memory and time).</em>  In Attempt #1, we created an array using the <c>collect</c> function. The creation was why this took so much time.
+            <em>Allocating an array is expensive (in terms of memory and time).</em> In Attempt #1, we created an array
+            using the <c>collect</c> function.
+            The creation was why this took so much time.
           </p>
         </li>
 
         <li>
           <p>
-            <em>BigInts and <c>Int128</c> are slower than <c>Int64</c>s.</em>   We noticed that switching from <c>Int64</c> to <c>BigInt</c> in Attempt #2 to #3, there was a significant drop in speed.  In short, <c>BigInt</c>s are slow.  Only use them when needed.
+            <em>BigInts and <c>Int128</c> are slower than <c>Int64</c>s.</em> We noticed that switching from
+            <c>Int64</c> to <c>BigInt</c> in Attempt #2 to #3, there was a significant drop in speed.
+            In short, <c>BigInt</c> s are slow.
+            Only use them when needed.
           </p>
 
           <p>
-            You should have noticed from the exercise that <c>Int128</c> is a viable alternative to <c>Int64</c> if you need larger integers.  <c>Int128</c> is slower than <c>Int64</c>, but still much better than <c>BigInt</c>.  Only use <c>BigInt</c> when you need really large integers.
+            You should have noticed from the exercise that <c>Int128</c> is a viable alternative to <c>Int64</c> if you
+            need larger integers.
+            <c>Int128</c> is slower than <c>Int64</c>, but still much better than <c>BigInt</c>.
+            Only use <c>BigInt</c> when you need really large integers.
           </p>
         </li>
 
         <li>
           <p>
-            <em>Sometimes Julia is super smart about some operations.</em>  In both Attempt #2 and Attempt #5, we got much shorter times than expected.  In both, you would expect summing 1000 times more numbers would take 1000 times longer, but this isn't true. In both cases, Julia recognizes that integers are begin summed and is probably using the formula,
+            <em>Sometimes Julia is super smart about some operations.</em> In both Attempt #2 and Attempt #5, we got
+            much shorter times than expected.
+            In both, you would expect summing 1000 times more numbers would take 1000 times longer, but this isn't true.
+            In both cases, Julia recognizes that integers are begin summed and is probably using the formula,
           </p>
 
           <p>
@@ -372,27 +475,30 @@ end
 
     <introduction>
       <p>
-        In <xref ref="sect-recursion"/>, there was an exercise to use recursion to find the fibonacci numbers.  A possible solution to this is:
+        In <xref ref="sect-recursion"/>, there was an exercise to use recursion to find the fibonacci numbers.
+        A possible solution to this is:
       </p>
 
-      <p>
-        <cd>
-        <cline>fibonacci(n::Integer) = (n==1 || n==2) ? 1 : fibonacci(n-1) + fibonacci(n-2)</cline>
-        </cd>
-      </p>
+      <program language="julia">
+        <code>
+        fibonacci(n::Integer) = (n==1 || n==2) ? 1 : fibonacci(n-1) + fibonacci(n-2)
+        </code>
+      </program>
 
       <p>
-        where we have used the ternary <c>if-then-else</c>.  Note: if <c>n</c> is 1 or 2, then 1 is returned, if not it uses the recursive formula.  The first 10 fibonacci numbers are found with
+        where we have used the ternary <c>if-then-else</c>.
+        Note: if <c>n</c> is 1 or 2, then 1 is returned, if not it uses the recursive formula.
+        The first 10 fibonacci numbers are found with
       </p>
 
-      <p>
-        <cd>
-        <cline>map(fibonacci,1:10)</cline>
-        </cd>
-      </p>
+      <program language="julia">
+        <code>
+				fibonacci.(1:10)
+        </code>
+      </program>
 
       <p>
-        and this results in the array<c>[1 1 2 3 5 8 13 21 34 55]</c>.
+        and this results in the array <c>[1 1 2 3 5 8 13 21 34 55]</c>.
       </p>
 
       <p>
@@ -401,164 +507,257 @@ end
 
       <p>
         <cd>
-        <cline>@time fibonacci(45)</cline>
+          <cline>@time fibonacci(45)</cline>
         </cd>
       </p>
 
       <p>
-        took 3.149046 seconds.  If we find <c>@time fibonacci(46)</c>, it takes about 60% longer. To determine what's going on, consider <c>fibonacci(5)</c>.  Inside the function, it calls <c>fibonacci(4)</c> and <c>fibonacci(3)</c>.  Each of these then called the previous two. This can be seen in the following tree graph where <m>f(n)</m> is the fibonacci function:
+        took 1.573972 seconds.
+        If we find <c>@time fibonacci(46)</c>, it takes about 60% longer.
+        To determine what's going on, consider <c>fibonacci(5)</c>.
+        Inside the function, it calls <c>fibonacci(4)</c> and <c>fibonacci(3)</c>.
+        Each of these then called the previous two.
+        This can be seen in the following tree graph where <m>f(n)</m> is the fibonacci function:
       </p>
 
       <figure xml:id="fig-fibonacci-tree-graph">
-        <caption> A tree graph that shows how the recursive fibonacci numbers are created. </caption>
-        <image width="75%"  xml:id="img-fibonacci-tree-graph">
+        <caption>A tree graph that shows how the recursive fibonacci numbers are created.</caption>
+        <image width="60%" xml:id="img-fibonacci-tree-graph">
           <latex-image>
-					<![CDATA[
 					\begin{tikzpicture}[scale=0.75]
 					\node (A) at (0,10) [draw] {$f(5)$};
 					\node (B) at (-2,8) [draw] {$f(4)$};
 					\node (C) at (2,8) [draw] {$f(3)$};
-					\draw[->] (A) -- (B);
-					\draw[->] (A) -- (C);
+					\draw[-&gt;] (A) -- (B);
+					\draw[-&gt;] (A) -- (C);
 					\node (D) at (-4,6) [draw] {$f(3)$};
 					\node (E) at (-2,6) [draw] {$f(2)$};
-					\draw[->] (B) -- (D);
-					\draw[->] (B) -- (E);
+					\draw[-&gt;] (B) -- (D);
+					\draw[-&gt;] (B) -- (E);
 					\node (F) at (2,6) [draw] {$f(2)$};
 					\node (G) at (4,6) [draw] {$f(1)$};
-					\draw[->] (C) -- (F);
-					\draw[->] (C) -- (G);
+					\draw[-&gt;] (C) -- (F);
+					\draw[-&gt;] (C) -- (G);
 					\node (H) at (-6,4) [draw] {$f(2)$};
 					\node (I) at (-4,4) [draw] {$f(1)$};
-					\draw[->] (D) -- (H);
-					\draw[->] (D) -- (I);
+					\draw[-&gt;] (D) -- (H);
+					\draw[-&gt;] (D) -- (I);
 					\end{tikzpicture}
-					]]>
           </latex-image>
         </image>
       </figure>
 
       <p>
-        Since each of the endpoints (either <m>f(2)</m> or <m>f(1)</m>) requires and evaluation as does each arrow, there are a total of 13 evaluations for this.  If we define:
+        Since each of the endpoints (either <m>f(2)</m> or <m>f(1)</m> ) requires and evaluation as does each arrow,
+        there are a total of 13 evaluations for this.
+        If we define:
       </p>
-
 
       <program language="Julia" line-numbers="yes">
         <code>
-function fibonacciEval(n::Integer)
-  global num_evals
-  if n==1 || n==2
-    num_evals +=1
-    return 1
-  else
-    num_evals += 2
-    return fibonacciEval(n-1) + fibonacciEval(n-2)
-  end
-end
+        function fibonacciEval(n::Integer)
+          global num_evals
+          if n==1 || n==2
+            num_evals +=1
+            return 1
+          else
+            num_evals += 2
+            return fibonacciEval(n-1) + fibonacciEval(n-2)
+          end
+        end
         </code>
       </program>
 
       <p>
         then
-        <cd>
-        <cline>num_evals=0</cline>
-        <cline>fibonacciEval(5)</cline>
-        <cline>num_evals</cline>
-        </cd>
       </p>
 
-      <p>
-        returns <c>13</c>. Also
-      </p>
+      <program language="julia">
+        <code>
+				num_evals=0
+        fibonacciEval(5)
+        num_evals
+        </code>
+      </program>
 
       <p>
-        <cd>
-        <cline>num_evals=0</cline>
-        <cline>fibonacciEval(20)</cline>
-        <cline>num_evals</cline>
-        </cd>
+        returns <c>13</c>.
+        Also
       </p>
+
+      <program language="julia">
+        <code>
+				num_evals=0
+        fibonacciEval(20)
+        num_evals
+        </code>
+      </program>
 
       <p>
         returns <c>20293</c> and
       </p>
 
+      <program language="julia">
+        <code>
+				num_evals=0
+        fibonacciEval(21)
+        num_evals
+        </code>
+      </program>
+
       <p>
-        <cd>
-        <cline>num_evals=0</cline>
-        <cline>fibonacciEval(21)</cline>
-        <cline>num_evals</cline>
-        </cd>
+        returns <c>32836</c> and notice that finding the 21st fibonacci number takes about 60% more operations than the
+        20th fibonacci number and therefore would take about this much longer.
       </p>
 
       <p>
-        returns <c>32836</c> and notice that finding the 21st fibonacci number takes about 60% more operations and therefore would take about this much longer.
-      </p>
-
-      <p>
-        Thinking about this result shows that we aren't doing things efficiently.  If we have already calculated the 19th and 20th fibonacci numbers, why does it take an extra 60% longer? Basically this is because we aren't saving the results to be reused.
+        Thinking about this result shows that we aren't doing things efficiently.
+        If we have already calculated the 19th and 20th fibonacci numbers, why does it take an extra 60% longer?
+        Basically this is because we aren't saving the results to be reused.
       </p>
     </introduction>
-
 
     <subsection xml:id="sect-fast-fibonacci">
       <title>Speeding Up Fibonacci</title>
 
       <p>
-        As we saw above, the standard recursive version of <c>fibonacci</c> function is very slow.<fn>in fact, it is <m>O(e^n)</m> </fn> We now attempt to find a faster version. The following is a fibonacci function that uses a for loop:
+        As we saw above, the standard recursive version of <c>fibonacci</c> function is very slow.
+        <fn>in fact, it is <m>O(e^n)</m> </fn> We now attempt to find a faster version.
+        The following is a fibonacci function that uses a for loop:
       </p>
-
 
       <program language="Julia" line-numbers="yes">
         <code>
-function fibonacci2(n::Integer)
-  local x,y = (1,1)
-  for i = 1:n-1
-    x,y = (y, x+y)
-  end
-  x
-end
+        function fibonacci2(n::Integer)
+          local x,y = (1,1)
+          for i = 1:n-1
+            x,y = (y, x+y)
+          end
+          x
+        end
         </code>
       </program>
 
       <p>
-        and note that there is no recursive call. Instead, we use a tuple to iterate pairs of numbers <c>(x,y)</c> which get updated each time through the for loop. Notice on line 2, this initializes the fibonacci sequence and line 4 is the key to this. <c>x</c> takes on the value of <c>y</c> and then <c>y</c> is the sum of the previous two integers.
+        and note that there is no recursive call.
+        Instead, we use a tuple to iterate pairs of numbers <c>(x,y)</c> which get updated each time through the for
+        loop.
+        Notice on line 2, this initializes the fibonacci sequence and line 4 is the key to this.
+        <c>x</c> takes on the value of <c>y</c> and then <c>y</c> is the sum of the previous two integers.
       </p>
 
       <p>
         You should run this and if you do, note that <c>@time fibonacci2(100)</c> returns
         <cd>
-        <cline>0.000000 seconds</cline>
-        <cline>3736710778780434371</cline>
+          <cline>0.000000 seconds</cline>
+          <cline>3736710778780434371</cline>
         </cd>
       </p>
 
       <p>
-        and clearly obviously much faster than the 45th fibonacci number with the original function. The exercise below explores the <c>fibonacci2</c> function.
+        and clearly obviously much faster than the 45th fibonacci number with the original function.
+        The exercise below explores the <c>fibonacci2</c> function.
       </p>
 
       <exercise>
-        <p>
-          <ol>
-            <li>
-              <p>
-                Determine which fibonacci number results in an overflow for <c>Int64</c>. Do this by trial and error with the <c>fibonacci2</c> function.
-              </p>
-            </li>
+        <task>
+          <statement>
+            <p>
+              Determine which fibonacci number results in an overflow for <c>Int64</c>.
+              Do this by trial and error with the <c>fibonacci2</c> function.
+            </p>
+          </statement>
 
-            <li>
-              <p>
-                Rewrite the <c>fibonacci2</c> function to return a <c>BigInt</c> version if <m>n</m> is greater than or equal to the number in #1.
-              </p>
-            </li>
+          <solution>
+            <p>
+              Using trial and error, <c>fibonacci2.(1:95)</c> results in the tail of the results as
+              <cd>
+                <cline>   679891637638612258</cline>
+                <cline> 1100087778366101931</cline>
+                <cline> 1779979416004714189</cline>
+                <cline> 2880067194370816120</cline>
+                <cline> 4660046610375530309</cline>
+                <cline> 7540113804746346429</cline>
+                <cline>-6246583658587674878</cline>
+                <cline> 1293530146158671551</cline>
+                <cline>-4953053512429003327</cline>
+              </cd>
+            </p>
 
-            <li>
-              <p>
-                Find the first 200 fibonacci numbers.
-              </p>
-            </li>
-          </ol>
-        </p>
+            <p>
+              It appears that 93 results in overflow.
+            </p>
+          </solution>
+        </task>
+
+        <task>
+          <statement>
+            <p>
+              Rewrite the <c>fibonacci2</c> function to return a <c>BigInt</c> version if <m>n</m> is greater than or
+              equal to the number in #1.
+            </p>
+          </statement>
+
+          <solution>
+            <program language="julia">
+              <code>
+              function fibonacci3(n::Integer)
+                local x, y = n &gt; 92 ? (big(1), big(1)) : (1,1)
+                for i = 1:(n-1)
+                  x, y = (y, x+y)
+                end
+                x
+              end
+              </code>
+            </program>
+          </solution>
+        </task>
+
+        <task>
+          <statement>
+            <p>
+              Find the first 200 fibonacci numbers.
+            </p>
+          </statement>
+
+          <solution>
+            <p>
+              Running <c>fibonacci3.(1:200)</c> results in the output:
+            </p>
+
+            <p>
+              <cd>
+                <cline>200-element Vector{Signed}:</cline>
+                <cline>                                         1</cline>
+                <cline>                                         1</cline>
+                <cline>                                         2</cline>
+                <cline>                                         3</cline>
+                <cline>                                         5</cline>
+                <cline>                                         8</cline>
+                <cline>                                        13</cline>
+                <cline>                                        21</cline>
+                <cline>                                        34</cline>
+                <cline>                                        55</cline>
+                <cline>                                         ⋮</cline>
+                <cline>  5972304273877744135569338397692020533504</cline>
+                <cline>  9663391306290450775010025392525829059713</cline>
+                <cline> 15635695580168194910579363790217849593217</cline>
+                <cline> 25299086886458645685589389182743678652930</cline>
+                <cline> 40934782466626840596168752972961528246147</cline>
+                <cline> 66233869353085486281758142155705206899077</cline>
+                <cline>107168651819712326877926895128666735145224</cline>
+                <cline>173402521172797813159685037284371942044301</cline>
+                <cline>280571172992510140037611932413038677189525</cline>
+              </cd>
+            </p>
+
+            <p>
+              Note that the output is a vector of typed <c>Signed</c>.
+              This is an abstract class of Signed integers.
+              This is because there is a mixture of either <c>Int64</c> or <c>BigInt</c> in this output Vector.
+            </p>
+          </solution>
+        </task>
       </exercise>
     </subsection>
   </section>

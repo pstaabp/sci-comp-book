@@ -19,7 +19,8 @@
 
 			<li>
 				<p>
-					There are many methods on vectors including some arithmetic ones on both vectors and matrices as well as the sum and product of numeric vectors.
+					There are many methods on vectors including some arithmetic ones on both vectors and matrices as well as the sum
+					and product of numeric vectors.
 				</p>
 			</li>
 
@@ -37,31 +38,36 @@
 
 			<li>
 				<p>
-					The join method takes an vectors and returns a string and similarly a split method, takes a string and splits into an vector.
+					The join method takes an vectors and returns a string and similarly a split method, takes a string and splits into
+					an vector.
 				</p>
 			</li>
 		</ul>
 	</objectives>
 
 	<introduction>
-
 		<p>
-			Vectors are a fundamental data structure for nearly every computer language and it is a crucial for scientific computing as that it is an efficient way of handling large amount of the same datatype.
-			Vectors are collections with a single dimension, and Julia has a Matrix type as well for 2 dimensional collections.  These all fit into a general array type.
+			Vectors are a fundamental data structure for nearly every computer language and it is a crucial for scientific
+			computing as that it is an efficient way of handling large amount of the same datatype.
+			Vectors are collections with a single dimension, and Julia has a Matrix type as well for 2 dimensional collections.
+			These all fit into a general array type.
 		</p>
 
 		<p>
-			In short a vector is a collection of data of (typically) the same type under the same name. We have seen arrays before. For example, if we say
+			In short a vector is a collection of data of (typically) the same type under the same name.
+			We have seen arrays before.
+			For example, if we say
 		</p>
 
 		<p>
 			<cd>
-			<cline>arr = [1,2,3]</cline>
+				<cline>arr = [1,2,3]</cline>
 			</cd>
 		</p>
 
 		<p>
-			then we get a vector of length 3. Note that when returned, Julia says <c>3-element Vector{Int64}:</c> which means
+			then we get a vector of length 3.
+			Note that when returned, Julia says <c>3-element Vector{Int64}:</c> which means
 		</p>
 
 		<p>
@@ -107,44 +113,74 @@
 		</p>
 	</introduction>
 
-	<section xml:id="sect-contructing-arrays">
-		<title>Constructing arrays</title>
+	<section xml:id="sect-constructing-arrays">
+		<title>Constructing Vectors, Matrices and other Arrays</title>
 
 		<p>
-			We can create arrays in many ways. As seen above, the line
+			We can create arrays in many ways.
+			As seen above, the line
+		</p>
+
+		<program language="julia">
+			<code>
+				arr=[1,2,3]
+			</code>
+		</program>
+
+		<p>
+			creates a vector (1-D array) of length 3.
+			A 2D array can be made like:
+		</p>
+
+		<program language="julia">
+			<code>
+				arr2=[1 2 3; 4 5 6]
+			</code>
+		</program>
+
+		<p>
+			Note that each row of the array is separated by a semicolon and the individual elements in a row are separated by
+			spaces.
+			The result of this is
 		</p>
 
 		<p>
 			<cd>
-			<cline>arr=[1,2,3]</cline>
+				<cline>2×3 Matrix{Int64}:</cline>
+				<cline>1  2  3</cline>
+				<cline>4  5  6</cline>
 			</cd>
 		</p>
 
 		<p>
-			creates a vector (1-D array) of length 3. A 2D array can be made like:
+			and the size is 2 by 3 (2 rows and 3 columns).
+			A <c>Matrix</c> is a 2 dimensional array.
+			One can make an array of more than 2 dimensions.
 		</p>
 
 		<p>
-			<cd>
-			<cline>arr2=[1 2 3; 4 5 6]</cline>
-			</cd>
+			Alternatively, the rows of the array can be written on separate lines.
+			The following is the same matrix as <c>arr2</c>
 		</p>
 
-		<p>
-			Note that each row of the array is separated by a semicolon and the individual elements in a row are separated by spaces. The result of this is
-		</p>
+		<program language="julia">
+			<code>
+				arr2 = [ 1 2 3
+				 4 5 6]
+			</code>
+		</program>
 
 		<p>
-			<cd>
-			<cline>2×3 Matrix{Int64}:</cline>
-			<cline>1  2  3</cline>
-			<cline>4  5  6</cline>
-			</cd>
+			or
 		</p>
 
-		<p>
-			and the size is 2 by 3 (2 rows and 3 columns).  A <c>Matrix</c> is a 2 dimensional array.  One can make an array of more than 2 dimensions.
-		</p>
+		<program language="julia">
+			<code>
+				arr2 = 
+				[ 1 2 3
+				  4 5 6]
+			</code>
+		</program>
 
 		<p>
 			The following are useful for creating arrays of 1 or more dimensions.
@@ -154,14 +190,15 @@
 			<ul>
 				<li>
 					<p>
-						<c>zeros(type,dims...)</c> makes an array of all zeros with datatype <c>type</c> and given dimensions. For example,
+						<c>zeros(type,dims...)</c> makes an array of all zeros with datatype <c>type</c> and given dimensions.
+						For example,
 					</p>
 
-					<p>
-						<cd>
-						<cline>zeros(Int, 4, 6)</cline>
-						</cd>
-					</p>
+					<program language="julia">
+						<code>
+							zeros(Int, 4, 6)
+						</code>
+					</program>
 
 					<p>
 						returns an array filled with zeros (of integer type) with 4 rows and 6 columns.
@@ -182,22 +219,24 @@
 
 				<li>
 					<p>
-						<c>collect(range)</c> takes a <c>Range</c> object (the pair or triples of numbers separated by colons) and creates an 1D array with the numbers from the range. For example, <c>collect(1:10)</c> returns
+						<c>collect(range)</c> takes a <c>Range</c> object (the pair or triples of numbers separated by colons) and creates
+						a Vector with the numbers from the range.
+						For example, <c>collect(1:10)</c> returns
 					</p>
 
 					<p>
 						<cd>
-						<cline>10-element Vector{Int64}:</cline>
-						<cline>1</cline>
-						<cline>2</cline>
-						<cline>3</cline>
-						<cline>4</cline>
-						<cline>5</cline>
-						<cline>6</cline>
-						<cline>7</cline>
-						<cline>8</cline>
-						<cline>9</cline>
-						<cline>10</cline>
+							<cline>10-element Vector{Int64}:</cline>
+							<cline>1</cline>
+							<cline>2</cline>
+							<cline>3</cline>
+							<cline>4</cline>
+							<cline>5</cline>
+							<cline>6</cline>
+							<cline>7</cline>
+							<cline>8</cline>
+							<cline>9</cline>
+							<cline>10</cline>
 						</cd>
 					</p>
 				</li>
@@ -209,20 +248,26 @@
 		<title>Comprehensions</title>
 
 		<p>
-			If the elements of an array form a functional pattern, we can use what is called a <term>comprehension</term> to construct it in a compact manner. For example, a 1D array <c>[1, -1, 1, -1, 1, -1, 1, -1]</c> can be made:
+			If the elements of an array form a functional pattern, we can use what is called a <term>comprehension</term> to
+			construct it in a compact manner.
+			For example, a 1D array <c>[1, -1, 1, -1, 1, -1, 1, -1]</c> can be made:
 		</p>
 
-		<p>
-			<cd> [(-1)^n for n=0:7] </cd>
-		</p>
+		<program language="julia">
+			<code>
+				[(-1)^n for n=0:7]
+			</code>
+		</program>
 
 		<p>
 			and the following:
 		</p>
 
-		<p>
-			<cd> [m+n for n=1:8,m=1:8] </cd>
-		</p>
+		<program language="julia">
+			<code>
+				[m+n for n=1:8,m=1:8]
+			</code>
+		</program>
 
 		<p>
 			makes an 8 by 8 matrix where each element is the sum of the row and column number or
@@ -230,79 +275,125 @@
 
 		<p>
 			<cd>
-			<cline>8×8 Matrix{Int64}:</cline>
-			<cline>2   3   4   5   6   7   8   9</cline>
-			<cline>3   4   5   6   7   8   9  10</cline>
-			<cline>4   5   6   7   8   9  10  11</cline>
-			<cline>5   6   7   8   9  10  11  12</cline>
-			<cline>6   7   8   9  10  11  12  13</cline>
-			<cline>7   8   9  10  11  12  13  14</cline>
-			<cline>8   9  10  11  12  13  14  15</cline>
-			<cline>9  10  11  12  13  14  15  16</cline>
+				<cline>8×8 Matrix{Int64}:</cline>
+				<cline>2   3   4   5   6   7   8   9</cline>
+				<cline>3   4   5   6   7   8   9  10</cline>
+				<cline>4   5   6   7   8   9  10  11</cline>
+				<cline>5   6   7   8   9  10  11  12</cline>
+				<cline>6   7   8   9  10  11  12  13</cline>
+				<cline>7   8   9  10  11  12  13  14</cline>
+				<cline>8   9  10  11  12  13  14  15</cline>
+				<cline>9  10  11  12  13  14  15  16</cline>
 			</cd>
 		</p>
 
 		<exercise>
-			<statement>
+			<introduction>
 				<p>
 					Using the techniques in this section, create the following arrays in Julia:
 				</p>
+			</introduction>
 
-				<p>
-					<ol>
-						<li>
-							<p>
-								<md>
-									\begin{bmatrix} 3 \\ 6 \\ 9 \\ 12 \\ 15 \\ 18 \\ 21 \\ 24 \end{bmatrix}
-								</md>
-							</p>
-						</li>
+			<task>
+				<statement>
+					<p>
+						<md>
+							\begin{bmatrix} 3 \\ 6 \\ 9 \\ 12 \\ 15 \\ 18 \\ 21 \\ 24 \end{bmatrix}
+						</md>
+					</p>
+				</statement>
 
-						<li>
-							<p>
-								<md>
-									\begin{bmatrix} 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ \end{bmatrix}
-								</md>
-							</p>
-						</li>
+				<solution>
+					<p>
+						<c>collect(3:3:24)</c>
+					</p>
+				</solution>
+			</task>
 
-						<li>
-							<p>
-								<md>
-									\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 1 \\ 1 &amp; 1 \\ 1 &amp; 1 \end{bmatrix}
-								</md>
-							</p>
-						</li>
+			<task>
+				<statement>
+					<p>
+						<md>
+							\begin{bmatrix} 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ \end{bmatrix}
+						</md>
+					</p>
+				</statement>
 
-						<li>
-							<p>
-								<md>
-									\begin{bmatrix} 1 &amp; -3 &amp; 4 &amp; 5 \\ 3 &amp; 2 &amp; 11 &amp; -13 \\ 17 &amp; 0 &amp; 4 &amp; 2 \end{bmatrix}
-								</md>
-							</p>
-						</li>
+				<solution>
+					<p>
+						<c>zeros(Int,3,4)</c>
+					</p>
+				</solution>
+			</task>
 
-						<li>
-							<p>
-								<md>
-									\begin{bmatrix} 4 &amp; 3 &amp; 2 &amp; 1 &amp; 0 \\ 3 &amp; 2 &amp; 1 &amp; 0 &amp; 1 \\ 2 &amp; 1 &amp; 0 &amp; 1 &amp; 2 \\ 1 &amp; 0 &amp; 1 &amp; 2 &amp; 3 \\ 0 &amp; 1 &amp; 2 &amp; 3 &amp; 4 \end{bmatrix}
-								</md>
-							</p>
-						</li>
-					</ol>
-				</p>
-			</statement>
+			<task>
+				<statement>
+					<p>
+						<md>
+							\begin{bmatrix} 1 &amp; 1 \\ 1 &amp; 1 \\ 1 &amp; 1 \\ 1 &amp; 1 \end{bmatrix}
+						</md>
+					</p>
+				</statement>
 
-			<hint>
-				<p>
-					Hint: there is no pattern for the array in #4, so just enter the numbers.
-				</p>
-			</hint>
+				<solution>
+					<p>
+						<c>ones(Int,4,2)</c>
+					</p>
+				</solution>
+			</task>
+
+			<task>
+				<statement>
+					<p>
+						<md>
+							\begin{bmatrix} 1 &amp; -3 &amp; 4 &amp; 5 \\ 3 &amp; 2 &amp; 11 &amp; -13 \\ 17 &amp; 0 &amp; 4 &amp; 2 \end{bmatrix}
+						</md>
+					</p>
+				</statement>
+
+				<hint>
+					<p>
+						There is no pattern so just enter the numbers.
+					</p>
+				</hint>
+
+				<solution>
+					<program language="julia">
+						<code>
+								[ 1 -3 4 5
+								  3 2 11 -13
+								 17 0 4 2]
+						</code>
+					</program>
+				</solution>
+			</task>
+
+			<task>
+				<statement>
+					<p>
+						<md>
+							\begin{bmatrix} 4 &amp; 3 &amp; 2 &amp; 1 &amp; 0 \\ 3 &amp; 2 &amp; 1 &amp; 0 &amp; 1 \\ 2 &amp; 1 &amp; 0 &amp; 1 &amp; 2 \\ 1 &amp; 0 &amp; 1 &amp; 2 &amp; 3 \\ 0 &amp; 1 &amp; 2 &amp; 3 &amp; 4 \end{bmatrix}
+						</md>
+					</p>
+				</statement>
+
+				<solution>
+					<p>
+						There are a number of ways to find this, but the following comprehension is relatively simple:
+					</p>
+
+					<program language="julia">
+						<code>
+							[abs(6-i-j) for i=1:5, j=1:5]
+						</code>
+					</program>
+				</solution>
+			</task>
 		</exercise>
 	</section>
 
 	<section xml:id="sect-accessing-arrays">
-		<title> Accessing elements of an array</title>
+		<title>Accessing elements of an array</title>
 
 		<p>
 			Let <c>x=collect(1:2:13)</c> which generates:
@@ -310,32 +401,37 @@
 
 		<p>
 			<cd>
-			<cline>7-element Vector{Int64}:</cline>
-			<cline> 1</cline>
-			<cline> 3</cline>
-			<cline> 5</cline>
-			<cline> 7</cline>
-			<cline> 9</cline>
-			<cline>11</cline>
-			<cline>13</cline>
+				<cline>7-element Vector{Int64}:</cline>
+				<cline> 1</cline>
+				<cline> 3</cline>
+				<cline> 5</cline>
+				<cline> 7</cline>
+				<cline> 9</cline>
+				<cline>11</cline>
+				<cline>13</cline>
 			</cd>
 		</p>
 
 		<p>
-			To access the 2nd element, type <c>x[2]</c>. To get a vector consisting of the elements 3, 4 and 5, type
+			To access the 2nd element, type <c>x[2]</c>.
+			To get a vector consisting of the 3rd, 4th and 5th elements can be found with
 		</p>
 
-		<p>
-			<cd> x[3:5] </cd>
-		</p>
+		<program language="julia">
+			<code>
+				x[3:5]
+			</code>
+		</program>
 
 		<p>
 			or if we want the last 3 elements, we can use:
 		</p>
 
-		<p>
-			<cd> x[end-2:end] </cd>
-		</p>
+		<program language="julia">
+			<code>
+				x[end-2:end]
+			</code>
+		</program>
 
 		<p>
 			where <c>end</c> is an alias for the last element, so this returns an array of the last 3 elements of <c>x</c>.
@@ -345,29 +441,42 @@
 			Let
 		</p>
 
+		<program language="julia">
+			<code>
+				A=[i+j for i=1:4,j=1:5]
+			</code>
+		</program>
+
 		<p>
-			<cd> A=[i+j for i=1:4,j=1:5] </cd>
+			which returns:
+			<cd>
+				<cline>4×5 Matrix{Int64}:</cline>
+				<cline>2  3  4  5  6</cline>
+				<cline>3  4  5  6  7</cline>
+				<cline>4  5  6  7  8</cline>
+				<cline>5  6  7  8  9</cline>
+			</cd>
 		</p>
 
 		<p>
-			to access the 1st row, 3rd column, type <c>A[1,3]</c>. If you want the subarray of the first and 3rd and 5th columns and all rows type:
+			To access the 1st row, 3rd column, type <c>A[1,3]</c>.
+			If you want the subarray of the first and 3rd and 5th columns and all rows type:
 		</p>
 
-		<p>
-			<cd> A[:,1:2:5] </cd>
-		</p>
+		<program language="julia">
+			<code>
+				A[:,1:2:5]
+			</code>
+		</program>
 
 		<p>
 			returns the matrix
-		</p>
-
-		<p>
 			<cd>
-			<cline>4×3 Matrix{Int64}:</cline>
-			<cline>2  4  6</cline>
-			<cline>3  5  7</cline>
-			<cline>4  6  8</cline>
-			<cline>5  7  9</cline>
+				<cline>4×3 Matrix{Int64}:</cline>
+				<cline>2  4  6</cline>
+				<cline>3  5  7</cline>
+				<cline>4  6  8</cline>
+				<cline>5  7  9</cline>
 			</cd>
 		</p>
 
@@ -379,11 +488,11 @@
 			If we want the first 2 rows and then shuffle the 2,3 and 5th columns in the order 5,3,2 type
 		</p>
 
-		<p>
-			<cd>
-			<cline>A[1:2,[5,3,2]]</cline>
-			</cd>
-		</p>
+		<program language="julia">
+			<code>
+				A[1:2,[5,3,2]]
+			</code>
+		</program>
 
 		<p>
 			returns
@@ -391,14 +500,17 @@
 
 		<p>
 			<cd>
-			<cline>2×3 Matrix{Int64}:</cline>
-			<cline>6  4  3</cline>
-			<cline>7  5  4</cline>
+				<cline>2×3 Matrix{Int64}:</cline>
+				<cline>6  4  3</cline>
+				<cline>7  5  4</cline>
 			</cd>
 		</p>
 
 		<p>
-			There are a number of different ways to return subarrays. See <url href="https://docs.Julialang.org/en/latest/manual/arrays/#man-array-indexing-1" visual="Julialang.org"> the Julia matrices documentation</url> for more information.
+			There are a number of different ways to return subarrays.
+			See
+			<url href="https://docs.Julialang.org/en/latest/manual/arrays/#man-array-indexing-1" visual="Julialang.org"> the Julia matrices documentation</url>
+			for more information.
 		</p>
 	</section>
 
@@ -406,7 +518,9 @@
 		<title>Common Operations on Arrays</title>
 
 		<p>
-			There are a number of operations on array. For each <c>+</c> and <c>-</c> adds and subtracts two arrays of the same size in an element by element manner. For example if
+			There are a number of operations on array.
+			For each <c>+</c> and <c>-</c> adds and subtracts two arrays of the same size in an element by element manner.
+			For example if
 		</p>
 
 		<p>
@@ -427,9 +541,9 @@
 
 		<p>
 			<cd>
-			<cline>2×3 Matrix{Int64}:</cline>
-			<cline>2  5   8</cline>
-			<cline>6  9  12</cline>
+				<cline>2×3 Matrix{Int64}:</cline>
+				<cline>2  5   8</cline>
+				<cline>6  9  12</cline>
 			</cd>
 		</p>
 
@@ -439,10 +553,15 @@
 
 		<p>
 			<cd>
-			<cline>2×3 Matrix{Int64}:</cline>
-			<cline> 0   1   2</cline>
-			<cline>-2  -1  0</cline>
+				<cline>2×3 Matrix{Int64}:</cline>
+				<cline> 0   1   2</cline>
+				<cline>-2  -1  0</cline>
 			</cd>
+		</p>
+
+		<p>
+			The operation <c>*</c> is matrix multiplication and we will discuss this in <xref ref="ch-lin-alg-intro"/>.
+			It is part of the topic of linear algebra and the context is important.
 		</p>
 	</section>
 
@@ -450,12 +569,17 @@
 		<title>Element by Element Operations (Broadcasting)</title>
 
 		<p>
-			Many methods exist to simplify a <em>vectorized</em> method that returns the operation applied element by element to the matrix. To do this, most operations have a <c>.</c> variety and is also called <em>broadcasting</em>.  For example, if we want multiply <c>A</c> and <c>B</c> in an element by element manner then
+			Many methods exist to simplify a <em>vectorized</em> method that returns the operation applied element by element to
+			the matrix.
+			To do this, most operations have a <c>.</c> variety and is also called <em>broadcasting</em>.
+			For example, if we want multiply <c>A</c> and <c>B</c> in an element by element manner then
 		</p>
 
-		<p>
-			<cd> A.*B </cd>
-		</p>
+		<program language="julia">
+			<code>
+				A .* B
+			</code>
+		</program>
 
 		<p>
 			returns
@@ -463,22 +587,31 @@
 
 		<p>
 			<cd>
-			<cline>2×3 Matrix{Int64}:</cline>
-			<cline>  1   6  15</cline>
-			<cline>  8  20  36</cline>
+				<cline>2×3 Matrix{Int64}:</cline>
+				<cline>  1   6  15</cline>
+				<cline>  8  20  36</cline>
 			</cd>
 		</p>
 
 		<p>
-			Note that this is not matrix multiplication, which is <c>A*B</c> and we will discuss this in <xref ref="ch-lin-alg-intro"/>.  Many other operations can be done in similar way. For example, to take the square root of every number in the matrix <c>A</c>, we can enter <c>sqrt.(A)</c> which returns:
+			Note that this is not matrix multiplication, which is <c>A*B</c> and we will discuss this in
+			<xref ref="ch-lin-alg-intro"/>.
+			Many other operations can be done in similar way.
+			For example, to take the square root of every number in the matrix <c>A</c>, we can enter <c>sqrt.(A)</c> which
+			returns:
 		</p>
 
 		<p>
 			<cd>
-			<cline>2×3 Matrix{Float64}:</cline>
-			<cline>  1.0  1.41421  1.73205</cline>
-			<cline>  2.0  2.23607  2.44949</cline>
+				<cline>2×3 Matrix{Float64}:</cline>
+				<cline>  1.0  1.41421  1.73205</cline>
+				<cline>  2.0  2.23607  2.44949</cline>
 			</cd>
+		</p>
+
+		<p>
+			For function that you desire to apply to a Matrix or Vector element by element apply a <c>.</c> at the end of the
+			name.
 		</p>
 
 		<exercise>
@@ -526,25 +659,38 @@
 		</exercise>
 
 		<p>
-			Broadcasting can be applied to other array-like structures like tuples, but also scalars and other collections.  For example,
+			Broadcasting can be applied to other array-like structures like tuples, but also scalars and other collections.
+			For example,
 		</p>
 
 		<p>
 			<cd>
-			<cline>(1,2,3) .+ (4,5,6)</cline>
+				<cline>(1,2,3) .+ (4,5,6)</cline>
 			</cd>
 		</p>
 
 		<p>
-			returns <c>(5, 7, 9)</c>. And if we want to add 10 to every element of a matrix, we can use this syntax as well.  <c>[1, 2, 3, 4] .+ 10</c> returns <c>[11, 12, 13, 14]</c>.  Note that having broadcasting simplifies a lot of operations with arrays.  Without this, typically a for loop would be needed to be written, which is not difficult, but more more complicated than a single operation.
+			returns <c>(5, 7, 9)</c>.
+			And if we want to add 10 to every element of a matrix, we can use this syntax as well.
+			<c>[1, 2, 3, 4] .+ 10</c> returns <c>[11, 12, 13, 14]</c>.
+			Note that having broadcasting simplifies a lot of operations with arrays.
+			Without this, typically a for loop would be needed to be written, which is not difficult, but more more complicated
+			than a single operation.
 		</p>
 
 		<p>
-			There is also a macro that can apply broadcasting.  Let's say that we are applying the function <m>f(x) = x \sin(x) + e^{x^2}</m> on an array <c>x = collect(-3:3)</c>.  To write this operation element by element: one must do <c>x .* sin.(x)+exp.(x.^2)</c> and also that isn't too difficult, there is a bit of an easier way using the <c>@.</c> macro.  If we add this in front of a non-broadcasting expression, it will apply all functions an operations in the right way.  You should notice that <c>@. x*sin(x) + exp(x^2)</c> returns the same array.
+			There is also a macro that can apply broadcasting.
+			Let's say that we are applying the function <m>f(x) = x \sin(x) + e^{x^2}</m> on an array <c>x = collect(-3:3)</c>.
+			To write this operation element by element: one must do <c>x .* sin.(x)+exp.(x.^2)</c> and also that isn't too
+			difficult, there is a bit of an easier way using the <c>@.</c> macro.
+			If we add this in front of a non-broadcasting expression, it will apply all functions an operations in the right way.
+			You should notice that <c>@. x*sin(x) + exp(x^2)</c> returns the same array.
 		</p>
 
 		<p>
-			We will use both forms of broadcasting in the rest of this book.  Often, it broadcasting is relatively simple, we'll use the non-macro version, but for more complicated ones, we'll use the macro.
+			We will use both forms of broadcasting in the rest of this book.
+			Often, it broadcasting is relatively simple, we'll use the non-macro version, but for more complicated ones, we'll
+			use the macro.
 		</p>
 	</section>
 
@@ -552,24 +698,27 @@
 		<title>Other Operations on Arrays</title>
 
 		<p>
-			There are also other operations on arrays. For example, summing all elements in an array is just the <c>sum</c> functions. For example:
+			There are also other operations on arrays.
+			For example, summing all elements in an array is just the <c>sum</c> functions.
+			For example:
 		</p>
 
-		<p>
-			<cd>
-			<cline>sum([1 2 3 4 5 6 7 8 9 10])</cline>
-			</cd>
-		</p>
+		<program language="julia">
+			<code>
+				sum([1 2 3 4 5 6 7 8 9 10])
+			</code>
+		</program>
 
 		<p>
-			returns 55. There are also the <c>min</c>, <c>max</c> and <c>prod</c> functions, with the last one, the product of elements.
+			returns 55.
+			There are also the <c>min</c>, <c>max</c> and <c>prod</c> functions, with the last one, the product of elements.
 		</p>
 
-		<p>
-			<cd>
-			<cline>prod([1,3,5,7])</cline>
-			</cd>
-		</p>
+		<program language="julia">
+			<code>
+				prod([1,3,5,7])
+			</code>
+		</program>
 
 		<p>
 			returns <c>105</c>.
@@ -580,26 +729,31 @@
 		<title>Sorting Vectors and matrices</title>
 
 		<p>
-			Julia can sort an array using the <c>sort</c> function. If <c>A=[3,2,1,4,8,6,5]</c>, then
+			Julia can sort an array using the <c>sort</c> function.
+			If <c>A=[3,2,1,4,8,6,5]</c>, then
+		</p>
+
+		<program language="julia">
+			<code>
+				sort(A)
+			</code>
+		</program>
+
+		<p>
+			results in <c>[1 2 3 4 5 6 8]</c>.
+			The <c>sort</c> function returns a new array that is the sorted version of the original.
+			If you want a sorted version of <c>A</c> in place, use the <c>sort!</c> function instead.
+		</p>
+
+		<p>
+			Also, you may want to sort in a descending manner.
+			If this is true use the keyword argument <c>rev=true</c> in the <c>sort</c> or <c>sort!</c> function.
+			For example:
 		</p>
 
 		<p>
 			<cd>
-			<cline>sort(A)</cline>
-			</cd>
-		</p>
-
-		<p>
-			results in <c>[1 2 3 4 5 6 8]</c>.  The <c>sort</c> function returns a new array that is the sorted version of the original. If you want a sorted version of <c>A</c> in place, use the <c>sort!</c> function instead.
-		</p>
-
-		<p>
-			Also, you may want to sort in a descending manner.  If this is true use the keyword argument <c>rev=true</c> in the <c>sort</c> or <c>sort!</c> function.  For example:
-		</p>
-
-		<p>
-			<cd>
-			<cline>sort(A,rev=true)</cline>
+				<cline>sort(A,rev=true)</cline>
 			</cd>
 		</p>
 
@@ -608,13 +762,14 @@
 		</p>
 
 		<p>
-			If an array element type is a <c>String</c>, then it is sorted lexicographically (similar to alphabetical).  If
+			If an array element type is a <c>String</c>, then it is sorted lexicographically (similar to alphabetical).
+			If
 		</p>
 
 		<p>
 			<cd>
-			<cline>B = ["This","is","a","string","array"]</cline>
-			<cline>sort(B)</cline>
+				<cline>B = ["This","is","a","string","array"]</cline>
+				<cline>sort(B)</cline>
 			</cd>
 		</p>
 
@@ -623,22 +778,31 @@
 		</p>
 
 		<p>
-			We can also specify the function that is applied before sorting is done.  For example,
+			We can also specify the function that is applied before sorting is done.
+			For example,
 		</p>
 
 		<p>
 			<cd>
-			<cline>C = collect(1:9)</cline>
-			<cline>sort(C, by = x -&gt; x % 3)</cline>
+				<cline>C = collect(1:9)</cline>
+				<cline>sort(C, by = x -&gt; x % 3)</cline>
 			</cd>
 		</p>
 
 		<p>
-			where <c>C</c> is the array from 1 to 9 and before sorting, the mod is taken. The <c>by</c> is a keyword argument that takes a function.  in this case, we have used an <em>anonymous function</em>, which is a function without a name and is often used inside of other functions.  We will explore these in more detail in <xref ref="ch-functional-programming"/>.  The result of the sort function is <c>[3,6,9,1,4,7,2,5,8]</c>, where the mod of the first 3 are 0, the next three are 1 and the last three are 2.
+			where <c>C</c> is the array from 1 to 9 and before sorting, the mod is taken.
+			The <c>by</c> is a keyword argument that takes a function.
+			in this case, we have used an <em>anonymous function</em>, which is a function without a name and is often used
+			inside of other functions.
+			We will explore these in more detail in <xref ref="ch-functional-programming"/>.
+			The result of the sort function is <c>[3,6,9,1,4,7,2,5,8]</c>, where the mod of the first 3 are 0, the next three are
+			1 and the last three are 2.
 		</p>
 
 		<p>
-			Check out the <url href="https://docs.Julialang.org/en/v1/base/sort" visual="Julialang.org">Julia docs on sorting and sorting algorithms</url> for more details on how Julia does sorting.
+			Check out the
+			<url href="https://docs.Julialang.org/en/v1/base/sort" visual="Julialang.org">Julia docs on sorting and sorting algorithms</url>
+			for more details on how Julia does sorting.
 		</p>
 	</section>
 
@@ -646,32 +810,43 @@
 		<title>Push and Pop; Array as a Stack</title>
 
 		<p>
-			There is a computer science data structure called a <url href="https://en.wikipedia.org/wiki/Stack\_(abstract\_data\_type)" visual="Julialang.org">stack</url> which acts like a stack of things (paper, dishes, Pokémon cards) and there are two operations on it: 1) put something on top of the stack or 2) take something off the top of the stack.  Many languages including Julia don't have a separate data structure but use an array like one with two operations, <c>push</c> and <c>pop</c>. In Julia these have ! at the end to indicate that the operations change the array. If <c>A=collect(1:5)</c> then
+			There is a computer science data structure called a
+			<url href="https://en.wikipedia.org/wiki/Stack\_(abstract\_data\_type)" visual="Julialang.org">stack</url> which acts
+			like a stack of things (paper, dishes, Pokémon cards) and there are two operations on it: 1) put something on top of
+			the stack or 2) take something off the top of the stack.
+			Many languages including Julia don't have a separate data structure but use an array like one with two operations,
+			<c>push</c> and <c>pop</c>.
+			In Julia these have !
+			at the end to indicate that the operations change the array.
+			If <c>A=collect(1:5)</c> then
 		</p>
 
 		<p>
 			<cd>
-			<cline>push!(A,7)</cline>
+				<cline>push!(A,7)</cline>
 			</cd>
 		</p>
 
 		<p>
-			returns the array <c>[1 2 3 4 5 7]</c>.  And multiple values can be pushed.
+			returns the array <c>[1 2 3 4 5 7]</c>.
+			And multiple values can be pushed.
 		</p>
 
 		<p>
 			<cd>
-			<cline>push!(A,8,9,10,100)</cline>
+				<cline>push!(A,8,9,10,100)</cline>
 			</cd>
 		</p>
 
 		<p>
-			results in the array <c>[1 2 3 4 5 7 8 9 10 100]</c>. To get an element off of the end of the array, we can use <c>pop!</c>. If <c>A=collect(1:5)</c>, then
+			results in the array <c>[1 2 3 4 5 7 8 9 10 100]</c>.
+			To get an element off of the end of the array, we can use <c>pop!</c>.
+			If <c>A=collect(1:5)</c>, then
 		</p>
 
 		<p>
 			<cd>
-			<cline>pop!(A)</cline>
+				<cline>pop!(A)</cline>
 			</cd>
 		</p>
 
@@ -689,183 +864,242 @@
 			</p>
 		</introduction>
 
-
 		<subsection>
 			<title>Append</title>
 
 			<p>
-				If we want to concatenate two arrays, we should use the <c>append!</c> command. For example:
+				If we want to concatenate two Vectors, there are a couple of ways to do this.
+				First, the <c>vcat</c> function will perform a vertical concatenation.
+				For example,
+			</p>
+
+			<program language="julia">
+				<code>
+				vcat(collect(1:5), [7,5,3])
+				</code>
+			</program>
+
+			<p>
+				will return the vector <c>[ 1, 2, 3, 4, 5, 7, 5, 3]</c>.
 			</p>
 
 			<p>
-				<cd>
-				<cline>A=[1,2,3]</cline>
-				<cline>append!(A,[4,5,6])</cline>
-				</cd>
+				Secondly, if we have a vector and want to append another one to the end, use the <c>append!</c> command.
+				For example:
+			</p>
+
+			<program language="julia">
+				<code>
+				A=[1,2,3]
+				append!(A,[4,5,6])
+				</code>
+			</program>
+
+			<p>
+				and now the array stored in <c>A</c> is <c>[1,2,3,4,5,6]</c>.
 			</p>
 
 			<p>
-				and now the array stored in <c>A</c> is <c>[1,2,3,4,5,6]</c>
+				Note that this is similar to the <c>push!</c> command, however, <c>append!</c> takes a vector as the second element
+				and <c>push!</c> takes one or more values of the same type as arguments.
 			</p>
 		</subsection>
-
 
 		<subsection>
 			<title>Adding and Removing Elements in the Middle of an Array</title>
 
 			<p>
-				The functions <c>push!</c> and <c>pop!</c> add and remove an element from the end of a <c>Vector</c> or 1D array.  If we want to add or remove elements in the middle there is are the functions <c>insert!</c> and <c>deleteat!</c>. They both act on a position in the array and you can see how they work with the following examples.  If <c>A=collect(1:2:11)</c>, then
+				The functions <c>push!</c> and <c>pop!</c> add and remove an element from the end of a <c>Vector</c> or 1D array.
+				If we want to add or remove elements in the middle there is are the functions <c>insert!</c> and <c>deleteat!</c>.
+				They both act on a position in the array and you can see how they work with the following examples.
+				If <c>A=collect(1:2:11)</c>, then
 			</p>
 
-			<p>
-				<cd>
-				<cline>insert!(A,3,15)</cline>
-				</cd>
-			</p>
+			<program language="julia">
+				<code>
+				insert!(A,3,15)
+				</code>
+			</program>
 
 			<p>
-				results in the array <c>A</c> being <c>[1 3 15 5 7 9 11]</c> and then resetting the array with <c>A=collect(1:2:11)</c> then
+				results in the array <c>A</c> being <c>[1 3 15 5 7 9 11]</c> and then resetting the array with
+				<c>A=collect(1:2:11)</c> then
 			</p>
 
-			<p>
-				<cd>
-				<cline>deleteat!(A,2)</cline>
-				</cd>
-			</p>
+			<program language="julia">
+				<code>
+				deleteat!(A,2)
+				</code>
+			</program>
 
 			<p>
 				results in the array <c>A</c> being <c>[1 5 7 9 11]</c>.
 			</p>
 		</subsection>
 
-
 		<subsection>
 			<title>It Splices, It Dices!! --- okay, it doesn't dice</title>
 
 			<p>
-				Although you can get a long ways with <c>push!, pop!, insert!</c> and <c>deleteat!</c>, the <c>splice!</c> function is a <url href="https://en.wikipedia.org/wiki/Swiss_Army_knife" visual="wikipedia.org">Swiss Army knife</url> for arrays. It can take an array, pull elements out and put elements in. We will walk through the options:
+				Although you can get a long ways with <c>push!, pop!, insert!</c> and <c>deleteat!</c>, the <c>splice!</c> function
+				is a <url href="https://en.wikipedia.org/wiki/Swiss_Army_knife" visual="wikipedia.org">Swiss Army knife</url> for
+				arrays.
+				It can take a Vector, pull elements out and put elements in.
+				We will walk through the options:
 			</p>
 
 			<p>
 				<dl>
-				<li>
-					<title>Removing elements from an array</title>
+					<li>
+						<title>Removing elements from a Vector</title>
 
-					<p>
-						We saw using the <c>deleteat!</c> function above how to remove a single element, but if
-					</p>
+						<p>
+							We saw using the <c>deleteat!</c> function above how to remove a single element, but if
+						</p>
 
-					<p>
-						<cd> A=collect(1:2:13) </cd>
-						then
-					</p>
+						<program language="julia">
+							<code>
+								A=collect(1:2:13)
+								splice!(A, 3:4)
+							</code>
+						</program>
 
-					<p>
-						<cd> splice!(A, 3:4) </cd>
-					</p>
+						<p>
+							removes and returns the 3rd and 4th elements which are <c>[5, 7]</c>.
+							Also, the array <c>A</c> is the original array without these elements or <c>[1, 3, 9, 11, 13]</c>.
+							The command
+						</p>
 
-					<p>
-						removes and returns the 3rd and 4th elements which are <c>[5, 7]</c>. Also, the array <c>A</c> is the original array without these elements or <c>[1, 3, 9, 11, 13]</c>. If we let <c>A=collect(1:2:11)</c>, then
-					</p>
+						<program language="julia">
+							<code>
+								A = collect(1:2:11)
+								splice!(A,2)
+							</code>
+						</program>
 
-					<p>
-						<cd> x = splice!(A,2) </cd>
-					</p>
+						<p>
+							returns the element in the 2nd position vector or <c>3</c>.
+							The array <c>A</c> is now <c>[1, 5, 7, 9, 11]</c>.
+							This is the same as <c>deleteat!(A,2)</c> we saw above.
+						</p>
+					</li>
 
-					<p>
-						returns the element in the 2nd position vector or <c>3</c>. The array <c>A</c> is now <c>[1, 5, 7, 9, 11]</c>.  This is the same as <c>deleteat!(A,2)</c> we saw above.
-					</p>
-				</li>
+					<li>
+						<title>Inserting elements into a Vector</title>
 
-				<li>
-					<title>Inserting elements from an array</title>
+						<p>
+							We saw the function <c>insert!</c> above, which will insert a single element in a 1D array.
+							The <c>splice!</c> function will insert multiple elements.
+							For example, if we have
+						</p>
 
-					<p>
-						We saw the function <c>insert!</c> above, which will insert a single element in a 1D array. The <c>splice!</c> function will insert multiple elements.  For example, if we have
-					</p>
+						<p>
+							<cd> A = collect(1:2:11) </cd>
+						</p>
 
-					<p>
-						<cd> A = collect(1:2:11) </cd>
-					</p>
+						<p>
+							then to insert elements in the 3rd position (and shifting everything else to the right), we can enter
+						</p>
 
-					<p>
-						then to insert elements in the 3rd position (and shifting everything else to the right), we can enter
-					</p>
+						<program language="julia">
+							<code>
+								B=splice!(A,3:2,[11,12,13,14])
+							</code>
+						</program>
 
-					<p>
-						<cd> B=splice!(A,3:2,[11,12,13,14]) </cd>
-					</p>
+						<p>
+							then the function returns <c>Int64[]</c>.
+							This is an empty array of type <c>Int64</c>.
+							The result is empty because nothing was removed in the process.
+							The array <c>A</c> is now <c>[1, 3, 11, 12, 13, 14, 5, 7, 9, 11]</c>.
+							A few things to note about this.
+							The second argument is a bit strange in that you insert <c>3:2</c> which is a range in which the last element is
+							smaller than the first.
+							This will let Julia know that you don't want to remove any elements, unlike either a single number or a range
+							with the first element smaller than the last.
+						</p>
+					</li>
 
-					<p>
-						then the function returns <c>Int64[]</c>.  This is an empty array of type <c>Int64</c>.  The result is empty because nothing was removed in the process.  The array <c>A</c> is now <c>[1, 3, 11, 12, 13, 14, 5, 7, 9, 11]</c>. A few things to note about this.  The second argument is a bit strange in that you insert <c>3:2</c> which is a range in which the last element is smaller than the first. This will let Julia know that you don't want to remove any elements, unlike either a single number or a range with the first element smaller than the last.
-					</p>
-				</li>
+					<li>
+						<title>Replacing elements from an array</title>
 
-				<li>
-					<title>Replacing elements from an array</title>
+						<p>
+							We say <c>splice!</c> is the Swiss army knife, because it does even more!!
+							(Now, how much would you pay?).
+							This last section shows that we can both remove and insert elements into an array at the same time.
+						</p>
 
-					<p>
-						We say <c>splice!</c> is the Swiss army knife, because it does even more!! (Now, how much would you pay?).  This last section shows that we can both remove and insert elements into an array at the same time.
-					</p>
+						<program language="julia">
+							<code>
+								A=collect(1:2:11)
+								x = splice!(A,3,4)
+							</code>
+						</program>
 
-					<p>
-						If <c>A=collect(1:2:11)</c>, then
-					</p>
+						<p>
+							returns <c>5</c> and replaces the 3rd position with the number 4.
+							The result is <c>[1, 3, 4, 7, 9, 11]</c>.
+							If <c>A=collect(1:2:11)</c>, then replacing the 3rd element with <c>[-1,-2,-3]</c> by
+						</p>
 
-					<p>
-						<cd> x = splice!(A,3,4) </cd>
-					</p>
+						<program language="julia">
+							<code>
+								splice!(A,3,[-1,-2,-3])
+							</code>
+						</program>
 
-					<p>
-						returns <c>5</c> and replaces the 3rd position with the number 4. The result is <c>[1, 3, 4, 7, 9, 11]</c>. If <c>A=collect(1:2:11)</c>, then replacing the 3rd element with <c>[-1,-2,-3]</c> by
-					</p>
-
-					<p>
-						<cd>splice!(A,3,[-1,-2,-3])</cd>
-					</p>
-
-					<p>
-						returns 5 (the element in position 3) and now the array <c>A</c> is <c>[1, 3, -1, -2, -3, 7, 9, 11]</c>.
-					</p>
-				</li>
+						<p>
+							returns 5 (the element in position 3) and now the array <c>A</c> is <c>[1, 3, -1, -2, -3, 7, 9, 11]</c>.
+						</p>
+					</li>
 				</dl>
 			</p>
 		</subsection>
 
-
 		<subsection>
-			<title>Filtering Arrays</title>
+			<title>Filtering Vectors</title>
 
 			<p>
-				A very handle array method, is <url href="https://docs.Julialang.org/en/v1/base/collections/#Base.filter" visual="Julialang.org"> <c>filter</c></url> which takes an array and returns only the elements that satisfy some condition.
+				A very handle array method, is
+				<url href="https://docs.Julialang.org/en/v1/base/collections/#Base.filter" visual="Julialang.org"> <c>filter</c></url>
+				which takes a Vector and returns only the elements that satisfy some condition.
 			</p>
 
 			<p>
-				If <c>A=collect(1:20)</c>, then
+				The commands
 			</p>
 
-			<p>
-				<cd> filter(n -&gt; n%2==0, A) </cd>
-			</p>
+			<program language="julia">
+				<code>
+				A=collect(1:20)
+				filter(n -&gt; n%2==0, A)
+				</code>
+			</program>
 
 			<p>
-				returns all elements that satisfy that the mod 2 is 0 (or even numbers) or <c>[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]</c>.  The first argument is a function and we use an anonymous function for this.
+				returns all elements that satisfy that the mod 2 is 0 (or even numbers) or
+				<c>[2, 4, 6, 8, 10, 12, 14, 16, 18, 20]</c>.
+				The first argument is a function and we use an anonymous function for this.
 			</p>
 
 			<p>
 				In general, the <c>filter</c> command has the form:
-				<cd> filter(cond,array) </cd>
+				<cd> filter(cond, vector) </cd>
 			</p>
 
 			<p>
-				where the result is the array consisting of elements in <c>array</c> in which the function <c>cond</c> is true.
+				where the result is the array consisting of elements in <c>vector</c> in which the function <c>cond</c> is true.
 			</p>
 
 			<p>
-				In addition, if you want to filter on an array with the results in the place of the original array use <c>filter!</c> instead.  For small arrays, one can use either, however, for a large array, to use <c>filter</c> would require a new array be made and we will see in <xref ref="ch-number-theory"/> that creating arrays is a slow down and often a bottleneck for code.  In such a case <c>filter!</c> would be more efficient.
+				In addition, if you want to filter on an array with the results in the place of the original array use
+				<c>filter!</c> instead.
+				For small arrays, one can use either, however, for a large array, to use <c>filter</c> would require a new array be
+				made and we will see in <xref ref="ch-number-theory"/> that creating arrays is a slow down and often a bottleneck
+				for code.
+				In such a case <c>filter!</c> would be more efficient.
 			</p>
 		</subsection>
-
 
 		<subsection>
 			<title>Removing Duplicate Elements</title>
@@ -883,7 +1117,8 @@
 			</p>
 
 			<p>
-				returns <c>[1,2,3,4,5]</c>. And if you want to update the original array, use the <c>unique!</c> function instead.
+				returns <c>[1,2,3,4,5]</c>.
+				And if you want to update the original array, use the <c>unique!</c> function instead.
 			</p>
 		</subsection>
 	</section>
@@ -892,36 +1127,43 @@
 		<title>Joining Arrays and Splitting Strings</title>
 
 		<p>
-			There are a couple of related functions that involve arrays, that of joining an array to get a string and splitting a string to get an array.  We show a few examples here.
+			There are a couple of related functions that involve arrays, that of joining an array to get a string and splitting a
+			string to get an array.
+			We show a few examples here.
 		</p>
 
 		<p>
-			Let's say that we have the vector formed by <c>x=collect(1:6)</c>.  If we want to create a string in which all of the elements are joined, consider
+			Let's say that we have the vector formed by <c>x=collect(1:6)</c>.
+			If we want to create a string in which all of the elements are joined, consider
+		</p>
+
+		<program language="julia">
+			<code>
+				join(x, ", ")
+			</code>
+		</program>
+
+		<p>
+			which outputs <c>"1, 2, 3, 4, 5, 6"</c>, which is the 6 elements of the vector stringified and concatenated separated
+			by <c>", "</c>.
+			The <c>join</c> function has another option to separate the last one differently.
+			For example if
+		</p>
+
+		<program language="julia">
+			<code>
+				days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+				join(days, ", ", " and ")
+			</code>
+		</program>
+
+		<p>
+			returns
 		</p>
 
 		<p>
 			<cd>
-			<cline>join(x, ", ")</cline>
-			</cd>
-		</p>
-
-		<p>
-			which outputs <c>"1, 2, 3, 4, 5, 6"</c>, which is the 6 elements of the vector stringified and concatenated separated by <c>", "</c>.  The <c>join</c> function has another option to separate the last one differently.  For example if
-		</p>
-
-		<p>
-			<cd>
-			<cline>days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]</cline>
-			</cd>
-		</p>
-
-		<p>
-			then <c>join(days, ", ", " and ")</c> returns
-		</p>
-
-		<p>
-			<cd>
-			<cline>"Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday"</cline>
+				<cline>"Monday, Tuesday, Wednesday, Thursday, Friday, Saturday and Sunday"</cline>
 			</cd>
 		</p>
 
@@ -930,14 +1172,15 @@
 		</p>
 
 		<p>
-			Additionally, Julia has the ability to split a string into an array of substrings.  For example if
+			Additionally, Julia has the ability to split a string into an array of substrings.
+			For example if
 		</p>
 
-		<p>
-			<cd>
-			<cline>str = "1; 2; 3; 4; 5; 6"</cline>
-			</cd>
-		</p>
+		<program language="julia">
+			<code>
+				str = "1; 2; 3; 4; 5; 6"
+			</code>
+		</program>
 
 		<p>
 			then <c>split(str, "; ")</c> returns the array
@@ -945,47 +1188,61 @@
 
 		<p>
 			<cd>
-			<cline>6-element Vector{SubString{String}}:</cline>
-			<cline>	"1"</cline>
-			<cline>	"2"</cline>
-			<cline>	"3"</cline>
-			<cline>	"4"</cline>
-			<cline>	"5"</cline>
-			<cline>	"6"</cline>
+				<cline>6-element Vector{SubString{String}}:</cline>
+				<cline>	"1"</cline>
+				<cline>	"2"</cline>
+				<cline>	"3"</cline>
+				<cline>	"4"</cline>
+				<cline>	"5"</cline>
+				<cline>	"6"</cline>
 			</cd>
 		</p>
 
 		<p>
-			and notice that this is an array elements of type <c>Substring{String}</c>.  This type is used as an efficiency to show where in the original string the substring occurs.  If it is desirable to extract the integer representations of the strings, then use the <c>parse</c> function explained in <xref ref="sect-parsing-strings"/>.  The integers can be extracted with
+			and notice that this is an array elements of type <c>Substring{String}</c>.
+			This type is used as an efficiency to show where in the original string the substring occurs.
+			If it is desirable to extract the integer representations of the strings, then use the <c>parse</c> function
+			explained in <xref ref="sect-parsing-strings"/>.
+			The integers can be extracted with
+		</p>
+
+		<program language="julia">
+			<code>
+				parse.(Int, split(str, "; "))
+			</code>
+		</program>
+
+		<p>
+			returns the integer array <c>[1, 2, 3, 4, 5, 6]</c>.
+			This uses broadcasting (the <c>.</c> ) with the <c>parse</c> command to turn each of the strings into an <c>Int</c>.
 		</p>
 
 		<p>
-			<cd>
-			<cline>map(s-&gt; parse(Int,s), split(str, "; "))</cline>
-			</cd>
-		</p>
-
-		<p>
-			where the <c>map</c> function from <xref ref="ch-functional-programming"/> is used.  This returns the integer array <c>[1, 2, 3, 4, 5, 6]</c>. See the <url href="https://docs.Julialang.org/en/v1/base/strings/#Base.split" visual="Julialang.org">Julia documentation on <c>split</c></url> for more information and options.
+			See the
+			<url href="https://docs.Julialang.org/en/v1/base/strings/#Base.split" visual="Julialang.org">Julia documentation on <c>split</c></url>
+			for more information and options.
 		</p>
 	</section>
 
 	<section xml:id="sect-array-concat">
-		<title>Concatenating Arrays</title>
+		<title>Concatenating Vectors and Matrices</title>
 
 		<p>
-			It is also desirable to join two or more arrays.  We saw we can append one onto another with the <c>append!</c> function, but recall that this method updates the first array, often an underisable result. We can combine the two arrays
+			We saw concatenation of vectors above, and go into more depth in this section.
+			We can combine the two arrays
 		</p>
 
-		<p>
-			<cd>
-			<cline>x = [1, 2, 3, 4]</cline>
-			<cline>y = [5, 6, 7, 8]</cline>
-			</cd>
-		</p>
+		<program language="julia">
+			<code>
+				x = [1, 2, 3, 4]
+				y = [5, 6, 7, 8]
+			</code>
+		</program>
 
 		<p>
-			in a way to make a vector of length 8 with <c>vcat(x,y)</c> which returns the vector <c>[1, 2, 3, 4, 5, 6, 7, 8]</c>.  Note: <c>vcat</c> is short for vertical concatenation and when applied to vectors (which are understood to be column vectors), one gets a new vector.
+			in a way to make a vector of length 8 with <c>vcat(x,y)</c> which returns the vector <c>[1, 2, 3, 4, 5, 6, 7, 8]</c>.
+			Note: <c>vcat</c> is short for vertical concatenation and when applied to vectors (which are understood to be column
+			vectors), one gets a new vector.
 		</p>
 
 		<p>
@@ -994,55 +1251,46 @@
 
 		<p>
 			<cd>
-			<cline>4×2 Matrix{Int64}:</cline>
-			<cline>  1  5</cline>
-			<cline>  2  6</cline>
-			<cline>  3  7</cline>
-			<cline>  4  8</cline>
+				<cline>4×2 Matrix{Int64}:</cline>
+				<cline>  1  5</cline>
+				<cline>  2  6</cline>
+				<cline>  3  7</cline>
+				<cline>  4  8</cline>
 			</cd>
 		</p>
 
 		<p>
-			which is the 4 by 2 matrix.  That is it creates a matrix with the given vectors.
+			which is the 4 by 2 matrix.
+			That is it creates a matrix with the given vectors.
 		</p>
 
 		<exercise>
 			<introduction>
 				<p>
-					The methods <c>vcat</c> and <c>hcat</c> also can work with other arrays (like matrices).  If we define:
+					The methods <c>vcat</c> and <c>hcat</c> also can work with other arrays (like matrices).
+					If we define:
 				</p>
 
-				<p>
-					<cd>
-					<cline>A = [i*j for i=1:4,j=1:4]</cline>
-					<cline>B = [(-1)^(i+j) for i=1:4,j=1:2]</cline>
-					</cd>
-				</p>
+				<program language="julia">
+					<code>
+				A = [i*j for i=1:4,j=1:4]
+				B = [(-1)^(i+j) for i=1:4,j=1:2]
+					</code>
+				</program>
 			</introduction>
-
 
 			<task>
 				<statement>
 					<p>
-						Find <c>hcat(A,B)</c> and <c>vcat(A,B)</c> and determine if the results are as expected.
+						Find <c>hcat(A,B)</c> and <c>vcat(A,B)</c>.
 					</p>
 				</statement>
 			</task>
-
 
 			<task>
 				<statement>
 					<p>
 						What does <c>hcat(A,B,x)</c> do?
-					</p>
-				</statement>
-			</task>
-
-
-			<task>
-				<statement>
-					<p>
-						Try <c>vcat(A,transpose(x))</c>, where <c>transpose(x)</c> performs a transpose (think Linear Algebra) of the vector <c>x</c> which makes it a row vector.
 					</p>
 				</statement>
 			</task>
@@ -1053,40 +1301,48 @@
 		<title>Creating patterned arrays with repeat</title>
 
 		<p>
-			Although array comprehensions are incredibly powerful, often if you want to repeat elements of an array to generate another array, the task can be tricky.
+			Although array comprehensions are incredibly powerful, often if you want to repeat elements of an array to generate
+			another array, the task can be tricky.
 		</p>
 
 		<p>
 			For example, to create a array <c>[1, 2, 1, 2, 1, 2, 1, 2, 1, 2]</c> can be done with a comprehension like:
 		</p>
 
+		<program language="julia">
+			<code>
+				[1+(i+1)%2 for i=1:8]
+			</code>
+		</program>
+
+		<p>
+			and we can use <c>[1+ (i-1) ÷ 4 for i=1:8]</c> to produce the array <c>[1, 1, 1, 1, 2, 2, 2, 2]</c> and also,
+			<c>[1+i % 4 for i=0:7]</c> to generate <c>[1, 2, 3, 4, 1, 2, 3, 4]</c>.
+		</p>
+
+		<p>
+			However, if other numbers are repeated it may not be easy to generate these.
+			Instead, we will use the <c>repeat</c> function which in short repeats the numbers in an array some number of times.
+			First, if we execute <c>repeat(1:2,4)</c>, then the results are the same as the first array above or
+			<c>[1, 2, 1, 2, 1, 2, 1, 2, 1, 2]</c>.
+			To generate the second one above, we can use the <c>inner</c> option as in <c>repeat(1:2, inner = 4)</c>.
+			The 3rd example above can be generated with <c>repeat(1:4,2)</c>.
+		</p>
+
+		<p>
+			The method <c>repeat</c> can also be used to generate an array.
+			<c>repeat([1, 2, 3], 2, 3)</c> produces:
+		</p>
+
 		<p>
 			<cd>
-			<cline>[1+(i+1)%2 for i=1:8]</cline>
-			</cd>
-		</p>
-
-		<p>
-			and we can use <c>[1+ (i-1) ÷ 4 for i=1:8]</c> to produce the array <c>[1, 1, 1, 1, 2, 2, 2, 2]</c> and also, <c>[1+i % 4 for i=0:7]</c> to generate <c>[1, 2, 3, 4, 1, 2, 3, 4]</c>.
-		</p>
-
-		<p>
-			However, if other numbers are repeated it may not be easy to generate these. Instead, we will use the <c>repeat</c> function which in short repeats the numbers in an array some number of times. First, if we execute <c>repeat(1:2,4)</c>, then the results are the same as the first array above or <c>[1, 2, 1, 2, 1, 2, 1, 2, 1, 2]</c>.  To generate the second one above, we can use the <c>inner</c> option as in <c>repeat(1:2, inner = 4)</c>.  The 3rd example above can be generated with <c>repeat(1:4,2)</c>.
-		</p>
-
-		<p>
-			The method <c>repeat</c> can also be used to generate an array. <c>repeat([1, 2, 3], 2, 3)</c> produces:
-		</p>
-
-		<p>
-			<cd>
-			<cline>6×3 Matrix{Int64}:</cline>
-			<cline>	1  1  1</cline>
-			<cline>	2  2  2</cline>
-			<cline>	3  3  3</cline>
-			<cline>	1  1  1</cline>
-			<cline>	2  2  2</cline>
-			<cline>	3  3  3</cline>
+				<cline>6×3 Matrix{Int64}:</cline>
+				<cline>	1  1  1</cline>
+				<cline>	2  2  2</cline>
+				<cline>	3  3  3</cline>
+				<cline>	1  1  1</cline>
+				<cline>	2  2  2</cline>
+				<cline>	3  3  3</cline>
 			</cd>
 		</p>
 
@@ -1099,7 +1355,9 @@
 		<title>Arrays as a Collection</title>
 
 		<p>
-			An array is one example of a <em>Collection</em> in Julia.  We will cover these in more details in <xref ref="ch-collections"/> and it is helpful to have knowledge of the more abstract idea when handling arrays.
+			An array is one example of a <em>Collection</em> in Julia.
+			We will cover these in more details in <xref ref="ch-collections"/> and it is helpful to have knowledge of the more
+			abstract idea when handling arrays.
 		</p>
 	</section>
 
@@ -1108,68 +1366,82 @@
 
 		<introduction>
 			<p>
-				Another type that allows one to combine two or more elements of data is called a tuple.  For example, if we want two integers that are combined, we can make:
+				Another type that allows one to combine two or more elements of data is called a tuple.
+				For example, if we want two integers that are combined, we can make:
 				<cd>
-				<cline>(1,2)</cline>
+					<cline>(1,2)</cline>
 				</cd>
 			</p>
 
 			<p>
-				For example, this could be a way to store a geometric point in the plane.  Determining the data type with <c>typeof((1,2))</c> returns <c>Tuple{Int64, Int64}</c>, which is another example of a composite type.  The type is a <c>Tuple</c> but there are <c>Int64</c> types for the components of the tuple.
+				For example, this could be a way to store a geometric point in the plane.
+				Determining the data type with <c>typeof((1,2))</c> returns <c>Tuple{Int64, Int64}</c>, which is another example of
+				a composite type.
+				The type is a <c>Tuple</c> but there are <c>Int64</c> types for the components of the tuple.
 			</p>
 
 			<p>
-				Tuples can consists of different types for different parts.  For example, <c>t = (5,7.8, "Hello")</c> is a valid tuple and its type is <c>Tuple{Int64, Float64, String}</c>.
+				Tuples can consist of different types for different parts.
+				For example, <c>t = (5,7.8, "Hello")</c> is a valid tuple and its type is <c>Tuple{Int64, Float64, String}</c>.
 			</p>
 
 			<p>
-				You can access the elements of the tuple using bracket notation.  Using the value of <c>t</c> above, we can get the first element of <c>t</c> with <c>t[1]</c>.  Note, this is similar to array notation, which we will see in <xref ref="ch-arrays"/>. Note: the first element of things like tuples and array is 1, not 0.
+				You can access the elements of the tuple using bracket notation.
+				Using the value of <c>t</c> above, we can get the first element of <c>t</c> with <c>t[1]</c>.
+				Note, this is similar to array notation, which we will see in <xref ref="ch-arrays"/>.
+				Note: the first element of things like tuples and array is 1, not 0.
 			</p>
 		</introduction>
-
 
 		<subsection>
 			<title>Named Tuples</title>
 
 			<p>
-				Sometimes it's easier to associated the individual elements of a tuple with a name instead of an index.  We can generate a <em>named tuple</em> as
+				Sometimes it's easier to associated the individual elements of a tuple with a name instead of an index.
+				We can generate a <em>named tuple</em> as
 			</p>
 
-			<p>
-				<cd>
-				<cline>pt=(x=1,y=3.2,z=9)</cline>
-				</cd>
-			</p>
+			<program language="julia">
+				<code>
+				pt=(x=1,y=3.2,z=9)
+				</code>
+			</program>
 
 			<p>
-				which would be like a point in three dimensions.  We can access the elements using dot notation, such as
+				which would be like a point in three dimensions.
+				We can access the elements using dot notation, such as
 			</p>
 
-			<p>
-				<cd>
-				<cline>pt.x</cline>
-				</cd>
-			</p>
+			<program language="julia">
+				<code>
+				pt.x
+				</code>
+			</program>
 
 			<p>
 				returns <c>1</c>.
 			</p>
 
 			<p>
-				Named tuples can be helpful to build complex datatypes, where there are multiple fields are associated with the same piece of data.  Another example might be if you have data associated with a person, such as
+				Named tuples can be helpful to build complex datatypes, where there are multiple fields are associated with the same
+				piece of data.
+				Another example might be if you have data associated with a person, such as
 			</p>
 
 			<p>
 				<cd>
-				<cline>p = (first_name = "Homer", last_name = "Simpson", age=45) </cline>
+					<cline>p = (first_name = "Homer", last_name = "Simpson", age=45) </cline>
 				</cd>
 			</p>
 
 			<p>
-				where there are a mix of strings and integers in the same tuple.  This may be all that you need for an example like this, however, we will see more complex data types in <xref ref="ch-comp-types"/>, which creates a new data type or <c>struct</c>.  Such a type will allow more flexibility.  For example if we define a point using a tuple, it is difficult to do operations on the point.
+				where there are a mix of strings and integers in the same tuple.
+				This may be all that you need for an example like this, however, we will see more complex data types in
+				<xref ref="ch-comp-types"/>, which creates a new data type or <c>struct</c>.
+				Such a type will allow more flexibility.
+				For example if we define a point using a tuple, it is difficult to do operations on the point.
 			</p>
 		</subsection>
-
 
 		<subsection>
 			<title>Tuples are Immutable</title>
@@ -1177,16 +1449,19 @@
 			<p>
 				However, if we try to change one of the elements of a tuple, then an error will occur.
 				<cd>
-				<cline>p.age=46</cline>
+					<cline>p.age=46</cline>
 				</cd>
 				results in
 				<cd>
-				<cline>setfield!: immutable struct of type NamedTuple cannot be changed</cline>
+					<cline>setfield!: immutable struct of type NamedTuple cannot be changed</cline>
 				</cd>
 			</p>
 
 			<p>
-				This is because tuples are immutable, meaning once created, any part of the tuple cannot be changed.
+				This is because tuples are <term>immutable</term>, meaning once created, any part of the tuple cannot be changed.
+				One reason for this is speed.
+				Since a tuple is a fixed, read-only structure as opposed to a vector, which is mutable, and therefore has extra
+				overhead.
 			</p>
 		</subsection>
 	</section>

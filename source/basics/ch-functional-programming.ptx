@@ -33,9 +33,13 @@
 
   <introduction>
     <p>
-      This chapter introduces ideas of <url href="https://en.wikipedia.org/wiki/Functional_programming" visual="wikipedia">functional programming</url>, which is a way to think about programming using functions.
-      Typically this requires a language that falls into the category of a <em>functional computer language</em>, one of which is Julia.
-      In short, a language that has this feature has a function (or procedure) as a fundamental element of the language and one of which can be passed as arguments.
+      This chapter introduces ideas of
+      <url href="https://en.wikipedia.org/wiki/Functional_programming" visual="wikipedia">functional programming</url>,
+      which is a way to think about programming using functions.
+      Typically this requires a language that falls into the category of a <em>functional computer language</em>, one of
+      which is Julia.
+      In short, a language that has this feature has a function (or procedure) as a fundamental element of the language
+      and one of which can be passed as arguments.
     </p>
   </introduction>
 
@@ -44,80 +48,112 @@
 
     <introduction>
       <p>
-        A common operation is to start with some array and create a new array based on the first one where there is some relation between the two.
-        This is often called a mapping.
-        If we start with the following array:
+        A common operation is to start with some vector and create a new vector based on the first one where there is
+        some relation between the two.
+        The relationship between the two vectors is often called a mapping.
+        If we start with the following vector:
       </p>
 
-      <p>
-        <cd>
-        <cline>arr=collect(1:5)</cline>
-        </cd>
-      </p>
+      <program language="julia">
+        <code>
+				v = collect(1:5)
+        </code>
+      </program>
 
       <p>
-        and we want a new array that is the square of each element.
+        and we want a new vector that is the square of each element.
         Using a statement-based method, the following will create this using a for loop:
       </p>
 
+      <program language="julia">
+        <code>
+          V = zeros(Int,5)  # this an array of zeros of length 5
+          for i=1:5
+            V[i] = v[i]^2
+          end
+          V
+        </code>
+      </program>
+
       <p>
-        <cd>
-        <cline>newarr=zeros(Int,5)  # this an array of zeros of length 5</cline>
-        <cline>for i=1:5</cline>
-        <cline>  newarr[i]=arr[i]^2</cline>
-        <cline>end</cline>
-        <cline>newarr</cline>
-        </cd>
+        which returns the vector <c>[1,4,9,16,25]</c>.
       </p>
 
       <p>
-        which returns the array <c>[1,4,9,16,25]</c>.
-      </p>
-
-      <p>
-        There is a much simpler way to do this using a method called <c>map</c> which takes in a function and an array and produces another array in which a function acts on each element of the array.
+        There is a much simpler way to do this using a method called <c>map</c> which takes in a function and a vector
+        and produces another vector in which a function acts on each element of the vector.
         In this case, the function is the square.
       </p>
 
-      <p>
-        <cd>
-        <cline>f(x)=x^2</cline>
-        <cline>arr=[1,2,3,4,5]</cline>
-        <cline>map(f,arr)</cline>
-        </cd>
-      </p>
+      <program language="julia">
+        <code>
+        f(x) = x^2
+        v = [1, 2, 3, 4, 5]
+        map(f, v)
+        </code>
+      </program>
 
       <p>
         This can be written even more simply, by using an <term>anonymous function</term> for the first element or:
       </p>
 
-      <p>
-        <cd>
-        <cline>map(x-&gt;x^2,arr)</cline>
-        </cd>
-      </p>
+      <program language="julia">
+        <code>
+          map(x-&gt;x^2, v)
+        </code>
+      </program>
 
       <p>
         The key to this example is the ability to pass the function as an argument to the <c>map</c> command.
-        Once you get a feeling for functional programming, it is often an easier way to write code.<fn>An extreme example of this is to avoid using any for loops after understanding maps and other related functions.
+        Once you get a feeling for functional programming, it is often an easier way to write code.
+        <fn>An extreme example of this is to avoid using any for loops after understanding maps and other related functions.
         Although, often this can happen, it doesn't 1) make the underlying code any faster or 2) any easier to understand, so I don't generally prescribe to this philosophy.</fn>
       </p>
-    </introduction>
 
+      <p>
+        You, the astute reader, recalls that that broadcasting is another way of accomplishing this.
+        In fact for the vector <c>v</c> defined above,
+      </p>
+
+      <program language="julia">
+        <code>
+				v.^2 
+        </code>
+      </program>
+
+      <p>
+        will return the vector of squares like above.
+      </p>
+
+      <p>
+        In many cases, broadcasting is simpler way to do this, however, when a function gets complicated, a map may be
+        the better option.
+      </p>
+    </introduction>
 
     <subsection>
       <title>Anonymous Functions</title>
 
       <p>
-        The example above included in the first argument <c>x-&gt;x^2</c>, which is an example of a <em>anonymous function</em>.
-        In short, it is anonymous because we didn't assign it to a name and instead just included the function as an argument to the <c>map</c> command and this is precisely when anonymous functions are used.
+        The example above included in the first argument <c>x-&gt;x^2</c>, which is an example of a
+        <em>anonymous function</em>.
+        In short, it is anonymous because we didn't assign it to a name and instead just included the function as an
+        argument to the <c>map</c> command and this is precisely when anonymous functions are used.
+      </p>
+
+      <p>
+        To create a anonymous function, the form is <c>x -&gt; f(x)</c>, where the left side is any variable (or as we
+        will see below a tuple of variables) and the right side is a function of that variable.
       </p>
 
       <p>
         Recall that we saw a couple of examples of this in <xref ref="ch-arrays"/>.
-        One example was <c>filter(n -&gt; n%2 == 0, A)</c> which returns all elements of <c>A</c> where the element is an even number.
-        The first argument of <c>filter</c> is a function and if the function is simple, passing in as an anonymous function is typical.
-        The other example we used was in the <c>sort</c> command and can pass a function which is applied before sorting using the <c>by</c> command.
+        One example was <c>filter(n -&gt; n%2 == 0, A)</c> which returns all elements of <c>A</c> where the element is
+        an even number.
+        The first argument of <c>filter</c> is a function and if the function is simple, passing in as an anonymous
+        function is typical.
+        The other example we used was in the <c>sort</c> command and can pass a function which is applied before sorting
+        using the <c>by</c> command.
       </p>
 
       <p>
@@ -127,7 +163,7 @@
 
       <p>
         <cd>
-        <cline>reduce((x,y)-&gt; x+y, A)</cline>
+          <cline>reduce((x,y)-&gt; x+y, A)</cline>
         </cd>
       </p>
 
@@ -138,93 +174,216 @@
       </p>
 
       <exercise>
-        <p>
-          <ol>
-            <li>
-              <p>
-                Write a statement-based loop to take the array <c>[1,2,3,4,5]</c> and output an array that is the reciprocal of each number.
-              </p>
-            </li>
+        <introduction>
+          <p>
+            Let <c>v = collect(1:10)</c> which will be the vector of numbers from 1 to 10.
+          </p>
+        </introduction>
 
-            <li>
-              <p>
-                Write a functional-based code using the <c>map</c> command to do the same.
-              </p>
-            </li>
-          </ol>
-        </p>
+        <task>
+          <statement>
+            <p>
+              Create another vector <c>V = zeros(Float64,10)</c> that will be a vector of 0 as floats.
+              Write a loop that fills the elements of <c>V</c> with the reciprocal of the elements of <c>v</c>.
+            </p>
+          </statement>
+
+          <solution>
+            <program language="julia">
+              <code>
+                for i=1:10
+                  V[i] = 1/v[i]
+                end
+              </code>
+            </program>
+          </solution>
+        </task>
+
+        <task>
+          <statement>
+            <p>
+              Use an anonymous function and the <c>map</c> command to find the reciprocals of the elements of <c>v</c>.
+            </p>
+          </statement>
+
+          <solution>
+            <program language="julia">
+              <code>
+                  map(x-&gt; 1/x, v)
+              </code>
+            </program>
+          </solution>
+        </task>
+
+        <task>
+          <statement>
+            <p>
+              (Optional) Find the reciprocals of <c>v</c> using broadcasting.
+            </p>
+          </statement>
+
+          <solution>
+            <program language="julia">
+              <code>
+                  1 ./ v
+              </code>
+            </program>
+          </solution>
+        </task>
+
+        <task>
+          <statement>
+            <p>
+              (Optional) Find the reciprocals of <c>v</c> using a comprehension.
+            </p>
+          </statement>
+
+          <solution>
+            <program language="julia">
+              <code>
+                [1/x for x in v]
+              </code>
+            </program>
+          </solution>
+        </task>
       </exercise>
     </subsection>
 
-
     <subsection>
-      <title>Mapping over two arrays</title>
+      <title>Mapping over two Vectors</title>
 
       <p>
-        The <c>map</c> function can work over multiple arrays as long at the first argument, which is the function can take as inputs multiple values.
+        The <c>map</c> function can work over more than one vector as long at the first argument, which is the function
+        can take as inputs multiple values.
         A simple example is to multiply element by element over vectors like
       </p>
 
-      <p>
-        <cd>
-        <cline>map(*,[1,2,3],[10,20,30])</cline>
-        </cd>
-      </p>
+      <program language="julia">
+        <code>
+          map(*,[1,2,3],[10,20,30])
+        </code>
+      </program>
 
       <p>
         and the result is <c>[10, 40, 90]</c>.
       </p>
 
       <p>
-        An astute reader will remember that we could have also done this with broadcasting as in <c>[1,2,3] .* [10, 20, 30]</c>, but the point of this is show an example with mapping over two arrays.
+        An astute reader will remember that we could have also done this with broadcasting as in
+        <c>[1,2,3] .* [10, 20, 30]</c>, but the point of this is show an example with mapping over two vectors.
         Another example of this using an anonymous functions is
       </p>
 
-      <p>
-        <cd>
-        <cline>map((x,y)-&gt;x^2+y,[1,2,3],[10,20,30])</cline>
-        </cd>
-      </p>
+      <program language="julia">
+        <code>
+				map((x,y)-&gt;x^2+y,[1,2,3],[10,20,30])
+        </code>
+      </program>
 
       <p>
-        which squares each element in the first array, then adds to a second array resulting in <c>[11, 24, 39]</c> and again this could have been done with broadcasting.
+        which squares each element in the first array, then adds to a second array resulting in <c>[11, 24, 39]</c> and
+        again this could have been done with broadcasting.
       </p>
+
+      <exercise>
+        <introduction>
+          <p>
+            Let
+          </p>
+
+          <program language="julia">
+            <code>
+              v1 = collect(2:2:20)
+              v2 = repeat(1:5,2)
+            </code>
+          </program>
+        </introduction>
+
+        <task>
+          <statement>
+            <p>
+              Use the <c>map</c> function to find a vector of elements from <c>v1</c> divided by <c>v2</c>.
+            </p>
+          </statement>
+
+          <solution>
+            <program language="julia">
+              <code>
+                map((x,y) -&gt; x/y,v1,v2)
+              </code>
+            </program>
+          </solution>
+        </task>
+
+        <task>
+          <statement>
+            <p>
+              Repeat the previous task with broadcasting.
+            </p>
+          </statement>
+
+          <solution>
+            <program language="julia">
+              <code>
+                v1 ./ v2
+              </code>
+            </program>
+          </solution>
+        </task>
+
+        <task>
+          <statement>
+            <p>
+              Use <c>map</c> to find <c>x mod y</c>, where <c>x</c> comes from <c>v1</c> and <c>y</c> from <c>v2</c>.
+            </p>
+          </statement>
+
+          <solution>
+            <program language="julia">
+              <code>
+                map(mod, v1, v2)
+              </code>
+            </program>
+          </solution>
+        </task>
+      </exercise>
     </subsection>
   </section>
 
-  <section xml:id="sect-reduce-array">
-    <title>Reducing an array</title>
+  <section xml:id="sect-reduce-vector">
+    <title>Reducing an vector</title>
 
     <p>
-      The <c>map</c> command in general takes in an array and returns an array.
-      Another common task with arrays is to  reduce the entire array to a single value.
-      If <c>arr=[1,2,3,4,5]</c>, then we can sum the values with the <c>reduce</c> command as in:
+      The <c>map</c> command in general takes in one or more vectors and returns an vector.
+      Another common task with vector is to reduce the entire vector to a single value.
+      If <c>v = [1,2,3,4,5]</c>, then we can sum the values with the <c>reduce</c> command as in:
     </p>
 
-    <p>
-      <cd>
-      <cline>reduce((x,y)-&gt;x+y,arr)</cline>
-      </cd>
-    </p>
+    <program language="julia">
+      <code>
+        reduce((x,y)-&gt;x+y,v)
+      </code>
+    </program>
 
     <p>
       which returns <c>15</c>.
-      This could be written simpler with <c>reduce(+, arr)</c>.
+      This could be written simpler with <c>reduce(+, v)</c>.
+      <fn>And yes, there is a <c>sum</c> command that will do this with <c>sum(v)</c>.</fn>
     </p>
 
     <p>
       To multiply all numbers, we can type:
     </p>
 
-    <p>
-      <cd>
-      <cline>reduce((x,y)-&gt;x*y,arr)</cline>
-      </cd>
-    </p>
+    <program language="julia">
+      <code>
+				reduce((x,y)-&gt;x*y, v)
+      </code>
+    </program>
 
     <p>
       and the result is <c>120</c>.
-      This could be written simpler with <c>reduce(*, arr)</c>.
+      This could be written simpler with <c>reduce(*, v)</c>.
       In both of these cases, there is a little bit hidden, so let's look at these in more detail.
     </p>
 
@@ -238,7 +397,8 @@
 
         <li>
           <p>
-            Secondly, the operation is done on all numbers on the array, but needs to start with some value (because it is a binary function).
+            Secondly, the operation is done on all numbers on the array, but needs to start with some value (because it
+            is a binary function).
             In the sum case, the initial value is 0 (by default) and in the multiply case it is 1.
           </p>
         </li>
@@ -246,28 +406,29 @@
     </p>
 
     <p>
-      These are perhaps obvious examples and each of these have the built-in functions <c>sum</c> and <c>prod</c> that find the sum and product of an array.
+      These are perhaps obvious examples and each of these have the built-in functions <c>sum</c> and <c>prod</c> that
+      find the sum and product of an array.
     </p>
 
     <p>
       Let's look at an example that returns the number of array elements that are greater than zero:
     </p>
 
-    <p>
-      <cd>
-      <cline>numPos(arr) = reduce((n,val) -&gt; val &gt; 0 ? n+1 : n, arr, init=0)</cline>
-      </cd>
-    </p>
+    <program language="julia">
+      <code>
+        numPos(arr) = reduce((n,val) -&gt; val &gt; 0 ? n+1 : n, arr, init=0)
+      </code>
+    </program>
 
     <p>
       and then if it is tested on an array of both positive and negative numbers:
     </p>
 
-    <p>
-      <cd>
-      <cline>numPos([-3,5,8,-2,11])</cline>
-      </cd>
-    </p>
+    <program language="julia">
+      <code>
+        numPos([-3,5,8,-2,11])
+      </code>
+    </program>
 
     <p>
       this returns <c>3</c>.
@@ -286,7 +447,7 @@
 
         <li>
           <p>
-            On the first step, <c>val</c> takes on the first value in the array (or <c>-3</c>).
+            On the first step, <c>val</c> takes on the first value in the array (or <c>-3</c> ).
             It is checked if it is positive and if so, return <c>n+1</c> or <c>n</c>.
             Since n=0 and <c>-3</c> is not positive, then the function returns 0.
           </p>
@@ -325,22 +486,42 @@
     </p>
 
     <exercise>
-      <p>
-        <ul>
-          <li>
-            <p>
-              Write a reduce function that will count the number of times the string <c>"hi"</c> appears in an array.
-              Test it on <c>["hi","bye","hi","hello"]</c> and other arrays of strings.
-            </p>
-          </li>
+      <task>
+        <statement>
+          <p>
+            Write a reduce function that will count the number of times the string <c>"hi"</c> appears in an array.
+            Test it on <c>["hi","bye","hi","hello"]</c> and other arrays of strings.
+          </p>
+        </statement>
 
-          <li>
-            <p>
-              What does <c>reduce(*, ["J","u","l","i","a"],init="")</c> do?
-            </p>
-          </li>
-        </ul>
-      </p>
+        <solution>
+          <p>
+            This is similar to the <c>numPos</c> function above.
+          </p>
+
+          <program language="julia">
+            <code>
+              numHi(v) = reduce((n,val) -&gt; val == "hi" ? n+1 : n, v, init = 0)
+            </code>
+          </program>
+        </solution>
+      </task>
+
+      <task>
+        <statement>
+          <p>
+            What does <c>reduce(*, ["J","u","l","i","a"],init="")</c> do?
+            Is there another function we have seen that does this without using <c>reduce</c>?
+          </p>
+        </statement>
+
+        <solution>
+          <p>
+            This just concatenates the strings together.
+            The other function is <c>join</c>.
+          </p>
+        </solution>
+      </task>
     </exercise>
   </section>
 
@@ -348,19 +529,22 @@
     <title>The <c>mapreduce</c> function</title>
 
     <p>
-      The <url href="http://docs.Julialang.org/en/release-0.5/stdlib/collections/#Base.mapreduce" visual="Julialang.org"> <c>mapreduce</c></url> function is perhaps more helpful than <c>reduce</c>.
+      The
+      <url href="http://docs.Julialang.org/en/release-0.5/stdlib/collections/#Base.mapreduce" visual="Julialang.org"> <c>mapreduce</c></url>
+      function is perhaps more helpful than <c>reduce</c>.
       For example, if we want to sum the squares of each number in an array, then <c>mapreduce</c> can do this easily.
     </p>
 
-    <p>
-      <cd>
-      <cline>mapreduce(x-&gt;x^2,+,[1,2,3],init=0)</cline>
-      </cd>
-    </p>
+    <program language="julia">
+      <code>
+        mapreduce(x-&gt;x^2,+,[1,2,3],init=0)
+      </code>
+    </program>
 
     <p>
       is a short-hand way to do <m>1^2+2^2+3^2=14</m>.
-      For <c>mapreduce</c>, the first argument is a function of one variable (unary) that is applied to every element of array.
+      For <c>mapreduce</c>, the first argument is a function of one variable (unary) that is applied to every element of
+      array.
       The second argument is a binary element that is used for the reduce part.
       Note: Julia also has a version of the <c>sum</c> function that can apply a function.
       For example, <c>sum(x-&gt;x^2,[1,2,3])</c> returns the sum of <c>14</c>.
@@ -368,48 +552,55 @@
 
     <p>
       Another example that we will see later is how to write a polynomial using its coefficients.
-      For example, if <c>coeffs = [-2,4,5,7]</c>, then we want to create a way to produce the polynomial <c>"-2 x^0 + 4 x^1  + 5 x^2  + 7 x^3"</c>.
-      This is a clear candidate for either a reduce or mapreduce because we have an array and reduce a single thing (in this case a string).
-      We will use <c>mapreduce</c> in this case because there is a transformation of each element which produces the polynomial term and then the reduce is a concatenation.
+      For example, if <c>coeffs = [-2,4,5,7]</c>, then we want to create a way to produce the polynomial
+      <c>"-2 x^0 + 4 x^1  + 5 x^2  + 7 x^3"</c>.
+      This is a clear candidate for either a reduce or mapreduce because we have an array and reduce a single thing (in
+      this case a string).
+      We will use <c>mapreduce</c> in this case because there is a transformation of each element which produces the
+      polynomial term and then the reduce is a concatenation.
     </p>
 
     <p>
-      Although it seems like we should use the array itself, we are going to use the array (technically the range), <c>1:length(coeffs)</c>, so we can produce the powers in each of the term.
+      Although it seems like we should use the array itself, we are going to use the array (technically the range),
+      <c>1:length(coeffs)</c>, so we can produce the powers in each of the term.
       Therefore the mapping function will be
     </p>
 
-    <p>
-      <cd>
-      <cline>i -&gt; "$(coeffs[i])x^($i-1)"</cline>
-      </cd>
-    </p>
+    <program language="julia">
+      <code>
+				i -&gt; "$(coeffs[i])x^($i-1)"
+      </code>
+    </program>
 
     <p>
-      which take a number <c>i</c> and looks up the right coeffs and raise to the <c>i-1</c> power, since we need to shift the power by one.
+      which take a number <c>i</c> and looks up the right coeffs and raise to the <c>i-1</c> power, since we need to
+      shift the power by one.
       Next, we need a function that will concatenate the terms.
       This will be
     </p>
 
-    <p>
-      <cd>
-      <cline>(str, term) -&gt; str * " + $term "</cline>
-      </cd>
-    </p>
+    <program language="julia">
+      <code>
+        (str, term) -&gt; str * " + $term "
+      </code>
+    </program>
 
     <p>
-      where <c>str</c> is the current version of the polynomial string and <c>term</c> will be the current term (which is created with the mapping function).
+      where <c>str</c> is the current version of the polynomial string and <c>term</c> will be the current term (which
+      is created with the mapping function).
       Putting this altogether
     </p>
 
     <p>
       <cd>
-      <cline>mapreduce(i -&gt; "$(coeffs[i]) x^$(i-1)", (str, term) -&gt; str * " + $term " , 1:length(coeffs) )</cline>
+        <cline>mapreduce(i -&gt; "$(coeffs[i]) x^$(i-1)", (str, term) -&gt; str * " + $term " , 1:length(coeffs) )</cline>
       </cd>
     </p>
 
     <p>
       and this will return the string <c>"-2 x^0 + 4 x^1  + 5 x^2  + 7 x^3 "</c>.
-      We will use this in <xref ref="sect-poly-parametric"/> when we crate a Polynomial type and this function will show the results in a more natural way.
+      We will use this in <xref ref="sect-poly-parametric"/> when we crate a Polynomial type and this function will show
+      the results in a more natural way.
     </p>
 
     <exercise>
@@ -438,6 +629,14 @@
           Use <c>arr=1:20</c> for the array and the mapping function is the reciprocal.
         </p>
       </hint>
+
+      <solution>
+        <program language="julia">
+          <code>
+            mapreduce(i -&gt; 1/i^2, +, 1:20)
+          </code>
+        </program>
+      </solution>
     </exercise>
   </section>
 
@@ -446,23 +645,23 @@
 
     <p>
       Above, we saw the <c>map</c> function which applies a function over each element of the array.
-      We will see in <xref ref="ch-prob-models"/>  that the <c>mapslices</c> functions is quite helpful.
+      We will see in <xref ref="ch-prob-models"/> that the <c>mapslices</c> functions is quite helpful.
     </p>
 
     <p>
       Consider the array <c>A=[i+j for i=1:10,j=1:3]</c> which returns the array
       <cd>
-      <cline>10×3 Matrix{Int64}:</cline>
-      <cline>  2   3   4</cline>
-      <cline>  3   4   5</cline>
-      <cline>  4   5   6</cline>
-      <cline>  5   6   7</cline>
-      <cline>  6   7   8</cline>
-      <cline>  7   8   9</cline>
-      <cline>  8   9  10</cline>
-      <cline>  9  10  11</cline>
-      <cline> 10  11  12</cline>
-      <cline> 11  12  13</cline>
+        <cline>10×3 Matrix{Int64}:</cline>
+        <cline>  2   3   4</cline>
+        <cline>  3   4   5</cline>
+        <cline>  4   5   6</cline>
+        <cline>  5   6   7</cline>
+        <cline>  6   7   8</cline>
+        <cline>  7   8   9</cline>
+        <cline>  8   9  10</cline>
+        <cline>  9  10  11</cline>
+        <cline> 10  11  12</cline>
+        <cline> 11  12  13</cline>
       </cd>
     </p>
 
@@ -470,15 +669,16 @@
       If we want to sum down the columns of the array, we can enter
     </p>
 
-    <p>
-      <cd>
-      <cline>mapslices(sum,A,dims=[1])</cline>
-      </cd>
-    </p>
+    <program language="julia">
+      <code>
+          mapslices(sum,A,dims=[1])
+      </code>
+    </program>
 
     <p>
-      which returns the array<c>[65  75  85]</c>, which is a 1D array with the column sums.
-      The <c>mapslices</c> function needs three arguments, a function that can take an array, a 2D array and the keyword <c>dims</c> which says how to apply the sum.
+      which returns the array <c>[65  75  85]</c>, which is a 1D array with the column sums.
+      The <c>mapslices</c> function needs three arguments, a function that can take an array, a 2D array and the keyword
+      <c>dims</c> which says how to apply the sum.
       Note: we can also replace the command <c>sum</c> with <c>+</c> as well.
     </p>
 
@@ -486,11 +686,11 @@
       If instead we wanted to sum along rows, then
     </p>
 
-    <p>
-      <cd>
-      <cline>mapslices(sum,A,dims=[2])</cline>
-      </cd>
-    </p>
+    <program language="julia">
+      <code>
+				mapslices(sum,A,dims=[2])
+      </code>
+    </program>
 
     <p>
       which returns
@@ -498,17 +698,17 @@
 
     <p>
       <cd>
-      <cline>10×1 Matrix{Int64}:</cline>
-      <cline>  9</cline>
-      <cline> 12</cline>
-      <cline> 15</cline>
-      <cline> 18</cline>
-      <cline> 21</cline>
-      <cline> 24</cline>
-      <cline> 27</cline>
-      <cline> 30</cline>
-      <cline> 33</cline>
-      <cline> 36</cline>
+        <cline>10×1 Matrix{Int64}:</cline>
+        <cline>  9</cline>
+        <cline> 12</cline>
+        <cline> 15</cline>
+        <cline> 18</cline>
+        <cline> 21</cline>
+        <cline> 24</cline>
+        <cline> 27</cline>
+        <cline> 30</cline>
+        <cline> 33</cline>
+        <cline> 36</cline>
       </cd>
     </p>
 
@@ -518,39 +718,73 @@
     </p>
 
     <exercise>
-      <p>
-        Using the matrix <c>A=[i+j for i=1:10,j=1:3]</c>,
-      </p>
+      <introduction>
+        <p>
+          Let <c>A=[i+j for i=1:10,j=1:3]</c>.
+        </p>
+      </introduction>
 
-      <p>
-        <ul>
-          <li>
-            <p>
-              evaluate <c>mapslices(prod,A,dims=[1])</c>.
-              What does that function do?
-            </p>
-          </li>
+      <task>
+        <statement>
+          <p>
+            evaluate <c>mapslices(prod,A,dims=[1])</c>.
+            What does that function do?
+          </p>
+        </statement>
 
-          <li>
-            <p>
-              evaluate <c>mapslices(prod,A,dims=[2])</c>.
-              What does that function do?
-            </p>
-          </li>
+        <solution>
+          <p>
+            This returns the product of each column.
+          </p>
+        </solution>
+      </task>
 
-          <li>
-            <p>
-              use the <c>mapslices</c> function to find the maximum element in each row.
-            </p>
-          </li>
+      <task>
+        <statement>
+          <p>
+            evaluate <c>mapslices(prod,A,dims=[2])</c>.
+            What does that function do?
+          </p>
+        </statement>
 
-          <li>
-            <p>
-              use the <c>mapslices</c> function to find the maximum element in each column.
-            </p>
-          </li>
-        </ul>
-      </p>
+        <solution>
+          <p>
+            This returns the product of each row.
+          </p>
+        </solution>
+      </task>
+
+      <task>
+        <statement>
+          <p>
+            Use the <c>mapslices</c> function to find the maximum element in each row.
+          </p>
+        </statement>
+
+        <solution>
+          <program language="julia">
+            <code>
+              mapslices(maximum, A, dims = [2])
+            </code>
+          </program>
+        </solution>
+      </task>
+
+      <task>
+        <statement>
+          <p>
+            Use the <c>mapslices</c> function to find the maximum element in each column.
+          </p>
+        </statement>
+
+        <solution>
+          <program language="julia">
+            <code>
+              mapslices(maximum, A, dims = [1])
+            </code>
+          </program>
+        </solution>
+      </task>
     </exercise>
   </section>
 
@@ -558,20 +792,21 @@
     <title>Do-Begin-End blocks</title>
 
     <p>
-      All of the functions that are applied in the examples in this chapter are relatively simple in that they can be written as a single line and we do so in anonymous form.
+      All of the functions that are applied in the examples in this chapter are relatively simple in that they can be
+      written as a single line and we do so in anonymous form.
       Consider instead a more complicated example that would be very difficult and not readable as a single line.
     </p>
 
     <p>
       The input will be an array.
-      For each number <c>i</c> in the array if it is a multiple of 3, return the number, if <c>i</c> mod 3 is 1, then return the square.
+      For each number <c>i</c> in the array if it is a multiple of 3, return the number, if <c>i</c> mod 3 is 1, then
+      return the square.
       If <c>i</c> mod 3 is 2, then return twice the number.
     </p>
 
     <p>
       This can be written as
     </p>
-
 
     <program language="julia">
       <code>
@@ -595,7 +830,6 @@
       The structure is basically
     </p>
 
-
     <program language="julia">
       <code>
 				map(values) do var
@@ -613,13 +847,12 @@
       The function that counts the number of positive numbers in a list can be written as
     </p>
 
-
     <program language="julia">
       <code>
         numPos(values::Vector{Int}) = reduce(values, init = 0) do n, val
             begin
                 pos = n
-                if val > 0
+                if val &gt; 0
                     pos += 1
                 end
                 pos
@@ -633,6 +866,51 @@
       This is clearly longer than the previous version of this, but perhaps much more readable.
     </p>
 
-    <p>NOTE: ADD AN EXERCISE HERE</p>
+    <exercise>
+      <statement>
+        <p>
+          Write a function <c>findMax</c> that finds the maximum of the values in a vector and returns the maximum using
+          the <c>reduce</c> function as a <c>do-begin-end</c> block.
+        </p>
+      </statement>
+
+      <hint>
+        <p>
+          One of the variables of the reduce should be the running value of the maximum.
+          The <c>init</c> option will be needed and since it should start with the smallest possible value, use
+          <c>init = -Inf</c> and every number will be larger than it.
+        </p>
+      </hint>
+
+      <solution>
+        <program language="julia">
+          <code>
+            findMax(v) = reduce(v, init = -Inf) do val, max 
+              begin
+                if val &gt; max 
+                  return val 
+                else
+                  return max
+                end
+              end
+            end
+          </code>
+        </program>
+
+        <p>
+          or using the ternary <c>if-then-else</c>
+        </p>
+
+        <program language="julia">
+          <code>
+            findMax(v) = reduce(v, init = -Inf) do val, max 
+              begin
+                val &gt; max ? val : max 
+              end
+            end
+          </code>
+        </program>
+      </solution>
+    </exercise>
   </section>
 </chapter>
