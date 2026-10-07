@@ -8,6 +8,7 @@
   <xi:include href="data-analysis/ch-missing-data.ptx" />
   <xi:include href="data-analysis/ch-database.ptx" />
   <xi:include href="data-analysis/ch-manipulating-data.ptx" />
+  <xi:include href="data-analysis/ch-data-frames-meta.ptx" />
   <xi:include href="data-analysis/ch-split-apply-combine.ptx" />
   <xi:include href="data-analysis/ch-linear-regression.ptx" />
   <xi:include href="data-analysis/ch-census.ptx" />

@@ -1,0 +1,366 @@
+<chapter xml:id="ch-data-frames-meta">
+  <title>Data Frames Meta</title>
+
+  <introduction>
+    <p>
+      This section dives into the features of the package <c>DataFramesMeta</c> which provides a simpler interface to
+      many of the built-in features of the <c>DataFrames</c> package.
+      In most cases the <c>DataFramesMeta</c> package provides macros with the same name as the <c>DataFrames</c>
+      package.
+    </p>
+
+    <p>
+      In many cases, we will repeat the same examples as in <xref ref="ch-manipulating-data"/>, however sometimes done
+      differently.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-dfm-subsetting">
+    <title>Subsets of Dataframes</title>
+
+    <introduction>
+      <p>
+        Like the built-in functions in the <c>DataFrames</c>, package, there are two ways of finding the subset of a
+        DataFrame with <c>DataFramesMeta</c>, either finding subsets of columns or rows.
+        We repeat the concepts in <xref ref="ch-manipulating-data"/> first by staring with the data set:
+      </p>
+
+      <program language="julia">
+        <code>
+          data = DataFrame(
+              A = 1:2:13,
+              B = ["M", "F", "F", "M", "X", "F", "M"],
+              C = [3.0, 2.5, pi, -2.3, 1/3, 56, 100],
+              D = [(-1)^n//n for n=1:7]
+          )
+        </code>
+      </program>
+    </introduction>
+
+    <subsection xml:id="subsec-dfm-select">
+      <title>Subsets of Columns with <c>@select</c></title>
+
+      <p>
+        Selecting columns (or finding a subset of columns) is performed with the <c>@select</c> macro.
+        Again, we will wrap all commands in a <c>@chain</c> block to make it easier later with more complex cases.
+        We can select only columns <c>A</c> and <c>D</c> with
+      </p>
+
+      <program language="julia">
+        <code>
+          @chain data begin
+            @select(:A, :D)
+          end
+        </code>
+      </program>
+
+      <p>
+        will return a DataFrame with just the A and D columns or
+      </p>
+
+      <p>
+        <cd>
+          <cline>7×2 DataFrame</cline>
+          <cline>  Row  A      D</cline>
+          <cline>       Int64  Rational…  </cline>
+          <cline>  1    1      -1//1</cline>
+          <cline>  2    3      1//2</cline>
+          <cline>  3    5      -1//3</cline>
+          <cline>  4    7      1//4</cline>
+          <cline>  5    9      -1//5</cline>
+          <cline>  6    11     1//6</cline>
+          <cline>  7    13     -1//7</cline>
+        </cd>
+      </p>
+
+      <p>
+        If the <c>@select</c> is used only for selecting columns, the commands <c>select(df,col1, col2)</c> and
+        <c>@select(df,col1, col2)</c> give the same results.
+        As we discussed in <xref ref="ch-manipulating-data"/>, we can use <c>@select(Not(:B))</c> to get all columns
+        except <c>B</c> or <c>@select(Between(:B,:D))</c> will return all columns between and including <c>B</c> and
+        <c>D</c>.
+      </p>
+    </subsection>
+
+    <subsection xml:id="subsec-dfm-subset-rows">
+      <title>Finding the subset of rows with <c>@subset</c></title>
+
+      <p>
+        In <xref ref="ch-manipulating-data"/>, we used the <c>subset</c> command to find a subset of rows in the
+        DataFrame.
+        Recall that to return all rows in which the values in the <c>A</c> column are less than 10 with the following
+        commands:
+      </p>
+
+      <program language="julia">
+        <code>
+          @chain data begin
+            subset(:A =&gt; a-&gt; a .&lt; 10)
+          end
+        </code>
+      </program>
+
+      <p>
+        which again returns
+      </p>
+
+      <p>
+        <cd>
+          <cline>5×4 DataFrame</cline>
+          <cline>  Row  A      B       C         D</cline>
+          <cline>       Int64  String  Float64   Rational…</cline>
+          <cline>  1    1      M       3.0       -1//1</cline>
+          <cline>  2    3      F       2.5       1//2</cline>
+          <cline>  3    5      F       3.14159   -1//3</cline>
+          <cline>  4    7      M       -2.3      1//4</cline>
+          <cline>  5    9      X       0.333333  -1//5</cline>
+        </cd>
+      </p>
+
+      <p>
+        To use the <c>@subset</c> command, we can find the same subset with
+      </p>
+
+      <program language="julia">
+        <code>
+          @chain data begin
+            @subset(:A .&lt; 10)
+          end
+        </code>
+      </program>
+
+      <p>
+        and notice that it is quite a bit simpler.
+        The argument in the <c>@select</c> macro is an expression that is an array of booleans.
+        The inside is a shorthand way to write:
+      </p>
+
+      <program language="julia">
+        <code>
+          data.A .&lt; 10
+        </code>
+      </program>
+
+      <p>
+        which returns the vector <c>BitVector[1, 1, 1, 1, 1, 0, 0]</c>.
+        And applying <c>@subset</c>, the top five rows of <c>data</c> are returned.
+      </p>
+
+      <p>
+        Other subsetting is simpler as well.
+        If you want the rows in which the product of columns <c>C</c> and <c>D</c>, then
+      </p>
+
+      <program language="julia">
+        <code>
+          @chain data begin
+            @subset(:C .* :D .&gt; 2)
+          end
+        </code>
+      </program>
+
+      <p>
+        will accomplish this and return
+      </p>
+
+      <p>
+        <cd>
+          <cline>5×4 DataFrame</cline>
+          <cline>  Row  A      B       C         D</cline>
+          <cline>       Int64  String  Float64   Rational…</cline>
+          <cline>  1    11     F       56.0      1//6</cline>
+        </cd>
+      </p>
+
+      <p>
+        And if the dot notation is still confusing then applying the <c>@.</c> in front will accomplish the same thing.
+        An alternative to the above can be done with
+      </p>
+
+      <program language="julia">
+        <code>
+          @chain data begin
+            @subset(@. :C * :D &gt; 2)
+          end
+        </code>
+      </program>
+
+      <exercise>
+        <statement>
+          <p>
+            Use the <c>iris</c> dataset, find all <c>setosa</c> irises with <c>SepalWidth</c> larger than 4 using the
+            <c>@subset</c> command.
+            How many are in the dataset.
+          </p>
+        </statement>
+      </exercise>
+    </subsection>
+  </section>
+
+  <section xml:id="sec-dfm-transforms">
+    <title>Transforming DataFrames</title>
+
+    <p>
+      Often, we need to perform a calculation on the columns of a DataFrame.
+      There are two ways to accomplish this, using <c>@transform</c> to add a new column to the DataFrame or using
+      <c>@select</c> to take a subset of the existing columns.
+    </p>
+
+    <p>
+      As an example of using <c>@transform</c>, we will start with the <c>data</c> DataFrame and create a column that is
+      the square of the <c>A</c> column.
+      This is accomplished with
+    </p>
+
+    <program language="julia">
+      <code>
+          @chain data begin
+            @transform(:Asq = :A.^2)
+          end
+      </code>
+    </program>
+
+    <p>
+      and the result is
+    </p>
+
+    <p>
+      <cd>
+        <cline>7×5 DataFrame</cline>
+        <cline>Row  A      B       C         D          Asq</cline>
+        <cline>     Int64  String  Float64   Rational…  Int64</cline>
+        <cline>1    1      M       3.0       -1//1      1</cline>
+        <cline>2    3      F       2.5       1//2       9</cline>
+        <cline>3    5      F       3.14159   -1//3      25</cline>
+        <cline>4    7      M       -2.3      1//4       49</cline>
+        <cline>5    9      X       0.333333  -1//5      81</cline>
+        <cline>6    11     F       56.0      1//6       121</cline>
+        <cline>7    13     M       100.0     -1//7      169</cline>
+      </cd>
+    </p>
+
+    <p>
+      If instead, we only want the resulting DataFrame to have the new column, we can use a <c>@select</c>.
+      For example,
+    </p>
+
+    <program language="julia">
+      <code>
+          @chain data begin
+            @select(:Asq = :A.^2)
+          end
+      </code>
+    </program>
+
+    <p>
+      resulting in
+    </p>
+
+    <p>
+      <cd>
+        <cline>7×5 DataFrame</cline>
+        <cline>Row  Asq</cline>
+        <cline>     Int64</cline>
+        <cline>1    1</cline>
+        <cline>2    9</cline>
+        <cline>3    25</cline>
+        <cline>4    49</cline>
+        <cline>5    81</cline>
+        <cline>6    121</cline>
+        <cline>7    169</cline>
+      </cd>
+    </p>
+
+    <p>
+      The <c>@select</c> can be a combination of subsetting columns as above and producing new column.
+      Let's say that we want columns <c>A</c> and <c>B</c> from the original DataFrame as well as the square of the
+      <c>A</c> column.
+      This is done with
+    </p>
+
+    <program language="julia">
+      <code>
+        @chain data begin
+          @select(:A, :B, :Asq = :A.^2)
+        end
+      </code>
+    </program>
+
+    <p>
+      resulting in
+    </p>
+
+    <p>
+      <cd>
+        <cline>7×3 DataFrame</cline>
+        <cline>Row   A       B        Asq</cline>
+        <cline>      Int64   String   Int64</cline>
+        <cline>1     1       M        1</cline>
+        <cline>2     3       F        9</cline>
+        <cline>3     5       F        25</cline>
+        <cline>4     7       M        49</cline>
+        <cline>5     9       X        81</cline>
+        <cline>6     11      F        121</cline>
+        <cline>7     13      M        169</cline>
+      </cd>
+    </p>
+
+    <p>
+      Both <c>select</c> and <c>transform</c> can use multiple columns.
+      The following example, takes the product between columns <c>C</c> and <c>D</c>.
+    </p>
+
+    <program language="julia">
+      <code>
+				@chain data begin
+          @select(:prod = :C .* :D)
+        end
+      </code>
+    </program>
+
+    <p>
+      This returns
+    </p>
+
+    <p>
+      <cd>
+        <cline>7×1 DataFrame</cline>
+        <cline>  Row  prod</cline>
+        <cline>       Float64</cline>
+        <cline>  1    -3.0</cline>
+        <cline>  2    1.25</cline>
+        <cline>  3    -1.0472</cline>
+        <cline>  4    -0.575</cline>
+        <cline>  5    -0.0666667</cline>
+        <cline>  6    9.33333</cline>
+        <cline>  7    -14.2857</cline>
+      </cd>
+    </p>
+
+    <p>
+      Note: there are also commands <c>@select!</c> and <c>@transform!</c> that perform the operations within the given
+      dataframe.
+      These are generally destructive in that each overwrites the previous DataFrame but can save a lot of computational
+      time for large DataFrames.
+      It is recommended to stay with the non mutating (without the !) versions unless you need to save time/memory.
+    </p>
+
+    <exercise>
+      <p>
+        Using the <c>iris</c> dataframe produce a new column called <c>area</c> which is the area of a petal using the
+        <c>PetalLength</c> and <c>PetalWidth</c> variables and the area of an ellipse.
+        Use the <c>@transform</c> command.
+      </p>
+    </exercise>
+  </section>
+
+  <section xml:id="sec-dfm-sorting">
+    <title>Sorting a DataFrame with <c>@orderby</c></title>
+
+    <p>
+      It's common to want to order the results of a DataFrame.
+      In <c>DataFramesMeta</c>, this is done with the <c>@orderby</c> command.
+      <fn>Note: the command within the <c>DataFrames</c> package is <c>sort</c>, but is not as flexible as <c>@orderby</c>.</fn>
+    </p>
+  </section>
+</chapter>
