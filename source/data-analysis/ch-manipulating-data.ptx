@@ -620,7 +620,7 @@ select(data, :A, :D)
 		</p>
 	</section>
 
-	<section>
+	<section xml:id="sect-dataframe-joins">
 		<title>Joining DataFrames</title>
 
 		<p>
@@ -654,19 +654,19 @@ select(data, :A, :D)
 		</program>
 
 		<p>
-			and we want to join these two together.
-			In order to join two datasets, there must be a way that you want to joining them together.
-			This typically occurs when there is common data between the two datasets often with the same column name, but not
-			necessarily.
-			In this case, the column that makes most sense is the <c>name</c> column, which is common to both.
-			For this example, we'll use the <c>innerjoin</c> command and the keyword attributed <c>on</c> with the common column
-			name.
-			If we perform the following:
+			 and we want to join these two together.
+      In order to join two datasets, we need to know which column is common to both datasets.
+      This typically occurs when there is common data between the two datasets often with the same column name, but not
+      necessarily.
+      In this case, the column that makes most sense is the <c>name</c> column, which is common to both.
+      For this example, we'll use the <c>innerjoin</c> command and the keyword attributed <c>on</c> with the common
+      column name.
+      If we perform the following:
 		</p>
 
 		<program language="julia">
 			<code>
-				innerjoin(data, simpsons, on = :name)
+				innerjoin(simpsons, jobs, on = :name)
 			</code>
 		</program>
 
@@ -689,8 +689,8 @@ select(data, :A, :D)
 
 		<p>
 			The column that the sets are joined on are called the <em>key</em> of the DataFrame.
-			The <c>innerjoin</c> command returns all rows in which the key is common to both datasets.
-			The inner part is like the intersection of two sets.
+      The <c>innerjoin</c> command returns all rows in which the key is common to both datasets.
+      This can be thought of as the intersection of the DataFrames and this is the most common joins. 
 		</p>
 
 		<note>
@@ -818,6 +818,13 @@ select(data, :A, :D)
 				</p>
 			</solution>
 		</example>
+
+		<note>
+			<p>
+				When performing any of the joins listed in this section, it is important that the joining columns in each DataFrame is unique in each DataFrame. 
+				Although you won't get an error, you may not get the expected results.  If a key is repeated, you may get repeated data. 
+			</p>
+		</note>
 	</section>
 
 	<section>

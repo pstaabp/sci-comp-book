@@ -1,47 +1,95 @@
 <chapter xml:id="ch-split-apply-combine">
-  <title>Split, Combine, Apply a DataFrame</title>
+	<title>Split, Combine, Apply a DataFrame</title>
+
+	<introduction>
+		<p>
+			A common situation with data analysis is to have a dataset and you want to compare means or standard deviations
+			within a dataset.
+			What needs to often happen is that you first split a dataset, do some analysis on each group then summarize.
+			This is know as <em>split-apply-combine</em>.
+			We will demonstrate this with a few examples.
+			We will also use some larger datasets to show the power of this technique.
+			Before getting started, there are two datasets:
+		</p>
+
+		<p>
+			<ol>
+				<li>
+					<p>
+						Let's return to the <c>iris</c> dataset that we loaded in the previous chapter.
+						Recall that the <c>RDatasets</c> package must be loaded and then load the dataset with
+					</p>
+
+					<program language="julia">
+						<code>
+          iris = RDatasets.dataset("datasets","iris")
+						</code>
+					</program>
+
+					<p>
+						The results are not shown here, but you should see the top and bottom of the dataset which is 150 lines long.
+					</p>
+				</li>
+
+				<li>
+					<p>
+						A large database of <em>Simpsons</em> episodes.
+						This was originally on
+						<url href="https://www.kaggle.com/datasets/prashant111/the-simpsons-dataset/code">this Kaggle page</url> and was
+						downloaded and saved as a CSV file in the <c>assets/datasets</c> directory.
+					</p>
+					<p>
+						We will load the dataset directly off the web with the following code.  Note: you will need to download the <c>CSV</c> package to do this. 
+					</p>
+				</li>
+			</ol>
+		</p>
+
+		<p>
+			The rest of this chapter is split into two parts.
+			The top is using the command built-in to <c>DataFrames</c> and the second part uses the techniques from
+			<c>DataFramesMeta</c>.
+			If you prefer the latter, then skip to the bottom of this chapter.
+		</p>
+	</introduction>
 
 	<section xml:id="sect-split-apply-combine">
-		<title>Split-Apply-Combine</title>
+		<title>Split-Apply-Combine with DataFrames</title>
 
 		<p>
-			A common situation with data analysis is to have a dataset and you want to compare means or standard deviations within a dataset.  What needs to often happen is that you first split a dataset, do some analysis on each group then summarize.  This is know as <em>split-apply-combine</em>. We will demonstrate this with an example.  Let's return to the <c>iris</c> dataset that we loaded in the previous chapter.  Recall that the <c>RDatasets</c> package must be loaded and then load the dataset with
+			First, we will split the dataset by the <c>Species</c> column using the <c>groupby</c> function in the <c>@chain</c>
+			block as
+		</p>
+
+		<program language="julia">
+			<code>
+				@chain iris begin
+					groupby(:Species)
+				end
+			</code>
+		</program>
+
+		<p>
+			and the result shows two DataFrames (actually <c>GroupedDataFrame</c> s), the first and last.
+			At the top of the output, it says <c>GroupedDataFrame with 3 groups based on key: Species</c> Even though we have
+			``split'' the dataset, it is all stored in a single variable of type <c>GroupedDataFrame</c>.
+			It shows part of the first group and part of the last group.
+			This is mainly because of space for the output.
 		</p>
 
 		<p>
-			<cd>
-			<cline>iris = RDatasets.dataset("datasets","iris")</cline>
-			</cd>
+			Next, we may want to compare the variables between these three groups.
+			For example, to compare the mean of the <c>SepalLength</c> variable, we use the <c>combine</c> function like:
 		</p>
 
-		<p>
-			First, we will split the dataset by the <c>Species</c> column using the <c>groupby</c> function in the <c>@chain</c> block as
-		</p>
-
-		<p>
-			<cd>
-			<cline>@chain iris begin</cline>
-			<cline>  groupby(:Species)</cline>
-			<cline>end</cline>
-			</cd>
-		</p>
-
-		<p>
-			and the result shows two DataFrames (actually <c>GroupedDataFrame</c>s), the first and last.  At the top of the output, it says <c>GroupedDataFrame with 3 groups based on key: Species</c> Even though we have ``split'' the dataset, it is all stored in a single variable of type <c>GroupedDataFrame</c>. It shows part of the first group and part of the last group.  This is mainly because of space for the output.
-		</p>
-
-		<p>
-			Next, we may want to compare the variables between these three groups. For example, to compare the mean of the <c>SepalLength</c> variable, we use the <c>combine</c> function like:
-		</p>
-
-		<p>
-			<cd>
-			<cline>@chain iris begin</cline>
-			<cline>  groupby(:Species)</cline>
-			<cline>  combine(:SepalLength =&gt; mean)</cline>
-			<cline>end</cline>
-			</cd>
-		</p>
+		<program language="julia">
+			<code>
+				@chain iris begin
+					groupby(:Species)
+					combine(:SepalLength =&gt; mean)
+				end
+			</code>
+		</program>
 
 		<p>
 			and the result is
@@ -49,12 +97,12 @@
 
 		<p>
 			<cd>
-			<cline>3×2 DataFrame</cline>
-			<cline>Row  Species      SepalLength_mean</cline>
-			<cline>     Cat…         Float64</cline>
-			<cline>1    setosa       5.006</cline>
-			<cline>2    versicolor   5.936</cline>
-			<cline>3    virginica    6.588</cline>
+				<cline>3×2 DataFrame</cline>
+				<cline>Row  Species      SepalLength_mean</cline>
+				<cline>     Cat…         Float64</cline>
+				<cline>1    setosa       5.006</cline>
+				<cline>2    versicolor   5.936</cline>
+				<cline>3    virginica    6.588</cline>
 			</cd>
 		</p>
 
@@ -62,29 +110,33 @@
 			If we want the number of rows in each set:
 		</p>
 
+		<program language="julia">
+			<code>
+				@chain iris begin
+				  groupby(:Species)
+				  combine(nrow)
+				end
+			</code>
+		</program>
+
+		<p>
+			which shows that there are 50 rows in each subset.
+			Notice that this is different than the previous example (mean of the SepalLength) in that no column is needed and the
+			function <c>nrow</c> is applied to the entire Grouped Data Frame.
+		</p>
+
+		<p>
+			We can also use <c>combine</c> to produce many summarizing values.
+			If we want the number of rows, the mean of the SepalLength, the standard deviation of the SepalWidth and the maximum
+			of the PetalWidth, we can do this with one command as in
+		</p>
+
 		<p>
 			<cd>
-			<cline>@chain iris begin</cline>
-			<cline>  groupby(:Species)</cline>
-			<cline>  combine(nrow)</cline>
-			<cline>end</cline>
-			</cd>
-		</p>
-
-		<p>
-			which shows that there are 50 rows in each subset. Notice that this is different than the previous example (mean of the SepalLength) in that no column is needed and the function <c>nrow</c> is applied to the entire Grouped Data Frame.
-		</p>
-
-		<p>
-			We can also use <c>combine</c> to produce many summarizing values. If we want the number of rows, the mean of the SepalLength, the standard deviation of the SepalWidth and the maximum of the PetalWidth, we can do this with one command as in
-		</p>
-
-		<p>
-			<cd>
-			<cline>@chain iris begin</cline>
-			<cline>  groupby(:Species)</cline>
-			<cline>  combine(nrow, :SepalLength =&gt; mean, :SepalWidth =&gt; std, :PetalWidth =&gt; maximum)</cline>
-			<cline>end</cline>
+				<cline>@chain iris begin</cline>
+				<cline>  groupby(:Species)</cline>
+				<cline>  combine(nrow, :SepalLength =&gt; mean, :SepalWidth =&gt; std, :PetalWidth =&gt; maximum)</cline>
+				<cline>end</cline>
 			</cd>
 		</p>
 
@@ -94,14 +146,23 @@
 
 		<p>
 			<cd>
-			<cline>3×5 DataFrame,</cline>
-			<cline>Row   Species     nrow     SepalLength_mean  SepalWidth_std  PetalWidth_maximum</cline>
-			<cline>      Cat…        Int64    Float64           Float64         Float64</cline>
-			<cline>1     setosa      50       5.006             0.379064        0.6</cline>
-			<cline>2     versicolor  50       5.936             0.313798        1.8</cline>
-			<cline>3     virginica   50       6.588             0.322497        2.5 </cline>
+				<cline>3×5 DataFrame,</cline>
+				<cline>Row   Species     nrow     SepalLength_mean  SepalWidth_std  PetalWidth_maximum</cline>
+				<cline>      Cat…        Int64    Float64           Float64         Float64</cline>
+				<cline>1     setosa      50       5.006             0.379064        0.6</cline>
+				<cline>2     versicolor  50       5.936             0.313798        1.8</cline>
+				<cline>3     virginica   50       6.588             0.322497        2.5 </cline>
 			</cd>
 		</p>
 	</section>
 
+	<section xml:id="sec-dfm-split-apply-combine">
+		<title>Split-Apply-Combine with <c>DataFramesMeta</c></title>
+
+		<p>
+			This section goes over the same examples as above using the macros from <c>DataFramesMeta</c>.
+			Before proceeding, make sure that this has been loaded with <c>using DataFramesMeta</c> and we will need
+			<c>using Statistics</c> as well.
+		</p>
+	</section>
 </chapter>

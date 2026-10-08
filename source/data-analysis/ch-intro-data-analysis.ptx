@@ -495,7 +495,7 @@ simpsons = DataFrame(
         </introduction>
 
 
-        <subsection>
+        <subsection xml:id="subsec-chain-package">
             <title>Using the <c>Chain</c> package</title>
 
             <p>
