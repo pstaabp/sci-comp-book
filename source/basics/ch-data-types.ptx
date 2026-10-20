@@ -231,9 +231,9 @@
         </p>
 
         <p>
-          Images captured on modern consumer electronics often record depth details beyond 255 levels (such as
-          high dynamic range, or HDR, exposures); in those scenarios, <c>UInt16</c> is typically adopted at the pixel
-          layout layer.
+          Images captured on modern consumer electronics often record depth details beyond 255 levels (such as high
+          dynamic range, or HDR, exposures); in those scenarios, <c>UInt16</c> is typically adopted at the pixel layout
+          layer.
         </p>
       </note>
 
@@ -252,7 +252,7 @@
     <p>
       Many fields inside scientific computing rely heavily on decimals, and the standard architecture to evaluate these
       within a CPU is via <term>floating-point numbers</term>.
-      Details regarding floating-point numbers are  in <xref ref="ch-num-rep"/>.
+      Details regarding floating-point numbers are in <xref ref="ch-num-rep"/>.
       Julia provides 16-, 32-, and 64-bit floating-point layouts named <c>Float16, Float32</c>, and <c>Float64</c>.
       The default format across most systems is <c>Float64</c>, because current operating systems are inherently
       optimized for 64-bit compute registers.
@@ -328,8 +328,8 @@
           </p>
 
           <p>
-            Generally, this behavior is not a problem, particularly if the problem you are trying to solve only requires a few
-            digits of target precision and accounts for other real-world error tolerances.
+            Generally, this behavior is not a problem, particularly if the problem you are trying to solve only requires
+            a few digits of target precision and accounts for other real-world error tolerances.
             However, if you are coding transactional systems that require decimals to mirror exact base-10 mathematical
             expressions, you can import an external package called <c>Decimals</c>.
             Alternatively, since <m>0.2 = \frac{1}{5}</m> and <m>0.4 = \frac{2}{5}</m>, you can convert these
@@ -402,91 +402,91 @@
     </p>
   </section>
 
-  <section>
+  <section xml:id="sec-intro-big-float">
     <title>Extending Floating-Point Numbers with <c>BigFloat</c></title>
 
-    <introduction>
-      <p>
-        As discussed previously, standard floating-point architectures enforce two clear constraints: 1) a limited
-        number of significant digits stored, and 2) a restricted maximum exponent ceiling.
-        If your calculations challenge either of these boundaries, you can deploy <c>BigFloat</c>.
-        For example, if you need to calculate the value of <m>\pi</m> to 100 or more decimal places,
-        <xref ref="ch-calc-pi"/> provides comprehensive execution scripts to accomplish this.
-      </p>
+    <p>
+      As discussed previously, standard floating-point architectures enforce two clear constraints: 1) a limited number
+      of significant digits stored, and 2) a restricted maximum exponent ceiling.
+      If your calculations challenge either of these boundaries, you can deploy <c>BigFloat</c>.
+      For example, if you need to calculate the value of <m>\pi</m> to 100 or more decimal places,
+      <xref ref="ch-calc-pi"/> provides comprehensive execution scripts to accomplish this.
+    </p>
 
-      <p>
-        To convert a value into a floating-point number of type <c>BigFloat</c>, you pass your float target into the
-        <c>big</c> constructor function.
-        For instance, evaluating <c>x=big(0.25)</c> returns <c>0.25</c>, and calling <c>typeof(x)</c> confirms its
-        classification as a <c>BigFloat</c>.
-      </p>
+    <p>
+      To convert a value into a floating-point number of type <c>BigFloat</c>, you pass your float target into the
+      <c>big</c> constructor function.
+      For instance, evaluating <c>x=big(0.25)</c> returns <c>0.25</c>, and calling <c>typeof(x)</c> confirms its
+      classification as a <c>BigFloat</c>.
+    </p>
 
-      <p>
-        Let us look closely at how we build these data objects.
-        If we attempt to create a <c>BigFloat</c> via the statement <c>a=big(1/9)</c>, the terminal prints out:
-        <cd>
-          <cline>0.111111111111111104943205418749130330979824066162109375</cline>
-        </cd>
-      </p>
+    <p>
+      Let us look closely at how we build these data objects.
+      If we attempt to create a <c>BigFloat</c> via the statement <c>a=big(1/9)</c>, the terminal prints out:
+      <cd>
+        <cline>0.111111111111111104943205418749130330979824066162109375</cline>
+      </cd>
+    </p>
 
-      <p>
-        Notice that the accuracy degrades after the 17th digit, which matches the behavior of a basic 64-bit float.
-        This demonstrates why you must be careful when constructing arbitrary-precision objects.
-        Putting on our order-of-operations perspective, the fractional division <c>1/9</c> executes first.
-        Because both 1 and 9 are standard <c>Int64</c> literals, their quotient is computed as a native <c>Float64</c>.
-        The <c>big</c> function then expands that 64-bit snapshot into a <c>BigFloat</c> wrapper, but it cannot
-        resurrect the mathematical accuracy that was already discarded during the initial rounded division.
-      </p>
+    <p>
+      Notice that the accuracy degrades after the 17th digit, which matches the behavior of a basic 64-bit float.
+      This demonstrates why you must be careful when constructing arbitrary-precision objects.
+      Putting on our order-of-operations perspective, the fractional division <c>1/9</c> executes first.
+      Because both 1 and 9 are standard <c>Int64</c> literals, their quotient is computed as a native <c>Float64</c>.
+      The <c>big</c> function then expands that 64-bit snapshot into a <c>BigFloat</c> wrapper, but it cannot resurrect
+      the mathematical accuracy that was already discarded during the initial rounded division.
+    </p>
 
-      <p>
-        To fix this, you should write the expression as <c>a=big(1)/big(9)</c>, which evaluates to:
-        <cd>
-          <cline>0.1111111111111111111111111111111111111111111111111111111111111111111111111111109</cline>
-        </cd>
-      </p>
+    <p>
+      To fix this, you should write the expression as <c>a=big(1)/big(9)</c>, which evaluates to:
+      <cd>
+        <cline>0.1111111111111111111111111111111111111111111111111111111111111111111111111111109</cline>
+      </cd>
+    </p>
 
-      <p>
-        This gives the expected mathematical output.
-        To verify the total digits of accuracy without counting them manually, you can evaluate
-        <c>length(string(a))</c>, which yields <c>81</c> —roughly five times the accuracy of a standard <c>Float64</c>.
-        If you check the bit representation with <c>precision(a)</c>, the system returns 256 bits of precision, which
-        offers 4 times the binary resolution of a standard float but scales to roughly 5 times the base-10 decimal
-        performance.
-      </p>
+    <p>
+      This gives the expected mathematical output.
+      To verify the total digits of accuracy without counting them manually, you can evaluate <c>length(string(a))</c>,
+      which yields <c>81</c> —roughly five times the accuracy of a standard <c>Float64</c>.
+      If you check the bit representation with <c>precision(a)</c>, the system returns 256 bits of precision, which
+      offers 4 times the binary resolution of a standard float but scales to roughly 5 times the base-10 decimal
+      performance.
+    </p>
 
-      <p>
-        Note that the expression <c>length(string(a))</c> evaluates from the inside out: it first converts the numerical
-        instance <c>a</c> into a string object, and then calculates the total number of characters within that string.
-      </p>
+    <p>
+      Note that the expression <c>length(string(a))</c> evaluates from the inside out: it first converts the numerical
+      instance <c>a</c> into a string object, and then calculates the total number of characters within that string.
+    </p>
 
-      <p>
-        If you want to compute the value of <m>\pi</m> to 1 million decimal digits (which we will tackle in
-        <xref ref="ch-calc-pi"/> ), our current default setup of 80 digits will still fall short.
-        Luckily, the <c>BigFloat</c> configuration is highly flexible.
-        The preceding calculations utilized the environment's default global precision allocation, but we can change
-        this threshold globally using the <c>setprecision</c> function.
-        For example:
-        <cd>
-          <cline>setprecision(2^10)</cline>
-        </cd>
-        returns 1024, confirming that any subsequent <c>BigFloat</c> objects will be allocated using 1024 bits of
-        precision (16 times the size of a standard <c>Float64</c> ).
-        Re-running our fraction statement via <c>a2=big(1)/big(9)</c> will now return:
-        <cd>
-          <cline>0.111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</cline>
-        </cd>
-        Running a character-length query on this updated variant via <c>length(string(a2))</c> returns <c>311</c>
-        significant decimal places—nearly 20 times the default resolution of your standard hardware configuration.
-      </p>
-    </introduction>
+    <p>
+      If you want to compute the value of <m>\pi</m> to 1 million decimal digits (which we will tackle in
+      <xref ref="ch-calc-pi"/> ), our current default setup of 80 digits will still fall short.
+      Luckily, the <c>BigFloat</c> configuration is highly flexible.
+      The preceding calculations utilized the environment's default global precision allocation, but we can change this
+      threshold globally using the <c>setprecision</c> function.
+      For example:
+      <cd>
+        <cline>setprecision(2^10)</cline>
+      </cd>
+      returns 1024, confirming that any subsequent <c>BigFloat</c> objects will be allocated using 1024 bits of
+      precision (16 times the size of a standard <c>Float64</c> ).
+      Re-running our fraction statement via <c>a2=big(1)/big(9)</c> will now return:
+      <cd>
+        <cline>0.111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111</cline>
+      </cd>
+      Running a character-length query on this updated variant via <c>length(string(a2))</c> returns <c>311</c>
+      significant decimal places—nearly 20 times the default resolution of your standard hardware configuration.
+    </p>
   </section>
-	<section xml:id="sect-rational-numbers">
-		<title>Rational Numbers
 
-		
-		</title>
-		<p>
-			Recall that a number <m>x</m> is rational if it is the quotient of two integers.  These are generally called fractions.  Julia has rational numbers as a standard data type, but it's a little different than others like Integers and Floats.
-		</p>
-		</section>
+  <section xml:id="sect-rational-numbers">
+    <title>Rational Numbers</title>
+
+    <p>
+      Recall that a number <m>x</m> is rational if it is the quotient of two integers.
+      These are generally called fractions.
+      Julia has rational numbers as a standard data type, but it's a little different than others like Integers and
+      Floats.
+    </p>
+  </section>
 </chapter>

@@ -1,5 +1,21 @@
-<chapter xml:id="ch-databases">
+<chapter xml:id="ch-sports-database">
   <title>Storing and extracting sports scores in a database</title>
 
-  <p>Databases are very important in any computing environment and often in Scientific Computing if you have a lot of data, then a databse is the proper way to store the data.  This chapter covers some techniques that the author uses to store sports scores and how to extract information efficiently. </p>
+  <introduction>
+  <p>
+    Databases are very important in any computing environment and often in Scientific Computing if you have a lot of
+    data, then a database is the proper way to store the data.
+    This chapter covers some techniques that the author uses to store sports scores and how to extract information
+    efficiently.
+  </p>
+  <p>
+    You will read a set of CSV files below into a database.  This may be a bit overkill for this situation, but gives an idea how to do this. 
+  </p>
+</introduction>
+  <section xml:id="sec-parsing-files-db">
+    <title>Parsing a File for a database</title>
+    <p>
+      Recall that the basics of reading and writing to a SQLite database is found in <xref ref="ch-database"/> and its recommended to review that as necessary.  Also, for this, we will write a 
+    </p>
+  </section>
 </chapter>

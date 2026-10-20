@@ -431,7 +431,7 @@
       Ultimately, we want to extract the integer information, so we will group these by using parentheses.
       Instead, we use the regular expression <c>r"(\d+)-(\d+)"</c>.
       If you replace this with that above, you will still see that it matches (returns true).
-      Intead, we will use the <c>match</c> method which returns more information.
+      Instead, we will use the <c>match</c> method which returns more information.
       If we enter:
     </p>
 
@@ -471,7 +471,7 @@
       <p>
         The author has done a lot of work with sport scores over the years and uses both Julia and this exact method of extracting scores using webpages with the scores.
         The extraction of scoring on a webpage can be automated so that years worth of data can be combed through quickly.
-        Generally once the scores are extracted, they are stored in a database (see <xref ref="ch-databases"/>) for processing later.
+        Generally once the scores are extracted, they are stored in a database (see <xref ref="ch-sports-database"/>) for processing later.
       </p>
     </note>
 

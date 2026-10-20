@@ -38,9 +38,17 @@
 						<url href="https://www.kaggle.com/datasets/prashant111/the-simpsons-dataset/code">this Kaggle page</url> and was
 						downloaded and saved as a CSV file in the <c>assets/datasets</c> directory.
 					</p>
+
 					<p>
-						We will load the dataset directly off the web with the following code.  Note: you will need to download the <c>CSV</c> package to do this. 
+						We will load the dataset directly off the web with the following code.
+						Note: you will need to download the <c>CSV</c> package and add <c>using CSV</c>.
 					</p>
+
+					<program language="julia">
+						<code>
+          simpsons_episodes = CSV.read(Downloads.download("https://pstaabp.github.io/sci-comp-book/external/datasets/simpsons_episodes.csv"), DataFrame)
+						</code>
+					</program>
 				</li>
 			</ol>
 		</p>
@@ -161,8 +169,243 @@
 
 		<p>
 			This section goes over the same examples as above using the macros from <c>DataFramesMeta</c>.
-			Before proceeding, make sure that this has been loaded with <c>using DataFramesMeta</c> and we will need
-			<c>using Statistics</c> as well.
+			Before proceeding, make sure the following is loaded:
+		</p>
+
+		<program language="julia">
+			<code>
+          using DataFramesMeta, Statistics
+			</code>
+		</program>
+
+		<p>
+			We start with trying with grouping the <c>iris</c> dataset by the <c>Species</c> column.
+			This is done in <c>DataFramesMeta</c> with the <c>@groupby</c> macro.
+			Within a <c>@chain</c> block, this looks like:
+		</p>
+
+		<program language="julia">
+			<code>
+				@chain iris begin
+					@groupby(:Species)
+				end
+			</code>
+		</program>
+
+		<p>
+			which will make 3 grouped data frames.
+			The output will show only part of the first and last one.
+			In this case, each grouped data frame has 50 rows.
+		</p>
+
+		<p>
+			If we want to find the mean sepal length of each grouping, we use the <c>@combine</c> macro and define what operation
+			we want on each group.
+			Specifically this can be done with:
+		</p>
+
+		<program language="julia">
+			<code>
+				@chain iris begin
+					@groupby(:Species)
+					@combine(:mean_SepalLength = mean(:SepalLength))
+					end
+				end
+			</code>
+		</program>
+
+		<p>
+			The result of this will be
+		</p>
+
+		<p>
+			<cd>
+				<cline>3×2 DataFrame</cline>
+				<cline>Row  Species      mean_SepalLength</cline>
+				<cline>     Cat…         Float64</cline>
+				<cline>1    setosa       5.006</cline>
+				<cline>2    versicolor   5.936</cline>
+				<cline>3    virginica    6.588</cline>
+			</cd>
+		</p>
+
+		<p>
+			In the <c>@combine</c>, the general form is <c> :col = f(:col1, :col2, ...)</c>, where the left side of the
+			expression will be the name of the column in the summarized DataFrame and then the function is applied to each
+			specified column.
+		</p>
+
+		<note>
+			<p>
+				Recall that using <c>@combine</c> in <xref ref="sec-dfm-summarize"/> resulted in a DataFrame with a single row.
+				Since we have used <c>@combine</c> on a grouped DataFrame, we get a row for each grouping.
+				In this case 3.
+			</p>
+
+			<p>
+				Additionally, Note that we did not use the broadcasting/dot notation with the function in this because we want to
+				apply the function to an entire column (or vector).
+				This is a key difference, to using functions in other commands like <c>@select</c> or <c>@transform</c>.
+			</p>
+		</note>
+
+		<p>
+			Next, we perform a number of summaries at the same time.
+			For each species, we'd like to know:
+			<ol>
+				<li>
+					<p>
+						number of observations/data points
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Mean of the Sepal Length
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Standard Deviation of the Sepal Length
+					</p>
+				</li>
+
+				<li>
+					<p>
+						Maximum Petal Width
+					</p>
+				</li>
+			</ol>
+		</p>
+
+		<p>
+			We can do this with the following:
+		</p>
+
+		<program language="julia">
+			<code>
+				@chain iris begin
+					@groupby(:Species)
+					@combine(:num = length(:SepalLength), :mean_SepalLength = mean(:SepalLength), :std_SepalLength = std(:SepalLength), :max_PetalWidth = maximum(:PetalWidth))
+				end
+			</code>
+		</program>
+
+		<p>
+			and make sure that you get all of the line with <c>@combine</c> on it.
+			It's quite long.
+			The result is:
+		</p>
+
+		<p>
+			<cd>
+				<cline>3×5 DataFrame</cline>
+				<cline>Row   Species     num     mean_SepalLength   std_SepalLength   max_PetalWidth</cline>
+				<cline>      Cat…        Int64   Float64            Float64           Float64</cline>
+				<cline>1     setosa      50      5.006              0.35249           0.6</cline>
+				<cline>2     versicolor  50      5.936              0.516171          1.8</cline>
+				<cline>3     virginica   50      6.588              0.63588           2.5</cline>
+			</cd>
+		</p>
+
+		<p>
+			Because the <c>@combine</c> lines can get long as you add information to the summary, another form for this is using
+			a <c>begin/end</c> block.
+			The above command can be written out differently as
+		</p>
+
+		<program language="julia">
+			<code>
+				@chain iris begin
+					@groupby(:Species)
+					@combine begin
+						:num = length(:SepalLength)
+						:mean_SepalLength = mean(:SepalLength)
+						:std_SepalLength = std(:SepalLength)
+						:max_PetalWidth = maximum(:PetalWidth)
+					end
+				end
+			</code>
+		</program>
+
+		<p>
+			which is clearly easier to read.
+			<c>DataFramesMeta</c> also has a shortcut for the situation above, in which the dataframe is split and then
+			summarized.
+			This is the <c>@by</c> macro.
+			The above can be written as:
+		</p>
+
+		<program language="julia" line-numbers="yes">
+			<code>
+				@chain iris begin
+					@by :Species begin
+						:num = length(:SepalLength)
+						:mean_SepalLength = mean(:SepalLength)
+						:std_SepalLength = std(:SepalLength)
+						:max_PetalWidth = maximum(:PetalWidth)
+					end
+				end
+			</code>
+		</program>
+
+		<p>
+			where the <c>@by</c> command with both split (as in <c>@groupby</c> ) and summarize.
+			The column after the <c>@by</c> will group the dataframe by that variable.
+			Then the <c>begin/end</c> block is the same as the <c>@combine</c>.
+		</p>
+
+		<p>
+			As another example, we will turn to the <c>simpsons_episode</c> dataset that you should have loaded.
+			To begin, let's take the dataset, split by <c>original_air_year</c> and then within each of theses, find the number
+			of episodes and the average <c>imdb_rating</c>.
+			We will use the <c>@by</c> command to do this compactly:
+		</p>
+
+		<program language="julia" line-numbers="yes">
+			<code>
+        @chain simpsons_episodes begin
+          @by :original_air_year begin
+            :num_per_year = length(:number_in_season)
+            :rating = mean(:imdb_rating)
+          end
+        end
+			</code>
+		</program>
+
+		<p>
+			The top of this is:
+		</p>
+
+		<p>
+			<cd>
+				<cline>28×3 DataFrame</cline>
+				<cline>Row  original_air_year   num_per_year   rating</cline>
+				<cline>     Int64               Int64          Float64?</cline>
+				<cline>1    1989                1              8.2</cline>
+				<cline>2    1990                21             7.89524</cline>
+				<cline>3    1991                25             8.12</cline>
+				<cline>4    1992                23             8.21739</cline>
+				<cline>5    1993                21             8.32857</cline>
+				<cline>6    1994                23             8.18261</cline>
+				<cline>7    1995                25             8.424</cline>
+				<cline>8    1996                22             8.25455</cline>
+				<cline>9    1997                27             8.10741</cline>
+			</cd>
+		</p>
+
+		<p>
+			Let's examine this carefully.
+			The dataset in interest is the <c>simpsons_episodes</c> and then we will form groups on the <c>original_air_date</c>.
+			The block that goes with the <c>@by</c> is the summary section.
+			Each line will result in a different summary.
+			The <c>num_per_year</c> will calculate how many are in each group (or year).
+			The <c>rating</c> is calculated as the mean of the <c>imdb_rating</c>.
+		</p>
+
+		<p>
+			Note that this dataset is only through 2016, so is missing since then.
 		</p>
 	</section>
 </chapter>

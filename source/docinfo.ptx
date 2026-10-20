@@ -16,7 +16,7 @@
   \pgfplotsset{compat=1.18}
   \usetikzlibrary{positioning,matrix,arrows}
   \usetikzlibrary{shapes,decorations,shadows,fadings,patterns}
-  \usetikzlibrary{decorations.markings}
+  \usetikzlibrary{decorations.markings,arrows.meta, shapes.geometric}
   </latex-image-preamble>
   <!-- It is possible to rename elements: -->
   <!-- <rename element="assemblage" xml:lang="en-US">Summary</rename> -->

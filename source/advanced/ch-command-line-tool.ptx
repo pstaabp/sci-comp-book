@@ -1,0 +1,301 @@
+<chapter xml:id="ch-command-line-tool">
+  <title>Writing a Command Line tool</title>
+
+  <introduction>
+    <p>
+      Throughout this text, we have written small chunks of code that was recommended to run inside a Jupyter notebook.
+      This chapter will introduce how to write a command line tool.
+    </p>
+
+    <p>
+      A typical command line tool does one thing
+    </p>
+  </introduction>
+
+  <section xml:id="sec-arg-parse">
+    <title>The <c>ArgParse</c> package</title>
+
+    <p>
+      To get start, let's look at an example.
+      The following should be saved in a file with a <c>.jl</c> extension.
+      Let's save this as <c>example-clt.jl</c>
+    </p>
+
+    <listing xml:id="list-example-clt">
+      <title>An example Command Line Tool</title>
+
+      <program language="julia" line-numbers="yes">
+        <code>
+        using ArgParse
+
+        function parse_commandline()
+          s = ArgParseSettings()
+          @add_arg_table s begin
+            "--verbose", "-v"
+              help = "show additional information"
+              action = :store_true
+            "--opt1", "-o"
+              help = "option one is an integer"
+              arg_type = Int
+              default = 0
+            "--opt2", "-s"
+              help = "this is a string option"
+              arg_type = String
+              default = ""
+            "arg1"
+              help = "first positional argument"
+              required = true
+          end
+          return parse_args(s)
+        end
+
+        function main()
+          parsed_args = parse_commandline()
+          println("Parsed args:")
+          for (arg,val) in parsed_args
+            println("  $arg  =&gt;  $val")
+          end
+        end
+
+        main()
+        </code>
+      </program>
+    </listing>
+
+    <p>
+      and you will need to download and install the <c>ArgParse.jl</c> package.
+      To run this, you'll need to use a command line (like Terminal on MacOS or linux or PowerShell on windows.) Also,
+      make sure you are in the directory containing the file and enter:
+    </p>
+
+    <program language="julia">
+      <code>
+          julia example-clt.jl
+      </code>
+    </program>
+
+    <p>
+      and you should see the results:
+    </p>
+
+    <p>
+      <cd>
+        <cline>required argument arg1 was not provided</cline>
+        <cline>usage: example-clt.jl [-v] [-o OPT1] [-s OPT2] arg1</cline>
+      </cd>
+    </p>
+
+    <p>
+      This means that we needed to put something on the command line.
+      Let's rerun with
+    </p>
+
+    <program language="julia">
+      <code>
+          julia example-clt.jl hello
+      </code>
+    </program>
+
+    <p>
+      and the result for this is
+    </p>
+
+    <p>
+      <cd>
+        <cline>Parsed args:</cline>
+        <cline>opt2  =&gt;  </cline>
+        <cline>opt1  =&gt;  0</cline>
+        <cline>arg1  =&gt;  hello</cline>
+        <cline>verbose  =&gt;  false</cline>
+      </cd>
+    </p>
+
+    <p>
+      which ran successfully and just output all of the optional arguments.
+    </p>
+
+    <p>
+      Before getting into the details of the <c>ArgParse</c> package, there is also a built-in option <c>--help</c> or
+      <c>-h</c> that will show the details.
+      Running
+    </p>
+
+    <program language="julia">
+      <code>
+          julia example-clt.jl --help
+      </code>
+    </program>
+
+    <p>
+      results in
+    </p>
+
+    <p>
+      <cd>
+        <cline>usage: example-clt.jl [-v] [-o OPT1] [-s OPT2] [-h] arg1</cline>
+        <cline/>
+        <cline>positional arguments:</cline>
+        <cline>  arg1             first positional argument</cline>
+        <cline/>
+        <cline>optional arguments:</cline>
+        <cline>  -v, --verbose    show additional information</cline>
+        <cline>  -o, --opt1 OPT1  option one is an integer (type: Int64, default: 0)</cline>
+        <cline>  -s, --opt2 OPT2  this is a string option (default: "")</cline>
+        <cline>  -h, --help       show this help message and exit</cline>
+      </cd>
+    </p>
+
+    <p>
+      and this shows all of the options and the help messages.
+    </p>
+  </section>
+
+  <section xml:id="sec-arg-parse-table">
+    <title>Parsing the Arguments and the Argument Table</title>
+
+    <p>
+      There are three steps to effectively create a command line tools.
+      In the example in
+    </p>
+
+    <p>
+      <dl>
+        <li>
+          <title><c>ArgParseSettings</c></title>
+
+          <p>
+            The <c>ArgParseSettings</c> parses the arguments that are entered and creates a number of default settings.
+            One such is <c>add_help</c>, which defaults to true is how the <c>--help</c> option creates a short help for
+            your command line.
+          </p>
+        </li>
+
+        <li>
+          <title><c>@add_arg_table</c></title>
+
+          <p>
+            This creates an argument table.
+            This includes the long and short option or argument names, the type of argument, the help string and a
+            default value.
+            Details on options for this are below.
+          </p>
+        </li>
+
+        <li>
+          <title><c>parse_args</c></title>
+
+          <p>
+            This function parses all of the arguments with any restrictions created with the previous argument.
+          </p>
+        </li>
+      </dl>
+    </p>
+
+    <p>
+      Notice in <xref ref="list-example-clt"/> these are all called within the <c>parse_commandline</c> function on
+      lines 3-22.
+      This is fairly standard and a good workflow.
+      To change the options available, the table needs to be updated.
+    </p>
+
+    <p>
+      Each command line option or argument is a block with a long name and short name (you need at least one of these),
+      then a set of keywords that set the help and how to parse it.
+      For example, the first one in <xref ref="list-example-clt"/> is
+    </p>
+
+    <program language="julia">
+      <code>
+        "--verbose", "-v"
+          help = "show additional information"
+          action = :store_true
+      </code>
+    </program>
+
+    <p>
+      Line 1 is a pair of strings.
+      The first is the long name and needs to start with two dashes: <c>--</c> and the second is a short name with a
+      single dash and a single letter.
+      If the dashes are missing in the strings, then these are arguments.
+      The rest of the block are keyword options.
+      Here's a list of them
+    </p>
+
+    <p>
+      <dl width="narrow">
+        <li>
+          <title><c>help</c></title>
+
+          <p>
+            This is a string that is output if the <c>--help</c> option is shown.
+            In general it is a short description of the option or argument.
+          </p>
+        </li>
+
+        <li>
+          <title><c>arg_type</c></title>
+
+          <p>
+            This determines how to parse the argument.
+            Generally, if this isn't present, the argument is a string, since that is how the arguments are parsed.
+            If you want the argument to be interpreted as an integer <c>arg_type = Int</c> is common.
+          </p>
+        </li>
+
+        <li>
+          <title><c>action</c></title>
+
+          <p>
+            The <c>:store_arg</c> is the default and that is that the argument is stored.
+            This is standard if there is an option of the style <c>--opt1=17</c> for example.
+          </p>
+
+          <p>
+            If the presences of the flag without a value, generally using <c>:store_true</c> or <c>:store_false</c> is
+            used.
+            The former means that if the flag is present, store the value as <c>true</c>.
+            If the latter is used, then <c>false</c> is stored if the flag is present.
+          </p>
+        </li>
+
+        <li>
+          <title><c>default</c>          </title>
+
+          <p>
+            The default value if the flag isn't present.
+            This can be what type is appropriate for the flag.
+          </p>
+        </li>
+
+        <li>
+          <title><c>required</c></title>
+
+          <p>
+            Either <c>true</c> if the flag is require or <c>false</c> if not.
+            <c>false</c> is the default for this.
+          </p>
+        </li>
+      </dl>
+    </p>
+  </section>
+
+  <section xml:id="sec-parse-nba-data">
+    <title>Parsing NBA data</title>
+
+    <p>
+      As an example, we will create a command line tool that will download some HTML files related to NBA scores and
+      parse them.
+      We will build up the command line tool to do this and at the bottom of this chapter will be a link to the complete
+      tool.
+    </p>
+
+    <p>
+      As an example, consider
+      <url href="https://www.basketball-reference.com/leagues/NBA_2026_games-october.html">the Basketball-reference.com site for October 2025</url>.
+      There is a table below that lists all the games played in October 2025.
+      We will first start with downloading this data and then we will parse it and save it as a CSV file.
+      Note: in <xref ref="ch-sports-database"/> will will add the ability to read the data into a database and do some
+      analysis.
+    </p>
+  </section>
+</chapter>

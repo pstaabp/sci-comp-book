@@ -1,0 +1,1253 @@
+<chapter xml:id="ch-more-speed">
+  <title>More about Calculation Times</title>
+
+  <introduction>
+    <p>
+      <xref ref="ch-fast-code"/> is one of the places in this text with discussion about the speed of code and choices
+      to make in algorithms.
+      This chapter dives deeper into calculations involving integers, floats including the big varieties.
+    </p>
+  </introduction>
+
+  <section xml:id="sec-speed-int-float">
+    <title>Speed of Ints, Floats, BigInts and BigFloats</title>
+
+    <p>
+      In <xref ref="sec-intro-big-float"/>, we introduced the BigFloat type and noted that it is slower than the
+      built-in Float64 type.
+      We will see this directly as well as find some ways around this limitation.
+      Simple addition and multiplication of integers or floating point numbers is extremely fast with modern computer
+      chips.
+      Though, there are differences between data types and operations on speed.
+      Let's take a look.
+    </p>
+
+    <p>
+      Consider the following code which basically adds and subtracts some random integers.
+    </p>
+
+    <program language="julia">
+      <code>
+        @btime let 
+          local s = 0
+          for i=1:100_000
+            s += rand(1:10) 
+            s -= rand(1:10) 
+          end
+          s
+        end
+      </code>
+    </program>
+
+    <p>
+      and this returned <c>1940</c> in <c>290.375 μs</c> and recall that since there are random numbers in this, you
+      will most likely get a different result, but the timing should be comparable.
+    </p>
+
+    <note>
+      <p>
+        Recall from <xref ref="ch-fast-code"/>, we noticed that the julia compiler can simplify calculations if, for
+        example, we just added the same number 100,000 times.
+        It can use formula to return the answer without going through the loop.
+      </p>
+    </note>
+
+    <p>
+      If we adapt the code above to using Float64, with the following:
+    </p>
+
+    <program language="julia">
+      <code>
+        @btime let 
+          local s = 0.0
+          for i=1:100_000
+            s += rand(1.0:10.0) 
+            s -= rand(1.0:10.0) 
+          end
+          s
+        end
+      </code>
+    </program>
+
+    <p>
+      This results in <c>-1651.0</c> in <c>445.208 μs</c>.
+      Notice that this is about twice as slow as same loop with integers.
+      This means that if floating points are used, then you should expect slower code.
+    </p>
+
+    <p>
+      Next, let's look at BigInts and see how they are affected.
+      If we update this loop above with the following:
+    </p>
+
+    <program language="julia">
+      <code>
+        @btime let 
+          local s = big(0)
+          for i=1:100_000
+            s += big(rand(1:10))
+            s -= big(rand(1:10))
+          end
+          s
+end
+      </code>
+    </program>
+
+    <p>
+      the result was <c>-2134</c> and took <c>8.382 ms</c>.
+      Recall that since a ms is 1000 times longer than a μs, this code runs about 25 times slower.
+      Because there is some extra code (mainly the <c>big</c> command), this may not mean that multiplying BigInts is 25
+      times slower than an Int64.
+    </p>
+
+    <p>
+      If we increase the size of the BigInts, we also see a slowdown:
+    </p>
+
+    <program language="julia">
+      <code>
+          @btime let 
+            local s = big(0)
+            for i=1:100_000
+              s += rand(big(1):big(10)^100)
+              s -= rand(big(1):big(10)^100)
+            end
+            s
+          end
+      </code>
+    </program>
+
+    <p>
+      and this returns a very large number in about <c>48.712 ms</c> another factor of 6 slower.
+      This is basically because BigInts can grow as needed and because of this, there aren't the efficiencies that we
+      see in a fixed precision integer like <c>Int64</c>.
+      Additionally, there is built-in code to handle 64-bit integers and there isn't for things like BigInt.
+    </p>
+  </section>
+
+  <section xml:id="sec-calculating-e">
+    <title>Calculating <m>e</m></title>
+
+    <p>
+      As an example, let's look at finding a decimal approximation of <m>e</m>.
+      For this, we will use the Taylor Series
+      <md xml:id="eq-taylor-series-ex" number="yes">
+        e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2} + \frac{x^3}{3!} + \cdots
+      </md>
+    </p>
+
+    <p>
+      If we evaluate the series in <xref ref="eq-taylor-series-ex"/> at <m>x=1</m>, then we can find an approximation to
+      <m>e</m> or
+      <md>
+        e = \sum_{n=0}^{\infty} \frac{1}{n!}
+      </md>
+      Also, note that due to the factorial in the denominator, this series converges quickly and hopefully we don't need
+      many terms to find a good estimate.
+      The following function will perform this calculation for <c>n</c> terms.
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        function calc_e(n::Integer)
+          sum = 1.0
+          for k=1:n
+            sum += 1/factorial(k)
+          end
+          sum
+        end
+      </code>
+    </program>
+
+    <p>
+      and we can run it like:
+    </p>
+
+    <program language="julia">
+      <code>
+          calc_e(10)
+      </code>
+    </program>
+
+    <p>
+      which returns <c>2.7182818011463845</c>.
+      We'd like a good approximation and can use Julia's <c>exp</c> function to find the exact value:
+    </p>
+
+    <program language="julia">
+      <code>
+          abs(calc_e(10)-exp(1))
+      </code>
+    </program>
+
+    <p>
+      which returns <c>2.7312660577649694e-8</c> so we get about 7 digits of accuracy with 10 terms.
+      Since the rest of this chapter will be interested in the the accuracy of calculating e, we will use the function
+    </p>
+
+    <program language="julia">
+      <code>
+        function num_digits_e(approx::T) where T &lt;: Real
+          local e_val = exp(one(T))
+          approx == e_val ? floor(Int, log10(2)*precision(approx)) : floor(Int, -log10(abs(approx - e_val)))
+        end
+      </code>
+    </program>
+
+    <p>
+      to return the number of digits of accuracy.
+      <fn>A keen eye notices that there is a equality statement with two floating points.  As noted earlier, this is not generally good practice because for that to return <c>true</c>, the two numbers must be exactly equal bitwise.  However, this can happen as we increase the accuracy of calculations. </fn>
+      When called like <c>num_digits_e(calc_e(10))</c>, the result is 7.
+    </p>
+
+    <p>
+      If we go to 20 terms, then we get 15 digits of accuracy and notice that any other number of terms doesn't change
+      this accuracy.
+      Why?
+    </p>
+
+    <p>
+      I'm sure you said that all of the operations used default floating point or <c>Float64</c>, which maxes out about
+      15 decimal digits.
+      As we discussed in <xref ref="sec-intro-big-float"/>, we can use <c>BigFloat</c> to extend to more digits of
+      accuracy.
+    </p>
+
+    <p>
+      To do this in the calculating e function above, if we change the initialization of <c>sum</c> to a big as in
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+          function calc_e(n::Integer)
+            sum = big(1.0)
+            for k=1:n
+              sum += 1/factorial(k)
+            end
+            sum
+          end
+      </code>
+    </program>
+
+    <p>
+      this would seemingly fix that issue and running <c>num_digits_e(calc_e(20))</c> returns 15, but increasing the
+      number of terms to 30 results in the following error:
+    </p>
+
+    <p>
+      <cd>
+        <cline>OverflowError: 21 is too large to look up in the table; </cline>
+        <cline>   consider using `factorial(big(21))` instead</cline>
+      </cd>
+    </p>
+
+    <p>
+      and the error gives the fix for this in that we wrap the <c>k</c> with a <c>big</c> or
+    </p>
+
+    <listing xml:id="list-calc-e">
+      <title>Code for calculating <m>e</m></title>
+
+      <program language="julia" line-numbers="yes">
+        <code>
+        function calc_e(n::Integer)
+          sum = big(1.0)
+          for k=1:n
+            sum += 1/factorial(big(k))
+          end
+          sum
+        end
+        </code>
+      </program>
+    </listing>
+
+    <p>
+      and if we rerun <c>num_digits_e(calc_e(30))</c>, we still only get 15 digits.
+      This should be a red flag that somewhere there are only regular Float64 in a calculation instead of a BigFloat.
+      Looking at the length of the number that is returned from <c>calc_e</c> it appears that this function is correct.
+      However, notice that in <c>num_digits</c>, we use <c>exp(1)</c>.
+      Because we didn't specify that this is a BigFloat, then it is just a Float64.
+      We can fix this with:
+    </p>
+
+    <program language="julia">
+      <code>
+          num_digits_e(approx::Real) = floor(Int, -log10(abs(approx - exp(big(1.0)))))
+      </code>
+    </program>
+
+    <p>
+      and now running with <c>num_digits_e(calc_e(30))</c> gives 33, indicating that 30 terms of the taylor series
+      results in 33 digits of accuracy.
+      We can get a good idea the convergence of this series to <m>e</m> with the following table:
+    </p>
+
+    <table>
+      <title>Convergence of Taylor Series to <m>e</m></title>
+
+      <tabular>
+        <row>
+          <cell>10</cell>
+          <cell>7</cell>
+        </row>
+
+        <row>
+          <cell>20</cell>
+          <cell>19</cell>
+        </row>
+
+        <row>
+          <cell>30</cell>
+          <cell>33</cell>
+        </row>
+
+        <row>
+          <cell>40</cell>
+          <cell>49</cell>
+        </row>
+
+        <row>
+          <cell>50</cell>
+          <cell>66</cell>
+        </row>
+
+        <row>
+          <cell>60</cell>
+          <cell>75</cell>
+        </row>
+      </tabular>
+    </table>
+
+    <p>
+      and from this table, each 10 terms seems to return an additional 12 to 17 digits of accuracy.
+      This isn't quite linear, but close.
+      However, if you look at further terms there isn't more than 75 digits of accuracy.
+      Why does this occur?
+    </p>
+
+    <p>
+      In short, this is because BigFloats have some fixed accuracy to them.
+      We'll look at this in the next section
+    </p>
+  </section>
+
+  <section xml:id="sec-big-float-detail">
+    <title>Details of BigFloats</title>
+
+    <introduction>
+      <p>
+        There is the built-in function, <c>precision</c> that will give the precision of a big float.
+        If we just do
+      </p>
+
+      <program language="julia">
+        <code>
+          precision(big(1.0))
+        </code>
+      </program>
+
+      <p>
+        this returns 256, which is the number of binary digits that each BigFloat stores.
+        This is 4 times larger than the default Float64 number, but notice that it appears that we get about 75 digits
+        of accuracy.
+        In fact, one can convert from binary to decimal digits, using
+        <md xml:id="eq-binary-to-decimal" number="yes">
+          d = b \log_{10}(2) + 1
+        </md>
+      </p>
+
+      <p>
+        Thus the default 256 binary decimals is <m>258\log_{10}(2)+1 \approx 78</m>, which is close to what we see.
+        Note: the number of stored digits doesn't always exactly match the accuracy.
+      </p>
+
+      <p>
+        The inverse of this function is
+        <md xml:id="eq-decimal-to-binary" number="yes">
+          b = \frac{d-1}{\log_{10}(2)}
+        </md>
+        which can be helpful if we know that we want some number of digits of accuracy.
+        For example, let's say we would like 200 digits of accuracy, then
+        <md>
+          b = \frac{200-1}{\log_{10}(2)} \approx 661.
+        </md>
+        We could set the accuracy of the BigFloat to this, however, it is more efficient to use a power of two, so the
+        next higher power of 2, is <m>1024 = 2^{10}</m>.
+        Using <xref ref="eq-binary-to-decimal"/>,
+        <md>
+          d = 1024 \log_{10}(2)+1 \approx 308
+        </md>
+        so this would have plenty of room.
+        If we repeat this for 1000 digits, we would need <m>2^{12}</m> digits.
+      </p>
+    </introduction>
+
+    <subsection xml:id="subsec-big-float-precision">
+      <title>Setting the Precision of a BigFloat</title>
+
+      <p>
+        There are a couple of ways to set the precision of a BigFloat.
+        You can use the keyword argument <c>precision</c> when creating the BigFloat using that constructor, such as
+      </p>
+
+      <program language="julia">
+        <code>
+          x = BigFloat(1.0, precision = 1024)
+        </code>
+      </program>
+
+      <p>
+        and this is sufficient if you just have one or two big floats on which to operate.
+        However, more generally, we can set it globally with the <c>setprecision</c> function as in
+      </p>
+
+      <program language="julia">
+        <code>
+          setprecision(1024)
+        </code>
+      </program>
+
+      <p>
+        which might be the preferred way to do this, however, often we want some middle ground, which we can do setting
+        it in the following block:
+      </p>
+
+      <program language="julia" line-numbers="yes">
+        <code>
+          setprecision(1024) do 
+            e1 = calc_e(100)
+            num_digits_e(e1)
+          end
+        </code>
+      </program>
+
+      <p>
+        and this returns <c>159</c>.
+        Only within the <c>do-end</c> is the precision 1024.
+      </p>
+
+      <exercise>
+        <task>
+          <statement>
+            <p>
+              Change the precision to <c>2^12</c> and determine experimentally (meaning just try some values until you
+              find the result) the number of terms to the nearest 100 with at least 1000 terms of accuracy.
+            </p>
+          </statement>
+        </task>
+
+        <task>
+          <statement>
+            <p>
+              How much time does it take to find this result.
+              Using the <c>@btime</c> macro from <c>BenchmarkTools</c>.
+            </p>
+          </statement>
+        </task>
+      </exercise>
+    </subsection>
+  </section>
+
+  <section>
+    <title>Examining and Improving the Time</title>
+
+    <p>
+      You should have gotten 500 terms needed in order to get at least 1000 digits of accuracy.
+      Using this code:
+    </p>
+
+    <program language="julia">
+      <code>
+          @btime setprecision(2^12) do 
+            e1 = calc_e(500)
+            num_digits_e(e1)
+          end
+      </code>
+    </program>
+
+    <p>
+      My computer showed that it took <c>2.172 ms</c> to get this.
+      We would like to improve the speed, but let's be careful.
+      Note that the timing is on three separate tasks 1) setting the precision 2) calculating <m>e</m> and 3)
+      determining the number of digits.
+      If we really just interested in the speed of calculating <m>e</m>, let's time that only.
+    </p>
+
+    <program language="julia">
+      <code>
+          setprecision(2^12) do 
+            @btime e1 = calc_e(500)
+          end
+      </code>
+    </program>
+
+    <p>
+      And the result was <c>1.764 ms</c>, implying that calculating the number of digits is about <c>0.4 ms</c>.
+      <fn>If you just time the <c>num_digits</c> line, this would give you a sense of that.</fn>
+    </p>
+
+    <p>
+      Let's see if we can improve this.
+      Recall that this calculation is just a sum of a number of terms of the form <m>1/k!</m> and there is a division
+      and a factorial.
+    </p>
+
+    <p>
+      If we sum through 500 terms, the largest value of this is <m>500!</m>, which takes a bit of time with
+    </p>
+
+    <program language="julia">
+      <code>
+          @btime factorial(big(500))
+      </code>
+    </program>
+
+    <p>
+      which results in 1.288 μs on my computer.
+      This isn't too long, but not trivial either, remembering that you have 500 calculations.
+      Also, since there is also the reciprocal of this, timing the following:
+    </p>
+
+    <program language="julia">
+      <code>
+          @btime 1/factorial(big(500))
+      </code>
+    </program>
+
+    <p>
+      results in <c>1.462 μs</c>, and it's same to assume that the division was about 200 μs.
+      As we saw above, division with BigFloats is expensive.
+    </p>
+
+    <p>
+      We will show a method to improve the calculations of the factorial and will do something similar for the division
+      later in this chapter.
+    </p>
+
+    <p>
+      Notice that in the for loop of <xref ref="list-calc-e"/>, each term calculates the full factorial in that if we
+      known the previous factorial, we can use this to calculate the current one.
+      <fn>This is how we calculated the factorial recursively  in <xref ref="sect-recursion"/>, however, here we are not doing it recursively, which we have noted is slow.</fn>
+      Basically, we can use the property that
+      <md>
+        n! = n (n-1)!
+      </md>
+    </p>
+
+    <p>
+      We can update the function in <xref ref="list-calc-e"/> to
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        function calc_e2(n::Integer)
+          sum = big(1.0)
+          fact = big(1)
+          for k=1:n
+            fact *= k
+            sum += 1/fact
+          end
+          sum
+        end
+      </code>
+    </program>
+
+    <p>
+      and then testing this with
+    </p>
+
+    <program language="julia">
+      <code>
+        setprecision(2^12) do 
+          e1 = @btime calc_e2(500)
+          num_digits_e(e1)
+        end
+      </code>
+    </program>
+
+    <p>
+      the results on my computer is <c>1.452 ms</c> and I got about 18% faster than that in <xref ref="list-calc-e"/>.
+    </p>
+
+    <p>
+      This is better, but one other thing to notice is that in each step in the loop of the function <c>calc_e2</c>,
+      there is a multiplication (line 5), a division (line 6) and an addition (line 6).
+      We can cut this down to two operations with
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+          function calc_e3(n::Integer)
+            sum = big(1.0)
+            term = big(1.0)
+            for k=1:n
+              term /= big(k)
+              sum += term
+            end
+            sum
+          end
+      </code>
+    </program>
+
+    <p>
+      and timing it with
+    </p>
+
+    <program language="julia">
+      <code>
+        setprecision(2^12) do 
+          e1 = @btime calc_e3(500)
+          num_digits_e(e1)
+        end
+      </code>
+    </program>
+
+    <p>
+      results in 305.333 μs, quite a speed up and in fact more than 80% faster than the original.
+    </p>
+
+    <p>
+      This seems like the best that we can do, however, one thing that makes this <q>slow</q> is that there is floating
+      point division throughout the algorithm.
+      The next section will eliminate this.
+    </p>
+  </section>
+
+  <section xml:id="sec-binary-splitting">
+    <title>Binary Splitting Algorithm</title>
+
+    <p>
+      Consider a series of the form
+      <md>
+        s = \sum_{k=0}^{\infty} S_k
+      </md>
+      where <m>S_k</m> is a rational number of the form
+      <md>
+        S_k = S_{k-1} \cdot \frac{P_k L_k}{Q_k}
+      </md>
+      where <m>P_k, Q_k</m> and <m>L_k</m> are integers for all <m>k</m>.
+      Although it seems that we could combine <m>P_k</m> and <m>L_k</m>, in general, <m>L_k</m> can be a linear term of
+      the form <m>\ell_0 + \ell_1 k</m>,
+      <fn>In <xref ref="ch-calc-pi"/>, we will revisit this method with a linear term.</fn> but will consider this to be
+      1 simplicity in the rest of this chapter.
+    </p>
+
+    <p>
+      We also define
+      <md>
+        T_k = P_k L_k.
+      </md>
+      This is the numerator of the series but as we take partial sums, it will represent the overall numerator of the
+      partial sum with the product of the <m>Q_i</m> terms as the overall denominator.
+    </p>
+
+    <p>
+      We're going to show that we can take a partial sum of this, split it and combine it efficiently.
+      So define
+      <md>
+        s_{a..b} = \sum_{k=a}^{b-1} \frac{P(k)}{Q(k)}.
+      </md>
+      to be the partial sum on <m>[a,b)</m>, so not including <m>b</m>.
+      The power of this method comes from splitting <m>s_p</m> into a left and right parts.
+      If <m>a \lt m \lt b</m>, then
+      <md>
+        s_{a..b} = s_{a..m} + s_{m..b}
+      </md>
+    </p>
+
+    <p>
+      Consider a four-term partial sum:
+      <md>
+        <mrow>s_{0..4} \amp = S_0 + S_1 + S_2 + S_3 </mrow>
+        <mrow> \amp = \frac{P_0}{Q_0} + \frac{P_1 P_0}{Q_1 Q_0} + \frac{P_2 P_1 P_0}{Q_2 Q_1 Q_0} 
+            + \frac{P_3 P_2 P_1 P_0}{Q_3 Q_2 Q_1 Q_0} </mrow>
+        <mrow> \amp = \frac{P_0}{Q_0} + \frac{P_1 P_0}{Q_1 Q_0} + \frac{P_1 P_0}{Q_1 Q_0} \left(\frac{P_2}{Q_2} + \frac{P_2 P_3}{Q_2 Q_3}\right)</mrow>
+        <mrow xml:id="eq-splitting-1" number="yes">  \amp = \frac{Q_1 P_0 + P_1 P_0}{Q_1 Q_0} + \frac{P_1 P_0}{Q_1 Q_0} \left(\frac{P_2 Q_3 + P_2 P_3}{Q_3 Q_2} \right)</mrow>
+      </md>
+    </p>
+
+    <p>
+      This was written as two terms to help understand the splitting.
+      Define
+      <md>
+        <mrow> P_L \amp = P_0 P_1 \amp \amp \text{or in general the product of numerators on the left} </mrow>
+        <mrow> Q_L \amp = Q_0 Q_1 \amp \amp \text{or in general the product of denominators on the left} </mrow>
+        <mrow> P_R \amp = P_2 P_3 \amp \amp \text{or in general the product of numerators on the right} </mrow>
+        <mrow> Q_R \amp = Q_2 Q_3 \amp \amp \text{or in general the product of denominators on the right} </mrow>
+        <mrow> T_L  \amp = Q_1P_0 + P_1 P_0 \amp \amp \text{or in general the numerator on the left} </mrow>
+        <mrow> T_R  \amp = Q_3P_2 + P_2 P_3 \amp \amp \text{or in general the numerator on the right} </mrow>
+      </md>
+      so the above sum can be written as
+      <md>
+        s_{0..4} = \frac{T_L}{Q_L} + \frac{P_L}{Q_L} \cdot \frac{T_R}{Q_R}
+      </md>
+      but in fact, it doesn't matter the number of terms this is the key to splitting.
+      Also notice that this formula works for both the first term and the term in parentheses of
+      <xref ref="eq-splitting-1"/>, so in generally this is performed recursively.
+    </p>
+
+    <p>
+      Let's look at an example of this.
+      Recall that the Taylor Series of <m>\tan^{-1} x</m> can be written
+      <md>
+        \tan^{-1} x = \sum_{k=0}^{\infty} (-1)^k \frac{x^{2k+1}}{2k+1}
+      </md>
+      and for simplification, we will examine this for <m>x=1</m> so
+      <md>
+        s = \tan^{-1} (1) = \sum_{k=0}^{\infty} (-1)^k \frac{1}{2k+1}
+      </md>
+      and the first few terms are
+      <md>
+        s = S_0 + S_1 + S_2 + S_3 + \cdots = \frac{1}{1} - \frac{1}{3} + \frac{1}{5} - \frac{1}{7} + \cdots
+      </md>
+    </p>
+
+    <p>
+      First, note that we required the series to have the form:
+      <md>
+        S_k = S_{k-1} \cdot \frac{P_k}{Q_k}
+      </md>
+      and the arctangent series doesn't look like this form.
+      However, note that
+      <md>
+        <mrow>S_0 \amp = 1 </mrow>
+        <mrow> S_1\amp = -\frac{1}{3} = -\frac{1}{3} S_0 </mrow>
+        <mrow> S_2 \amp = \frac{1}{5} = -\frac{3}{5} S_1</mrow>
+        <mrow> S_3 \amp = -\frac{1}{7} = -\frac{5}{7} S_2 </mrow>
+      </md>
+      and we can show in general that this series has the property that
+      <md xml:id="eq-binary-relation" number="yes">
+        S_k = -\frac{2k-1}{2k+1} S_{k-1}
+      </md>
+      and we will take <m>Q_k</m> to be positive, so let it be <m>2k+1</m> with <m>P_k = -(2k-1)</m>.
+    </p>
+
+    <image width="60%">
+      <shortdescription/>
+      <latex-image>
+        <![CDATA[
+\begin{tikzpicture}[
+    >=Stealth,
+    node distance = 1.2cm and 0.8cm,
+    % Styles for tree nodes
+    leaf/.style = {rectangle, rounded corners, draw=blue!80, fill=blue!5, thick, inner sep=6pt, align=center},
+    branch/.style = {rectangle, rounded corners, draw=teal!80, fill=teal!5, thick, inner sep=6pt, align=center},
+    root/.style = {rectangle, rounded corners, draw=purple!80, fill=purple!5, thick, inner sep=8pt, align=center},
+    % Arrow style
+    edge/.style = {draw=gray!80, thick, <-}
+]
+
+    % --- LEVEL 2: Root Node ---
+    \node[root] (root) {
+        \textbf{Root Block $[0, 4)$}\\[2pt]
+        $P_{0..4} = P_L \cdot P_R$\\[1pt]
+        $Q_{0..4} = Q_L \cdot Q_R$\\[1pt]
+        $\mathbf{T_{0..4} = T_L \cdot Q_R + P_L \cdot T_R}$\\[3pt]
+        \textit{Final Sum:} $\frac{T_{0..4}}{Q_{0..4}}$
+    };
+
+    % --- LEVEL 1: Branch Nodes ---
+    \node[branch, below left=1.2cm and 1.5cm of root] (bL) {
+        \textbf{Left Block $[0, 2)$}\\[2pt]
+        $P_{0..2} = P_0 P_1$\\[1pt]
+        $Q_{0..2} = Q_0 Q_1$\\[1pt]
+        $T_{0..2} = T_0 Q_1 + P_0 T_1$
+    };
+
+    \node[branch, below right=1.2cm and 1.5cm of root] (bR) {
+        \textbf{Right Block $[2, 4)$}\\[2pt]
+        $P_{2..4} = P_2 P_3$\\[1pt]
+        $Q_{2..4} = Q_2 Q_3$\\[1pt]
+        $\mathbf{T_{2..4} = T_2 Q_3 + P_2 T_3}$
+    };
+
+    % --- LEVEL 0: Leaf Nodes ---
+    \node[leaf, below left=1.2cm and 0.3cm of bL] (k0) {
+        \textbf{Leaf $k=0$}\\[2pt]
+        $P_0, Q_0, T_0$\\[1pt]
+        $(T_0 = P_0 L_0)$
+    };
+
+    \node[leaf, below right=1.2cm and 0.3cm of bL] (k1) {
+        \textbf{Leaf $k=1$}\\[2pt]
+        $P_1, Q_1, T_1$\\[1pt]
+        $(T_1 = P_1 L_1)$
+    };
+
+    \node[leaf, below left=1.2cm and 0.3cm of bR] (k2) {
+        \textbf{Leaf $k=2$}\\[2pt]
+        $P_2, Q_2, T_2$\\[1pt]
+        $(T_2 = P_2 L_2)$
+    };
+
+    \node[leaf, below right=1.2cm and 0.3cm of bR] (k3) {
+        \textbf{Leaf $k=3$}\\[2pt]
+        $P_3, Q_3, T_3$\\[1pt]
+        $(T_3 = P_3 L_3)$
+    };
+
+    % --- CONNECTIONS ---
+    % Upward flow toward root
+    \draw[edge] (root) -- (bL);
+    \draw[edge] (root) -- (bR);
+    
+    \draw[edge] (bL) -- (k0);
+    \draw[edge] (bL) -- (k1);
+    
+    \draw[edge] (bR) -- (k2);
+    \draw[edge] (bR) -- (k3);
+
+\end{tikzpicture}
+]]>
+      </latex-image>
+    </image>
+
+    <p>
+      We will find the values of each of the leaves.
+      We use <m>P_0=Q_0=1</m> for the first term and <xref ref="eq-binary-relation"/> for the rest, so
+      <md>
+        <mrow>P_0 \amp = 1 \amp Q_0 \amp = 1 \amp T_0 \amp =  1</mrow>
+        <mrow>P_1 \amp = -1 \amp Q_1 \amp = 3 \amp  T_1 \amp =  -1</mrow>
+        <mrow>P_2 \amp = -3 \amp Q_2 \amp = 5 \amp T_2 \amp =  -3</mrow>
+        <mrow xml:id="eq-splitting-example-leaves" number="yes">P_3 \amp = -5 \amp Q_3 \amp = 7 \amp T_3 \amp = -5</mrow>
+      </md>
+    </p>
+
+    <p>
+      The next level up is found with the equations in ???
+      <md>
+        <mrow>P_{0..2} \amp = P_0 P_1 = -1 \amp Q_{0..2} \amp = Q_0 Q_1 =  3 \amp
+        T_{0..2} =  \amp T_0 Q_1 + P_0 T_1  = 2 </mrow>
+        <mrow xml:id="ex-splitting-ex-level-2" number="yes">P_{2..4} \amp = P_2 P_3 = 5 \amp Q_{2..4} \amp = Q_2 Q_3 = 35 \amp
+        T_{2..4} =  \amp T_2 Q_3 + P_2 T_3  = -6 </mrow>
+      </md>
+      and the last operation is
+      <md>
+        <mrow>P_{0..4} \amp = P_{0..2} P_{2..4} = -15  \amp
+          Q_{0..4} = \amp Q_{0..2} Q_{2..4} = 105 </mrow>
+        <mrow> T_{0..4} \amp = T_{0..2} Q_{2..4} + P_{0..2} T_{2..4} = 2(35)  + (- 1)(-6) = 76
+        </mrow>
+      </md>
+    </p>
+
+    <p>
+      And the result is
+      <md>
+        v = \frac{T_{0..4}}{Q_{0..4}} = \frac{76}{105}
+      </md>
+    </p>
+
+    <p>
+      Recall that this is the first four terms of the series and
+      <md>
+        1-\frac{1}{3} + \frac{1}{5} - \frac{1}{7} = \frac{76}{105}
+      </md>
+      the same result.
+      Also note that the intermediate steps can be written as
+      <md>
+        <mrow>\frac{T_{0..2}}{Q_{0..2}} \amp = \frac{2}{3} \amp
+          \frac{P_{0..2}}{Q_{0..2}} \frac{T_{2..4}}{Q_{2..4}} \amp = \frac{-1}{3} \frac{-6}{35} = \frac{2}{35}
+        </mrow>
+      </md>
+      and the first result is the first two terms or <m>1-1/3</m> and the second result the sum of the 3rd and 4th terms
+      of the series or <m>1/5-1/7</m>.
+    </p>
+
+    <p>
+      When we checked the partial sum of the 3rd and 4th terms, we need to scale the fraction <m>T_{2..4}/Q_{2..4}</m>
+      by the fraction <m>P_{0..2}/Q_{0..2}</m> because ????
+    </p>
+
+    <exercise xml:id="ex-bin-split-exp">
+      <statement>
+        <p>
+          Use binary splitting to find the first four terms of the series for <m>e^x</m> when <m>x=1</m>.
+        </p>
+      </statement>
+
+      <solution>
+        <p>
+          In this case, note that the series:
+          <md>
+            e = \sum_{k=0}^{\infty} \frac{1}{k!}
+          </md>
+          and since we need to have a series of the form:
+          <md>
+            S_k = S_{k-1} \cdot \frac{P_k}{Q_k}
+          </md>
+          this holds with <m>P_k=1</m> for all <m>k</m> and <m>Q_k = k</m> when <m>k \geq 1</m> and <m>Q_0=1</m>.
+        </p>
+
+        <p>
+          The first four terms of the leaves then are
+          <md>
+            <mrow>P_0 \amp = 1 \amp Q_0 \amp = 1 \amp T_0 \amp = 1</mrow>
+            <mrow>P_1 \amp = 1 \amp Q_1 \amp = 1 \amp T_1 \amp = 1</mrow>
+            <mrow>P_2 \amp = 1 \amp Q_2 \amp = 2 \amp T_2 \amp = 1</mrow>
+            <mrow>P_3 \amp = 1 \amp Q_3 \amp = 3 \amp T_3 \amp = 1</mrow>
+          </md>
+        </p>
+
+        <p>
+          For the next stage:
+          <md>
+            <mrow>P_{0..2} \amp = P_0 P_1 = 1 \amp Q_{0..2} \amp = Q_0 Q_1 =  1 \amp
+        T_{0..2} =  \amp T_0 Q_1 + P_0 T_1  = 2 </mrow>
+            <mrow>P_{2..4} \amp = P_2 P_3 = 1 \amp Q_{2..4} \amp = Q_2 Q_3 = 6 \amp
+        T_{2..4} =  \amp T_2 Q_3 + P_2 T_3  = 4 </mrow>
+          </md>
+        </p>
+
+        <p>
+          and the last stage is
+          <md>
+            <mrow>P_{0..4} \amp = P_{0..2} P_{2..4} = 1  \amp
+          Q_{0..4} = \amp Q_{0..2} Q_{2..4} = 6 </mrow>
+            <mrow> T_{0..4} \amp = T_{0..2} Q_{2..4} + P_{0..2} T_{2..4} = 2(6) + (1)(4) = 16
+        </mrow>
+          </md>
+          and the resulting fraction is
+          <md>
+            \frac{T_{0..4}}{Q_{0..4}} = \frac{16}{6} = \frac{8}{3}
+          </md>
+          and this is the same as the first four terms or
+          <md>
+            1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{6} = \frac{16}{6} = \frac{8}{3}
+          </md>
+        </p>
+      </solution>
+    </exercise>
+  </section>
+
+  <section xml:id="sec-binary-search-implementation">
+    <title>Implementing Binary Splitting</title>
+
+    <p>
+      The previous section explains how binary splitting was used to rewrite a partial sum of an infinite series.
+      We will now implement this.
+    </p>
+
+    <p>
+      The key to this is to write the splitting in <xref ref="eq-splitting-1"/>.
+      At each stage, we want to calculate the terms <m>P, Q</m> and <m>T</m>.
+      However, at the lowest level (that is, the leaves of the tree), we need to use the arctan series for this.
+      If we define
+    </p>
+
+    <program language="julia">
+      <code>
+      arctan_terms(k) = k== 0 ? (P=1, Q=1, T=1) : (P=-1*(2k-1), Q= 2k+1, T=-1*(2k-1))
+      </code>
+    </program>
+
+    <p>
+      then this function returns the <m>P, Q, T</m> for each <m>k</m>.
+      We can test this with the first few terms with:
+    </p>
+
+    <program language="julia">
+      <code>
+        [arctan_terms(k) for k=0:3]
+      </code>
+    </program>
+
+    <p>
+      and the result is
+    </p>
+
+    <p>
+      <cd>
+        <cline>4-element Vector{@NamedTuple{P::Int64, Q::Int64, T::Int64}}:</cline>
+        <cline>(P =  1, Q = 1, T =  1)</cline>
+        <cline>(P = -1, Q = 3, T = -1)</cline>
+        <cline>(P = -3, Q = 5, T = -3)</cline>
+        <cline>(P = -5, Q = 7, T = -5)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which is what we was saw in <xref ref="eq-splitting-example-leaves"/>.
+      Next, we write the splitting term as a recursive formula:
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+          function binary_split(a::Integer, b::Integer, init::Function)
+            if b - a == 1
+              return init(a)
+            else
+              m = (a + b) ÷ 2
+              left = binary_split(a, m, init)
+              right = binary_split(m, b, init)
+              return (P=left.P*right.P, Q=left.Q*right.Q, T=left.T * right.Q + left.P * right.T)
+            end
+          end
+      </code>
+    </program>
+
+    <p>
+      This takes in the min and max of the terms and the initialization formula.
+      The first branch of the if statement returns the series if there is only one term (when <m>b-a=1</m> ) otherwise,
+      it splits the terms in half, and calls <c>binary_split</c> recursively on each halves.
+      The return on line 8 is the formula in <xref ref="eq-splitting-1"/>.
+    </p>
+
+    <p>
+      The initialization was tested above.
+      The next level can be found with
+    </p>
+
+    <program language="julia">
+      <code>
+          binary_split(0,2, arctan_terms), binary_split(2,4, arctan_terms)
+      </code>
+    </program>
+
+    <p>
+      and this returns
+    </p>
+
+    <p>
+      <cd>
+        <cline>((P = -1, Q = 3, T = 2), (P = 15, Q = 35, T = -6))</cline>
+      </cd>
+    </p>
+
+    <p>
+      which is the results from <xref ref="ex-splitting-ex-level-2"/>.
+      The four-term partial sum can be found with
+    </p>
+
+    <program language="julia">
+      <code>
+          four_terms = binary_split(0, 4, arctan_terms)
+      </code>
+    </program>
+
+    <p>
+      which returns
+    </p>
+
+    <p>
+      <cd>
+        <cline>(P = -15, Q = 105, T = 76)</cline>
+      </cd>
+    </p>
+
+    <p>
+      and again this was the result from above.
+      The exact value of the partial sum can be written as <c>four_terms.T//four_terms.Q</c> and a floating point
+      approximation is <c>four_terms.T/four_terms.Q</c>
+    </p>
+
+    <exercise>
+      <statement>
+        <p>
+          Reproduce the four terms of <m>e</m> that you found by hand in <xref ref="ex-bin-split-exp"/> using the code
+          in this section.
+          Note: you will need to write a <c>exp_terms</c> function that finds the values of the leaves.
+        </p>
+      </statement>
+
+      <solution>
+        <p>
+          We start with the initialization function for the leaves or
+        </p>
+
+        <program language="julia">
+          <code>
+          exp_terms = arctan_terms(k) = k== 0 ? (P=1, Q=1, T=1) : (P=1, Q=k, T=1)
+          </code>
+        </program>
+
+        <p>
+          The leaves are calculated with
+        </p>
+
+        <program language="julia">
+          <code>
+          [exp_terms(k) for k=0:3]
+          </code>
+        </program>
+
+        <p>
+          resulting in
+        </p>
+
+        <p>
+          <cd>
+            <cline>4-element Vector{@NamedTuple{P::Int64, Q::Int64, T::Int64}}:</cline>
+            <cline>(P = 1, Q = 1, T = 1)</cline>
+            <cline>(P = 1, Q = 1, T = 1)</cline>
+            <cline>(P = 1, Q = 2, T = 1)</cline>
+            <cline>(P = 1, Q = 3, T = 1)</cline>
+          </cd>
+        </p>
+
+        <p>
+          The next level of terms are found with
+        </p>
+
+        <program language="julia">
+          <code>
+          binary_split(0,2, exp_terms), binary_split(2,4, exp_terms)
+          </code>
+        </program>
+
+        <p>
+          resulting in
+        </p>
+
+        <p>
+          <cd>
+            <cline>((P = 1, Q = 1, T = 2), (P = 1, Q = 6, T = 4))</cline>
+          </cd>
+        </p>
+
+        <p>
+          and finally the sum of the first four terms is:
+        </p>
+
+        <program language="julia">
+          <code>
+          binary_split(0,4,exp_terms)
+          </code>
+        </program>
+
+        <p>
+          with the result
+        </p>
+
+        <p>
+          <cd>
+            <cline>(P = 1, Q = 6, T = 16)</cline>
+          </cd>
+        </p>
+      </solution>
+    </exercise>
+  </section>
+
+  <section>
+    <title>Extending the series to lots of terms</title>
+
+    <p>
+      The sections above were used to demonstrate how to perform binary splitting on a series.
+      Each of the examples used 4 terms so numbers weren't overwhelming.
+      However, we hope to use this for quite a few terms for practical use.
+      We also return to the series for <m>e</m> so we can compare to results at the beginning of the section.
+    </p>
+
+    <p>
+      In short, with the <c>binary_search</c> function that we wrote above, we just need to call that function with more
+      terms.
+      We will use a power of 2 since binary splitting is most efficient for that (see in the next section for why).
+    </p>
+
+    <p>
+      For an example that is large but not too large, let try
+    </p>
+
+    <program language="julia">
+      <code>
+          binary_split(0,64,exp_terms)
+      </code>
+    </program>
+
+    <p>
+      which returns <c>(P = 1, Q = 1585267068834414592, T = -2674445815446327044)</c>.
+      The value of <m>P</m> is expected since all values of <m>P</m> are 1 and this is the product of them.
+      However, the other two are odd.
+      <m>Q</m> should be a factorial and after <m>5</m>, the factorial should end in a 0.
+      And <m>T</m> is negative is strange.
+      There are no negatives in any of the formulas, so where did those get introduced?
+    </p>
+
+    <p>
+      The answer as we have seen before in this book is that there was Overflow.
+      We mentioned that <m>Q</m> will be a factorial and that grows quickly and overflows around 50.
+      So let's just shift to bigs and this is simply done with
+    </p>
+
+    <program language="julia">
+      <code>
+          e64 = binary_split(big(0),big(64),exp_terms)
+      </code>
+    </program>
+
+    <p>
+      and this returns
+    </p>
+
+    <p>
+      <cd>
+        <cline>(P = 1, Q = 1982608315404440064116146708361898137544773690227268628106279599612729753600000000000000, </cline>
+        <cline> T = 5389288156715688797574170724637602641365768984616696724053991331785579414134712244547836)</cline>
+      </cd>
+    </p>
+
+    <p>
+      which looks better.
+      The value of <m>e</m> will be the ratio of <m>T/Q</m> and if we use floating point division with
+      <c>e64.T/e64.Q</c>, the result is
+    </p>
+
+    <p>
+      <cd>
+        <cline>2.718281828459045235360287471352662497757247093699959574966967627724076630353555</cline>
+      </cd>
+    </p>
+
+    <p>
+      And we can use <c>num_digits_e(e64.T/e64.Q)</c> function to see how accuracy this is.
+      The result is <c>77</c>, which you should notice is the limit of the default BigFloat.
+      We didn't specify the precision of the BigFloat anywhere, so the default of 256 binary digits is used.
+    </p>
+
+    <note>
+      <p>
+        Although we are using a different technique to calculate the partial sum, the result for a given number of terms
+        should be exactly the same that we did using a for loop above.
+      </p>
+    </note>
+
+    <p>
+      Above, we were interesting in calculating this to about 1000 digits and noted that we needed precision of
+      <m>2^{12}</m> for the BigFloats and needed about 500 terms.
+      So if we use this precision with <m>2^9=512</m> terms then we should be comparable to above:
+    </p>
+
+    <program language="julia" line-numbers="yes">
+      <code>
+        setprecision(2^12) do
+          e_approx = @btime let
+            a = binary_split(big(0), big(128), exp_terms)
+            a.T/a.Q
+          end
+          num_digits_e(e_approx)
+        end
+      </code>
+    </program>
+
+    <p>
+      results in <c>1166</c> digits of accuracy in <c>115.041 μs</c>, more than 50% faster than the fastest for-loop
+      implementation above.
+    </p>
+
+    <note>
+      <p>
+        The code above might look strange because of the <c>let</c> block inside and perhaps the order of terms inside
+        and around it.
+        If you were not timing the calculation, I would not use a <c>let</c> block, but since you would like to know how
+        much time the two lines (3 and 4) are using, we need to time those two and the easiest is as you see above.
+        We put the <c>@btime</c> macro in front of the <c>let</c> because the <c>let</c> block is being timed.
+        Then the <c>e_approx = </c> is the result of the <c>let</c> block.
+      </p>
+    </note>
+  </section>
+
+  <section>
+    <title>Algorithmic Analysis of Binary Splitting</title>
+
+    <p/>
+  </section>
+</chapter>

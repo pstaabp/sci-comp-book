@@ -3,21 +3,23 @@
 
   <introduction>
     <p>
-      This section dives into the features of the package <c>DataFramesMeta</c> which provides a simpler interface to
-      many of the built-in features of the <c>DataFrames</c> package.
-      In most cases the <c>DataFramesMeta</c> package provides macros with the same name as the <c>DataFrames</c>
-      package.
+      This section dives into the features of the package <c>DataFramesMeta</c>
+      which provides a simpler interface to many of the built-in features of the
+      <c>DataFrames</c> package.
+      In most cases the <c>DataFramesMeta</c> package provides macros with the
+      same name as the <c>DataFrames</c> package.
     </p>
 
     <p>
-      In many cases, we will repeat the same examples as in <xref ref="ch-manipulating-data"/>, however sometimes done
-      differently.
-      Additionally, this has been written to assume that you the reader have not read <xref ref="ch-manipulating-data"/>
-      and this chapter stands alone.
+      In many cases, we will repeat the same examples as in
+      <xref ref="ch-manipulating-data"/>, however sometimes done differently.
+      Additionally, this has been written to assume that you the reader have not
+      read <xref ref="ch-manipulating-data"/> and this chapter stands alone.
     </p>
 
     <p>
-      If you haven't yet, you should load the <c>DataFramesMeta</c> package with:
+      If you haven't yet, you should load the <c>DataFramesMeta</c> package
+      with:
     </p>
 
     <program language="julia">
@@ -29,9 +31,10 @@
     <p>
       which also loads the <c>DataFrames</c> and <c>Chain</c> packages.
       These three packages make many data analysis relatively compact to write.
-      We saw the <c>Chain</c> package in <xref ref="subsec-chain-package"/> and you should review that if you need to.
-      In short, it is useful for performing a series of steps in which the previous step is passed into each subsequent
-      one.
+      We saw the <c>Chain</c> package in <xref ref="subsec-chain-package"/> and
+      you should review that if you need to.
+      In short, it is useful for performing a series of steps in which the
+      previous step is passed into each subsequent one.
     </p>
   </introduction>
 
@@ -40,8 +43,8 @@
 
     <introduction>
       <p>
-        There are two ways of finding the subset of a DataFrame with <c>DataFramesMeta</c>, either finding subsets of
-        columns or rows.
+        There are two ways of finding the subset of a DataFrame with
+        <c>DataFramesMeta</c>, either finding subsets of columns or rows.
         Let's start with the data set:
       </p>
 
@@ -57,7 +60,8 @@
       </program>
 
       <p>
-        which will give a dataset with 7 rows of date and each column is a different data type.
+        which will give a dataset with 7 rows of date and each column is a
+        different data type.
       </p>
     </introduction>
 
@@ -65,8 +69,10 @@
       <title>Subsets of Columns with <c>@select</c></title>
 
       <p>
-        Selecting columns (or finding a subset of columns) is performed with the <c>@select</c> macro.
-        Again, we will wrap all commands in a <c>@chain</c> block to make it easier later with more complex cases.
+        Selecting columns (or finding a subset of columns) is performed with the
+        <c>@select</c> macro.
+        Again, we will wrap all commands in a <c>@chain</c> block to make it
+        easier later with more complex cases.
         We can select only columns <c>A</c> and <c>D</c> with
       </p>
 
@@ -98,8 +104,9 @@
       </p>
 
       <p>
-        We can use <c>@select(Not(:B))</c> to get all columns except <c>B</c> or <c>@select(Between(:B,:D))</c> will
-        return all columns between and including <c>B</c> and <c>D</c>.
+        We can use <c>@select(Not(:B))</c> to get all columns except <c>B</c> or
+        <c>@select(Between(:B,:D))</c> will return all columns between and
+        including <c>B</c> and <c>D</c>.
         <fn>If the <c>@select</c> is used only for selecting columns, the commands <c>select(df,col1, col2)</c> and
         <c>@select(df,col1, col2)</c> give the same results, where <c>select</c> was seen in <xref ref="ch-manipulating-data"/></fn>
       </p>
@@ -109,10 +116,10 @@
       <title>Finding the subset of rows with <c>@subset</c></title>
 
       <p>
-        The <c>@subset</c> macro will return a DataFrame with some subset of the rows <mdash/> which could include all
-        or none of the rows.
-        The following command will return all of the rows in the DataFrame <c>data</c> where values in the <c>A</c>
-        column are less than 10:
+        The <c>@subset</c> macro will return a DataFrame with some subset of the
+        rows <mdash/> which could include all or none of the rows.
+        The following command will return all of the rows in the DataFrame
+        <c>data</c> where values in the <c>A</c> column are less than 10:
       </p>
 
       <program language="julia">
@@ -149,7 +156,8 @@
       </p>
 
       <p>
-        The argument in the <c>@select</c> macro is an expression that is an array of booleans.
+        The argument in the <c>@select</c> macro is an expression that is an
+        array of booleans.
         The inside is a shorthand way to write:
       </p>
 
@@ -161,14 +169,18 @@
 
       <p>
         which returns the vector <c>BitVector[1, 1, 1, 1, 1, 0, 0]</c>.
-        Recall that the <c>.</c> in front of the <c>&lt;</c> is a operator on vectors.
-        This is called <em>broadcasting</em> and covered in <xref ref="sect-broadcasting"/>.
-        Applying <c>@subset</c> to the vector of booleans returns the top five rows of <c>data</c>.
+        Recall that the <c>.</c> in front of the <c>&lt;</c> is a operator on
+        vectors.
+        This is called <em>broadcasting</em> and covered in
+        <xref ref="sect-broadcasting"/>.
+        Applying <c>@subset</c> to the vector of booleans returns the top five
+        rows of <c>data</c>.
       </p>
 
       <p>
         Other subsetting is simpler as well.
-        If you want the rows in which the product of columns <c>C</c> and <c>D</c>, then
+        If you want the rows in which the product of columns <c>C</c> and
+        <c>D</c>, then
       </p>
 
       <program language="julia">
@@ -193,7 +205,8 @@
       </p>
 
       <p>
-        And if the dot notation is still confusing then applying the <c>@.</c> in front will accomplish the same thing.
+        And if the dot notation is still confusing then applying the <c>@.</c>
+        in front will accomplish the same thing.
         An alternative to the above can be done with
       </p>
 
@@ -208,8 +221,8 @@
       <exercise>
         <statement>
           <p>
-            Use the <c>iris</c> dataset, find all <c>setosa</c> irises with <c>SepalWidth</c> larger than 4 using the
-            <c>@subset</c> command.
+            Use the <c>iris</c> dataset, find all <c>setosa</c> irises with
+            <c>SepalWidth</c> larger than 4 using the <c>@subset</c> command.
             How many are in the dataset?
           </p>
         </statement>
@@ -222,13 +235,15 @@
 
     <p>
       Often, we need to perform a calculation on the columns of a DataFrame.
-      There are two ways to accomplish this, using <c>@transform</c> to add a new column to the DataFrame or using
-      <c>@select</c> to take a subset of the existing columns.
+      There are two ways to accomplish this, using <c>@transform</c> to add a
+      new column to the DataFrame or using <c>@select</c> to take a subset of
+      the existing columns.
     </p>
 
     <p>
-      As an example of using <c>@transform</c>, we will start with the <c>data</c> DataFrame and create a column that is
-      the square of the <c>A</c> column.
+      As an example of using <c>@transform</c>, we will start with the
+      <c>data</c> DataFrame and create a column that is the square of the
+      <c>A</c> column.
       This is accomplished with
     </p>
 
@@ -260,7 +275,8 @@
     </p>
 
     <p>
-      If instead, we only want the resulting DataFrame to have the new column, we can use a <c>@select</c>.
+      If instead, we only want the resulting DataFrame to have the new column,
+      we can use a <c>@select</c>.
       For example,
     </p>
 
@@ -292,10 +308,10 @@
     </p>
 
     <p>
-      The <c>@select</c> can be a combination of subsetting columns as above as well as functions that produce new
-      columns.
-      Let's say that we want columns <c>A</c> and <c>B</c> from the original DataFrame as well as the square of the
-      <c>A</c> column.
+      The <c>@select</c> can be a combination of subsetting columns as above as
+      well as functions that produce new columns.
+      Let's say that we want columns <c>A</c> and <c>B</c> from the original
+      DataFrame as well as the square of the <c>A</c> column.
       This is done with
     </p>
 
@@ -328,7 +344,8 @@
 
     <p>
       Both <c>@select</c> and <c>@transform</c> can use multiple columns.
-      The following example, takes the product between columns <c>C</c> and <c>D</c>.
+      The following example, takes the product between columns <c>C</c> and
+      <c>D</c>.
     </p>
 
     <program language="julia">
@@ -359,17 +376,19 @@
     </p>
 
     <p>
-      Note: there are also commands <c>@select!</c> and <c>@transform!</c> that perform the operations within the given
-      dataframe.
-      These are generally destructive in that each overwrites the previous DataFrame but can save a lot of computational
-      time for large DataFrames.
-      It is recommended to stay with the non mutating (without the !) versions unless you need to save time/memory.
+      Note: there are also commands <c>@select!</c> and <c>@transform!</c> that
+      perform the operations within the given dataframe.
+      These are generally destructive in that each overwrites the previous
+      DataFrame but can save a lot of computational time for large DataFrames.
+      It is recommended to stay with the non mutating (without the !) versions
+      unless you need to save time/memory.
     </p>
 
     <exercise>
       <p>
-        Using the <c>iris</c> dataframe produce a new column called <c>area</c> which is the area of a petal using the
-        <c>PetalLength</c> and <c>PetalWidth</c> variables and the area of an ellipse.
+        Using the <c>iris</c> dataframe produce a new column called <c>area</c>
+        which is the area of a petal using the <c>PetalLength</c> and
+        <c>PetalWidth</c> variables and the area of an ellipse.
         Use the <c>@transform</c> command.
       </p>
     </exercise>
@@ -385,8 +404,9 @@
     </p>
 
     <p>
-      If we want to sort the <c>data</c> DataFrame by the <c>C</c> column, we can either use the inline command
-      <c>@orderby(data,:C)</c> or within the <c>@chain</c> block with
+      If we want to sort the <c>data</c> DataFrame by the <c>C</c> column, we
+      can either use the inline command <c>@orderby(data,:C)</c> or within the
+      <c>@chain</c> block with
     </p>
 
     <program language="julia">
@@ -417,7 +437,8 @@
     </p>
 
     <p>
-      and notice that although we didn't specify, <c>@orderby</c> sorts numerically in increasing order.
+      and notice that although we didn't specify, <c>@orderby</c> sorts
+      numerically in increasing order.
       If we sort by another data type, then the sorting may be different.
       For example, if we sort by column <c>B</c> with
     </p>
@@ -450,13 +471,15 @@
     </p>
 
     <p>
-      and the DataFrame has be ordered <em>lexigraphically</em> because column <c>B</c> is a string.
-      If we would like the resulting DataFrame above to next be sorted by column <c>C</c>, then we change the
-      <c>@orderby</c> to <c>@orderby(:B, :C)</c>.
+      and the DataFrame has be ordered <em>lexigraphically</em> because column
+      <c>B</c> is a string.
+      If we would like the resulting DataFrame above to next be sorted by column
+      <c>C</c>, then we change the <c>@orderby</c> to <c>@orderby(:B, :C)</c>.
     </p>
 
     <p>
-      If instead, we want to order by a function of a column, then we can do that.
+      If instead, we want to order by a function of a column, then we can do
+      that.
       This is how one would sort in a descending order.
       The code:
     </p>
@@ -497,7 +520,8 @@
 
       <hint>
         <p>
-          Put column <c>A</c> mod 3 in the <c>@orderby</c> and don't forget to handle the broadcasting.
+          Put column <c>A</c> mod 3 in the <c>@orderby</c> and don't forget to
+          handle the broadcasting.
         </p>
       </hint>
     </exercise>
@@ -507,7 +531,8 @@
     <title>Joining DataFrames</title>
 
     <p>
-      Often, data is split between different tables (or files) and they need to be joined before doing analysis.
+      Often, data is split between different tables (or files) and they need to
+      be joined before doing analysis.
       <fn>The functions in this section are not from the <c>DataFramesMeta</c>, but from the <c>DataFrames</c> package.  
         If you already have read <xref ref="ch-manipulating-data"/>, then you can skip this section.  
         There is nothing new presented here.</fn>
@@ -541,12 +566,14 @@
 
     <p>
       and we want to join these two together.
-      In order to join two datasets, we need to know which column is common to both datasets.
-      This typically occurs when there is common data between the two datasets often with the same column name, but not
-      necessarily.
-      In this case, the column that makes most sense is the <c>name</c> column, which is common to both.
-      For this example, we'll use the <c>innerjoin</c> command and the keyword attributed <c>on</c> with the common
-      column name.
+      In order to join two datasets, we need to know which column is common to
+      both datasets.
+      This typically occurs when there is common data between the two datasets
+      often with the same column name, but not necessarily.
+      In this case, the column that makes most sense is the <c>name</c> column,
+      which is common to both.
+      For this example, we'll use the <c>innerjoin</c> command and the keyword
+      attributed <c>on</c> with the common column name.
       If we perform the following:
     </p>
 
@@ -574,23 +601,28 @@
     </p>
 
     <p>
-      The column that the sets are joined on are called the <em>key</em> of the DataFrame.
-      The <c>innerjoin</c> command returns all rows in which the key is common to both datasets.
-      This can be thought of as the intersection of the DataFrames and this is the most common joins.
+      The column that the sets are joined on are called the <em>key</em> of the
+      DataFrame.
+      The <c>innerjoin</c> command returns all rows in which the key is common
+      to both datasets.
+      This can be thought of as the intersection of the DataFrames and this is
+      the most common joins.
     </p>
 
     <note>
       <p>
-        If the column names with the values that you wish to join by are in different column names, you should use the
-        option <c> on = col1 =&gt; col2 </c>, where <c>col1</c> is in the first DataFrame and <c>col2</c> in the second
-        one.
+        If the column names with the values that you wish to join by are in
+        different column names, you should use the option
+        <c> on = col1 =&gt; col2 </c>, where <c>col1</c> is in the first
+        DataFrame and <c>col2</c> in the second one.
       </p>
     </note>
 
     <p>
-      You may be surprised that there are only 5 rows in this DataFrame, since there were 9 rows in the first DataFrame.
-      The command <c>innerjoin</c> merges two DataFrames, by including only where the <c>name</c> column is in both of
-      the two DataFrames.
+      You may be surprised that there are only 5 rows in this DataFrame, since
+      there were 9 rows in the first DataFrame.
+      The command <c>innerjoin</c> merges two DataFrames, by including only
+      where the <c>name</c> column is in both of the two DataFrames.
       There are other ways to join Dataframes.
       See <xref ref="sect-dataframe-joins"/> and
       <url href="https://dataframes.juliadata.org/stable/lib/functions/#Joining">the DataFrames documentation on joins</url>
@@ -600,8 +632,9 @@
     <example>
       <statement>
         <p>
-          Use the <c>outerjoin</c> command on the same two DataFrames as above, and discuss the similarities and
-          differences with the <c>innerjoin</c> command.
+          Use the <c>outerjoin</c> command on the same two DataFrames as above,
+          and discuss the similarities and differences with the <c>innerjoin</c>
+          command.
         </p>
       </statement>
 
@@ -639,23 +672,27 @@
         </p>
 
         <p>
-          Note that this time there are 10 rows because there are a total of 10 separate values for the <c>key</c> or in
-          this case the <c>name</c> column.
-          There are still the same number of columns, one of each which comes from the two DataFrames.
+          Note that this time there are 10 rows because there are a total of 10
+          separate values for the <c>key</c> or in this case the <c>name</c>
+          column.
+          There are still the same number of columns, one of each which comes
+          from the two DataFrames.
         </p>
       </solution>
     </example>
   </section>
 
-  <section>
+  <section xml:id="sec-dfm-summarize">
     <title>Summarizing Data</title>
 
     <p>
-      Generally one wants to summarize a large dataset to a few numbers to get a sense or for comparison purposes.
-      The <c>describe</c> function from <c>DataFrames</c> does this, but in a fixed way.
+      Generally one wants to summarize a large dataset to a few numbers to get a
+      sense or for comparison purposes.
+      The <c>describe</c> function from <c>DataFrames</c> does this, but in a
+      fixed way.
       A more general function to do this is called the <c>@combine</c> function.
-      Consider the following and note that the <c>Statistics</c> package has been loaded for the <c>mean</c> and
-      <c>std</c> functions.
+      Consider the following and note that the <c>Statistics</c> package has
+      been loaded for the <c>mean</c> and <c>std</c> functions.
     </p>
 
     <program language="julia">
@@ -679,20 +716,24 @@
     </p>
 
     <p>
-      And this returns a new dataframe with 1 row and 4 columns (mean of C, mean of D, standard deviation of C and the
-      number of rows in C).
+      And this returns a new dataframe with 1 row and 4 columns (mean of C, mean
+      of D, standard deviation of C and the number of rows in C).
     </p>
 
     <note>
       <p>
-        If the command <c>@combine</c> is used on a DataFrame, then the result is a DataFrame with a single row.
-        The number of columns is the total number of functions applied in the <c>combine</c> command.
+        If the command <c>@combine</c> is used on a DataFrame, then the result
+        is a DataFrame with a single row.
+        The number of columns is the total number of functions applied in the
+        <c>combine</c> command.
       </p>
 
       <p>
-        We will also use combine after splitting a dataset for comparison purposes.
-        We'll do this below in <xref ref="sect-split-apply-combine"/> in which there are multiply rows, each of one for
-        the way that the original is split.
+        We will also use combine after splitting a dataset for comparison
+        purposes.
+        We'll do this below in <xref ref="sect-split-apply-combine"/> in which
+        there are multiply rows, each of one for the way that the original is
+        split.
       </p>
     </note>
   </section>
